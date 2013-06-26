@@ -41,4 +41,5 @@ group :test do
   gem "guard-rspec"
   gem "timecop"
   gem "debugger"
+  gem "rack-test"
 end
