@@ -201,7 +201,7 @@ module VCAP::CloudController
           :credentials  => new_credentials
         }.to_json
 
-        put "/v2/service_bindings/internal/#{binding_id}", req_body, headers_for(admin)
+        put "/v2/service_bindings/internal/#{binding_id}", req_body, json_headers(headers_for(admin))
         last_response.status.should == 200
       end
 
@@ -212,7 +212,7 @@ module VCAP::CloudController
           :credentials  => new_credentials
         }.to_json
 
-        put "/v2/service_bindings/internal/#{binding_id}", req_body, headers_for(admin)
+        put "/v2/service_bindings/internal/#{binding_id}", req_body, json_headers(headers_for(admin))
         last_response.status.should == 403
       end
 
@@ -222,7 +222,7 @@ module VCAP::CloudController
           :credentials  => new_credentials
         }.to_json
 
-        put "/v2/service_bindings/internal/#{binding_id}", req_body, headers_for(admin)
+        put "/v2/service_bindings/internal/#{binding_id}", req_body, json_headers(headers_for(admin))
         last_response.status.should == 400
       end
     end
