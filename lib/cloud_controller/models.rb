@@ -101,6 +101,7 @@ require "models/core/route"
 require "models/core/space"
 require "models/core/stack"
 require "models/core/user"
+require "models/core/session"
 
 require "models/services/service"
 require "models/services/service_auth_token"
@@ -114,5 +115,3 @@ require "models/services/service_plan_visibility"
 require "models/services/service_base_event"
 require "models/services/service_create_event"
 require "models/services/service_delete_event"
-
-
