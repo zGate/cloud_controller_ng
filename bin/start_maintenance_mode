@@ -1,0 +1,71 @@
+#!/usr/bin/env ruby
+
+$:.unshift(File.expand_path("../../lib", __FILE__))
+
+ENV["BUNDLE_GEMFILE"] ||= File.expand_path("../../Gemfile", __FILE__)
+
+require "rubygems"
+require "bundler/setup"
+
+require "cloud_controller"
+
+config = VCAP::CloudController::Runner.new(ARGV).parse_config
+
+def package_maintenance_app(config, maintenance_app)
+  tmpdir = Dir.mktmpdir("maintenance_package", config[:directories] ? config[:directories][:tmpdir] : nil)
+  zip_file_path = File.join(tmpdir, "maintenance.zip")
+  Dir.chdir(File.expand_path("../../maintenance", __FILE__)) do
+    %x{zip #{zip_file_path} Gemfile Gemfile.lock config.ru}
+  end
+
+  zip_file = File.new(zip_file_path)
+  maintenance_app.package_hash = AppPackage.to_zip(maintenance_app.guid, [], zip_file)
+  maintenance_app.save
+ensure
+  FileUtils.rm_rf(tmpdir) if tmpdir
+end
+
+def find_space(config)
+  organization_name = config[:system_domain_organization]
+  organization = Models::Organization.find(:name => organization_name)
+  space_name = "maintenance"
+  Models::Space.find_or_create(:name => space_name, :organization_guid => organization.guid)
+end
+
+def find_maintenance_app(config)
+  space = find_space(config)
+  Models::App.find(:space_guid => space.guid, :name => "api_maintenance")
+end
+
+def new_maintenance_app(config)
+  domain_name = config[:system_domain]
+  space = find_space(config)
+  app = Models::App.new(
+    :name => "api_maintenance",
+    :space => space,
+    :memory => 64,
+    :instances => 3,
+    :routes => "api.#{domain_name}"
+  )
+  app.save
+  app
+end
+
+if config[:maintenance_guid]
+  maintenance_app = Models::App.find(:guid => config[:maintenance_guid])
+end
+
+if maintenance_app.nil? && config[:system_domain]
+
+  maintenance_app = find_maintenance_app(config)
+
+  unless maintenance_app
+    maintenance_app = new_maintenance_app(config)
+    package_maintenance_app(config, maintenance_app)
+  end
+else
+  puts "Unable to determine maintenance app. Either specify with the maintenance_guid in the config file, or have a system domain to put it in"
+  exit 1
+end
+
+maintenance_app.start
