@@ -1,20 +1,26 @@
+require "securerandom"
+
 module VCAP::CloudController::Models
-  class Session < Sequel::Model
+  class Task < Sequel::Model
     many_to_one :app
 
-    export_attributes :public_key, :app_guid
-    import_attributes :public_key, :app_guid
+    export_attributes :app_guid, :secure_token
+    import_attributes :app_guid
 
     def space
       app.space
     end
 
+    def secure_token
+      SecureRandom.urlsafe_base64
+    end
+
     def after_commit
-      VCAP::CloudController::DeaClient.start_ssh(self)
+      CloudController::TaskClient.start_task(self)
     end
 
     def after_destroy
-      VCAP::CloudController::DeaClient.stop_ssh(self)
+      CloudController::TaskClient.stop_task(self)
     end
 
     def self.user_visibility_filter(user)

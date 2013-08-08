@@ -1,5 +1,5 @@
 module VCAP::CloudController
-  rest_controller :Sessions do
+  rest_controller :Tasks do
     permissions_required do
       full Permissions::CFAdmin
       read Permissions::OrgManager
@@ -10,7 +10,6 @@ module VCAP::CloudController
 
     define_attributes do
       to_one :app
-      attribute :public_key, String
     end
   end
 end
