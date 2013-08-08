@@ -1,7 +1,7 @@
-require File.expand_path("../spec_helper", __FILE__)
+require "spec_helper"
 
 module VCAP::CloudController
-  describe Session do
+  describe SessionsController, type: :controller do
     before { reset_database }
 
     let(:admin_user) { Models::User.make :admin => true }

@@ -1,5 +1,5 @@
 module VCAP::CloudController
-  rest_controller :Session do
+  rest_controller :Sessions do
     permissions_required do
       full Permissions::CFAdmin
       read Permissions::OrgManager

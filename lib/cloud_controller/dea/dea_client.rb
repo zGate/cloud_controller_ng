@@ -44,7 +44,7 @@ module VCAP::CloudController
         dea_publish_start_ssh(
           :session => session.guid,
           :public_key => session.public_key,
-          :package => Staging.droplet_download_uri(session.app)
+          :package => StagingsController.droplet_download_uri(session.app)
         )
       end
 

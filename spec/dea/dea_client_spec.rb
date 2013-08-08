@@ -153,7 +153,7 @@ module VCAP::CloudController
       end
 
       it "sends ssh.start with the public key and the app's droplet URI" do
-        Staging.stub(:droplet_download_uri).with(app) { "https://some-download-uri" }
+        StagingsController.stub(:droplet_download_uri).with(app) { "https://some-download-uri" }
 
         @message_bus.should_receive(:publish).with(
           "ssh.start",

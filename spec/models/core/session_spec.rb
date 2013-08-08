@@ -1,7 +1,7 @@
-require File.expand_path("../spec_helper", __FILE__)
+require "spec_helper"
 
 module VCAP::CloudController
-  describe Models::Session do
+  describe Models::Session, type: :model do
     let(:app) { Models::App.make :name => "my app" }
 
     subject do
@@ -73,7 +73,7 @@ module VCAP::CloudController
       before { DeaClient.configure(config_hash, message_bus, dea_pool) }
 
       it "sends ssh.start with the public key, the URI for the app's droplet" do
-        Staging.stub(:droplet_download_uri).with(app) do
+        StagingsController.stub(:droplet_download_uri).with(app) do
           "https://some-download-uri"
         end
 
@@ -95,7 +95,7 @@ module VCAP::CloudController
       before { DeaClient.configure(config_hash, message_bus, dea_pool) }
 
       it "sends ssh.start with the public key, the URI for the app's droplet" do
-        Staging.stub(:droplet_download_uri).with(app) do
+        StagingsController.stub(:droplet_download_uri).with(app) do
           "https://some-download-uri"
         end
 
