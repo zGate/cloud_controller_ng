@@ -19,7 +19,12 @@ module VCAP::CloudController
       headers = {}
       brokers = Models::ServiceBroker.filter(build_filter)
 
-      body = paginate( brokers.map { |broker| broker_hash(broker) } )
+      resources = brokers.map { |broker| broker_hash(broker) }
+      page = 1
+      page_size = resources.count
+      paginated_dataset = brokers.extension(:pagination).paginate(page, page_size)
+      body = paginate(resources, paginated_dataset, '/v2/service_brokers')
+      #body = paginate( brokers.map { |broker| broker_hash(broker) } )
       [HTTP::OK, headers, body.to_json]
     end
 
@@ -84,15 +89,19 @@ module VCAP::CloudController
       end
     end
 
-    def paginate(resources)
-      {
-        'total_results' => resources.count,
-        'total_pages' => 1,
-        'prev_url' => nil,
-        'next_url' => nil,
-        'resources' => resources
-      }
+    def paginate()
+
     end
+
+    #def paginate(resources)
+    #  {
+    #    'total_results' => resources.count,
+    #    'total_pages' => 1,
+    #    'prev_url' => nil,
+    #    'next_url' => nil,
+    #    'resources' => resources
+    #  }
+    #end
 
     def broker_hash(broker)
       {
