@@ -211,6 +211,8 @@ module VCAP::CloudController::SpecHelper
     VCAP::CloudController::Models::QuotaDefinition.configure(config)
     VCAP::CloudController::Models::ServicePlan.configure(config[:trial_db])
 
+    RailsConfig.load_and_set_settings(File.expand_path("../../config/cloud_controller.yml", __FILE__))
+
     configure_stacks
   end
 
