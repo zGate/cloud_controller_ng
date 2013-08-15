@@ -1,6 +1,7 @@
 require "vcap/config"
 require "cloud_controller/account_capacity"
 require "uri"
+require "rails_config"
 
 # Config template for cloud controller
 class VCAP::CloudController::Config < VCAP::Config
@@ -156,6 +157,8 @@ class VCAP::CloudController::Config < VCAP::Config
     VCAP::CloudController::Models::QuotaDefinition.configure(config)
     VCAP::CloudController::Models::Stack.configure(config[:stacks_file])
     VCAP::CloudController::Models::ServicePlan.configure(config[:trial_db])
+
+    #RailsConfig.load_and_set_settings()
 
     Dir.glob(File.expand_path('../../../config/initializers/*.rb', __FILE__)).each do |file|
       require file
