@@ -1,6 +1,19 @@
 module VCAP::CloudController::Models
   class ServiceProvisioner
+    def initialize(service_instance)
+      if service_instance.service.v2?
 
+      else
+        @provisioner = V1ServiceProvisioner.new(service_instance)
+      end
+    end
+
+    def provision
+      @provisioner.provision
+    end
+  end
+
+  class V1ServiceProvisioner
     ProvisionResponse = Struct.new(:gateway_name, :gateway_data, :credentials, :dashboard_url)
 
     def initialize(service_instance)
@@ -68,6 +81,12 @@ module VCAP::CloudController::Models
           VCAP::Request.current_id,
         )
       end
+    end
+  end
+
+  class V2ServiceProvisioner
+    class << self
+      attr_accessor :broker_client
     end
   end
 end

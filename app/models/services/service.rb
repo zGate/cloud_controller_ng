@@ -43,5 +43,9 @@ module VCAP::CloudController::Models
     def tags
       super || []
     end
+
+    def v2?
+      !service_broker.nil?
+    end
   end
 end
