@@ -61,7 +61,7 @@ module VCAP::CloudController
       artifact_filename("spec.log")
     end
 
-    def reset_database
+    def recreate_database
       prepare_database
 
       db.tables.each do |table|
@@ -69,6 +69,14 @@ module VCAP::CloudController
       end
 
       VCAP::CloudController::DB.apply_migrations(db)
+    end
+
+    def reset_database
+      prepare_database
+
+      db.tables.each do |table|
+        truncate_table_unsafely(table)
+      end
     end
 
     def db
@@ -143,6 +151,26 @@ module VCAP::CloudController
       end
     end
 
+    def truncate_table_unsafely(table)
+      case db.database_type
+      when :sqlite
+        db.execute("PRAGMA foreign_keys = OFF")
+        db[table].truncate
+        db.execute("PRAGMA foreign_keys = ON")
+
+      when :mysql
+        db.execute("SET foreign_key_checks = 0")
+        db.drop_table(table)
+        db.execute("SET foreign_key_checks = 1")
+
+        # Postgres uses CASCADE directive in DROP TABLE
+        # to remove foreign key contstraints.
+        # http://www.postgresql.org/docs/9.2/static/sql-droptable.html
+      else
+        db.drop_table(table, :cascade => true)
+      end
+    end
+
     def drop_table_unsafely(table)
       case db.database_type
       when :sqlite
@@ -170,6 +198,10 @@ $spec_env = VCAP::CloudController::SpecEnvironment.new
 module VCAP::CloudController::SpecHelper
   def db
     $spec_env.db
+  end
+
+  def recreate_database
+    $spec_env.recreate_database
   end
 
   def reset_database

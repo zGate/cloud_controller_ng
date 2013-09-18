@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe "Sequel::Plugins::VcapRelations" do
   before do
-    reset_database
+    recreate_database
 
     db.create_table :owners do
       primary_key :id
