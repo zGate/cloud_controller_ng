@@ -29,7 +29,7 @@ module CloudController
       if @droplet_blobstore.local?
         staging_uri("/staging/droplets/#{app.guid}/download")
       else
-        CloudController::Droplet.new(app, @droplet_blobstore).download_url
+        CloudController::BlobstoreDroplet.new(app, @droplet_blobstore).download_url
       end
     end
 
