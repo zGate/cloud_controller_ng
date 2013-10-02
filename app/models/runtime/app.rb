@@ -1,3 +1,4 @@
+raise "hell"
 require "cloud_controller/app_observer"
 require_relative "buildpack"
 

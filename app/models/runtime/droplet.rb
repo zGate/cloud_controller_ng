@@ -1,3 +1,5 @@
-class Droplet
-  # To change this template use File | Settings | File Templates.
+module VCAP::CloudController
+  class Droplet < Sequel::Model
+
+  end
 end

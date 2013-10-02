@@ -39,6 +39,11 @@ db:
   database: "sqlite:///tmp/cloud_controller.db"
   max_connections: 32
   pool_timeout: 10
+#  database: "mysql2://root:password@localhost/local_tabasco"
+#  username: root
+#  password: password
+
+
 
 uaa:
   url: "http://localhost:8080/uaa"
