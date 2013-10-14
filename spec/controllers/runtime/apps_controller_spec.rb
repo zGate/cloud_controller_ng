@@ -527,9 +527,9 @@ module VCAP::CloudController
           :space => space,
           :state => "STARTED",
           :package_hash => "abc",
-          :droplet_hash => "def",
           :package_state => "STAGED",
         )
+        @app.droplet_hash = "def"
         @app_url = "/v2/apps/#{@app.guid}"
       end
 

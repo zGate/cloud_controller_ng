@@ -32,7 +32,11 @@ module CloudController
                                 droplet_blobstore)
     end
 
-    let(:app) { VCAP::CloudController::App.make }
+    let(:app) {
+      new_app = VCAP::CloudController::App.make
+      new_app.droplet_hash = "droplet_hash"
+      new_app
+    }
 
     context "downloads" do
       describe "app package" do
@@ -111,7 +115,6 @@ module CloudController
       end
 
       context "droplets" do
-        let(:app) { VCAP::CloudController::App.make }
 
         context "when the droplets are stored on local blobstore" do
           it "gives a local URI to the blobstore host/port" do

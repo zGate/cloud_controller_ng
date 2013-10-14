@@ -1,4 +1,3 @@
-raise "hell"
 require "cloud_controller/app_observer"
 require_relative "buildpack"
 
@@ -36,6 +35,8 @@ module VCAP::CloudController
 
     one_to_many :service_bindings, :after_remove => :after_remove_binding
     one_to_many :events, :class => VCAP::CloudController::AppEvent
+    one_to_many :droplets
+
     many_to_one :admin_buildpack, class: VCAP::CloudController::Buildpack
 
     many_to_one :space
@@ -44,7 +45,9 @@ module VCAP::CloudController
     many_to_many :routes, :before_add => :validate_route, :after_add => :mark_routes_changed, :after_remove => :mark_routes_changed
 
     add_association_dependencies :routes => :nullify,
-      :service_bindings => :destroy, :events => :destroy
+      :service_bindings => :destroy,
+      :events => :destroy,
+      :droplets => :destroy
 
     default_order_by :name
 
@@ -458,9 +461,22 @@ module VCAP::CloudController
       super(stack)
     end
 
+    def droplet_hash
+      #find the first one in droplets or read from the column
+      puts "Here"
+      if droplets.size > 0
+        droplets.first.droplet_hash
+      else
+        super
+      end
+    end
+
     def droplet_hash=(hash)
-      self.package_state = "STAGED" if hash
-      super(hash)
+      if hash
+        self.package_state = "STAGED"
+        self.add_droplet(app: self, droplet_hash: hash)
+      end
+      super
     end
 
     def running_instances

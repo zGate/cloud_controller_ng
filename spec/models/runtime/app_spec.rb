@@ -12,6 +12,13 @@ module VCAP::CloudController
       end
     end
 
+    def add_droplet_hash(app)
+      app.droplet_hash = "def"
+      #this shouldn't be necessary, but we later want to load the app from the database via route.apps,
+      #this change is not reflected unless we commit to the database now
+      app.save()
+    end
+
     let(:route) { Route.make(:domain => domain, :space => space) }
 
     before do
@@ -166,7 +173,7 @@ module VCAP::CloudController
 
       context "app is already staged" do
         subject { App.make(:package_hash => "package-hash", :instances => 1, :state => "STARTED") }
-        before { subject.droplet_hash = "droplet-hash" }
+        before { add_droplet_hash(subject) }
 
         it "marks the app for re-staging" do
           expect {
@@ -422,6 +429,7 @@ module VCAP::CloudController
 
       describe "env" do
         let(:app) { App.make }
+        before { add_droplet_hash(app) }
 
         it "should allow an empty environment" do
           app.environment_json = {}
@@ -628,6 +636,7 @@ module VCAP::CloudController
 
     describe "version" do
       let(:app) { App.make(:package_hash => "abc", :package_state => "STAGED") }
+      before { add_droplet_hash(app) }
 
       it "should have a version on create" do
         app.version.should_not be_nil
@@ -684,6 +693,13 @@ module VCAP::CloudController
         app.needs_staging?.should be_false
         app.droplet_hash.should == "def"
       end
+
+      it "inserts the new droplet hash into the droplets table" do
+        expect(Droplet.where(:app => app).map(&:droplet_hash)).not_to include("def")
+        app.droplet_hash = "def"
+        expect(Droplet.where(:app => app).map(&:droplet_hash)).to include("def")
+        p Droplet.where(:app => app).to_hash
+      end
     end
 
     describe "uris" do
@@ -716,6 +732,7 @@ module VCAP::CloudController
 
     describe "destroy" do
       let(:app) { App.make(:package_hash => "abc", :package_state => "STAGED", :space => space) }
+      before { add_droplet_hash(app) }
 
       it "notifies the app observer" do
         AppObserver.should_receive(:deleted).with(app)
@@ -771,6 +788,7 @@ module VCAP::CloudController
         context "starting a stopped app" do
           it "generates a start event" do
             app = App.make(:state => "STOPPED")
+            add_droplet_hash(app)
             AppStartEvent.should_receive(:create_from_app).with(app)
             AppStopEvent.should_not_receive(:create_from_app)
             app.update(:state => "STARTED", :package_hash => "abc", :package_state => "STAGED")
@@ -814,6 +832,7 @@ module VCAP::CloudController
           end
 
           before do
+            add_droplet_hash(app)
             AppStartEvent.create_from_app(app)
             VCAP::CloudController::DeaClient.stub(:stop)
           end
@@ -880,7 +899,7 @@ module VCAP::CloudController
           before do
             app.state = "STARTED"
             app.package_hash = "abc"
-            app.package_state = "STAGED"
+            add_droplet_hash(app)
             app.save
           end
 
@@ -1061,7 +1080,8 @@ module VCAP::CloudController
         end
 
         context "when app is already started and already staged" do
-          subject { App.make(:state => "STARTED", :package_hash => "abc", :droplet_hash => "def") }
+          subject { App.make(:state => "STARTED", :package_hash => "abc") }
+          before { add_droplet_hash(subject) }
           it_does_not_stage
           it_notifies_dea
         end

@@ -106,8 +106,10 @@ module VCAP::CloudController
 
       context "when running instances of current version is < desired instances" do
         let(:app) do
-          App.make :version => "some-version", :instances => 2,
-                           :state => "STARTED", :package_hash => "abcd"
+          App.make(:version => "some-version",
+            :instances => 2,
+            :state => "STARTED",
+            :package_hash => "abcd")
         end
 
         let(:running) { { "some-version" => 1 } }

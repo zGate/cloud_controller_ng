@@ -121,7 +121,6 @@ module VCAP::CloudController
     name              { Sham.name }
     space             { Space.make }
     stack             { Stack.make }
-    droplet_hash      { Sham.guid }
   end
 
   ServiceBinding.blueprint do
@@ -237,5 +236,10 @@ module VCAP::CloudController
     name { Sham.name }
     key { Sham.guid }
     priority { 0 }
+  end
+
+  Droplet.blueprint do
+    #app { App.make }
+    droplet_hash { Sham.guid }
   end
 end

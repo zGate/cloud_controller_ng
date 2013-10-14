@@ -128,9 +128,9 @@ module VCAP::CloudController
         app.memory = 42
         app.state = 'STARTED'
         app.package_hash = 'abc'
-        app.package_state = 'STAGED'
         app.name = 'new'
-        app.save
+        app.droplet_hash = 'droplet-hash'
+        #app.save
 
         event = described_class.record_app_update(app, user)
         expect(event.type).to eq("audit.app.update")

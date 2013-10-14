@@ -5,8 +5,9 @@ module VCAP::CloudController
     it "should be there" do
       VCAP::CloudController::Droplet.should be
     end
-    #it_behaves_like "a CloudController model", {
-    #  required_attributes: [:app, :droplet_hash]
-    #}
+
+    it_behaves_like "a CloudController model", {
+      required_attributes: [:app, :droplet_hash]
+    }
   end
 end

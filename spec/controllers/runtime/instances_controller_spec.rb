@@ -4,7 +4,8 @@ module VCAP::CloudController
   describe VCAP::CloudController::InstancesController, type: :controller do
     describe "GET /v2/apps/:id/instances" do
       before :each do
-        @app = App.make(:package_hash => "abc", :package_state => "STAGED")
+        @app = App.make(:package_hash => "abc")
+        @app.droplet_hash = "droplet-hash"
         @user =  make_user_for_space(@app.space)
         @developer = make_developer_for_space(@app.space)
       end

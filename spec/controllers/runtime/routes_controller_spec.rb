@@ -202,8 +202,6 @@ module VCAP::CloudController
         :state  => "STARTED",
         :guid   => "guid-foo",
         :package_hash => "abc",
-        :droplet_hash => "def",
-        :package_state => "STAGED",
       )
       @bar_app = App.make(
         :name   => "bar",
@@ -211,8 +209,6 @@ module VCAP::CloudController
         :state  => "STARTED",
         :guid   => "guid-bar",
         :package_hash => "ghi",
-        :droplet_hash => "jkf",
-        :package_state => "STAGED",
       )
     end
 

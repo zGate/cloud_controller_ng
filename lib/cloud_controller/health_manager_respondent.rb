@@ -32,6 +32,7 @@ module VCAP::CloudController
       end
     end
 
+
     def process_start(payload)
       begin
         app_id = payload.fetch("droplet")
@@ -45,7 +46,7 @@ module VCAP::CloudController
           :payload => payload
         return
       end
-
+      debugger
       app = App[:guid => app_id]
       return unless app
       return unless app.started?
