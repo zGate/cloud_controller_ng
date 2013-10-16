@@ -11,40 +11,40 @@ module VCAP::CloudController
     let(:workspace) { Dir.mktmpdir }
     let(:original_staging_config) do
       {
-        :max_staging_runtime => max_staging_runtime,
-        :bind_address => cc_addr,
-        :port => cc_port,
-        :staging => {
-          :auth => {
-            :user => staging_user,
-            :password => staging_password
-          }
-        },
-        :nginx => {:use_nginx => true},
-        :resource_pool => {
-          :resource_directory_key => "cc-resources",
-          :fog_connection => {
-            :provider => "Local",
-            :local_root => Dir.mktmpdir("resourse_pool", workspace)
-          }
-        },
-        :packages => {
-          :fog_connection => {
-            :provider => "Local",
-            :local_root => Dir.mktmpdir("packages", workspace)
-          },
-          :app_package_directory_key => "cc-packages",
-        },
-        :droplets => {
-          :droplet_directory_key => "cc-droplets",
-          :fog_connection => {
-            :provider => "Local",
-            :local_root => Dir.mktmpdir("droplets", workspace)
-          }
-        },
-        :directories => {
-          :tmpdir => Dir.mktmpdir("tmpdir", workspace)
-        }
+              :max_staging_runtime => max_staging_runtime,
+              :bind_address => cc_addr,
+              :port => cc_port,
+              :staging => {
+                      :auth => {
+                              :user => staging_user,
+                              :password => staging_password
+                      }
+              },
+              :nginx => {:use_nginx => true},
+              :resource_pool => {
+                      :resource_directory_key => "cc-resources",
+                      :fog_connection => {
+                              :provider => "Local",
+                              :local_root => Dir.mktmpdir("resourse_pool", workspace)
+                      }
+              },
+              :packages => {
+                      :fog_connection => {
+                              :provider => "Local",
+                              :local_root => Dir.mktmpdir("packages", workspace)
+                      },
+                      :app_package_directory_key => "cc-packages",
+              },
+              :droplets => {
+                      :droplet_directory_key => "cc-droplets",
+                      :fog_connection => {
+                              :provider => "Local",
+                              :local_root => Dir.mktmpdir("droplets", workspace)
+                      }
+              },
+              :directories => {
+                      :tmpdir => Dir.mktmpdir("tmpdir", workspace)
+              }
       }
     end
     let(:staging_config) { original_staging_config }
@@ -118,7 +118,7 @@ module VCAP::CloudController
       let(:tmpfile) { Tempfile.new("droplet.tgz") }
 
       let(:upload_req) do
-        { :upload => { :droplet => Rack::Test::UploadedFile.new(tmpfile) } }
+        {:upload => {:droplet => Rack::Test::UploadedFile.new(tmpfile)}}
       end
 
       before do
@@ -247,7 +247,7 @@ module VCAP::CloudController
       let(:tmpfile) { Tempfile.new("droplet.tgz") }
 
       let(:upload_req) do
-        { :upload => { :droplet => Rack::Test::UploadedFile.new(tmpfile) } }
+        {:upload => {:droplet => Rack::Test::UploadedFile.new(tmpfile)}}
       end
 
       before do
@@ -266,7 +266,7 @@ module VCAP::CloudController
             post "/staging/buildpack_cache/#{app_obj.guid}/upload", upload_req
           }.to change {
             StagingsController.buildpack_cache_blobstore.exists?(
-              app_obj.guid
+                    app_obj.guid
             )
           }.from(false).to(true)
         end
@@ -315,7 +315,10 @@ module VCAP::CloudController
       context "with a valid buildpack cache" do
         context "when nginx is enabled" do
           it "redirects nginx to serve staged droplet" do
-            StagingsController.store_buildpack_cache(app_obj, buildpack_cache.path)
+            controller.buildpack_cache_blostore.cp_to_blobstore(
+              buildpack_cache.path,
+              app_obj.guid
+            )
 
             make_request
             last_response.status.should == 200
@@ -325,7 +328,7 @@ module VCAP::CloudController
 
         context "when nginx is disabled" do
           let(:staging_config) do
-            original_staging_config.merge({ :nginx => { :use_nginx => false } })
+            original_staging_config.merge({:nginx => {:use_nginx => false}})
           end
 
           it "should return the buildpack cache" do
