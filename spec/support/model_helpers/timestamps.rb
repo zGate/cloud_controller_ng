@@ -8,11 +8,11 @@ module ModelHelpers
     end
 
     it "should not update the created_at timestamp" do
-      @obj.created_at.should == @created_at
+      expect(@obj.created_at).to eq(@created_at)
     end
 
     it "should have a recent updated_at timestamp" do
-      @obj.updated_at.should be_recent
+      expect(@obj.updated_at).to be >= @created_at
     end
   end
 end

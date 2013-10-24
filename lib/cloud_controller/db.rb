@@ -169,8 +169,13 @@ module VCAP
     def self.timestamps(migration, table_key)
       created_at_idx = "#{table_key}_created_at_index".to_sym if table_key
       updated_at_idx = "#{table_key}_updated_at_index".to_sym if table_key
-      migration.Timestamp :created_at, :null => false
-      migration.Timestamp :updated_at
+      #order of the updated_at and created_at matter because mysql
+      #defaults the first timestamp column created to essentially be an updated_at column
+      #this shouldn't matter because these columns are taken care of in the ORM most
+      #of the time, but in the event that they're changed manually, data can be clobbered
+      migration.Timestamp :created_at, :null => false, :default => Sequel::CURRENT_TIMESTAMP
+      migration.Timestamp :updated_at, :null => true
+
       migration.index :created_at, :name => created_at_idx
       migration.index :updated_at, :name => updated_at_idx
     end
