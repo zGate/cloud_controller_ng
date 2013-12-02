@@ -72,6 +72,25 @@ namespace :jobs do
   task :work => :environment_options do
     setup_environment
 
+    memory_stats_db = config[:memory_stats_databases][:worker]
+
+    if memory_stats_db
+      Thread.new do
+        require "click/database"
+        require "click/database/writer"
+        require "click/clicker"
+        db = Sequel.connect(memory_stats_db)
+        writer = Click::Database::Writer.new(db)
+        clicker = Click::Clicker.new
+        clicker.add_observer(writer)
+
+        loop do
+          clicker.click!
+          sleep 30
+        end
+      end
+    end
+
     Thread.new do
       EM.run do
         message_bus = MessageBusConfigurer::Configurer.new(
@@ -80,6 +99,7 @@ namespace :jobs do
         VCAP::CloudController::AppObserver.configure(config, message_bus, nil)
       end
     end
+
     Delayed::Worker.destroy_failed_jobs = false
     Delayed::Worker.new(@worker_options).start
   end

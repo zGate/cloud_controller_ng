@@ -124,7 +124,12 @@ module VCAP::CloudController
         optional(:varz_password) => String,
         optional(:varz_update_user_count_period_in_seconds) => Float,
         optional(:disable_custom_buildpacks) => bool,
-        optional(:broker_client_timeout_seconds) => Integer
+        optional(:broker_client_timeout_seconds) => Integer,
+
+        optional(:memory_stats_databases) => {
+          optional(:worker) => enum(String, NilClass),
+          optional(:api) => enum(String, NilClass),
+        }
       }
     end
 
@@ -189,6 +194,7 @@ module VCAP::CloudController
       def merge_defaults(config)
         config[:stacks_file] ||= File.join(config_dir, "stacks.yml")
         config[:directories] ||= {}
+        config[:memory_stats_databases] ||= {}
         config
       end
     end
