@@ -6,7 +6,7 @@ module VCAP::CloudController
     let(:org) { Organization.make }
     let(:space) { Space.make(:organization => org) }
 
-    let(:domain) { Domain.make(:owning_organization => org) }
+    let(:domain) { PrivateDomain.make(:owning_organization => org) }
 
     let(:route) { Route.make(:domain => domain, :space => space) }
 
@@ -49,7 +49,7 @@ module VCAP::CloudController
           service_binding
         },
         :routes => lambda { |app|
-          domain = Domain.make(
+          domain = PrivateDomain.make(
             :owning_organization => app.space.organization
           )
           Route.make(
@@ -249,7 +249,7 @@ module VCAP::CloudController
       it "should not associate an app with a route on a different space" do
         app = AppFactory.make
 
-        domain = Domain.make(
+        domain = PrivateDomain.make(
           :owning_organization => app.space.organization
         )
 
@@ -266,9 +266,7 @@ module VCAP::CloudController
       end
 
       it "should not associate an app with a route created on another space with a shared domain" do
-        shared_domain = Domain.new(:name => Sham.name,
-          :owning_organization => nil)
-        shared_domain.save(:validate => false)
+        shared_domain = SharedDomain.make
         app = AppFactory.make
 
         other_space = Space.make(:organization => app.space.organization)
@@ -872,7 +870,7 @@ module VCAP::CloudController
 
         context "when adding and removing routes" do
           let(:domain) do
-            Domain.make :owning_organization => app.space.organization
+            PrivateDomain.make :owning_organization => app.space.organization
           end
 
           let(:route) { Route.make :domain => domain, :space => app.space }
