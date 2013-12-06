@@ -100,7 +100,37 @@ module VCAP::CloudController
       @config[:development_mode]
     end
 
+    class VCAP::Component
+      class << self
+        class SafeHash
+          def class
+            SafeHash
+          end
+        end
+      end
+    end
+
     def run!
+      memory_stats_db = @config[:memory_stats][:database][:api]
+
+      if memory_stats_db
+        Thread.new do
+          begin
+            require "click/clicker"
+              Click.clicker_with_database(@config[:memory_stats][:session_name][:api], memory_stats_db) do |clicker|
+                loop do
+                  clicker.click!
+                  sleep @config[:memory_stats][:interval_seconds][:api]
+                end
+              end
+          rescue => e
+            puts "Error in click thread: #{e}"
+            puts e.backtrace
+            raise
+          end
+        end
+      end
+
       EM.run do
         config = @config.dup
 

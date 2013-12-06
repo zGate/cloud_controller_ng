@@ -34,6 +34,7 @@ end
 
 group :operations do
   gem "pry"
+  gem "click", "0.2.0"
 end
 
 group :test do

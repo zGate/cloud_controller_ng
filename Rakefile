@@ -65,6 +65,38 @@ namespace :jobs do
     }
     BackgroundJobEnvironment.new(config).setup_environment
     Delayed::Worker.destroy_failed_jobs = false
+
+    memory_stats_db = config[:memory_stats][:database][:worker]
+
+    if memory_stats_db
+      # Workaround for vcap-common insanity
+      class VCAP::Component
+        class << self
+          class SafeHash
+            def class
+              SafeHash
+            end
+          end
+        end
+      end
+
+      Thread.new do
+        begin
+          require "click/clicker"
+          Click.clicker_with_database(config[:memory_stats][:session_name][:worker], memory_stats_db) do |clicker|
+            loop do
+              clicker.click!
+              sleep config[:memory_stats][:interval_seconds][:worker]
+            end
+          end
+        rescue => e
+          puts "Error in click thread: #{e}"
+          puts e.backtrace
+          raise
+        end
+      end
+    end
+
     Delayed::Worker.new(queue_options).start
   end
 end
