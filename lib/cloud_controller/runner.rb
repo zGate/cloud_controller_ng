@@ -100,20 +100,8 @@ module VCAP::CloudController
       @config[:development_mode]
     end
 
-    class VCAP::Component
-      class << self
-        class SafeHash
-          def class
-            SafeHash
-          end
-        end
-      end
-    end
-
     def run!
-      memory_stats_db = @config[:memory_stats][:database][:api]
-
-      if memory_stats_db
+      if (memory_stats_db = @config[:memory_stats][:database][:api])
         Thread.new do
           begin
             require "click/clicker"

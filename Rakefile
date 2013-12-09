@@ -66,20 +66,7 @@ namespace :jobs do
     BackgroundJobEnvironment.new(config).setup_environment
     Delayed::Worker.destroy_failed_jobs = false
 
-    memory_stats_db = config[:memory_stats][:database][:worker]
-
-    if memory_stats_db
-      # Workaround for vcap-common insanity
-      class VCAP::Component
-        class << self
-          class SafeHash
-            def class
-              SafeHash
-            end
-          end
-        end
-      end
-
+    if (memory_stats_db = config[:memory_stats][:database][:worker])
       Thread.new do
         begin
           require "click/clicker"
