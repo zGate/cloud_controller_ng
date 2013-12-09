@@ -14,7 +14,11 @@ describe 'Service Broker API integration', type: :controller do
     let(:api_header) { 'X-Broker-Api-Version' }
     let(:api_accepted_version) { /^2\.\d+$/ }
 
-    describe 'Authentication'
+    def request_has_version_header(method, url)
+      a_request(method, url).
+        with { |request| request.headers[api_header].should match(api_accepted_version) }.
+        should have_been_made
+    end
 
     describe 'Catalog Management' do
       describe 'fetching the catalog' do
@@ -24,6 +28,8 @@ describe 'Service Broker API integration', type: :controller do
         let(:broker_auth_username) { 'username' }
         let(:broker_auth_password) { 'password' }
         let(:request_url) { "http://#{broker_auth_username}:#{broker_auth_password}@#{broker_url}" }
+        let(:username_pattern) { '[[:alnum:]-]+' }
+        let(:password_pattern) { '[[:alnum:]-]+' }
 
         before do
           stub_request(:get, request_url + '/v2/catalog').to_return(
@@ -47,6 +53,21 @@ describe 'Service Broker API integration', type: :controller do
               }.to_json)
         end
 
+        shared_examples 'a catalog fetch request' do
+          it 'makes request to correct endpoint' do
+            a_request(:get, 'http://username:password@broker-url/v2/catalog').
+              should have_been_made
+          end
+
+          it 'sends basic auth info' do
+            a_request(:get, %r(http://#{username_pattern}:#{password_pattern}@broker-url/v2/catalog)).should have_been_made
+          end
+
+          it 'uses correct version header' do
+            request_has_version_header(:get, 'http://username:password@broker-url/v2/catalog')
+          end
+        end
+
         context 'when create-service-broker' do
           before do
             post('/v2/service_brokers',
@@ -54,16 +75,7 @@ describe 'Service Broker API integration', type: :controller do
               json_headers(admin_headers))
           end
 
-          it 'makes request to correct endpoint' do
-            a_request(:get, 'http://username:password@broker-url/v2/catalog').
-            should have_been_made
-          end
-
-          it 'uses correct version header' do
-            a_request(:get, 'http://username:password@broker-url/v2/catalog').
-            with { |request| request.headers[api_header].should match(api_accepted_version) }.
-            should have_been_made
-          end
+          it_behaves_like 'a catalog fetch request'
 
           it 'handles the broker response' do
             expect(last_response.status).to eq(201)
@@ -88,21 +100,11 @@ describe 'Service Broker API integration', type: :controller do
               json_headers(admin_headers))
           end
 
-          it 'makes request to correct endpoint' do
-            a_request(:get, 'http://username:password@broker-url/v2/catalog').
-              should have_been_made
-          end
-
-          it 'uses correct version header' do
-            a_request(:get, 'http://username:password@broker-url/v2/catalog').
-              with { |request| request.headers[api_header].should match(api_accepted_version) }.
-              should have_been_made
-          end
+          it_behaves_like 'a catalog fetch request'
 
           it 'handles the broker response' do
             expect(last_response.status).to eq(200)
           end
-
         end
       end
     end
