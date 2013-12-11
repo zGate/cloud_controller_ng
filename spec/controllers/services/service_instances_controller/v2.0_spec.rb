@@ -230,7 +230,7 @@ describe 'Service Broker API integration', type: :controller do
 
         it 'sends all required fields' do
           a_request(:put, %r(broker-url/v2/service_instances/#{@service_instance_guid}/service_bindings/#{binding_id_pattern})).
-            with(body: 34).
+            with(body: hash_including(request_from_cc_to_broker)).
             should have_been_made
         end
 
