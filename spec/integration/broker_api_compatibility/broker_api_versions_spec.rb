@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'Broker API Versions' do
+describe 'Broker API Versions', type: :controller do
 
   it 'verifies that there is a broker API test for each minor version' do
     stub_request(:get, 'http://username:password@broker-url/v2/catalog').to_return do |request|
