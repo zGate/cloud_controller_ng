@@ -14,6 +14,5 @@ def config
   end
 end
 
-Dir["lib/tasks/**/*.rake"].each do |tasks|
-  load tasks
-end
+require File.expand_path('../config/application', __FILE__)
+CloudController::Application.load_tasks
