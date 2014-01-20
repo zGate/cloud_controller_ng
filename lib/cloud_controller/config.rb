@@ -189,7 +189,7 @@ module VCAP::CloudController
       def run_initializers(config)
         return if @initialized
 
-        Dir.glob(File.expand_path('../../../config/initializers/*.rb', __FILE__)).each do |file|
+        Dir.glob(File.expand_path('../../../config/cc_initializers/*.rb', __FILE__)).each do |file|
           require file
           method = File.basename(file).sub(".rb", "").gsub("-", "_")
           CCInitializers.send(method, config)
