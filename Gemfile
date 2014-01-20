@@ -11,8 +11,8 @@ gem "fog"
 gem "unf"
 gem "rfc822"
 gem "sequel", "~> 3.48"
-gem "sinatra", "~> 1.4"
-gem "sinatra-contrib"
+gem "sinatra", "~> 1.4", :require => false
+gem "sinatra-contrib", :require => false
 gem "yajl-ruby"
 gem "membrane", "~> 0.0.2"
 gem "httpclient"
