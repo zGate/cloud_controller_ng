@@ -21,3 +21,9 @@ module CloudController
     # config.i18n.default_locale = :de
   end
 end
+
+# Bypass activesupport autoloader since all classes are not properly namespaced.
+$:.unshift(File.expand_path("../../lib", __FILE__))
+$:.unshift(File.expand_path("../../app", __FILE__))
+require "cloud_controller"
+Vcap = VCAP

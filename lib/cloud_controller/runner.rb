@@ -95,6 +95,16 @@ module VCAP::CloudController
       end
     end
 
+    def rack_app
+      config = @config.dup
+      token_decoder = VCAP::UaaTokenDecoder.new(config[:uaa])
+
+      Rack::Builder.new do
+        use Rack::CommonLogger
+        map("/") { run Controller.new(config, token_decoder) }
+      end
+    end
+
     def trap_signals
       %w(TERM INT QUIT).each do |signal|
         trap(signal) do
