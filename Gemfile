@@ -2,8 +2,8 @@
 # in the vagrant container used by warden-jenkins.
 source "http://rubygems.org"
 
+gem "rails"
 gem "addressable"
-gem "activesupport", "~> 3.0" # It looks like this is required for DelayedJob, even with the DJ-Sequel extension
 gem "rake"
 gem "bcrypt-ruby"
 gem "eventmachine", "~> 1.0.0"
