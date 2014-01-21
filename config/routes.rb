@@ -1,10 +1,14 @@
 CloudController::Application.routes.draw do
   get "rails", to: proc { |env| [200, {}, ['From Rails!']] }
 
+  unless app = Rails.application.sinatra_cc_app
+    raise ArgumentError, "sinatra_cc_app must not be nil"
+  end
+
   # controller and action are for rake routes and rails c
   match "(*path)", {
-    to: Rails.application.sinatra_cc_app,
-    via: [:get, :post, :delete, :put, :patch],
+    to: app,
+    via: :all,
     controller: 'sinatra_cc',
     action: 'sinatra_cc',
   }
