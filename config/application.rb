@@ -25,8 +25,11 @@ module CloudController
   end
 end
 
-# Bypass activesupport autoloader since all classes are not properly namespaced.
 $:.unshift(File.expand_path("../../lib", __FILE__))
+require "cloud_controller/console"
+
 $:.unshift(File.expand_path("../../app", __FILE__))
 require "cloud_controller"
+
+# Bypass activesupport autoloader since all classes are not properly namespaced.
 Vcap = VCAP
