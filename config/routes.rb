@@ -1,3 +1,4 @@
 CloudController::Application.routes.draw do
-  get '(*path)', :to => VCAP::CloudController::Runner.new([]).rack_app
+  get "rails", :to => proc { |env| [200, {}, ['From Rails!']] }
+  get '(*path)', :to => Rails.application.sinatra_cc_app
 end

@@ -1,1 +1,2 @@
-web: thin start
+web: bin/cloud_controller
+nats: nats-server

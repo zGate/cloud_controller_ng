@@ -85,9 +85,11 @@ module VCAP::CloudController
 
         Seeds.write_seed_data(config) if @insert_seed_data
 
-        app = build_rack_app(config, message_bus, development_mode?)
+        set_up_app_configuration(config, message_bus, development_mode?)
 
-        start_thin_server(app, config)
+        rails_app = build_rails_app
+
+        start_thin_server(rails_app, config)
 
         router_registrar.register_with_router
 
@@ -95,10 +97,9 @@ module VCAP::CloudController
       end
     end
 
-    def rack_app
+    def sinatra_cc_app
       config = @config.dup
       token_decoder = VCAP::UaaTokenDecoder.new(config[:uaa])
-
       Rack::Builder.new do
         use Rack::CommonLogger
         map("/") { run Controller.new(config, token_decoder) }
@@ -172,49 +173,42 @@ module VCAP::CloudController
       end
     end
 
-    def build_rack_app(config, message_bus, development)
-      token_decoder = VCAP::UaaTokenDecoder.new(config[:uaa])
+    def set_up_app_configuration(config, message_bus, development)
+      DeaClient.run
+      AppObserver.run
+      LegacyBulk.register_subscription
+
+      VCAP::CloudController.health_manager_respondent = HealthManagerRespondent.new(DeaClient, message_bus)
+      VCAP::CloudController.health_manager_respondent.handle_requests
+
+      HM9000Respondent.new(DeaClient, message_bus, config[:hm9000_noop]).handle_requests
+      VCAP::CloudController.dea_respondent = DeaRespondent.new(message_bus)
+      VCAP::CloudController.dea_respondent.start
+
       register_with_collector(message_bus)
-
-      Rack::Builder.new do
-        use Rack::CommonLogger
-
-        if development
-          require 'new_relic/rack/developer_mode'
-          use NewRelic::Rack::DeveloperMode
-        end
-
-        DeaClient.run
-        AppObserver.run
-
-        LegacyBulk.register_subscription
-
-        VCAP::CloudController.health_manager_respondent = HealthManagerRespondent.new(DeaClient, message_bus)
-        VCAP::CloudController.health_manager_respondent.handle_requests
-
-        HM9000Respondent.new(DeaClient, message_bus, config[:hm9000_noop]).handle_requests
-
-        VCAP::CloudController.dea_respondent = DeaRespondent.new(message_bus)
-
-        VCAP::CloudController.dea_respondent.start
-
-        map "/" do
-          run Controller.new(config, token_decoder)
-        end
-      end
     end
 
-    def start_thin_server(app, config)
+    def build_rails_app
+      cc_app = sinatra_cc_app
+      ActiveSupport.on_load(:before_configuration) do |app|
+        app.instance_variable_set("@sinatra_cc_app", cc_app)
+      end
+
+      require ::File.expand_path('../../../config/environment',  __FILE__)
+      Rails.application
+    end
+
+    def start_thin_server(rails_app, config)
       if @config[:nginx][:use_nginx]
         @thin_server = Thin::Server.new(
-            config[:nginx][:instance_socket],
-            :signals => false
+          config[:nginx][:instance_socket],
+          :signals => false
         )
       else
         @thin_server = Thin::Server.new(@config[:bind_address], @config[:port])
       end
 
-      @thin_server.app = app
+      @thin_server.app = rails_app
       trap_signals
 
       # The routers proxying to us handle killing inactive connections.
