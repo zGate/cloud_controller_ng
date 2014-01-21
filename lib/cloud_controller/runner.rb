@@ -99,9 +99,18 @@ module VCAP::CloudController
 
     def sinatra_cc_app
       config = @config.dup
+      development = development_mode?
       token_decoder = VCAP::UaaTokenDecoder.new(config[:uaa])
+
       Rack::Builder.new do
         use Rack::CommonLogger
+
+        if development
+          require 'newrelic_rpm'
+          require 'new_relic/rack/developer_mode'
+          use NewRelic::Rack::DeveloperMode
+        end
+
         map("/") { run Controller.new(config, token_decoder) }
       end
     end
