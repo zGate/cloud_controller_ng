@@ -1,5 +1,5 @@
 CloudController::Application.routes.draw do
-  get "rails", to: proc { |env| [200, {}, ['From Rails!']] }
+  get "rails", to: "rails#index"
 
   unless app = Rails.application.sinatra_cc_app
     raise ArgumentError, "sinatra_cc_app must not be nil"
