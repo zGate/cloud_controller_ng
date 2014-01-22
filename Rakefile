@@ -1,9 +1,7 @@
 $:.unshift(File.expand_path("../lib", __FILE__))
 $:.unshift(File.expand_path("../app", __FILE__))
 
-require "yaml"
-require "sequel"
-require "steno"
+require File.expand_path('../config/application',  __FILE__)
 require "cloud_controller"
 
 def config
@@ -14,5 +12,4 @@ def config
   end
 end
 
-require File.expand_path('../config/application', __FILE__)
 CloudController::Application.load_tasks

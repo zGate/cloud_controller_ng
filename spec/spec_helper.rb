@@ -1,9 +1,9 @@
 $:.unshift(File.expand_path("../../lib", __FILE__))
 $:.unshift(File.expand_path("../../app", __FILE__))
 
-require "rubygems"
-require "bundler"
-require "bundler/setup"
+APP_PATH = File.expand_path('../../config/application',  __FILE__)
+require_relative '../config/boot'
+require APP_PATH
 
 require "fakefs/safe"
 require "machinist/sequel"

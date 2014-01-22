@@ -1,13 +1,4 @@
-require "bcrypt"
 require "sinatra"
-require "sequel"
-require "thin"
-require "yajl"
-require "delayed_job"
-require "newrelic_rpm"
-
-require "allowy"
-
 require "eventmachine/schedule_sync"
 
 require "vcap/common"
