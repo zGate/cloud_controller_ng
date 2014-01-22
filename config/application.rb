@@ -9,20 +9,34 @@ Bundler.require(:default, Rails.env)
 module CloudController
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
-    # Application configuration should go into files in config/initializers
-    # -- all .rb files in that directory are automatically loaded.
-
-    # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
-    # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
-    # config.time_zone = 'Central Time (US & Canada)'
-
-    # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
-    # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
-    # config.i18n.default_locale = :de
 
     # Set by runner when Rails.application instance is loaded
+    attr_accessor :cc_config
+
+    def cc_token_decoder
+      return unless cc_config
+      @token_decoder ||= VCAP::UaaTokenDecoder.new(cc_config[:uaa])
+    end
+
     def sinatra_cc_app
-      @sinatra_cc_app ||= VCAP::CloudController::Runner.new([]).sinatra_cc_app
+      return unless cc_config
+      @sinatra_cc_app ||= build_sinatra_cc_app
+    end
+
+    def reset_sinatra_cc_app
+      @token_decoder = nil
+      @sinatra_cc_app = nil
+    end
+
+    private
+
+    def build_sinatra_cc_app
+      cont_cc_config = cc_config.dup
+      cont_cc_token_decoder = cc_token_decoder
+      Rack::Builder.new do
+        use Rack::CommonLogger
+        map("/") { run VCAP::CloudController::Controller.new(cont_cc_config, cont_cc_token_decoder) }
+      end
     end
   end
 end

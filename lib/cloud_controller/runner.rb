@@ -83,22 +83,13 @@ module VCAP::CloudController
 
         set_up_app_configuration(config, message_bus)
 
-        rails_app = build_rails_app
+        rails_app = build_rails_app(config)
 
         start_thin_server(rails_app, config)
 
         router_registrar.register_with_router
 
         VCAP::CloudController::Varz.setup_updates
-      end
-    end
-
-    def sinatra_cc_app
-      config = @config.dup
-      token_decoder = VCAP::UaaTokenDecoder.new(config[:uaa])
-      Rack::Builder.new do
-        use Rack::CommonLogger
-        map("/") { run Controller.new(config, token_decoder) }
       end
     end
 
@@ -184,12 +175,14 @@ module VCAP::CloudController
       register_with_collector(message_bus)
     end
 
-    def build_rails_app
-      cc_app = sinatra_cc_app
-      ActiveSupport.on_load(:before_configuration) do |app|
-        app.instance_variable_set("@sinatra_cc_app", cc_app)
+    def build_rails_app(config)
+      # Usually environment and rails app is loaded from config.ru.
+      # Since cc_config needs to be set we have to initialize Rails.application here.
+      require ::File.expand_path('../../../config/environment',  __FILE__)
+      Rails.application.tap do |app|
+        app.cc_config = config
+        app.reload_routes!
       end
-      Rack::Builder.parse_file("config.ru").first
     end
 
     def start_thin_server(rails_app, config)
