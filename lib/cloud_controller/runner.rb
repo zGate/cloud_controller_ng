@@ -202,9 +202,7 @@ module VCAP::CloudController
       ActiveSupport.on_load(:before_configuration) do |app|
         app.instance_variable_set("@sinatra_cc_app", cc_app)
       end
-
-      require ::File.expand_path('../../../config/environment',  __FILE__)
-      Rails.application
+      Rack::Builder.parse_file("config.ru").first
     end
 
     def start_thin_server(rails_app, config)
