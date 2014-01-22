@@ -69,10 +69,6 @@ module VCAP::CloudController
       exit 1
     end
 
-    def development_mode?
-      @config[:development_mode]
-    end
-
     def run!
       EM.run do
         config = @config.dup
@@ -85,7 +81,7 @@ module VCAP::CloudController
 
         Seeds.write_seed_data(config) if @insert_seed_data
 
-        set_up_app_configuration(config, message_bus, development_mode?)
+        set_up_app_configuration(config, message_bus)
 
         rails_app = build_rails_app
 
@@ -173,7 +169,7 @@ module VCAP::CloudController
       end
     end
 
-    def set_up_app_configuration(config, message_bus, development)
+    def set_up_app_configuration(config, message_bus)
       DeaClient.run
       AppObserver.run
       LegacyBulk.register_subscription
