@@ -1,5 +1,8 @@
-development:
+dev: &dev
   app_name: 'Cloud Controller (development)'
   developer_mode: true
   monitor_mode: false
   log_level: debug
+
+development: *dev
+test: *dev

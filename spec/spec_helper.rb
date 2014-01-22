@@ -1,9 +1,8 @@
 $:.unshift(File.expand_path("../../lib", __FILE__))
 $:.unshift(File.expand_path("../../app", __FILE__))
 
-APP_PATH = File.expand_path('../../config/application',  __FILE__)
-require_relative '../config/boot'
-require APP_PATH
+ENV["RAILS_ENV"] ||= 'test'
+require File.expand_path("../../config/environment", __FILE__)
 
 require "fakefs/safe"
 require "machinist/sequel"

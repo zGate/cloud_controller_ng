@@ -80,7 +80,9 @@ module IntegrationSetupHelpers
       :err => opts[:debug] ? :out : "/dev/null",
     }
 
-    pid = Process.spawn(opts[:env], cmd, spawn_opts)
+    pid = Bundler.with_clean_env do
+      Process.spawn(opts[:env], cmd, spawn_opts)
+    end
 
     if opts[:wait]
       Process.wait(pid)

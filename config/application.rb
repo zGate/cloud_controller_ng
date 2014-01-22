@@ -21,7 +21,9 @@ module CloudController
     # config.i18n.default_locale = :de
 
     # Set by runner when Rails.application instance is loaded
-    attr_reader :sinatra_cc_app
+    def sinatra_cc_app
+      @sinatra_cc_app ||= VCAP::CloudController::Runner.new([]).sinatra_cc_app
+    end
   end
 end
 
