@@ -34,7 +34,6 @@ module VCAP::CloudController
       super()
     end
 
-
     before do
       VCAP::CloudController::SecurityContext.clear
       auth_token = env["HTTP_AUTHORIZATION"]

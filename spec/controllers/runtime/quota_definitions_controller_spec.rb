@@ -22,7 +22,7 @@ module VCAP::CloudController
       many_to_many_collection_ids: {}
   end
 
-  describe "permissions" do
+  describe "permissions", type: :controller do
     let(:quota_attributes) do
       {
         name: quota_name,

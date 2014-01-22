@@ -164,7 +164,7 @@ module VCAP::CloudController
     end
   end
 
-  describe "POST", "/v2/service_plans" do
+  describe "POST", "/v2/service_plans", type: :controller do
     let(:service) { Service.make }
     it "accepts a request with unique_id" do
       payload = ServicePlansController::CreateMessage.new(
@@ -194,7 +194,7 @@ module VCAP::CloudController
     end
   end
 
-  describe "PUT", "/v2/service_plans/:guid" do
+  describe "PUT", "/v2/service_plans/:guid", type: :controller do
     it "updates the unique_id attribute" do
       service_plan = ServicePlan.make
       old_unique_id = service_plan.unique_id
@@ -226,7 +226,7 @@ module VCAP::CloudController
     end
   end
 
-  describe "DELETE", "/v2/service_plans/:guid" do
+  describe "DELETE", "/v2/service_plans/:guid", type: :controller do
 
     let(:service_plan) { ServicePlan.make }
 

@@ -127,7 +127,7 @@ module VCAP::CloudController
     end
   end
 
-  describe "on app change" do
+  describe "on app change", type: :controller do
     before do
       space = Space.make
       user = make_developer_for_space(space)

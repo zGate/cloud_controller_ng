@@ -213,7 +213,7 @@ module VCAP::CloudController
     end
   end
 
-  describe "GET /v2/domains/:id/spaces" do
+  describe "GET /v2/domains/:id/spaces", type: :controller do
     let!(:private_domain) { PrivateDomain.make }
     let!(:space) { Space.make(organization: private_domain.owning_organization) }
 
