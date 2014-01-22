@@ -20,7 +20,7 @@ class Blobstore
 
   def download_from_blobstore(source_key, destination_path)
     FileUtils.mkdir_p(File.dirname(destination_path))
-    File.open(destination_path, "w") do |file|
+    File.open(destination_path, "wb") do |file|
       (@cdn || files).get(partitioned_key(source_key)) do |*chunk|
         file.write(chunk[0])
       end
