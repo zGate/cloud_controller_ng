@@ -2,6 +2,26 @@ require "spec_helper"
 
 module VCAP::CloudController
   describe AppSummariesController do
+    describe "GET /v2/apps/:id/summary" do
+      let(:app1) { VCAP::CloudController::App.make }
+
+      it "security context is set to user obtained from the token" do
+        token_to_user_finder = instance_double("VCAP::CloudController::TokenToUserFinder")
+        allow(CloudController::DependencyLocator.instance).to receive(:token_to_user_finder)
+          .with(no_args)
+          .and_return(token_to_user_finder)
+
+        user = instance_double("VCAP::CloudController::User")
+        token = double('token')
+        expect(token_to_user_finder).to receive(:find)
+          .with("fake-token")
+          .and_return([user, token])
+
+        expect(VCAP::CloudController::SecurityContext).to receive(:set).with(user, token)
+        get "/v2/apps/#{app1.guid}/summary", {}, admin_headers.merge("HTTP_AUTHORIZATION" => "fake-token") rescue nil
+      end
+    end
+
     before do
       @num_services = 2
       @free_mem_size = 128

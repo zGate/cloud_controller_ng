@@ -22,6 +22,25 @@ describe CloudController::DependencyLocator do
     end
   end
 
+  describe "#token_to_user_finder" do
+    let(:config) { {uaa: uaa_config} }
+    let(:uaa_config) { double('uaa-config') }
+
+    it "creates the correct token to user finder" do
+      token_decoder = instance_double('VCAP::UaaTokenDecoder')
+      expect(VCAP::UaaTokenDecoder).to receive(:new)
+        .with(uaa_config)
+        .and_return(token_decoder)
+
+      token_to_user_finder = instance_double('VCAP::CloudController::TokenToUserFinder')
+      expect(VCAP::CloudController::TokenToUserFinder).to receive(:new)
+        .with(token_decoder, be_an_instance_of(Steno::Logger))
+        .and_return(token_to_user_finder)
+
+      expect(locator.token_to_user_finder).to eq(token_to_user_finder)
+    end
+  end
+
   describe "#droplet_blobstore" do
     let(:config) do
       {

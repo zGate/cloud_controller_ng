@@ -1,5 +1,6 @@
 require "repositories/runtime/app_event_repository"
 require "repositories/runtime/space_event_repository"
+require "models/vcap/cloud_controller/token_to_user_finder"
 
 module CloudController
   class DependencyLocator
@@ -17,6 +18,12 @@ module CloudController
       else
         @health_manager_client ||= HM9000Client.new(@message_bus, @config)
       end
+    end
+
+    def token_to_user_finder
+      token_decoder = VCAP::UaaTokenDecoder.new(@config[:uaa])
+      logger = Steno.logger("cc.token-to-user-finder")
+      VCAP::CloudController::TokenToUserFinder.new(token_decoder, logger)
     end
 
     def task_client
