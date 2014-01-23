@@ -1,18 +1,5 @@
 module VCAP::CloudController
   class AppSummariesController < ApiController
-    before_filter { @config = Rails.application.cc_config }
-
-    before_filter do
-      SecurityContext.clear
-      SecurityContext.set(*@token_to_user_finder.find(env["HTTP_AUTHORIZATION"]))
-    end
-
-    before_filter { @request_scheme_verifier.verify(request, SecurityContext) }
-
-    rescue_from Exception do |exception|
-      @response_exception_handler.handle(response, exception)
-    end
-
     def summary
       app = find_guid_and_validate_access(:read, params[:guid])
       app_info = {
@@ -39,9 +26,7 @@ module VCAP::CloudController
     private
 
     def inject_dependencies(dependency_locator)
-      @token_to_user_finder = dependency_locator.token_to_user_finder
-      @request_scheme_verifier = dependency_locator.request_scheme_verifier
-      @response_exception_handler = dependency_locator.response_exception_handler
+      super
       @logger = Steno.logger("cc.app-summaries-controller")
     end
 
