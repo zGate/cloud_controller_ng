@@ -44,6 +44,7 @@ group :test do
   gem "debugger"
   gem "rspec"
   gem "rspec-rails"
+  gem "rspec-fire"
   gem "rspec_api_documentation"
   gem "simplecov"
   gem "simplecov-rcov"

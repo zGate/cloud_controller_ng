@@ -21,6 +21,7 @@ require "pry"
 require "posix/spawn"
 
 require "rspec_api_documentation"
+require "rspec/fire"
 
 module VCAP::CloudController
   MAX_LOG_FILE_SIZE_IN_BYTES = 100_000_000
@@ -531,6 +532,7 @@ RSpec.configure do |rspec_config|
 
   rspec_config.treat_symbols_as_metadata_keys_with_true_values = true
 
+  rspec_config.include RSpec::Fire
   rspec_config.include Rack::Test::Methods
   rspec_config.include VCAP::CloudController
   rspec_config.include VCAP::CloudController::SpecHelper
@@ -614,4 +616,8 @@ end
 # is de facto by id. In postgres the order is random unless specified.
 class VCAP::CloudController::App
   set_dataset dataset.order(:guid)
+end
+
+RSpec::Fire.configure do |config|
+  config.verify_constant_names = true
 end
