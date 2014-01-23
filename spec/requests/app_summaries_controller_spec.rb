@@ -3,22 +3,44 @@ require "spec_helper"
 module VCAP::CloudController
   describe AppSummariesController do
     describe "GET /v2/apps/:id/summary" do
-      let(:app1) { VCAP::CloudController::App.make }
+      let(:app1) { App.make }
 
       it "security context is set to user obtained from the token" do
         token_to_user_finder = instance_double("VCAP::CloudController::TokenToUserFinder")
-        allow(CloudController::DependencyLocator.instance).to receive(:token_to_user_finder)
-          .with(no_args)
-          .and_return(token_to_user_finder)
+        CloudController::DependencyLocator.instance.stub(:token_to_user_finder).
+          with(no_args).
+          and_return(token_to_user_finder)
 
         user = instance_double("VCAP::CloudController::User")
         token = double('token')
-        expect(token_to_user_finder).to receive(:find)
-          .with("fake-token")
-          .and_return([user, token])
+        expect(token_to_user_finder).to receive(:find).
+          with("fake-token").
+          and_return([user, token])
 
-        expect(VCAP::CloudController::SecurityContext).to receive(:set).with(user, token)
+        expect(SecurityContext).to receive(:set).with(user, token)
         get "/v2/apps/#{app1.guid}/summary", {}, admin_headers.merge("HTTP_AUTHORIZATION" => "fake-token") rescue nil
+      end
+
+      it "handles the invalid request scheme" do
+        request_scheme_verifier = instance_double("VCAP::CloudController::RequestSchemeVerifier")
+        CloudController::DependencyLocator.instance.stub(:request_scheme_verifier).
+          with(no_args).
+          and_return(request_scheme_verifier)
+
+        exception = Exception.new
+        request_scheme_verifier.should_receive(:verify).
+          with(kind_of(Rack::Request), SecurityContext).
+          and_raise(exception)
+
+        response_exception_handler = instance_double("VCAP::CloudController::ResponseExceptionHandler")
+        CloudController::DependencyLocator.instance.stub(:response_exception_handler).
+          with(no_args).
+          and_return(response_exception_handler)
+
+        response_exception_handler.should_receive(:handle).
+          with(kind_of(ActionDispatch::Response), exception)
+
+        get "/v2/apps/#{app1.guid}/summary", {}, admin_headers
       end
     end
 

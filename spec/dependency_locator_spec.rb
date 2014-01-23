@@ -28,16 +28,40 @@ describe CloudController::DependencyLocator do
 
     it "creates the correct token to user finder" do
       token_decoder = instance_double('VCAP::UaaTokenDecoder')
-      expect(VCAP::UaaTokenDecoder).to receive(:new)
-        .with(uaa_config)
-        .and_return(token_decoder)
+      expect(VCAP::UaaTokenDecoder).to receive(:new).
+        with(uaa_config).
+        and_return(token_decoder)
 
       token_to_user_finder = instance_double('VCAP::CloudController::TokenToUserFinder')
-      expect(VCAP::CloudController::TokenToUserFinder).to receive(:new)
-        .with(token_decoder, be_an_instance_of(Steno::Logger))
-        .and_return(token_to_user_finder)
+      expect(VCAP::CloudController::TokenToUserFinder).to receive(:new).
+        with(token_decoder, be_an_instance_of(Steno::Logger)).
+        and_return(token_to_user_finder)
 
       expect(locator.token_to_user_finder).to eq(token_to_user_finder)
+    end
+  end
+
+  describe "#response_exception_handler" do
+    it "creates the correct response exception handler" do
+      response_exception_handler = instance_double('VCAP::CloudController::ResponseExceptionHandler')
+      expect(VCAP::CloudController::ResponseExceptionHandler).to receive(:new).
+        with(be_an_instance_of(Steno::Logger)).
+        and_return(response_exception_handler)
+
+      expect(locator.response_exception_handler).to eq(response_exception_handler)
+    end
+  end
+
+  describe "#request_scheme_verifier" do
+    let(:config) { {} }
+
+    it "creates the correct request scheme verifier with cc config" do
+      request_scheme_verifier = instance_double('VCAP::CloudController::RequestSchemeVerifier')
+      expect(VCAP::CloudController::RequestSchemeVerifier).to receive(:new).
+        with(config).
+        and_return(request_scheme_verifier)
+
+      expect(locator.request_scheme_verifier).to eq(request_scheme_verifier)
     end
   end
 

@@ -1,6 +1,8 @@
 require "repositories/runtime/app_event_repository"
 require "repositories/runtime/space_event_repository"
 require "models/vcap/cloud_controller/token_to_user_finder"
+require "models/vcap/cloud_controller/request_scheme_verifier"
+require "models/vcap/cloud_controller/response_exception_handler"
 
 module CloudController
   class DependencyLocator
@@ -24,6 +26,15 @@ module CloudController
       token_decoder = VCAP::UaaTokenDecoder.new(@config[:uaa])
       logger = Steno.logger("cc.token-to-user-finder")
       VCAP::CloudController::TokenToUserFinder.new(token_decoder, logger)
+    end
+
+    def response_exception_handler
+      logger = Steno.logger("cc.response-exception-handler")
+      VCAP::CloudController::ResponseExceptionHandler.new(logger)
+    end
+
+    def request_scheme_verifier
+      VCAP::CloudController::RequestSchemeVerifier.new(@config)
     end
 
     def task_client

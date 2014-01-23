@@ -34,6 +34,9 @@ module Sinatra
           payload.merge!(Hashify.exception(exception))
         end
 
+        # Temporarily remove this key pending security review
+        payload.delete('source')
+
         payload
       end
     end
@@ -72,9 +75,6 @@ module Sinatra
         else
           logger.error("Request failed: #{response_code}: #{payload_hash}")
         end
-
-        # Temporarily remove this key pending security review
-        payload_hash.delete('source')
 
         payload = Yajl::Encoder.encode(payload_hash)
 
