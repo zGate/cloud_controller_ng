@@ -7,7 +7,7 @@ describe VCAP::CloudController::RequestSchemeVerifier do
 
     let(:user) { instance_double('VCAP::CloudController::User') }
     let(:request) { instance_double('Rack::Request') }
-    let(:identity_context) { instance_double('VCAP::CloudController::IdentityContext') }
+    let(:identity_context) { instance_double('VCAP::CloudController::IdentityContext::IdentityContext') }
 
     def self.it_raises_not_authorized_error
       it "does raise NotAuthorized error" do

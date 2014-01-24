@@ -1,7 +1,7 @@
 require "spec_helper"
 
 module VCAP::CloudController
-  describe IdentityContext do
+  describe IdentityContext::IdentityContext do
     describe "#user" do
       it "returns user if user is provided" do
         user = instance_double('VCAP::CloudController::User')

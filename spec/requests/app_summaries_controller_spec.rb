@@ -1,5 +1,6 @@
 require "spec_helper"
-require "models/vcap/cloud_controller/identity_context"
+require "models/vcap/cloud_controller/identity_context/preset_provider"
+require "models/vcap/cloud_controller/identity_context/identity_context"
 
 module VCAP::CloudController
   describe AppSummariesController do
@@ -16,8 +17,8 @@ module VCAP::CloudController
 
       describe "request sheme verification" do
         before { locator.stub(:identity_context_provider).with(no_args).and_return(identity_context_provider) }
-        let(:identity_context_provider) { PresetIdentityContextProvider.new(admin_headers, identity_context) }
-        let(:identity_context) { IdentityContext.new(nil, nil) }
+        let(:identity_context_provider) { IdentityContext::PresetProvider.new(admin_headers, identity_context) }
+        let(:identity_context) { IdentityContext::IdentityContext.new(nil, nil) }
 
         it "handles the invalid request scheme" do
           request_scheme_verifier = instance_double("VCAP::CloudController::RequestSchemeVerifier")
@@ -53,8 +54,8 @@ module VCAP::CloudController
 
       context "when app exists" do
         before { locator.stub(:identity_context_provider).with(no_args).and_return(identity_context_provider) }
-        let(:identity_context_provider) { PresetIdentityContextProvider.new(admin_headers, identity_context) }
-        let(:identity_context) { IdentityContext.new(nil, nil) }
+        let(:identity_context_provider) { IdentityContext::PresetProvider.new(admin_headers, identity_context) }
+        let(:identity_context) { IdentityContext::IdentityContext.new(nil, nil) }
 
         before { locator.stub(:authorization_provider).with(no_args).and_return(test_auth_provider) }
         let(:test_auth_provider) { Authorization::SingleOpProvider.new(identity_context) }

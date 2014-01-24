@@ -1,4 +1,4 @@
-require "models/vcap/cloud_controller/identity_context"
+require "models/vcap/cloud_controller/identity_context/identity_context"
 
 module VCAP::CloudController
   class ApiController < ActionController::Base

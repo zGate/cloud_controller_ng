@@ -1,4 +1,4 @@
-module VCAP::CloudController
+module VCAP::CloudController::IdentityContext
   class IdentityContext
     attr_reader :user, :roles
 

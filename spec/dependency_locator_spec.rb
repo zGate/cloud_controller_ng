@@ -27,13 +27,13 @@ describe CloudController::DependencyLocator do
     let(:uaa_config) { double('uaa-config') }
 
     it "creates the correct token to user finder" do
-      token_decoder = instance_double('VCAP::UaaTokenDecoder')
+      token_decoder = instance_double("VCAP::UaaTokenDecoder")
       expect(VCAP::UaaTokenDecoder).to receive(:new).
         with(uaa_config).
         and_return(token_decoder)
 
-      identity_context_provider = instance_double('VCAP::CloudController::TokenToIdentityContextProvider')
-      expect(VCAP::CloudController::TokenToIdentityContextProvider).to receive(:new).
+      identity_context_provider = instance_double("VCAP::CloudController::IdentityContext::TokenProvider")
+      expect(VCAP::CloudController::IdentityContext::TokenProvider).to receive(:new).
         with(token_decoder, be_an_instance_of(Steno::Logger)).
         and_return(identity_context_provider)
 
@@ -43,7 +43,7 @@ describe CloudController::DependencyLocator do
 
   describe "#response_exception_handler" do
     it "creates the correct response exception handler" do
-      response_exception_handler = instance_double('VCAP::CloudController::ResponseExceptionHandler')
+      response_exception_handler = instance_double("VCAP::CloudController::ResponseExceptionHandler")
       expect(VCAP::CloudController::ResponseExceptionHandler).to receive(:new).
         with(be_an_instance_of(Steno::Logger)).
         and_return(response_exception_handler)
@@ -54,7 +54,7 @@ describe CloudController::DependencyLocator do
 
   describe "#authorization_provider" do
     it "creates allowy authorization provider" do
-      authorization_provider = instance_double('VCAP::CloudController::Authorization::AllowyProvider')
+      authorization_provider = instance_double("VCAP::CloudController::Authorization::AllowyProvider")
       expect(VCAP::CloudController::Authorization::AllowyProvider).to receive(:new).
         with(no_args).
         and_return(authorization_provider)
@@ -67,7 +67,7 @@ describe CloudController::DependencyLocator do
     let(:config) { {} }
 
     it "creates the correct request scheme verifier with cc config" do
-      request_scheme_verifier = instance_double('VCAP::CloudController::RequestSchemeVerifier')
+      request_scheme_verifier = instance_double("VCAP::CloudController::RequestSchemeVerifier")
       expect(VCAP::CloudController::RequestSchemeVerifier).to receive(:new).
         with(config).
         and_return(request_scheme_verifier)

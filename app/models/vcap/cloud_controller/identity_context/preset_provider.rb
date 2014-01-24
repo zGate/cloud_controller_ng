@@ -1,5 +1,5 @@
-module VCAP::CloudController
-  class PresetIdentityContextProvider
+module VCAP::CloudController::IdentityContext
+  class PresetProvider
     def initialize(headers, identity_context)
       @headers = headers
       @identity_context = identity_context

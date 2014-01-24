@@ -1,9 +1,9 @@
 require "repositories/runtime/app_event_repository"
 require "repositories/runtime/space_event_repository"
-require "models/vcap/cloud_controller/token_to_identity_context_provider"
+require "models/vcap/cloud_controller/identity_context/token_provider"
+require "models/vcap/cloud_controller/authorization/allowy_provider"
 require "models/vcap/cloud_controller/request_scheme_verifier"
 require "models/vcap/cloud_controller/response_exception_handler"
-require "models/vcap/cloud_controller/authorization/allowy_provider"
 
 module CloudController
   class DependencyLocator
@@ -26,7 +26,7 @@ module CloudController
     def identity_context_provider
       token_decoder = VCAP::UaaTokenDecoder.new(@config[:uaa])
       logger = Steno.logger("cc.token-to-user-finder")
-      VCAP::CloudController::TokenToIdentityContextProvider.new(token_decoder, logger)
+      VCAP::CloudController::IdentityContext::TokenProvider.new(token_decoder, logger)
     end
 
     def response_exception_handler

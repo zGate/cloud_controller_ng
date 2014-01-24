@@ -1,7 +1,7 @@
 require "spec_helper"
 
 module VCAP::CloudController
-  describe TokenToIdentityContextProvider do
+  describe IdentityContext::TokenProvider do
     describe "#for_auth_header" do
       subject { described_class.new(token_decoder, logger) }
       let(:token_decoder) { VCAP::UaaTokenDecoder.new({}) }
@@ -10,7 +10,7 @@ module VCAP::CloudController
       def self.it_returns_nil
         it "returns empty identity context" do
           identity_context = instance_double('VCAP::CloudController::IdentityContext')
-          IdentityContext.should_receive(:new).
+          IdentityContext::IdentityContext.should_receive(:new).
             with(nil, nil).
             and_return(identity_context)
 
@@ -34,7 +34,7 @@ module VCAP::CloudController
 
             it "finds and returns existing user" do
               identity_context = instance_double('VCAP::CloudController::IdentityContext')
-              IdentityContext.should_receive(:new).
+              IdentityContext::IdentityContext.should_receive(:new).
                 with(existing_user, token_info).
                 and_return(identity_context)
 
@@ -60,7 +60,7 @@ module VCAP::CloudController
 
               it "returns identity context with token information" do
                 identity_context = instance_double('VCAP::CloudController::IdentityContext')
-                IdentityContext.should_receive(:new).
+                IdentityContext::IdentityContext.should_receive(:new).
                   with(kind_of(User), token_info).
                   and_return(identity_context)
 
@@ -83,7 +83,7 @@ module VCAP::CloudController
 
               it "returns identity context with token information" do
                 identity_context = instance_double('VCAP::CloudController::IdentityContext')
-                IdentityContext.should_receive(:new).
+                IdentityContext::IdentityContext.should_receive(:new).
                   with(kind_of(User), token_info).
                   and_return(identity_context)
 
@@ -109,7 +109,7 @@ module VCAP::CloudController
           it "does not create any new users" do
             expect {
               subject.for_auth_header(token_str)
-            }.to_not change { VCAP::CloudController::User.count }
+            }.to_not change { User.count }
           end
         end
 

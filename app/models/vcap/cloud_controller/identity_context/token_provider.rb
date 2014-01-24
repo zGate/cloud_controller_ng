@@ -1,7 +1,7 @@
-require "models/vcap/cloud_controller/identity_context"
+require "models/vcap/cloud_controller/identity_context/identity_context"
 
-module VCAP::CloudController
-  class TokenToIdentityContextProvider
+module VCAP::CloudController::IdentityContext
+  class TokenProvider
     def initialize(token_decoder, logger)
       @token_decoder = token_decoder
       @logger = logger
@@ -12,7 +12,7 @@ module VCAP::CloudController
 
       if token_info = decode_token(auth_token)
         if uaa_id = token_info["user_id"] || token_info["client_id"]
-          user = User.find(:guid => uaa_id.to_s) || create_user(uaa_id, token_info)
+          user = VCAP::CloudController::User.find(:guid => uaa_id.to_s) || create_user(uaa_id, token_info)
           token = token_info
         end
       end
@@ -35,7 +35,7 @@ module VCAP::CloudController
     end
 
     def create_user(uaa_id, token)
-      User.create(
+      VCAP::CloudController::User.create(
         guid: uaa_id,
         admin: VCAP::CloudController::Roles.new(token).admin?,
         active: true,
