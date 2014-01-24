@@ -45,13 +45,13 @@ module VCAP::CloudController
       context "when app does not exist" do
         it "returns 404" do
           get "/v2/apps/fake-not-found-guid/summary", {}, admin_headers
-          expect_api_error(last_response, {
+          expect(last_response).to be_an_api_error(
             code: 100004,
             response_code: 404,
             description: "The app name could not be found: fake-not-found-guid",
             error_code: "CF-AppNotFound",
             types: ["AppNotFound", "Error"],
-          })
+          )
         end
       end
 
@@ -72,27 +72,15 @@ module VCAP::CloudController
         context "when cannot access the app" do
           it "has an error response" do
             get "/v2/apps/#{app1.guid}/summary", {}, admin_headers
-            expect_api_error(last_response, {
+            expect(last_response).to be_an_api_error(
               code: 10003,
               response_code: 403,
               description: "You are not authorized to perform the requested action",
               error_code: "CF-NotAuthorized",
               types: ["NotAuthorized", "Error"],
-            })
+            )
           end
         end
-      end
-
-      def expect_api_error(response, expected)
-        expect(response.status).to eq(expected.fetch(:response_code))
-
-        decoded_response = parse(response.body)
-        expect(decoded_response.keys).to match_array(
-          ["code", "description", "error_code", "types", "backtrace"])
-        expect(decoded_response["code"]).to eq(expected.fetch(:code))
-        expect(decoded_response["description"]).to eq(expected.fetch(:description))
-        expect(decoded_response["error_code"]).to eq(expected.fetch(:error_code))
-        expect(decoded_response["types"]).to eq(expected.fetch(:types))
       end
     end
   end
