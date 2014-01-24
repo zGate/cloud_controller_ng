@@ -3,6 +3,7 @@ require "repositories/runtime/space_event_repository"
 require "models/vcap/cloud_controller/token_to_user_finder"
 require "models/vcap/cloud_controller/request_scheme_verifier"
 require "models/vcap/cloud_controller/response_exception_handler"
+require "models/vcap/cloud_controller/authorization/allowy_provider"
 
 module CloudController
   class DependencyLocator
@@ -31,6 +32,10 @@ module CloudController
     def response_exception_handler
       logger = Steno.logger("cc.response-exception-handler")
       VCAP::CloudController::ResponseExceptionHandler.new(logger)
+    end
+
+    def authorization_provider
+      VCAP::CloudController::Authorization::AllowyProvider.new
     end
 
     def request_scheme_verifier

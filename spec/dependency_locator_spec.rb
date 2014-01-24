@@ -52,6 +52,17 @@ describe CloudController::DependencyLocator do
     end
   end
 
+  describe "#authorization_provider" do
+    it "creates allowy authorization provider" do
+      authorization_provider = instance_double('VCAP::CloudController::Authorization::AllowyProvider')
+      expect(VCAP::CloudController::Authorization::AllowyProvider).to receive(:new).
+        with(no_args).
+        and_return(authorization_provider)
+
+      expect(locator.authorization_provider).to eq(authorization_provider)
+    end
+  end
+
   describe "#request_scheme_verifier" do
     let(:config) { {} }
 
