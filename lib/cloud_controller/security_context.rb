@@ -1,15 +1,5 @@
 module VCAP::CloudController
-  class IdentityContext < Struct.new(:user, :roles)
-    def admin?
-      roles.admin?
-    end
-  end
-
   module SecurityContext
-    def self.identity_context
-      IdentityContext.new(current_user, roles)
-    end
-
     def self.clear
       Thread.current[:vcap_user] = nil
       Thread.current[:vcap_token] = nil

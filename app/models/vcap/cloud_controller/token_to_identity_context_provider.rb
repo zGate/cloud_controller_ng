@@ -1,11 +1,13 @@
+require "models/vcap/cloud_controller/identity_context"
+
 module VCAP::CloudController
-  class TokenToUserFinder
+  class TokenToIdentityContextProvider
     def initialize(token_decoder, logger)
       @token_decoder = token_decoder
       @logger = logger
     end
 
-    def find(auth_token)
+    def for_auth_header(auth_token)
       user, token = nil
 
       if token_info = decode_token(auth_token)
@@ -14,7 +16,8 @@ module VCAP::CloudController
           token = token_info
         end
       end
-      [user, token]
+
+      IdentityContext.new(user, token)
     end
 
     private

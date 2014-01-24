@@ -1,8 +1,15 @@
 module VCAP::CloudController::Authorization
   class SingleOpProvider
+    def initialize(expected_identity_context)
+      @expected_identity_context = expected_identity_context
+    end
+
     def for_identity_context(identity_context)
-      raise ArgumentError, "identity_context must not be nil" unless identity_context
-      SingleOpAuthorization.new(@allowed_op, @allowed_res)
+      if @expected_identity_context == identity_context
+        SingleOpAuthorization.new(@allowed_op, @allowed_res)
+      else
+        raise ArgumentError, "identity_context must match expected identity context"
+      end
     end
 
     def allow_access(operation, resource)

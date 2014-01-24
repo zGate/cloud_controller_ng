@@ -22,7 +22,7 @@ describe CloudController::DependencyLocator do
     end
   end
 
-  describe "#token_to_user_finder" do
+  describe "#identity_context_provider" do
     let(:config) { {uaa: uaa_config} }
     let(:uaa_config) { double('uaa-config') }
 
@@ -32,12 +32,12 @@ describe CloudController::DependencyLocator do
         with(uaa_config).
         and_return(token_decoder)
 
-      token_to_user_finder = instance_double('VCAP::CloudController::TokenToUserFinder')
-      expect(VCAP::CloudController::TokenToUserFinder).to receive(:new).
+      identity_context_provider = instance_double('VCAP::CloudController::TokenToIdentityContextProvider')
+      expect(VCAP::CloudController::TokenToIdentityContextProvider).to receive(:new).
         with(token_decoder, be_an_instance_of(Steno::Logger)).
-        and_return(token_to_user_finder)
+        and_return(identity_context_provider)
 
-      expect(locator.token_to_user_finder).to eq(token_to_user_finder)
+      expect(locator.identity_context_provider).to eq(identity_context_provider)
     end
   end
 
