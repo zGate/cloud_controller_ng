@@ -9,6 +9,7 @@ Bundler.require(:default, Rails.env)
 module CloudController
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
+    config.autoload_paths += %W(#{config.root}/app/presenters/api)
 
     # Set by runner when Rails.application instance is loaded
     attr_accessor :cc_config
