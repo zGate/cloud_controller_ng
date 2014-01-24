@@ -6,12 +6,5 @@ module VCAP::CloudController
       authorization.authorize!(:read, app)
       render json: AppSummaryPresenter.new(app).to_hash
     end
-
-    private
-
-    def inject_dependencies(dependency_locator)
-      super
-      @logger = Steno.logger("cc.app-summaries-controller")
-    end
   end
 end
