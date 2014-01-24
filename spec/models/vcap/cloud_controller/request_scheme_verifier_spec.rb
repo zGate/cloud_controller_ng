@@ -7,19 +7,19 @@ describe VCAP::CloudController::RequestSchemeVerifier do
 
     let(:user) { instance_double('VCAP::CloudController::User') }
     let(:request) { instance_double('Rack::Request') }
-    let(:security_context) { class_double('VCAP::CloudController::SecurityContext') }
+    let(:identity_context) { instance_double('VCAP::CloudController::IdentityContext') }
 
     def self.it_raises_not_authorized_error
       it "does raise NotAuthorized error" do
         expect {
-          subject.verify(request, security_context)
+          subject.verify(request, identity_context)
         }.to raise_error(VCAP::CloudController::Errors::NotAuthorized)
       end
     end
 
     def self.it_does_not_raise_not_authorized_error
       it "does not raise NotAuthorized error" do
-        expect { subject.verify(request, security_context) }.to_not raise_error
+        expect { subject.verify(request, identity_context) }.to_not raise_error
       end
     end
 
@@ -143,33 +143,33 @@ describe VCAP::CloudController::RequestSchemeVerifier do
       end
     end
 
-    context "when security context has a user" do
-      before { security_context.stub(:current_user).and_return(user) }
+    context "when user context has a user" do
+      before { identity_context.stub(:user).and_return(user) }
 
-      context "when security context is not an admin" do
-        before { security_context.stub(:admin?).and_return(false) }
+      context "when user context is not an admin" do
+        before { identity_context.stub(:admin?).and_return(false) }
         it_verifies_https
         it_does_not_verify_https_for_admins
       end
 
-      context "when security context is an admin" do
-        before { security_context.stub(:admin?).and_return(true) }
+      context "when user context is an admin" do
+        before { identity_context.stub(:admin?).and_return(true) }
         it_verifies_https
         it_verifies_https_for_admins
       end
     end
 
-    context "when security context does not have a user" do
-      before { security_context.stub(:current_user).and_return(nil) }
+    context "when user context does not have a user" do
+      before { identity_context.stub(:user).and_return(nil) }
 
-      context "when security context is an admin" do
-        before { security_context.stub(:admin?).and_return(false) }
+      context "when user context is an admin" do
+        before { identity_context.stub(:admin?).and_return(false) }
         it_does_not_verify_https
         it_does_not_verify_https_for_admins
       end
 
-      context "when security context is an admin" do
-        before { security_context.stub(:admin?).and_return(true) }
+      context "when user context is an admin" do
+        before { identity_context.stub(:admin?).and_return(true) }
         it_verifies_https
         it_verifies_https_for_admins
       end

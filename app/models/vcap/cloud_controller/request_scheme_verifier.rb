@@ -4,14 +4,14 @@ module VCAP::CloudController
       @config = config
     end
 
-    def verify(request, security_context)
-      return if !security_context.current_user && !security_context.admin?
+    def verify(request, identity_context)
+      return if !identity_context.user && !identity_context.admin?
 
       if @config[:https_required] && request.scheme != "https"
         raise Errors::NotAuthorized
       end
 
-      if security_context.admin?
+      if identity_context.admin?
         if @config[:https_required_for_admins] && request.scheme != "https"
           raise Errors::NotAuthorized
         end

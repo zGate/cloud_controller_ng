@@ -1,7 +1,7 @@
 module VCAP::CloudController::Authorization
   class SingleOpProvider
-    def for_security_context(sec_con)
-      raise ArgumentError, "security_context must not be nil" unless sec_con
+    def for_identity_context(identity_context)
+      raise ArgumentError, "identity_context must not be nil" unless identity_context
       SingleOpAuthorization.new(@allowed_op, @allowed_res)
     end
 

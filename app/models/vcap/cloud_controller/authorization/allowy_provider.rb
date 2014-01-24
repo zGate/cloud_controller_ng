@@ -1,18 +1,15 @@
 module VCAP::CloudController::Authorization
   class AllowyProvider
-    Context = Struct.new(:user, :roles)
-
-    def for_security_context(security_context)
-      context = Context.new(security_context.current_user, security_context.roles)
-      Authorization.new(context)
+    def for_identity_context(identity_context)
+      Authorization.new(identity_context)
     end
   end
 
   class Authorization
     include Allowy::Context
 
-    def initialize(context)
-      @context = context
+    def initialize(identity_context)
+      @identity_context = identity_context
     end
 
     def authorize!(op, resource)
@@ -27,7 +24,7 @@ module VCAP::CloudController::Authorization
     private
 
     def allowy_context
-      @context
+      @identity_context
     end
   end
 end

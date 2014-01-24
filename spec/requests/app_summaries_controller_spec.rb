@@ -29,7 +29,7 @@ module VCAP::CloudController
 
           exception = Exception.new
           request_scheme_verifier.should_receive(:verify).
-            with(kind_of(Rack::Request), SecurityContext).
+            with(kind_of(Rack::Request), kind_of(IdentityContext)).
             and_raise(exception)
 
           response_exception_handler = instance_double("VCAP::CloudController::ResponseExceptionHandler")

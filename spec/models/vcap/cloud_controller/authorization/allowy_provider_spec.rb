@@ -2,8 +2,13 @@ require "spec_helper"
 
 describe VCAP::CloudController::Authorization::AllowyProvider do
   describe "#authorize!" do
-    subject { described_class.new.for_security_context(sec_con) }
-    let(:sec_con) { class_double('VCAP::CloudController::SecurityContext', current_user: user, roles: roles) }
+    subject { described_class.new.for_identity_context(identity_context) }
+    let(:identity_context) do
+      instance_double('VCAP::CloudController::IdentityContext', {
+        user: user,
+        roles: roles,
+      })
+    end
 
     let(:user) { double('user') }
     let(:roles) { double('roles') }
@@ -11,15 +16,15 @@ describe VCAP::CloudController::Authorization::AllowyProvider do
 
     class TestObjAccess
       include Allowy::AccessControl
-      cattr_reader :last_context
+      cattr_reader :last_identity_context
 
       def allowed_op?(_)
-        @@last_context = context
+        @@last_identity_context = context
         true
       end
 
       def disallowed_op?(_)
-        @@last_context = context
+        @@last_identity_context = context
         false
       end
     end
@@ -35,8 +40,8 @@ describe VCAP::CloudController::Authorization::AllowyProvider do
 
       it "can use provided security context when evaluating access" do
         subject.authorize!(:allowed_op, resource)
-        expect(TestObjAccess.last_context.user).to eq(user)
-        expect(TestObjAccess.last_context.roles).to eq(roles)
+        expect(TestObjAccess.last_identity_context.user).to eq(user)
+        expect(TestObjAccess.last_identity_context.roles).to eq(roles)
       end
     end
 
@@ -49,8 +54,8 @@ describe VCAP::CloudController::Authorization::AllowyProvider do
 
       it "can use provided security context when evaluating access" do
         subject.authorize!(:disallowed_op, resource) rescue nil
-        expect(TestObjAccess.last_context.user).to eq(user)
-        expect(TestObjAccess.last_context.roles).to eq(roles)
+        expect(TestObjAccess.last_identity_context.user).to eq(user)
+        expect(TestObjAccess.last_identity_context.roles).to eq(roles)
       end
     end
   end

@@ -7,14 +7,17 @@ module VCAP::CloudController
       SecurityContext.set(*@token_to_user_finder.find(env["HTTP_AUTHORIZATION"]))
     end
 
-    before_filter { @request_scheme_verifier.verify(request, SecurityContext) }
+    attr_reader :identity_context
+    before_filter { @identity_context = SecurityContext.identity_context }
+
+    before_filter { @request_scheme_verifier.verify(request, identity_context) }
 
     rescue_from Exception do |exception|
       @response_exception_handler.handle(response, exception)
     end
 
     attr_reader :authorization
-    before_filter { @authorization = @authorization_provider.for_security_context(SecurityContext) }
+    before_filter { @authorization = @authorization_provider.for_identity_context(identity_context) }
 
     private
 
