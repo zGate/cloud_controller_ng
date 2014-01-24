@@ -3,14 +3,13 @@ require "spec_helper"
 module VCAP::CloudController
   describe AppSummariesController do
     describe "GET /v2/apps/:id/summary" do
+      let(:locator) { CloudController::DependencyLocator.instance }
       let(:app1) { App.make }
 
       describe "user from token" do
         it "security context is set to user obtained from the token" do
           token_to_user_finder = instance_double("VCAP::CloudController::TokenToUserFinder")
-          CloudController::DependencyLocator.instance.stub(:token_to_user_finder).
-            with(no_args).
-            and_return(token_to_user_finder)
+          locator.stub(:token_to_user_finder).with(no_args).and_return(token_to_user_finder)
 
           user = instance_double("VCAP::CloudController::User")
           token = double('token')
@@ -26,9 +25,7 @@ module VCAP::CloudController
       describe "request sheme verification" do
         it "handles the invalid request scheme" do
           request_scheme_verifier = instance_double("VCAP::CloudController::RequestSchemeVerifier")
-          CloudController::DependencyLocator.instance.stub(:request_scheme_verifier).
-            with(no_args).
-            and_return(request_scheme_verifier)
+          locator.stub(:request_scheme_verifier).with(no_args).and_return(request_scheme_verifier)
 
           exception = Exception.new
           request_scheme_verifier.should_receive(:verify).
@@ -36,9 +33,7 @@ module VCAP::CloudController
             and_raise(exception)
 
           response_exception_handler = instance_double("VCAP::CloudController::ResponseExceptionHandler")
-          CloudController::DependencyLocator.instance.stub(:response_exception_handler).
-            with(no_args).
-            and_return(response_exception_handler)
+          locator.stub(:response_exception_handler).with(no_args).and_return(response_exception_handler)
 
           response_exception_handler.should_receive(:handle).
             with(kind_of(ActionDispatch::Response), exception)
@@ -61,10 +56,7 @@ module VCAP::CloudController
       end
 
       context "when app exists" do
-        before do
-          locator = CloudController::DependencyLocator.instance
-          locator.stub(:authorization_provider).with(no_args).and_return(test_auth_provider)
-        end
+        before { locator.stub(:authorization_provider).with(no_args).and_return(test_auth_provider) }
         let(:test_auth_provider) { Authorization::SingleOpProvider.new }
 
         context "when can access the app" do
