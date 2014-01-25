@@ -1,47 +1,43 @@
 require "spec_helper"
-require "models/vcap/cloud_controller/identity_context/preset_provider"
-require "models/vcap/cloud_controller/identity_context/identity_context"
 
 module VCAP::CloudController
   describe AppSummariesController do
     describe "GET /v2/apps/:id/summary" do
-      let(:locator) { CloudController::DependencyLocator.instance }
+      with_dependency_locator
+      with_preset_identity_context
+
       let(:app1) { App.make }
 
       describe "Sinatra CC app security context" do
         it "clears security context set by sinatra requests" do
           SecurityContext.should_receive(:clear).with(no_args)
-          get "/v2/apps/#{app1.guid}/summary", {}, admin_headers
+          get "/v2/apps/#{app1.guid}/summary", {}, preset_headers
         end
       end
 
       describe "request sheme verification" do
-        before { locator.stub(:identity_context_provider).with(no_args).and_return(identity_context_provider) }
-        let(:identity_context_provider) { IdentityContext::PresetProvider.new(admin_headers, identity_context) }
-        let(:identity_context) { IdentityContext::IdentityContext.new(nil, nil) }
-
         it "handles the invalid request scheme" do
           request_scheme_verifier = instance_double("VCAP::CloudController::RequestSchemeVerifier")
-          locator.stub(:request_scheme_verifier).with(no_args).and_return(request_scheme_verifier)
+          dependency_locator.stub(:request_scheme_verifier).with(no_args).and_return(request_scheme_verifier)
 
           exception = Exception.new
           request_scheme_verifier.should_receive(:verify).
-            with(kind_of(Rack::Request), identity_context).
+            with(kind_of(Rack::Request), preset_identity_context).
             and_raise(exception)
 
           response_exception_handler = instance_double("VCAP::CloudController::ResponseExceptionHandler")
-          locator.stub(:response_exception_handler).with(no_args).and_return(response_exception_handler)
+          dependency_locator.stub(:response_exception_handler).with(no_args).and_return(response_exception_handler)
 
           response_exception_handler.should_receive(:handle).
             with(kind_of(ActionDispatch::Response), exception)
 
-          get "/v2/apps/#{app1.guid}/summary", {}, admin_headers
+          get "/v2/apps/#{app1.guid}/summary", {}, preset_headers
         end
       end
 
       context "when app does not exist" do
         it "returns 404" do
-          get "/v2/apps/fake-not-found-guid/summary", {}, admin_headers
+          get "/v2/apps/fake-not-found-guid/summary", {}, preset_headers
           expect(last_response).to be_an_api_error(
             code: 100004,
             response_code: 404,
@@ -53,18 +49,13 @@ module VCAP::CloudController
       end
 
       context "when app exists" do
-        before { locator.stub(:identity_context_provider).with(no_args).and_return(identity_context_provider) }
-        let(:identity_context_provider) { IdentityContext::PresetProvider.new(admin_headers, identity_context) }
-        let(:identity_context) { IdentityContext::IdentityContext.new(nil, nil) }
-
-        before { locator.stub(:authorization_provider).with(no_args).and_return(test_auth_provider) }
-        let(:test_auth_provider) { Authorization::SingleOpProvider.new(identity_context) }
+        with_single_op_authorization
 
         context "when can access the app" do
-          before { test_auth_provider.allow_access(:read, app1) }
+          before { single_op_authorization.allow_access(:read, app1) }
 
-          it "present full object" do
-            get "/v2/apps/#{app1.guid}/summary", {}, admin_headers
+          it "presents full object" do
+            get "/v2/apps/#{app1.guid}/summary", {}, preset_headers
             expect(last_response.status).to eq(200)
             expect(decoded_response["guid"]).to eq(app1.guid)
           end
@@ -72,7 +63,7 @@ module VCAP::CloudController
 
         context "when cannot access the app" do
           it "has an error response" do
-            get "/v2/apps/#{app1.guid}/summary", {}, admin_headers
+            get "/v2/apps/#{app1.guid}/summary", {}, preset_headers
             expect(last_response).to be_an_api_error(
               code: 10003,
               response_code: 403,
