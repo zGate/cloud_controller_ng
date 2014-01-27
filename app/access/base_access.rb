@@ -22,6 +22,8 @@ module VCAP::CloudController
       true
     end
 
+    protected
+
     def logged_in?
       !context.user.nil? || context.roles.present?
     end
