@@ -24,8 +24,8 @@ module RequestDependencyLocatorHelpers
     let(:preset_identity_context) { VCAP::CloudController::IdentityContext::PresetIdentityContext.new }
   end
 
-  def with_single_op_authorization
-    before { dependency_locator.stub(:authorization_provider).with(no_args).and_return(single_op_authorization) }
-    let(:single_op_authorization) { VCAP::CloudController::Authorization::SingleOpProvider.new(preset_identity_context) }
+  def with_open_authorization
+    before { dependency_locator.stub(:authorization_provider).with(no_args).and_return(open_authorization) }
+    let(:open_authorization) { VCAP::CloudController::Authorization::OpenProvider.new(preset_identity_context) }
   end
 end

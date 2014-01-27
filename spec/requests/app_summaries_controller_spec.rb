@@ -18,7 +18,10 @@ module VCAP::CloudController
       describe "request sheme verification" do
         it "handles the invalid request scheme" do
           request_scheme_verifier = instance_double("VCAP::CloudController::RequestSchemeVerifier")
-          dependency_locator.stub(:request_scheme_verifier).with(no_args).and_return(request_scheme_verifier)
+          dependency_locator.
+            stub(:request_scheme_verifier).
+            with(no_args).
+            and_return(request_scheme_verifier)
 
           exception = Exception.new
           request_scheme_verifier.should_receive(:verify).
@@ -26,7 +29,10 @@ module VCAP::CloudController
             and_raise(exception)
 
           response_exception_handler = instance_double("VCAP::CloudController::ResponseExceptionHandler")
-          dependency_locator.stub(:response_exception_handler).with(no_args).and_return(response_exception_handler)
+          dependency_locator.
+            stub(:response_exception_handler).
+            with(no_args).
+            and_return(response_exception_handler)
 
           response_exception_handler.should_receive(:handle).
             with(kind_of(ActionDispatch::Response), exception)
@@ -94,11 +100,9 @@ module VCAP::CloudController
       end
 
       context "when app exists" do
-        with_single_op_authorization
+        with_open_authorization
 
         context "when can access the app" do
-          before { single_op_authorization.allow_access(:read, app1) }
-
           it "presents full object" do
             get "/v2/apps/#{app1.guid}/summary", {}, preset_headers
             expect(last_response.status).to eq(200)
@@ -107,6 +111,8 @@ module VCAP::CloudController
         end
 
         context "when cannot access the app" do
+          before { open_authorization.disallow_access(:read, app1) }
+
           it "has an error response" do
             get "/v2/apps/#{app1.guid}/summary", {}, preset_headers
             expect(last_response).to be_an_api_error(
