@@ -550,6 +550,7 @@ RSpec.configure do |rspec_config|
   rspec_config.include(RequestResponseHelpers, type: :api)
   rspec_config.include(RequestResponseHelpers, type: :controller)
 
+  rspec_config.include(RequestResponseHelpers, type: :request)
   rspec_config.include(RequestHelpers, type: :request)
   rspec_config.extend(RequestDependencyLocatorHelpers, type: :request)
 

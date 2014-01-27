@@ -53,5 +53,48 @@ module VCAP::CloudController
         expect(subject.admin?).to be(false)
       end
     end
+
+    describe "#require_identity!" do
+      subject { described_class.new(user, token) }
+
+      def self.it_does_not_raise_any_error
+        it "does not raise any error" do
+          expect { subject.require_identity! }.to_not raise_error
+        end
+      end
+
+      def self.it_raises_an_error(error_class)
+        it "raises an error of class #{error_class}" do
+          expect { subject.require_identity! }.to raise_error(error_class)
+        end
+      end
+
+      context "when user is present" do
+        let(:user) { instance_double('VCAP::CloudController::User') }
+        let(:token) { nil }
+        it_does_not_raise_any_error
+      end
+
+      context "when user is not present" do
+        let(:user) { nil }
+
+        context "when the token is set" do
+          context "when it is an admin token" do
+            let(:token) { {"scope" => [Roles::CLOUD_CONTROLLER_ADMIN_SCOPE]} }
+            it_does_not_raise_any_error
+          end
+
+          context "when it is not an admin token" do
+            let(:token) { {"scope" => ["Non-admin"]} }
+            it_raises_an_error VCAP::Errors::NotAuthorized
+          end
+        end
+
+        context "when the token is not set" do
+          let(:token) { nil }
+          it_raises_an_error VCAP::Errors::InvalidAuthToken
+        end
+      end
+    end
   end
 end

@@ -17,10 +17,16 @@ module VCAP::CloudController
 
     before_filter { @request_scheme_verifier.verify(request, identity_context) }
 
+    before_filter :require_identity!
+
     attr_reader :authorization
     before_filter { @authorization = @authorization_provider.for_identity_context(identity_context) }
 
     private
+
+    def require_identity!
+      identity_context.require_identity!
+    end
 
     def inject_dependencies(dependency_locator)
       @identity_context_provider = dependency_locator.identity_context_provider

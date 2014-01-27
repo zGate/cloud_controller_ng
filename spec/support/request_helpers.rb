@@ -21,7 +21,7 @@ module RequestDependencyLocatorHelpers
       dependency_locator.stub(:identity_context_provider).with(no_args).and_return(icp)
     end
     let(:preset_headers) { {"HTTP_AUTHORIZATION" => "some-token"} }
-    let(:preset_identity_context) { VCAP::CloudController::IdentityContext::IdentityContext.new(nil, nil) }
+    let(:preset_identity_context) { VCAP::CloudController::IdentityContext::PresetIdentityContext.new }
   end
 
   def with_single_op_authorization
