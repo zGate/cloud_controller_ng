@@ -141,7 +141,9 @@ module VCAP::CloudController
         optional(:varz_update_user_count_period_in_seconds) => Float,
         optional(:varz_update_cc_job_queue_length_in_seconds) => Float,
         optional(:disable_custom_buildpacks) => bool,
-        optional(:broker_client_timeout_seconds) => Integer
+        optional(:broker_client_timeout_seconds) => Integer,
+
+        optional(:web_workers) => Integer,
       }
     end
 

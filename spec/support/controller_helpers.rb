@@ -46,6 +46,7 @@ module ControllerHelpers
       )
 
       headers["HTTP_AUTHORIZATION"] = "bearer #{user_token}"
+      puts headers["HTTP_AUTHORIZATION"]
     end
 
     headers["HTTP_X_FORWARDED_PROTO"] = "https" if opts[:https]

@@ -4,6 +4,7 @@ module VCAP::CloudController
 
     get "/v2/info", :read
     def read
+      puts Process.pid
       info = {
         name: @config[:info][:name],
         build: @config[:info][:build],

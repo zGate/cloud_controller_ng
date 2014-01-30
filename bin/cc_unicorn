@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+$:.unshift(File.expand_path("../../lib", __FILE__))
+$:.unshift(File.expand_path("../../app", __FILE__))
+
+require "rubygems"
+require "bundler/setup"
+
+require 'unicorn/launcher'
+require "cloud_controller"
+
+ENV["RACK_ENV"] ||= "development"
+rackup_opts = Unicorn::Configurator::RACKUP
+options = rackup_opts[:options]
+options[:config_file] = File.expand_path("../../unicorn.rb", __FILE__)
+app = Object.new
+
+
+Unicorn::Launcher.daemonize!(options) if rackup_opts[:daemonize]
+Unicorn::HttpServer.new(app, options).start.join
+

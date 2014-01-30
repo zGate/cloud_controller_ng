@@ -14,16 +14,20 @@ require_relative "message_bus_configurer"
 
 module VCAP::CloudController
   class Runner
-    attr_reader :config_file, :insert_seed_data
+    attr_reader :config_file, :insert_seed_data, :config
 
-    def initialize(argv)
+    def initialize(argv, config_file = nil)
       @argv = argv
 
       # default to production. this may be overriden during opts parsing
       ENV["RACK_ENV"] ||= "production"
 
-      @config_file = File.expand_path("../../../config/cloud_controller.yml", __FILE__)
-      parse_options!
+      if config_file
+        @config_file = config_file
+      else
+        @config_file = File.expand_path("../../../config/cloud_controller.yml", __FILE__)
+        parse_options!
+      end
       parse_config
 
       @log_counter = Steno::Sink::Counter.new
@@ -71,13 +75,45 @@ module VCAP::CloudController
       exit 1
     end
 
+    def setup!
+      #create_pidfile
+
+    end
+
+    def post_fork!(unicorn_server)
+      EM.run do
+        config = @config.dup
+
+        message_bus = MessageBus::Configurer.new(
+            :servers => config[:message_bus_servers],
+            :logger => logger).go
+
+        start_cloud_controller(message_bus)
+
+        Seeds.write_seed_data(config) if @insert_seed_data
+        register_with_collector(message_bus)
+
+        globals = Globals.new(config, message_bus)
+        globals.setup!
+
+        builder = RackAppBuilder.new
+        app = builder.build(config)
+
+        unicorn_server.app = app
+
+        router_registrar.register_with_router
+
+        VCAP::CloudController::Varz.setup_updates
+      end
+    end
+
     def run!
       EM.run do
         config = @config.dup
 
         message_bus = MessageBus::Configurer.new(
-          :servers => config[:message_bus_servers],
-          :logger => logger).go
+            :servers => config[:message_bus_servers],
+            :logger => logger).go
 
         start_cloud_controller(message_bus)
 
@@ -96,6 +132,12 @@ module VCAP::CloudController
 
         VCAP::CloudController::Varz.setup_updates
       end
+    end
+
+    def get_app!
+      config = @config.dup
+      builder = RackAppBuilder.new
+      builder.build(config)
     end
 
     def trap_signals
@@ -127,7 +169,7 @@ module VCAP::CloudController
     private
 
     def start_cloud_controller(message_bus)
-      create_pidfile
+      #create_pidfile
 
       setup_logging
       setup_db
@@ -156,6 +198,7 @@ module VCAP::CloudController
     def setup_db
       logger.info "db config #{@config[:db]}"
       db_logger = Steno.logger("cc.db")
+      puts "Loading DB!"
       DB.load_models(@config[:db], db_logger)
     end
 

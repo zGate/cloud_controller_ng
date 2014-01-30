@@ -28,6 +28,7 @@ gem 'talentbox-delayed_job_sequel'
 gem 'thin', '~> 1.5.1'
 gem 'newrelic_rpm'
 gem 'clockwork', require: false
+gem "unicorn"
 
 group :db do
   gem 'mysql2'
