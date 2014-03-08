@@ -1,6 +1,6 @@
 require 'models/services/service_brokers/v2/uaa_client_manager'
-require 'models/services/validation_errors'
 require 'models/services/service_brokers/v2/service_dashboard_client_differ'
+require 'models/services/validation_errors'
 
 module VCAP::CloudController::ServiceBrokers::V2
   class ServiceDashboardClientManager
@@ -18,7 +18,9 @@ module VCAP::CloudController::ServiceBrokers::V2
       validate_requested_clients_are_available!
       return false unless errors.empty?
 
-      changeset = ServiceDashboardClientDiffer.create_changeset(services_requesting_dashboard_client, client_manager)
+      clients_claimed_by_broker = VCAP::CloudController::ServiceDashboardClient.find_clients_claimed_by_broker(service_broker)
+      differ = ServiceDashboardClientDiffer.new(service_broker, client_manager)
+      changeset = differ.create_changeset(services_requesting_dashboard_client, clients_claimed_by_broker)
       changeset.each(&:apply!)
 
       true

@@ -15,6 +15,10 @@ module VCAP::CloudController::ServiceBrokers::V2
       scim.add(:client, client_info)
     end
 
+    def update
+
+    end
+
     def get_clients(client_ids)
       client_ids.map do |id|
         begin
