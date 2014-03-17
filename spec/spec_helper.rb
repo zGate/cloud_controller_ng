@@ -11,7 +11,6 @@ require "machinist/object"
 require "rack/test"
 require "timecop"
 
-require "steno"
 require "webmock/rspec"
 require "cf_message_bus/mock_message_bus"
 

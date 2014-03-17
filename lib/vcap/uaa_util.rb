@@ -40,7 +40,7 @@ module VCAP
     end
 
     def decode_token_with_key(auth_token, options)
-      options = {:audience_ids => config[:resource_id]}.merge(options)
+      options = {:audience_ids => config[:resource_id], verify: false}.merge(options)
       CF::UAA::TokenCoder.new(options).decode(auth_token)
     end
 

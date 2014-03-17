@@ -54,7 +54,8 @@ loggregator:
   url: "ws://loggregator.vcap.me:80"
 
 db:
-  database: "sqlite:///tmp/cloud_controller.db"
+#  database: "jdbc:sqlite:///tmp/cloud_controller.db"
+  database: "jdbc:mysql://localhost:3306/test?user=pivotal&zeroDateTimeBehavior=convertToNull"
   max_connections: 32
   pool_timeout: 10
 
@@ -115,7 +116,7 @@ buildpacks:
     aws_access_key_id: "fake_aws_key_id"
     aws_secret_access_key: "fake_secret_access_key"
 
-db_encryption_key: "asdfasdfasdf"
+db_encryption_key: "4493e8ec89f6"
 
 tasks_disabled: false
 

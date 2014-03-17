@@ -1,4 +1,3 @@
-require "steno"
 
 require File.expand_path("../dea/dea_client", __FILE__)
 

@@ -22,7 +22,7 @@ end
 
   desc "Perform Sequel migration to database"
   task :migrate do
-    Steno.init(Steno::Config.new(sinks: [Steno::Sink::IO.new(STDOUT)]))
+    #Steno.init(Steno::Config.new(sinks: [Steno::Sink::IO.new(STDOUT)]))
     db_logger = Steno.logger("cc.db.migrations")
     DBMigrator.from_config(config, db_logger).apply_migrations
   end

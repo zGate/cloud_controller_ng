@@ -3,7 +3,7 @@ $:.unshift(File.expand_path("../app", __FILE__))
 
 require "yaml"
 require "sequel"
-require "steno"
+#require "steno"
 require "cloud_controller"
 
 def config

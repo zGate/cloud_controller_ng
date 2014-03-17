@@ -5,7 +5,7 @@ require 'vcap/request'
 require 'presenters/error_presenter'
 require 'sinatra/reloader'
 require 'securerandom'
-require 'steno'
+
 
 module Sinatra
   module VCAP

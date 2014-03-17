@@ -1,4 +1,3 @@
-require "yajl"
 
 module Sequel::Plugins::VcapSerialization
   # This plugin implements serialization and deserialization of

@@ -1,4 +1,4 @@
-require "steno"
+require 'java'
 require "optparse"
 require "vcap/uaa_util"
 require "cf_message_bus/message_bus"
@@ -8,9 +8,39 @@ require "loggregator"
 require "cloud_controller/globals"
 require "cloud_controller/rack_app_builder"
 require "cloud_controller/varz"
+require 'puma/cli'
+require 'rack/handler/puma'
 
 require_relative "seeds"
 require_relative "message_bus_configurer"
+
+
+class SuperFake
+  def initialize(*args)
+    SuperFake
+  end
+  def method_missing(*args)
+    SuperFake
+  end
+  class << self
+    def method_missing(*args)
+      SuperFake
+    end
+  end
+
+  def const_missing(name)
+    SuperFake
+  end
+
+  Config = SuperFake
+end
+
+def SuperFake.const_missing(name)
+  puts "MISSING #{name}"
+  SuperFake
+end
+
+Steno = SuperFake
 
 module VCAP::CloudController
   class Runner
@@ -72,26 +102,25 @@ module VCAP::CloudController
     end
 
     def run!
-      EM.run do
-        message_bus = MessageBus::Configurer.new(servers: @config[:message_bus_servers], logger: logger).go
+      Thread.new do
+        EM.run do
+          message_bus = MessageBus::Configurer.new(servers: @config[:message_bus_servers], logger: logger).go
 
-        start_cloud_controller(message_bus)
+          start_cloud_controller(message_bus)
 
-        Seeds.write_seed_data(@config) if @insert_seed_data
-        register_with_collector(message_bus)
+          Seeds.write_seed_data(@config) if @insert_seed_data
+          register_with_collector(message_bus)
 
-        globals = Globals.new(@config, message_bus)
-        globals.setup!
-
-        builder = RackAppBuilder.new
-        app = builder.build(@config)
-
-        start_thin_server(app)
-
-        router_registrar.register_with_router
-
-        VCAP::CloudController::Varz.setup_updates
+          globals = Globals.new(@config, message_bus)
+          globals.setup!
+          router_registrar.register_with_router
+          VCAP::CloudController::Varz.setup_updates
+        end
       end
+
+      builder = RackAppBuilder.new
+      app = builder.build(@config)
+      start_thin_server(app)
     end
 
     def trap_signals
@@ -161,20 +190,22 @@ module VCAP::CloudController
     end
 
     def start_thin_server(app)
-      if @config[:nginx][:use_nginx]
-        @thin_server = Thin::Server.new(@config[:nginx][:instance_socket], signals: false)
-      else
-        @thin_server = Thin::Server.new(@config[:external_host], @config[:external_port])
-      end
-
-      @thin_server.app = app
-      trap_signals
-
-      # The routers proxying to us handle killing inactive connections.
-      # Set an upper limit just to be safe.
-      @thin_server.timeout = @config[:request_timeout_in_seconds]
-      @thin_server.threaded = true
-      @thin_server.start!
+      #if @config[:nginx][:use_nginx]
+      #  @thin_server = Thin::Server.new(@config[:nginx][:instance_socket], signals: false)
+      #else
+      puts "starting puma"
+      #app = lambda { |env| [200, {}, [env['rack.url_scheme']]] }
+      @thin_server = Rack::Handler::Puma.run(app, {:Threads => "50:50"})
+      #end
+      #
+      #@thin_server.app = app
+      #trap_signals
+      #
+      ## The routers proxying to us handle killing inactive connections.
+      ## Set an upper limit just to be safe.
+      #@thin_server.timeout = @config[:request_timeout_in_seconds]
+      #@thin_server.threaded = true
+      #@thin_server.start!
     end
 
     def stop_thin_server
@@ -193,17 +224,17 @@ module VCAP::CloudController
     end
 
     def register_with_collector(message_bus)
-      VCAP::Component.register(
-          :type => 'CloudController',
-          :host => @config[:external_host],
-          :port => @config[:varz_port],
-          :user => @config[:varz_user],
-          :password => @config[:varz_password],
-          :index => @config[:index],
-          :nats => message_bus,
-          :logger => logger,
-          :log_counter => @log_counter
-      )
+      #VCAP::Component.register(
+      #    :type => 'CloudController',
+      #    :host => @config[:external_host],
+      #    :port => @config[:varz_port],
+      #    :user => @config[:varz_user],
+      #    :password => @config[:varz_password],
+      #    :index => @config[:index],
+      #    :nats => message_bus,
+      #    :logger => logger,
+      #    :log_counter => @log_counter
+      #)
     end
   end
 end

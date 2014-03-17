@@ -6,7 +6,6 @@
 
 require "fog"
 require "httpclient"
-require "steno"
 
 class VCAP::CloudController::ResourcePool
   attr_accessor :minimum_size, :maximum_size

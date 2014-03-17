@@ -72,7 +72,8 @@ module VCAP::CloudController::RestController
     def parse_date_param(param)
       str = @params[param]
       Time.parse(str).localtime if str
-    rescue
+    rescue => e
+      puts "params err #{e.inspect}"
       raise Errors::ApiError.new_from_details("BadQueryParameter")
     end
 

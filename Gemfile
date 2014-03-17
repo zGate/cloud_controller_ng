@@ -1,5 +1,6 @@
 # This used to be https, but that causes problems in the vagrant container used by warden-jenkins.
 source 'http://rubygems.org'
+ruby '1.9.3', :engine => 'jruby', :engine_version => '1.7.11'
 
 gem 'addressable'
 gem 'activesupport', '~> 3.0' # It looks like this is required for DelayedJob, even with the DJ-Sequel extension
@@ -12,22 +13,22 @@ gem 'rfc822'
 gem 'sequel', '~> 3.48'
 gem 'sinatra', '~> 1.4'
 gem 'sinatra-contrib'
-gem 'yajl-ruby'
 gem 'membrane', '~> 1.0'
 gem 'httpclient'
-gem 'steno'
 gem 'cloudfront-signer'
 gem 'vcap-concurrency', git: 'https://github.com/cloudfoundry/vcap-concurrency.git', ref: '2a5b0179'
 gem 'cf-uaa-lib', '~> 1.3.7', git: 'https://github.com/cloudfoundry/cf-uaa-lib.git', ref: '8d34eede'
 gem 'cf-message-bus', git: 'https://github.com/cloudfoundry/cf-message-bus.git'
-gem 'vcap_common', '~> 4.0'
-gem 'cf-registrar', git: 'https://github.com/cloudfoundry/cf-registrar.git'
+gem 'vcap_common', '~> 4.0', path: '/Users/pivotal/workspace/vcap-common/'
+gem 'cf-registrar', path: '/Users/pivotal/workspace/cf-registrar/'
 gem 'allowy'
 gem 'loggregator_emitter', '~> 3.0'
 gem 'talentbox-delayed_job_sequel'
-gem 'thin', '~> 1.5.1'
 gem 'newrelic_rpm'
 gem 'clockwork', require: false
+gem 'jdbc-mysql'
+gem 'puma', '2.8.1'
+
 
 group :db do
   gem 'mysql2'

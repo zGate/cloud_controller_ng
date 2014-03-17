@@ -1,17 +1,32 @@
+
+class Yajl
+  class Encoder
+    def self.encode(obj, options = {})
+      obj.to_json
+    end
+  end
+
+  class Parser
+    def self.parse(str)
+      JSON.parse str
+    end
+  end
+end
+
+
 require "bcrypt"
 require "sinatra"
 require "sequel"
-require "thin"
-require "yajl"
 require "delayed_job"
 require "newrelic_rpm"
-
+require 'multi_json'
+MultiJson.use :json_gem
 require "allowy"
 
 require "eventmachine/schedule_sync"
 
-require "vcap/common"
-require "cf-registrar"
+#require "vcap/common"
+#require "cf-registrar"
 require "vcap/errors/details"
 require "vcap/errors/api_error"
 require "uaa/token_coder"
