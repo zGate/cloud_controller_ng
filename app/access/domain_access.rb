@@ -1,7 +1,8 @@
 module VCAP::CloudController
   class DomainAccess < BaseAccess
     def create?(domain)
-      return super unless super.nil?
+      return true if admin_user?
+      return false unless has_write_scope?
       domain.owning_organization && domain.owning_organization.managers.include?(context.user)
     end
 

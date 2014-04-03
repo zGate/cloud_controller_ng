@@ -3,24 +3,20 @@ module VCAP::CloudController
     include Allowy::AccessControl
 
     def create?(object)
-      return true if admin_user?
-      return false unless has_write_scope?
+      admin_user?
     end
 
     def read?(object)
       return @ok_read if instance_variable_defined?(:@ok_read)
-      return false unless has_read_scope?
       @ok_read = (admin_user? || object_is_visible_to_user?(object, context.user))
     end
 
     def update?(object)
-      return true if admin_user?
-      return false unless has_write_scope?
+      admin_user?
     end
 
     def delete?(object)
-      return true if admin_user?
-      return false unless has_write_scope?
+      admin_user?
     end
 
     def index?(object_class)
@@ -34,15 +30,15 @@ module VCAP::CloudController
     private
 
     def has_write_scope?
-      VCAP::CloudController::SecurityContext.token['scopes'] =~ /cloud_controller\.write/
+      VCAP::CloudController::SecurityContext.token['scope'].include?('cloud_controller.write')
     end
 
     def has_read_scope?
-      VCAP::CloudController::SecurityContext.token['scopes'] =~ /cloud_controller\.read/
+      VCAP::CloudController::SecurityContext.token['scope'].include?('cloud_controller.read')
     end
 
     def object_is_visible_to_user?(object, user)
-      object.class.user_visible(user, false).where(:guid => object.guid).count > 0
+      has_read_scope? && object.class.user_visible(user, false).where(:guid => object.guid).count > 0
     end
 
     def admin_user?
