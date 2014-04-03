@@ -3,7 +3,7 @@ require 'spec_helper'
 module VCAP::CloudController
   describe SharedDomainAccess, type: :access do
     before do
-      token = {'scopes' => 'cloud_controller.read cloud_controller.write'}
+      token = {'scope' => 'cloud_controller.read cloud_controller.write'}
       VCAP::CloudController::SecurityContext.stub(:token).and_return(token)
     end
 
@@ -26,7 +26,7 @@ module VCAP::CloudController
 
     context 'any user using client without cloud_controller.read' do
       before do
-        token = { 'scopes' => ''}
+        token = { 'scope' => ''}
         VCAP::CloudController::SecurityContext.stub(:token).and_return(token)
       end
 

@@ -4,7 +4,7 @@ module VCAP::CloudController
   describe BillingEventAccess, type: :access do
     before do
       config_override({ :billing_event_writing_enabled => true })
-      token = {'scopes' => 'cloud_controller.read cloud_controller.write'}
+      token = {'scope' => 'cloud_controller.read cloud_controller.write'}
       VCAP::CloudController::SecurityContext.stub(:token).and_return(token)
     end
 

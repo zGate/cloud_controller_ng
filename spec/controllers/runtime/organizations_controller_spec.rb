@@ -128,7 +128,7 @@ module VCAP::CloudController
           org.billing_enabled.should == false
           req = Yajl::Encoder.encode(:billing_enabled => true)
           put "/v2/organizations/#{org.guid}", req, json_headers(org_admin_headers)
-          puts json_headers(org_admin_headers)
+
           last_response.status.should == 400
           org.refresh
           org.billing_enabled.should == false
