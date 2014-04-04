@@ -105,10 +105,10 @@ module VCAP::CloudController
           end
 
           it "creates new events for the started apps" do
-            app.state = "STOPPED"
-            repository.create_from_app(app)
-            app.state = "STARTED"
-            repository.create_from_app(app)
+            #app.state = "STOPPED"
+            #repository.create_from_app(app)
+            #app.state = "STARTED"
+            #repository.create_from_app(app)
 
             expect {
               repository.purge_and_reseed_started_apps!
