@@ -12,8 +12,8 @@ rvm:
   - 1.9.3-p484
 
 script:
-  - bundle exec parallel_rspec spec$SUB -s 'integration|acceptance' -n $THREADS -o "--format $FORMAT --order rand:$RANDOM"
-  - bundle exec rake rubocop
+  - bundle exec parallel_rspec spec/pg_vs_mysql_spec.rb -s 'integration|acceptance' -n $THREADS -o "--format $FORMAT --order rand:$RANDOM"
+#  - bundle exec rake rubocop
 
 env:
   global:
@@ -31,7 +31,7 @@ env:
   matrix:
     - DB=mysql DB_CONNECTION="mysql2://root@localhost:3306" FORMAT=progress THREADS=3
     - DB=postgres DB_CONNECTION="postgres://postgres@localhost:5432" FORMAT=progress THREADS=3
-    - DB=postgres DB_CONNECTION="postgres://postgres@localhost:5432" SUB="/api" FORMAT=RspecApiDocumentation::ApiFormatter THREADS=1
+#    - DB=postgres DB_CONNECTION="postgres://postgres@localhost:5432" SUB="/api" FORMAT=RspecApiDocumentation::ApiFormatter THREADS=1
 #   - DB=sqlite FORMATTER=progress
 #   - DB=oracle ORACLE_BASE=/opt/oracle ORACLE_HOME=$ORACLE_BASE/instantclient_11_2 LD_LIBRARY_PATH=${ORACLE_HOME}:${LD_LIBRARY_PATH} FORMATTER=progress
 
