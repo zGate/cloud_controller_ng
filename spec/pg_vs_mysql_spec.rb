@@ -5,7 +5,7 @@ module VCAP::CloudController
   describe "pg vs mysql" do
     it "works" do
       expect {
-        AppFactory.make
+        AppFactory.make(state: "STARTED", package_hash: Sham.guid)
       }.to change { AppUsageEvent.count }.from(0).to(1)
     end
   end
