@@ -12,7 +12,12 @@ module VCAP::CloudController
       context "as a developer" do
         subject { get("/v2/apps/#{@app.guid}/instances", {}, headers_for(@developer)) }
 
-        let(:instances_reporter) { CloudController::DependencyLocator.instance.instances_reporter }
+        let(:instances_reporter) { double(:instances_reporter) }
+
+        before do
+          instances_reporter_factory = CloudController::DependencyLocator.instance.instances_reporter_factory
+          allow(instances_reporter_factory).to receive(:instances_reporter_for_app).and_return(instances_reporter)
+        end
 
         it "returns 400 when there is an error finding the instances" do
           instance_id = 5
