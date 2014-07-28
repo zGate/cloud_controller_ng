@@ -59,5 +59,13 @@ module VCAP::CloudController
 
     define_messages
     define_routes
+
+    private
+
+    def after_create(organization)
+      return if user.admin?
+      organization.add_user(user)
+      organization.add_manager(user)
+    end
   end
 end

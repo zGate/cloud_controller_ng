@@ -160,3 +160,6 @@ default_staging_security_groups:
 - dummy3
 default_running_security_groups:
 - dummy4
+
+feature_flag_defaults:
+  user_org_creation: false

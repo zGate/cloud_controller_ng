@@ -135,6 +135,10 @@ module VCAP::CloudController
         :default_staging_security_groups => [String],
         :default_running_security_groups => [String],
 
+        :feature_flag_defaults => {
+          optional("user_org_creation") => bool
+        },
+
         :resource_pool => {
           optional(:maximum_size) => Integer,
           optional(:minimum_size) => Integer,

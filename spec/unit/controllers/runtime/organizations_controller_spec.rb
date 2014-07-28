@@ -101,6 +101,33 @@ module VCAP::CloudController
       end
     end
 
+    describe "creating when user_org_creation feature_flag is set" do
+      before do
+        FeatureFlag.make(:name => "user_org_creation", :enabled => true)
+      end
+
+      context "as a non admin" do
+        let(:user) { User.make }
+
+        it "adds creator as an org manager" do
+          post "/v2/organizations", MultiJson.dump({name: "my-org-name"}), headers_for(user)
+          expect(last_response.status).to eq(201)
+          org = Organization.find(name: "my-org-name")
+          expect(org.managers).to eq([user])
+          expect(org.users).to eq([user])
+        end
+      end
+
+      context "as an admin" do
+        it "does not add creator as an org manager" do
+          post "/v2/organizations", MultiJson.dump({name: "my-org-name"}), admin_headers
+          expect(last_response.status).to eq(201)
+          org = Organization.find(name: "my-org-name")
+          expect(org.managers.count).to eq(0)
+        end
+      end
+    end
+
     describe 'GET /v2/organizations/:guid/domains' do
       let(:organization) { Organization.make }
       let(:manager) { make_manager_for_org(organization) }
