@@ -381,8 +381,12 @@ module VCAP::CloudController
                 ])
     end
 
+    def uploaded_and_needs_staging?
+      package_hash && needs_staging?
+    end
+
     def needs_staging?
-      package_hash && !staged? && started? && instances > 0
+      !staged? && started? && instances > 0
     end
 
     def staged?

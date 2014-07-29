@@ -17,6 +17,13 @@ module VCAP::CloudController
       }
     end
 
+    DockerStagingResponseSchema = Membrane::SchemaParser.parse do
+      {
+          "app_id" => String,
+          "task_id" => String,
+      }
+    end
+
     def subscribe!
       @message_bus.subscribe("diego.staging.finished", queue: "cc") do |payload|
         logger.info("diego.staging.finished", :response => payload)
@@ -25,6 +32,16 @@ module VCAP::CloudController
           handle_failure(logger, payload)
         else
           handle_success(logger, payload)
+        end
+      end
+
+      @message_bus.subscribe("diego.docker.staging.finished", queue: "cc") do |payload|
+        logger.info("diego.docker.staging.finished", :response => payload)
+
+        if payload["error"]
+          handle_failure(logger, payload)
+        else
+          handle_docker_success(logger, payload)
         end
       end
     end
@@ -54,7 +71,9 @@ module VCAP::CloudController
       app = get_app(logger, payload)
       return if app.nil?
 
+      # common to all (we think)
       app.mark_as_staged
+      # diego/dea common, buildpack specific (not Docker)
       app.update_detected_buildpack(payload["detected_buildpack"], payload["buildpack_key"])
       app.current_droplet ||= Droplet.new(app: app, droplet_hash: app.droplet_hash)
       app.current_droplet.update_start_command(payload["detected_start_command"])
@@ -65,6 +84,23 @@ module VCAP::CloudController
         DeaClient.start(app, instances_to_start: app.instances)
       end
     end
+
+    def handle_docker_success(logger, payload)
+      begin
+        DockerStagingResponseSchema.validate(payload)
+      rescue Membrane::SchemaValidationError => e
+        logger.error("diego.docker.staging.invalid-message", payload: payload, error: e.to_s)
+        return
+      end
+
+      app = get_app(logger, payload)
+      return if app.nil?
+
+      app.mark_as_staged
+
+      @diego_client.send_docker_desire_request(app)
+    end
+
 
     def get_app(logger, payload)
       app = App.find(guid: payload["app_id"])

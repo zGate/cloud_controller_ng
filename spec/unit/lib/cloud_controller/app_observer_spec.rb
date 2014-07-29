@@ -95,7 +95,7 @@ module VCAP::CloudController
             droplet_hash:         "initial-droplet-hash",
             name:                 "app-name"
         )
-        allow(app).to receive(:needs_staging?) { needs_staging }
+        allow(app).to receive(:uploaded_and_needs_staging?) { needs_staging }
         allow(app).to receive(:environment_json) { environment_json }
         app
       end

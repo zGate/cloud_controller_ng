@@ -467,7 +467,7 @@ module VCAP::CloudController
         it "doesn't mark the app for staging" do
           subject.stack = new_stack
           expect(subject.staged?).to be false
-          expect(subject.needs_staging?).to be nil
+          expect(subject.uploaded_and_needs_staging?).to be nil
         end
       end
 
@@ -482,7 +482,7 @@ module VCAP::CloudController
         it "keeps app as needs staging" do
           subject.stack = new_stack
           expect(subject.staged?).to be false
-          expect(subject.needs_staging?).to be true
+          expect(subject.uploaded_and_needs_staging?).to be true
         end
       end
 
@@ -499,7 +499,7 @@ module VCAP::CloudController
         it "marks the app for re-staging" do
           expect {
             subject.stack = new_stack
-          }.to change { subject.needs_staging? }.from(false).to(true)
+          }.to change { subject.uploaded_and_needs_staging? }.from(false).to(true)
         end
 
         it "does not consider app as staged" do
@@ -616,7 +616,7 @@ module VCAP::CloudController
           expect {
             app.environment_json = new_env_json
             app.save
-          }.to_not change { app.needs_staging? }
+          }.to_not change { app.uploaded_and_needs_staging? }
         end
       end
 
@@ -1079,7 +1079,7 @@ module VCAP::CloudController
       end
     end
 
-    describe "needs_staging?" do
+    describe "uploaded_and_needs_staging?" do
       subject(:app) { AppFactory.make }
 
       context "when the app is started" do
@@ -1090,19 +1090,19 @@ module VCAP::CloudController
 
         it "should return false if the package_hash is nil" do
           app.package_hash = nil
-          expect(app.needs_staging?).to be nil
+          expect(app.uploaded_and_needs_staging?).to be nil
         end
 
         it "should return true if PENDING is set" do
           app.package_hash = "abc"
           app.package_state = "PENDING"
-          expect(app.needs_staging?).to be true
+          expect(app.uploaded_and_needs_staging?).to be true
         end
 
         it "should return false if STAGING is set" do
           app.package_hash = "abc"
           app.package_state = "STAGED"
-          expect(app.needs_staging?).to be false
+          expect(app.uploaded_and_needs_staging?).to be false
         end
       end
 

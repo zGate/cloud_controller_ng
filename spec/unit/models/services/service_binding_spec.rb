@@ -170,7 +170,7 @@ module VCAP::CloudController
         app.add_new_droplet("def")
         app.mark_as_staged
         app.save
-        expect(app.needs_staging?).to eq(false)
+        expect(app.uploaded_and_needs_staging?).to eq(false)
       end
 
       let(:app) do
@@ -186,28 +186,28 @@ module VCAP::CloudController
       it "should not trigger restaging when creating a binding" do
         ServiceBinding.make(:app => app, :service_instance => service_instance)
         app.refresh
-        expect(app.needs_staging?).to be false
+        expect(app.uploaded_and_needs_staging?).to be false
       end
 
       it "should not trigger restaging when directly destroying a binding" do
         binding = ServiceBinding.make(:app => app, :service_instance => service_instance)
         app.refresh
         fake_app_staging(app)
-        expect(app.needs_staging?).to be false
+        expect(app.uploaded_and_needs_staging?).to be false
 
         binding.destroy
         app.refresh
-        expect(app.needs_staging?).to be false
+        expect(app.uploaded_and_needs_staging?).to be false
       end
 
       it "should not trigger restaging when indirectly destroying a binding" do
         binding = ServiceBinding.make(:app => app, :service_instance => service_instance)
         app.refresh
         fake_app_staging(app)
-        expect(app.needs_staging?).to be false
+        expect(app.uploaded_and_needs_staging?).to be false
 
         app.remove_service_binding(binding)
-        expect(app.needs_staging?).to be false
+        expect(app.uploaded_and_needs_staging?).to be false
       end
     end
 

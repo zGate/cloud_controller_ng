@@ -17,6 +17,24 @@ module VCAP::CloudController::Diego
     required :log_guid, String
   end
 
+  class DesireDockerAppMessage < JsonMessage
+    required :process_guid, String
+    required :memory_mb, Integer
+    required :disk_mb, Integer
+    required :file_descriptors, Integer
+    required :docker_image, String
+    required :stack, String
+    required :start_command, String
+    required :environment, [{
+                                name: String,
+                                value: String,
+                            }]
+    required :num_instances, Integer
+    required :routes, [String]
+    optional :health_check_timeout_in_seconds, Integer
+    required :log_guid, String
+  end
+
   class DiegoUnavailable < RuntimeError
     def initialize(exception = nil)
       @wrapped_exception = exception
@@ -52,12 +70,17 @@ module VCAP::CloudController::Diego
     end
 
     def staging_needed(app)
-      staging_enabled(app) && (app.needs_staging? || app.detected_start_command.empty?)
+      staging_enabled(app) && (app.uploaded_and_needs_staging? || app.detected_start_command.empty?)
     end
 
     def send_desire_request(app)
       logger.info("desire.app.begin", :app_guid => app.guid)
       @message_bus.publish("diego.desire.app", desire_request(app).encode)
+    end
+
+    def send_docker_desire_request(app)
+      logger.info("desire.docker.app.begin", :app_guid => app.guid)
+      @message_bus.publish("diego.docker.desire.app", desire_docker_request(app).encode)
     end
 
     def send_stage_request(app, staging_task_id)
@@ -66,6 +89,14 @@ module VCAP::CloudController::Diego
       logger.info("staging.begin", :app_guid => app.guid)
 
       @message_bus.publish("diego.staging.start", staging_request(app))
+    end
+
+    def docker_staging_needed?(app)
+      docker_staging_enabled?(app) && (app.has_docker_image? && app.needs_staging?)
+    end
+
+    def stage_app_on_diego_docker(app)
+      @message_bus.publish("diego.docker.staging.start", docker_staging_request(app))
     end
 
     def desire_request(app)
@@ -91,8 +122,44 @@ module VCAP::CloudController::Diego
       DesireAppMessage.new(request)
     end
 
+    def desire_docker_request(app)
+      request = {
+          process_guid: lrp_guid(app),
+          memory_mb: app.memory,
+          disk_mb: app.disk_quota,
+          file_descriptors: app.file_descriptors,
+          docker_image: app.docker_image,
+          stack: app.stack.name,
+          start_command: app.detected_start_command,
+          environment: environment(app),
+          num_instances: desired_instances(app),
+          routes: app.uris,
+          log_guid: app.guid,
+      }
+
+      if app.health_check_timeout
+        request[:health_check_timeout_in_seconds] =
+            app.health_check_timeout
+      end
+
+      DesireDockerAppMessage.new(request)
+    end
+
     def desired_instances(app)
       app.started? ? app.instances : 0
+    end
+
+    def docker_staging_request(app)
+      {
+          :app_id => app.guid,
+          :task_id => app.staging_task_id,
+          :memory_mb => app.memory,
+          :disk_mb => app.disk_quota,
+          :file_descriptors => app.file_descriptors,
+          :environment => environment(app),
+          :stack => app.stack.name,
+          :docker_image => app.docker_image,
+      }
     end
 
     def staging_request(app)

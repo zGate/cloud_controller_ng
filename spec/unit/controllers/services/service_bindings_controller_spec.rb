@@ -32,7 +32,7 @@ module VCAP::CloudController
       app.package_hash = "abc"
       app.droplet_hash = "def"
       app.save
-      expect(app.needs_staging?).to eq(false)
+      expect(app.uploaded_and_needs_staging?).to eq(false)
     end
 
     let(:broker_client) { double('broker client') }

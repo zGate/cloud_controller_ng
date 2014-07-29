@@ -81,7 +81,7 @@ module VCAP::CloudController
       end
 
       def stage_if_needed(app, &success_callback)
-        if app.needs_staging?
+        if app.uploaded_and_needs_staging?
           app.last_stager_response = stage_app(app, &success_callback)
         else
           success_callback.call(:started_instances => 0)
@@ -102,6 +102,11 @@ module VCAP::CloudController
 
         if @diego_client.staging_needed(app)
           stage_app_on_diego(app)
+          return
+        end
+
+        if @diego_client.docker_staging_needed?(app)
+          stage_app_on_diego_docker(app)
           return
         end
 
