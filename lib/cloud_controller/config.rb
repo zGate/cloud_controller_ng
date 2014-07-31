@@ -221,6 +221,10 @@ module VCAP::CloudController
         dea_pool = Dea::Pool.new(message_bus)
         blobstore_url_generator = CloudController::DependencyLocator.instance.blobstore_url_generator
 
+
+        # TODO: construct a CompositeSubSystem here and give it instances of DiegoSubSystem and DeaSubSystem
+        # within the latter two, do this setup
+        # pass the composite through to AppObserver and see comments there
         diego_client = CloudController::DependencyLocator.instance.diego_client
         diego_client.connect!
 
@@ -228,7 +232,7 @@ module VCAP::CloudController
 
         StagingCompletionHandler.new(message_bus, diego_client).subscribe!
 
-        AppObserver.configure(@config, message_bus, dea_pool, stager_pool,diego_client)
+        AppObserver.configure(@config, message_bus, dea_pool, stager_pool, diego_client)
 
         LegacyBulk.configure(@config, message_bus)
 

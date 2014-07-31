@@ -3,24 +3,96 @@ require "models/runtime/droplet_uploader"
 require "cloud_controller/dea/app_stopper"
 
 module VCAP::CloudController
+  class Backend
+    def initialize(message_bus, diego_client)
+      @message_bus = message_bus
+      @diego_client = diego_client
+    end
+
+    def for(app)
+      if @diego_client.running_enabled(app)
+        Diego.new(app, @diego_client)
+      else
+        Dea.new(app, @message_bus)
+      end
+    end
+
+    class Dea
+      include VCAP::CloudController::Dea # TODO: Stop including once this backed is moved into the Dea namespace
+
+      def initialize(app, message_bus)
+        @app = app
+        @message_bus = message_bus
+      end
+
+      def scale
+        changes = @app.previous_changes
+        delta = changes[:instances][1] - changes[:instances][0]
+
+        Client.change_running_instances(@app, delta)
+        broadcast_app_updated
+      end
+
+      def start#(staging_result={})
+        started_instances = staging_result[:started_instances] || 0
+        Dea::Client.start(@app, :instances_to_start => @app.instances - started_instances)
+        broadcast_app_updated
+      end
+
+      def stop
+        Client.stop(@app)
+        broadcast_app_updated
+      end
+
+      def delete
+        stopper = AppStopper.new(@message_bus)
+        stopper.stop(@app)
+      end
+
+      def broadcast_app_updated # TODO: Make private when all usages have been moved into this class
+        @message_bus.publish("droplet.updated", droplet: @app.guid)
+      end
+    end
+
+    class Diego
+      def initialize(app, diego_client)
+        @app = app
+        @diego_client = diego_client
+      end
+
+      def scale
+        @diego_client.send_desire_request(@app)
+      end
+
+      def start#(_={})
+        @diego_client.send_desire_request(@app)
+      end
+
+      def stop
+        @diego_client.send_desire_request(@app)
+      end
+
+      def delete
+        @diego_client.send_desire_request(@app)
+      end
+    end
+  end
+
   module AppObserver
     class << self
       extend Forwardable
 
       def configure(config, message_bus, dea_pool, stager_pool, diego_client)
         @config = config
-        @message_bus = message_bus
-        @dea_pool = dea_pool
-        @stager_pool = stager_pool
-        @diego_client = diego_client
+        @message_bus = message_bus # TODO: Always use @backend instead
+        @dea_pool = dea_pool # TODO: Always use @backend instead
+        @stager_pool = stager_pool # TODO: Always use @backend instead
+        @diego_client = diego_client # TODO: Always use @backend instead
+        @backend = Backend.new(@message_bus, @diego_client)
       end
 
       def deleted(app)
-        if @diego_client.running_enabled(app)
-          @diego_client.send_desire_request(app)
-        else
-          Dea::AppStopper.new(@message_bus).stop(app)
-        end
+        @backend.for(app).delete
 
         delete_package(app) if app.package_hash
         delete_buildpack_cache(app)
@@ -33,8 +105,7 @@ module VCAP::CloudController
         if changes.has_key?(:state)
           react_to_state_change(app)
         elsif changes.has_key?(:instances)
-          delta = changes[:instances][1] - changes[:instances][0]
-          react_to_instances_change(app, delta)
+          react_to_instances_change(app)
         end
       end
 
@@ -68,70 +139,40 @@ module VCAP::CloudController
         end
       end
 
-      def stage_app(app, &completion_callback)
-        validate_app_for_staging(app)
-
-        task = Dea::AppStagerTask.new(@config, @message_bus, app, @dea_pool, @stager_pool, dependency_locator.blobstore_url_generator)
-        task.stage(&completion_callback)
-      end
-
-
       def stage_app_on_diego(app)
+        # TODO: encapsulate in Diego::ClientStrategy included in CompositeClientStrategy
         validate_app_for_staging(app)
         @diego_client.send_stage_request(app, VCAP.secure_uuid)
       end
 
-      def stage_if_needed(app, &success_callback)
-        if app.needs_staging?
-          app.last_stager_response = stage_app(app, &success_callback)
-        else
-          success_callback.call(:started_instances => 0)
-        end
-      end
-
       def react_to_state_change(app)
-        if !app.started?
-          if @diego_client.running_enabled(app)
-            @diego_client.send_desire_request(app)
-            return
+        # TODO: client_strategy.react_to_state_change(app) and move all logic into *::ClientStrategy included in CompositeClientStrategy
+        # or decompose logic further?
+        if !app.started? # needs to be stopped...
+          @backend.for(app).stop
+        elsif app.needs_staging?
+          if @diego_client.staging_needed(app)
+            stage_app_on_diego(app)
+          else
+            validate_app_for_staging(app)
+            task = Dea::AppStagerTask.new(@config, @message_bus, app, @dea_pool, @stager_pool, dependency_locator.blobstore_url_generator)
+            app.last_stager_response = task.stage do |staging_result|
+              @backend.for(app).start(staging_result)
+            end
           end
-
-          Dea::Client.stop(app)
-          broadcast_app_updated(app)
-          return
-        end
-
-        if @diego_client.staging_needed(app)
-          stage_app_on_diego(app)
-          return
-        end
-
-        if @diego_client.running_enabled(app)
-          @diego_client.send_desire_request(app)
-          return
-        end
-
-        stage_if_needed(app) do |staging_result|
-          started_instances = staging_result[:started_instances] || 0
-          Dea::Client.start(app, :instances_to_start => app.instances - started_instances)
-          broadcast_app_updated(app)
+        else
+          @backend.for(app).start
         end
       end
 
-      def react_to_instances_change(app, delta)
-        if app.started?
-          if @diego_client.running_enabled(app)
-            @diego_client.send_desire_request(app)
-            return
-          end
-
-          Dea::Client.change_running_instances(app, delta)
-          broadcast_app_updated(app)
-        end
+      def foo_bar(app, staging_result={:started_instances => 0})
+        started_instances = staging_result[:started_instances]
+        Dea::Client.start(app, :instances_to_start => app.instances - started_instances)
+        @backend.for(app).broadcast_app_updated
       end
 
-      def broadcast_app_updated(app)
-        @message_bus.publish("droplet.updated", droplet: app.guid)
+      def react_to_instances_change(app)
+        @backend.for(app).scale if app.started?
       end
     end
   end

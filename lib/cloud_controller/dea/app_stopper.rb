@@ -1,6 +1,5 @@
 module VCAP::CloudController
   module Dea
-
     class AppStopper
       attr_reader :message_bus
 
