@@ -24,6 +24,16 @@ module VCAP::CloudController
       context "as a developer" do
         let(:user) { make_developer_for_space(app_obj.space) }
 
+        context "when the app_bits_upload flag is disabled" do
+          let(:req_body) { {} }
+
+          it "denies access" do
+            FeatureFlag.make(name: 'app_bits_upload', enabled: false).save
+            make_request
+            expect(last_response.status).to eq(403)
+          end
+        end
+
         context "with an empty request" do
           let(:req_body) { {} }
 

@@ -29,6 +29,26 @@ module VCAP::CloudController
       it "should return many resources that match" do
         resource_match_request(:put, "/v2/resource_match", @descriptors, [@dummy_descriptor])
       end
+
+      context "when app_bits_upload is disabled" do
+        before { FeatureFlag.make(name: 'app_bits_upload', enabled: false).save }
+
+        context "and the user is an admin" do
+          it "should still allow resource match" do
+            user = User.make(:admin => true, :active => true)
+            send(:put, "/v2/resource_match", '{}', json_headers(headers_for(user)))
+            expect(last_response.status).to eq(200)
+          end
+        end
+
+        context "and the user is not an admin" do
+          it "returns a 403" do
+            user = User.make(:admin => false, :active => true)
+            send(:put, "/v2/resource_match", '{}', json_headers(headers_for(user)))
+            expect(last_response.status).to eq(403)
+          end
+        end
+      end
     end
   end
 end

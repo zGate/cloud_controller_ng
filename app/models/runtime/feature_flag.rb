@@ -5,7 +5,8 @@ module VCAP::CloudController
     end
 
     DEFAULT_FLAGS = {
-      user_org_creation: false
+      user_org_creation: false,
+      app_bits_upload: true
     }
 
     export_attributes :name, :enabled

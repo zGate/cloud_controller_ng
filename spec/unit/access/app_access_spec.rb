@@ -24,6 +24,13 @@ module VCAP::CloudController
       it 'allows user to :read_env' do
         expect(subject).to allow_op_on_object(:read_env, object)
       end
+
+      describe ".upload?" do
+        it 'allows user to :upload even if app_bits_upload flag is off' do
+          FeatureFlag.make(name: 'app_bits_upload', enabled: false).save
+          expect(subject).to allow_op_on_object(:upload, object)
+        end
+      end
     end
 
     context 'space developer' do
@@ -35,6 +42,22 @@ module VCAP::CloudController
 
       it 'allows user to :read_env' do
         expect(subject).to allow_op_on_object(:read_env, object)
+      end
+
+      describe ".upload?" do
+        context "when the app_bits_upload flag is enabled" do
+          it 'allows user to :upload' do
+            FeatureFlag.make(name: 'app_bits_upload', enabled: true).save
+            expect(subject).to allow_op_on_object(:upload, object)
+          end
+        end
+
+        context "when the app_bits_upload flag is disabled" do
+          it 'does not allows user to :upload' do
+            FeatureFlag.make(name: 'app_bits_upload', enabled: false).save
+            expect(subject).not_to allow_op_on_object(:upload, object)
+          end
+        end
       end
 
       context 'when the organization is suspended' do
@@ -51,6 +74,10 @@ module VCAP::CloudController
       it 'does not allow user to :read_env' do
         expect(subject).not_to allow_op_on_object(:read_env, object)
       end
+
+      it 'does not allow user to :upload' do
+        expect(subject).not_to allow_op_on_object(:upload, object)
+      end
     end
 
     context 'organization user' do
@@ -59,6 +86,10 @@ module VCAP::CloudController
 
       it 'does not allow user to :read_env' do
         expect(subject).not_to allow_op_on_object(:read_env, object)
+      end
+
+      it 'does not allow user to :upload' do
+        expect(subject).not_to allow_op_on_object(:upload, object)
       end
     end
 
@@ -69,6 +100,10 @@ module VCAP::CloudController
       it 'does not allow user to :read_env' do
         expect(subject).not_to allow_op_on_object(:read_env, object)
       end
+
+      it 'does not allow user to :upload' do
+        expect(subject).not_to allow_op_on_object(:upload, object)
+      end
     end
 
     context 'billing manager' do
@@ -77,6 +112,10 @@ module VCAP::CloudController
 
       it 'does not allow user to :read_env' do
         expect(subject).not_to allow_op_on_object(:read_env, object)
+      end
+
+      it 'does not allow user to :upload' do
+        expect(subject).not_to allow_op_on_object(:upload, object)
       end
     end
 
@@ -90,6 +129,10 @@ module VCAP::CloudController
       it 'does not allow user to :read_env' do
         expect(subject).not_to allow_op_on_object(:read_env, object)
       end
+
+      it 'does not allow user to :upload' do
+        expect(subject).not_to allow_op_on_object(:upload, object)
+      end
     end
 
     context 'space auditor' do
@@ -101,6 +144,10 @@ module VCAP::CloudController
 
       it 'does not allow user to :read_env' do
         expect(subject).not_to allow_op_on_object(:read_env, object)
+      end
+
+      it 'does not allow user to :upload' do
+        expect(subject).not_to allow_op_on_object(:upload, object)
       end
     end
 
