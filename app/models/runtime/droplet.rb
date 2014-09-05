@@ -43,8 +43,17 @@ module VCAP::CloudController
       blobstore.blob(new_blobstore_key) || blobstore.blob(old_blobstore_key)
     end
 
-    def update_start_command(detected_start_command)
-      update(detected_start_command: detected_start_command)
+    # TODO - rename the `detected_start_command` column
+    def execution_metadata
+      detected_start_command
+    end
+
+    def execution_metadata=(metadata)
+      self.detected_start_command = metadata
+    end
+
+    def update_execution_metadata(metadata)
+      update(detected_start_command: metadata)
     end
 
     private
