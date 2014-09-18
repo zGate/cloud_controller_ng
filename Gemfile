@@ -36,10 +36,12 @@ gem 'clockwork', require: false
 group :db do
   gem 'mysql2'
   gem 'pg'
+  gem 'sqlite3'
 end
 
 group :operations do
   gem 'pry'
+  gem 'click', '0.2.0'
 end
 
 group :test do

@@ -211,6 +211,12 @@ module VCAP::CloudController
         },
 
         optional(:dea_advertisement_timeout_in_seconds) => Integer,
+
+        optional(:memory_stats) => {
+          optional(:database) => enum(String, NilClass),
+          optional(:interval_seconds) => enum(Integer, NilClass),
+          optional(:session_name) => enum(String, NilClass),
+        },
       }
     end
 
@@ -308,6 +314,7 @@ module VCAP::CloudController
         config[:diego][:running] ||= "disabled"
         config[:diego_docker] ||= false
         config[:dea_advertisement_timeout_in_seconds] ||= 10
+        config[:memory_stats] ||= {}
         sanitize(config)
       end
 

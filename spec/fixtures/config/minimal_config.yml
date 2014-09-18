@@ -123,3 +123,7 @@ default_staging_security_groups:
 default_running_security_groups:
 - defaults
 
+memory_stats:
+  database: "sqlite:///tmp/click.sqlite"
+  interval_seconds: 300
+  session_name: "CC API"

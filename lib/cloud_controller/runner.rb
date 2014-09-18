@@ -81,6 +81,29 @@ module VCAP::CloudController
     end
 
     def run!
+      memory_stats_db = @config[:memory_stats][:database]
+
+      puts "HERE"
+      puts memory_stats_db
+
+      if memory_stats_db
+        Thread.new do
+          begin
+            require "click/clicker"
+            Click.clicker_with_database(@config[:memory_stats][:session_name], memory_stats_db) do |clicker|
+              loop do
+                clicker.click!
+                sleep @config[:memory_stats][:interval_seconds]
+              end
+            end
+          rescue => e
+            puts "Error in click thread: #{e}"
+            puts e.backtrace
+            raise
+          end
+        end
+      end
+
       EM.run do
         begin
           message_bus = MessageBus::Configurer.new(servers: @config[:message_bus_servers], logger: logger).go
