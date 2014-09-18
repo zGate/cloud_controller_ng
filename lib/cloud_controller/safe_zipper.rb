@@ -36,7 +36,7 @@ class SafeZipper
   private
 
   def unzip
-    @unzip ||= `unzip -qq -: -d #{@zip_destination} #{@zip_path}`
+    @unzip ||= `unzip -X -qq -: -d #{@zip_destination} #{@zip_path}`
   end
 
   def zip
@@ -57,7 +57,7 @@ class SafeZipper
 
   def zip_info
     @zip_info ||= begin
-      output, error, status = Open3.capture3(%Q{unzip -l #{@zip_path}})
+      output, error, status = Open3.capture3(%Q{unzip -X -l #{@zip_path}})
 
       unless status.success?
         raise VCAP::Errors::ApiError.new_from_details("AppBitsUploadInvalid",
