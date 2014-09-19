@@ -20,7 +20,7 @@ resource "Apps", :type => :api do
     field :instances, "The number of instances of the app to run. To ensure optimal availability, ensure there are at least 2 instances.", required: opts[:required], example_values: [2, 6, 10]
     field :disk_quota, "The maximum amount of disk available to an instance of an app. In megabytes.", required: opts[:required], example_values: [1_204, 2_048]
     field :space_guid, "The guid of the associated space.", required: opts[:required], example_values: [Sham.guid]
-    field :stack_guid, "The guid of the associated stack.", default: "Uses the default system stack."
+    field :stack_guid, "The guid parameterof the associated stack.", default: "Uses the default system stack."
     field :state, "The current desired state of the app. One of STOPPED or STARTED.", default: "STOPPED", valid_values: %w[STOPPED STARTED] # nice to validate this eventually..
     field :command, "The command to start an app after it is staged (e.g. 'rails s -p $PORT' or 'java com.org.Server $PORT'). Applies to the next time this app is staged."
     field :execution_metadata, "The execution metadata returned by staging", readonly: true, example_values: ['{"start_command": "node app.js"}']
@@ -31,6 +31,30 @@ resource "Apps", :type => :api do
     field :production, "Deprecated.", deprecated: true, default: true, valid_values: [true, false]
     field :console, "Open the console port for the app (at $CONSOLE_PORT).", deprecated: true, default: false, valid_values: [true, false]
     field :debug, "Open the debug port for the app (at $DEBUG_PORT).", deprecated: true, default: false, valid_values: [true, false]
+  end
+
+  describe "Process Types" do
+    get "/v2/apps/:guid/process_types" do
+      let!(:process_type) { VCAP::CloudController::ProcessType.make(app: app_obj) }
+
+      example "Listing process types associated with an app" do
+        client.get "/v2/apps/#{app_obj.guid}/process_types", {}, headers
+        p process_type.guid
+        #client.get "/v2/process_types/#{process_type.guid}", {}, headers
+        expect(status).to eq(200)
+      end
+    end
+
+#    put "/v2/apps/:guid/process_types/:type" do
+#      let(:process_type) { VCAP::CloudController::ProcessType.make(app: app_obj) }
+#
+#      example "Scaling a process type" do
+#        client.put "/v2/apps/#{app_obj.guid}/process_types/web", { "instances" => 1 }, headers
+#        p process_type.guid
+#        #client.get "/v2/process_types/#{process_type.guid}", {}, headers
+#        expect(status).to eq(201)
+#      end
+#    end
   end
 
   describe "Standard endpoints" do

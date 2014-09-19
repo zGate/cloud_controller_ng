@@ -22,6 +22,7 @@ module VCAP::CloudController
       to_many    :events,               :link_only => true
       to_many    :service_bindings,     :exclude_in => :create
       to_many    :routes
+      to_many    :process_types,        :exclude_in => [:create, :update], route_for: :get
     end
 
     query_parameters :name, :space_guid, :organization_guid

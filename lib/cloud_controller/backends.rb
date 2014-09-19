@@ -45,18 +45,18 @@ module VCAP::CloudController
       end
     end
 
-    def find_one_to_run(app)
+    def find_one_to_run(app, process_type=nil)
       case @config[:diego][:running]
       when 'required'
         diego_backend(app)
       when 'disabled'
         app.run_with_diego? ?
           raise_diego_disabled :
-          dea_backend(app)
+          dea_backend(app, process_type)
       when 'optional'
         app.run_with_diego? ?
           diego_backend(app) :
-          dea_backend(app)
+          dea_backend(app, process_type)
       end
     end
 
@@ -81,8 +81,8 @@ module VCAP::CloudController
       Diego::Backend.new(app, messenger, protocol)
     end
 
-    def dea_backend(app)
-      Dea::Backend.new(app, @config, @message_bus, @dea_pool, @stager_pool)
+    def dea_backend(app, process_type=nil)
+      Dea::Backend.new(app, process_type, @config, @message_bus, @dea_pool, @stager_pool)
     end
 
     def raise_diego_disabled

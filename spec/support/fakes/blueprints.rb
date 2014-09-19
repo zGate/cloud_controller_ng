@@ -33,6 +33,11 @@ module VCAP::CloudController
     guid              { Sham.uaa_id }
   end
 
+  ProcessType.blueprint do
+    name              { "web" }
+    app               { AppFactory.make }
+  end
+
   Organization.blueprint do
     name              { Sham.name }
     quota_definition  { QuotaDefinition.make }
@@ -143,7 +148,6 @@ module VCAP::CloudController
     name              { Sham.name }
     space             { Space.make }
     stack             { Stack.make }
-    instances         { 1 }
   end
 
   ServiceBinding.blueprint do

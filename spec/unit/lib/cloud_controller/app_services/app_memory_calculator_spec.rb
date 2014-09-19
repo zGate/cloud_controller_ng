@@ -4,7 +4,10 @@ module VCAP::CloudController
   describe AppMemoryCalculator do
 
     subject { described_class.new(app) }
-    let(:app) { AppFactory.make(package_hash: 'made-up-hash') }
+    let(:app) { AppFactory.make(package_hash: 'made-up-hash').save }
+    let!(:web_process) { ProcessType.make(app: app, name: 'web') }
+    let(:worker1) { ProcessType.make(app: app, name: 'worker1') }
+    let(:worker2) { ProcessType.make(app: app, name: 'worker2') }
     let(:stopped_state) { 'STOPPED' }
     let(:started_state) { 'STARTED' }
 
@@ -36,9 +39,20 @@ module VCAP::CloudController
               db_app.save(validate: false)
             end
 
-            it 'returns the total requested memory' do
-              app.state = started_state
-              expect(subject.additional_memory_requested).to eq(subject.total_requested_memory)
+            context "when there are no workers" do
+              it 'returns the total requested memory' do
+                app.state = started_state
+                expect(subject.additional_memory_requested).to eq(subject.total_requested_memory)
+              end
+            end
+
+            context "when there are workers" do
+              it 'returns the total requested memory' do
+                app.state = started_state
+                worker1.instances = 5
+                worker2.instances = 3
+                expect(subject.additional_memory_requested).to eq(subject.total_requested_memory)
+              end
             end
           end
 
@@ -49,11 +63,24 @@ module VCAP::CloudController
               db_app.save(validate: false)
             end
 
-            it 'returns only newly requested memory' do
-              expected      = app.memory
-              app.instances += 1
+            context "when there are no workers" do
+              it 'returns only newly requested memory' do
+                expected      = app.memory
+                app.instances += 1
 
-              expect(subject.additional_memory_requested).to eq(expected)
+                expect(subject.additional_memory_requested).to eq(expected)
+              end
+            end
+
+            context "when there are workers" do
+              it 'returns only newly requested memory' do
+                expected      = app.memory
+                app.instances += 1
+                worker1.instances += 1
+                worker2.instances += 1
+
+                expect(subject.additional_memory_requested).to eq(expected)
+              end
             end
           end
         end
@@ -74,9 +101,22 @@ module VCAP::CloudController
     end
 
     describe '#total_requested_memory' do
-      it 'returns requested memory * requested instances' do
-        expected = app.memory * app.instances
-        expect(subject.total_requested_memory).to eq(expected)
+      context "when there are no workers" do
+        it 'returns requested memory * requested instances' do
+          expected = app.memory * app.instances
+          expect(subject.total_requested_memory).to eq(expected)
+        end
+      end
+
+      context "when there are workers" do
+        it 'returns requested memory * requested instances' do
+          worker1.instances = 5
+          worker2.instances = 7
+          worker1.save; worker2.save
+          app.reload
+          expected = app.memory * (app.instances + 5 + 7)
+          expect(subject.total_requested_memory).to eq(expected)
+        end
       end
     end
 

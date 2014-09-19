@@ -67,6 +67,7 @@ module VCAP::CloudController
             events:           [:get, :put, :delete],
             service_bindings: [:get, :put, :delete],
             routes:           [:get, :put, :delete],
+            process_types:    [:get],
           })
       end
 

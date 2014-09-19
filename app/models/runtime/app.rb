@@ -1,4 +1,5 @@
 require "cloud_controller/app_observer"
+require "cloud_controller/process_type_observer"
 require "cloud_controller/database_uri_generator"
 require "cloud_controller/undo_app_changes"
 require "cloud_controller/errors/application_missing"
@@ -26,6 +27,7 @@ module VCAP::CloudController
     one_to_many :droplets
     one_to_many :service_bindings
     one_to_many :events, :class => VCAP::CloudController::AppEvent
+    one_to_many :process_types
     many_to_one :admin_buildpack, class: VCAP::CloudController::Buildpack
     many_to_one :space, after_set: :validate_space
     many_to_one :stack
@@ -95,6 +97,7 @@ module VCAP::CloudController
     end
 
     def validation_policies
+      return []
       [
           AppEnvironmentPolicy.new(self),
           DiskQuotaPolicy.new(self, max_app_disk_in_mb),
@@ -485,6 +488,11 @@ module VCAP::CloudController
     def add_new_droplet(hash)
       self.droplet_hash = hash
       add_droplet(droplet_hash: hash)
+      self.save
+    end
+
+    def add_new_process_type(name)
+      self.add_process_type(name: name)
       self.save
     end
 

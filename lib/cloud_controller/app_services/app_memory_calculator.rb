@@ -12,14 +12,16 @@ module VCAP::CloudController
     end
 
     def total_requested_memory
-      app.memory * app.instances
+      p "am #{app.memory}"
+      p "apt #{app.process_types}"
+      app.memory * app.process_types.map { |pt| pt.instances }.inject(0) { |sum, element| sum + element }
     end
 
     def currently_used_memory
       return 0 if app.new?
       db_app = app_from_db
       return 0 if db_app.stopped?
-      db_app[:memory] * db_app[:instances]
+      db_app[:memory] * process_types_from_db.map { |pt| pt.instances }.inject(0) { |sum, element| sum + element }
     end
 
     private
@@ -32,6 +34,10 @@ module VCAP::CloudController
         raise Errors::ApplicationMissing, error_message % app.guid
       end
       app_from_db
+    end
+
+    def process_types_from_db
+      ProcessType.where(app: app) || []
     end
 
     def logger

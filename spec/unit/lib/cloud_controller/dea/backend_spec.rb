@@ -81,7 +81,7 @@ module VCAP::CloudController
           backend.scale
         end
 
-        context "when the app now desires more instances than it used to" do
+        context "when the app web process now desires more instances than it used to" do
           let(:previous_changes) do
             {instances: [10, 15]}
           end
@@ -91,7 +91,7 @@ module VCAP::CloudController
           end
         end
 
-        context "when the app now desires fewer instances than it used to" do
+        context "when the app web process now desires fewer instances than it used to" do
           let(:previous_changes) do
             {instances: [10, 5]}
           end

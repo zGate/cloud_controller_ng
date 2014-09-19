@@ -1,9 +1,10 @@
 module VCAP::CloudController
   module Dea
     class Backend
-      def initialize(app, config, message_bus, dea_pool, stager_pool)
+      def initialize(app, process_type, config, message_bus, dea_pool, stager_pool)
         @logger ||= Steno.logger("cc.dea.backend")
         @app = app
+        @process_type = process_type
         @config = config
         @message_bus = message_bus
         @dea_pool = dea_pool
@@ -21,10 +22,10 @@ module VCAP::CloudController
       end
 
       def scale
-        changes = @app.previous_changes
+        changes = @process_type.previous_changes
         delta = changes[:instances][1] - changes[:instances][0]
 
-        Client.change_running_instances(@app, delta)
+        Client.change_running_instances(@app, @process_type, delta)
       end
 
       def start(staging_result={})
