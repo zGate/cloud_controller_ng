@@ -22,6 +22,7 @@ module VCAP::CloudController
 
     def after_commit
       super
+      ProcessTypeObserver.updated(self)
     end
   end
 end

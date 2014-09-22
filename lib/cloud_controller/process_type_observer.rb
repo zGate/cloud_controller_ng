@@ -25,7 +25,6 @@ module VCAP::CloudController
       private
 
       def react_to_instances_change(process_type)
-        p process_type.app.started?
         @backends.find_one_to_run(process_type.app, process_type).scale if process_type.app.started?
       end
     end

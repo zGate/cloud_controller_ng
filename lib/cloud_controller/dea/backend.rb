@@ -17,20 +17,20 @@ module VCAP::CloudController
 
       def stage
         blobstore_url_generator = CloudController::DependencyLocator.instance.blobstore_url_generator
-        task = AppStagerTask.new(@config, @message_bus, @app, @dea_pool, @stager_pool, blobstore_url_generator)
-        @app.last_stager_response = task.stage { |staging_result| start(staging_result) }
+        task = AppStagerTask.new(@config, @message_bus, @process_type, @dea_pool, @stager_pool, blobstore_url_generator)
+        @process_type.last_stager_response = task.stage { |staging_result| start(staging_result) }
       end
 
       def scale
         changes = @process_type.previous_changes
         delta = changes[:instances][1] - changes[:instances][0]
 
-        Client.change_running_instances(@app, @process_type, delta)
+        Client.change_running_instances(@process_type, delta)
       end
 
       def start(staging_result={})
         started_instances = staging_result[:started_instances] || 0
-        Client.start(@app, instances_to_start: @app.instances - started_instances)
+        Client.start(@process_type, instances_to_start: @app.instances - started_instances)
       end
 
       def stop
