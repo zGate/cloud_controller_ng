@@ -164,6 +164,7 @@ module VCAP::CloudController
 
     def run_with_diego?
       return true if Config.config[:diego][:running] == "required"
+      return false if Config.config[:diego][:running] == "disabled"
       !!(environment_json && environment_json["CF_DIEGO_RUN_BETA"] == "true")
     end
 
