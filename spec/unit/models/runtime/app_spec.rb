@@ -2007,31 +2007,123 @@ module VCAP::CloudController
       end
     end
 
-    describe "diego flag" do
+    describe "diego attribute" do
       subject { AppFactory.make }
 
-      context "when the CF_DIEGO_RUN_BETA environment variable is set and saved" do
-        it "becomes a diego app" do
-          expect(subject.diego).to eq(false)
+      context "when the configuration allows diego for running" do
+        before do
+          TestConfig.override(diego: {staging: "optional", running: "optional"})
+        end
 
-          subject.environment_json = {"CF_DIEGO_RUN_BETA" => "true"}
+        it "is not a diego app by default" do
+          expect(subject.diego).to be false
+        end
 
-          expect(subject.diego).to eq(false)
+        context "when CF_DIEGO_RUN_BETA is true" do
+          subject { AppFactory.make(:environment_json => {"CF_DIEGO_RUN_BETA" => "true"}) }
 
-          subject.save
-          subject.refresh
+          it "can be created as a diego app" do
+            expect(subject.diego).to be true
+          end
+        end
 
-          expect(subject.diego).to eq(true)
+        context "when CF_DIEGO_RUN_BETA is false" do
+          subject { AppFactory.make(:environment_json => {"CF_DIEGO_RUN_BETA" => "false"}) }
+
+          it "can be created as a non-diego app" do
+            expect(subject.diego).to be false
+          end
+        end
+
+        describe "when CF_DIEGO_RUN_BETA changes" do
+          context "and it changes to true" do
+            subject { AppFactory.make(:environment_json => {"CF_DIEGO_RUN_BETA" => "false"}) }
+
+            it "sets diego to true" do
+              expect {
+                subject.environment_json = {"CF_DIEGO_RUN_BETA" => "true"}
+                subject.save
+                subject.reload
+              }.to change {
+                subject.diego
+              }.from(false).to(true)
+            end
+          end
+
+          context "and it changes to false" do
+            subject { AppFactory.make(:environment_json => {"CF_DIEGO_RUN_BETA" => "true"}) }
+
+            it "sets diego to true" do
+              expect {
+                subject.environment_json = {"CF_DIEGO_RUN_BETA" => "false"}
+                subject.save
+                subject.reload
+              }.to change {
+                subject.diego
+              }.from(true).to(false)
+            end
+          end
         end
       end
 
       context "when the configuration requires diego for running" do
         before do
-          TestConfig.override(diego: { staging: "required", running: "required" })
+          TestConfig.override(diego: {staging: "required", running: "required"})
         end
 
         it "gets created as a diego app" do
           expect(subject.diego).to be(true)
+        end
+
+        context "when CF_DIEGO_RUN_BETA is set to false" do
+          it "leaves diego as true" do
+            expect {
+              subject.environment_json = {"CF_DIEGO_RUN_BETA" => "false"}
+              subject.save
+              subject.reload
+            }.to_not change {
+              subject.diego
+            }.from(true)
+          end
+        end
+      end
+
+      context "when the configuration disables diego for running" do
+        context "but the diego field was already set in the database" do
+          before do
+            subject.environment_json = {"CF_DIEGO_RUN_BETA" => "true"}
+            subject.save
+            subject.reload
+            expect(subject.diego).to be(true)
+
+            TestConfig.override(diego: {staging: "disabled", running: "disabled"})
+          end
+
+          it "changes the field back to false the next time the app is saved" do
+            expect {
+              subject.environment_json = {"CF_DIEGO_RUN_BETA" => "true"}
+              subject.save
+              subject.reload
+            }.to change {
+              subject.diego
+            }.from(true).to(false)
+          end
+        end
+
+        context "and the diego field has not been set in the database" do
+          before do
+            TestConfig.override(diego: {staging: "disabled", running: "disabled"})
+          end
+
+          it "cannot have its diego attribute set" do
+            expect {
+              subject.environment_json = {"CF_DIEGO_RUN_BETA" => "true"}
+              subject.save
+              subject.reload
+            }.to_not change {
+              subject.diego
+            }.from(false)
+          end
         end
       end
     end
