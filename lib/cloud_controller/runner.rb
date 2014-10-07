@@ -128,9 +128,11 @@ module VCAP::CloudController
 
     def stop!
       stop_router_registrar do
-        stop_thin_server
-        logger.info("Stopping EventMachine")
-        EM.stop
+        EM.add_timer(seconds_until_router_unregistered) do
+          stop_thin_server
+          logger.info("Stopping EventMachine")
+          EM.stop
+        end
       end
     end
 
@@ -144,9 +146,15 @@ module VCAP::CloudController
 
     private
 
+    def seconds_until_router_unregistered
+      return 25 if @router_unregister_time.nil?
+      [0, @router_unregister_time - Time.now].max
+    end
+
     def stop_router_registrar(&blk)
       logger.info("Unregistering routes.")
       router_registrar.shutdown(&blk)
+      @router_unregister_time = Time.now + 25
     end
 
     def start_cloud_controller(message_bus)

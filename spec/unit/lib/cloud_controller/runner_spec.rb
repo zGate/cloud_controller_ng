@@ -221,11 +221,62 @@ module VCAP::CloudController
     end
 
     describe "#stop!" do
-      it "should stop thin and EM after unregistering routes" do
-        expect(registrar).to receive(:shutdown).and_yield
-        expect(subject).to receive(:stop_thin_server)
-        expect(EM).to receive(:stop)
-        subject.stop!
+      context "when the router unregistration has not already finished" do
+        it "should stop EM and thin after 25 seconds to ensure the unregistration has been processed" do
+          expect(registrar).to receive(:shutdown).and_yield
+          allow(EM).to receive(:stop)
+          allow(subject).to receive(:stop_thin_server)
+          expect(EM).to receive(:add_timer) do |timeout, &blk|
+            expect(timeout).to eq(25)
+            expect(EM).not_to have_received(:stop)
+            blk.call
+            expect(EM).to have_received(:stop)
+            expect(subject).to have_received(:stop_thin_server)
+          end
+          subject.stop!
+        end
+      end
+
+      context "when router unregistration has already completed" do
+        let(:start_time) { Time.new(2014,1,1) }
+
+        before do
+          allow(Time).to receive(:now).and_return(start_time)
+          subject.send(:stop_router_registrar)
+          allow(Time).to receive(:now).and_return(start_time + 26.seconds)
+        end
+
+        it "should stop EM immediately" do
+          expect(registrar).to receive(:shutdown).and_yield
+          expect(EM).to receive(:stop)
+          expect(EM).to receive(:add_timer) do |timeout, &blk|
+            expect(timeout).to eq(0)
+            blk.call
+          end
+          subject.stop!
+        end
+      end
+
+      context "when router unregistration was started, but there is still time remaining before the route is guaranteed to have been removed" do
+        let(:start_time) { Time.new(2014,1,1) }
+
+        before do
+          allow(Time).to receive(:now).and_return(start_time)
+          subject.send(:stop_router_registrar)
+          allow(Time).to receive(:now).and_return(start_time + 5.seconds)
+        end
+
+        it "should add a timer to stop EM after the correct amount of time" do
+          expect(registrar).to receive(:shutdown).and_yield
+          allow(EM).to receive(:stop)
+          expect(EM).to receive(:add_timer) do |timeout, &blk|
+            expect(timeout).to eq(20)
+            expect(EM).not_to have_received(:stop)
+            blk.call
+            expect(EM).to have_received(:stop)
+          end
+          subject.stop!
+        end
       end
     end
 
