@@ -10,6 +10,8 @@ module VCAP::CloudController
 
     query_parameters :timestamp, :app_guid
 
+    deprecated_endpoint '/v2/app_events'
+
     def delete(guid)
       do_delete(find_guid_and_validate_access(:delete, guid))
     end
