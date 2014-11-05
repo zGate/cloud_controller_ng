@@ -1402,13 +1402,31 @@ module VCAP::CloudController
       end
     end
 
+    describe "#mark_as_staged" do
+      context "when the package is marked as pending" do
+        let(:app) { AppFactory.make }
+
+        it "updates the package_pending_since timestamp" do
+          expect {
+            app.mark_as_staged
+          }.to change { app.package_pending_since }.from(kind_of(Time)).to(nil)
+        end
+      end
+
+      context "when the app is already marked as staged" do
+        let(:app) { AppFactory.make }
+        before { app.mark_as_staged; app.save }
+
+        it "does not update the package_state_updated_at timestamp" do
+          expect {
+            app.mark_as_staged
+          }.to_not change { app.package_pending_since }.from(nil)
+        end
+      end
+    end
+
     describe "#mark_as_failed_to_stage" do
       let (:app) { AppFactory.make }
-
-      before do
-        app.package_state = "PENDING"
-        app.staging_failed_reason = nil
-      end
 
       it "should set the package state to failed" do
         expect {
@@ -1441,6 +1459,24 @@ module VCAP::CloudController
           }.to change { app.staging_failed_reason }. to "StagingError"
         end
       end
+
+      context "when the app is not yet marked as failed to stage" do
+        it "updates the package_pending_since timestamp" do
+          expect {
+            app.mark_as_failed_to_stage
+          }.to change { app.package_pending_since }.from(kind_of(Time)).to(nil)
+        end
+      end
+
+      context "when the app is already marked as failed to stage" do
+        before { app.mark_as_failed_to_stage }
+
+        it "does not update the package_pending_since timestamp" do
+          expect {
+            app.mark_as_failed_to_stage
+          }.not_to change { app.package_pending_since }.from(nil)
+        end
+      end
     end
 
     describe "#mark_for_restaging" do
@@ -1461,6 +1497,25 @@ module VCAP::CloudController
         expect {
           app.mark_for_restaging
         }.to change { app.staging_failed_reason }.to nil
+      end
+
+      context "when the app is not yet marked as pending" do
+        let(:app) { AppFactory.make }
+        before { app.mark_as_staged ; app.save }
+
+        it "updates the package_pending_since timestamp" do
+          expect {
+            app.mark_for_restaging
+          }.to change { app.package_pending_since }.from(nil)
+        end
+      end
+
+      context "when the app is already marked as pending" do
+        it "update the package_pending_since date to current" do
+          expect {
+            app.mark_for_restaging
+          }.to change { app.package_pending_since }.from(kind_of(Time)).to(kind_of(Time))
+        end
       end
     end
 
