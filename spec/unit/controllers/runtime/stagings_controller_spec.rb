@@ -223,25 +223,12 @@ module VCAP::CloudController
           expect(last_response.status).to eq 200
         end
 
-        it "returns a JSON body with full url and basic auth to query for job's status" do
-          TestConfig.config[:external_domain] = ["www.example.com", TestConfig.config[:external_domain]]
-
+        it "returns a JSON body with a relative job status url" do
           post "/staging/droplets/#{app_obj.guid}/upload?async=true", upload_req
 
-          job = Delayed::Job.last
-          config = VCAP::CloudController::Config.config
-          user = config[:staging][:auth][:user]
-          password = config[:staging][:auth][:password]
-          polling_url = "http://#{user}:#{password}@#{config[:external_domain].first}/staging/jobs/#{job.guid}"
+          polling_url = "/staging/jobs/#{Delayed::Job.last.guid}"
 
           expect(decoded_response.fetch('metadata').fetch('url')).to eql(polling_url)
-        end
-
-        it "returns a JSON body with full url containing the correct external_protocol" do
-          TestConfig.config[:external_protocol] = "https"
-          post "/staging/droplets/#{app_obj.guid}/upload?async=true", upload_req
-          job = Delayed::Job.last
-          expect(decoded_response.fetch('metadata').fetch('url')).to start_with("https://")
         end
 
         context "with an invalid app" do

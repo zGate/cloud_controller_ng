@@ -1,6 +1,6 @@
 require "cloudfront-signer"
 require "cloud_controller/blobstore/client"
-require 'presenters/api/staging_job_presenter'
+require "presenters/api/staging_job_presenter"
 
 module VCAP::CloudController
   class StagingsController < RestController::BaseController
