@@ -11,25 +11,16 @@ module VCAP::CloudController
     end
 
     def persist!(desired_process)
-      # process_model = if desired_process.guid
-      #                   raise MutationAttemptWithoutALock unless @lock_acquired
-      #                   changes = changes_for_process(desired_process)
-      #                   App.first!(guid: desired_process.guid).update(changes)
-      #                 else
-      #                   attributes = attributes_for_process(desired_process).reject { |_, v| v.nil? }
-      #                   App.create(attributes)
-      #                 end
-      #
-      # ProcessMapper.map_model_to_domain(process_model)
-
       process_model = ProcessMapper.map_domain_to_model(desired_process)
+
+      raise ProcessNotFound if process_model.nil?
       raise MutationAttemptWithoutALock if process_model.guid && !@lock_acquired
+
       process_model.save
       ProcessMapper.map_model_to_domain(process_model)
+
     rescue Sequel::ValidationFailed => e
       raise InvalidProcess.new(e.message)
-    rescue Sequel::NoMatchingRow => e
-      raise ProcessNotFound.new(e.message)
     end
 
     def find_by_guid(guid)
@@ -70,10 +61,6 @@ module VCAP::CloudController
 
     private
 
-    def changes_for_process(process)
-      process.changes
-    end
-
     def attributes_for_process(process)
       {
         guid:                 process.guid,
@@ -90,12 +77,6 @@ module VCAP::CloudController
         docker_image:         process.docker_image,
         environment_json:     process.environment_json
       }
-    end
-
-    def get_command_from_model(model)
-      metadata = MultiJson.load(model.values[:metadata])
-      return nil unless metadata
-      return metadata['command']
     end
   end
 end

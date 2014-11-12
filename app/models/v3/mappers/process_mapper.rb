@@ -20,20 +20,23 @@ module VCAP::CloudController
     end
 
     def self.map_domain_to_model(domain)
-      app   = domain.guid ? App.first!(guid: domain.guid) : App.new
+      app = domain.guid ? App.find(guid: domain.guid) : App.new
+      return nil if app.nil?
 
       attrs = {}
       attrs[:name]                 = domain.name
       attrs[:disk_quota]           = domain.disk_quota
-      attrs[:memory]               = domain.memory unless domain.instances.nil?
-      attrs[:instances]            = domain.instances unless domain.instances.nil?
-      attrs[:state]                = domain.state unless domain.state.nil?
+      attrs[:memory]               = domain.memory
+      attrs[:instances]            = domain.instances
+      attrs[:state]                = domain.state
       attrs[:buildpack]            = domain.buildpack
       attrs[:health_check_timeout] = domain.health_check_timeout
       attrs[:space_guid]           = domain.space_guid if domain.space_guid
       attrs[:stack_guid]           = domain.stack_guid if domain.stack_guid && domain.stack_guid != app.stack_guid
-      attrs[:environment_json]     = domain.environment_json unless domain.environment_json.nil?
+      attrs[:environment_json]     = domain.environment_json
       attrs[:docker_image]         = domain.docker_image if domain.docker_image
+
+      attrs.reject! { |_, v| v.nil? } if domain.guid.nil?
 
       app.set(attrs)
       app.command = domain.command
