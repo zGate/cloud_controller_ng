@@ -238,7 +238,8 @@ module VCAP::CloudController
         process = process_repository.new_process(valid_opts)
         changes = {
           name: 'my-super-awesome-name',
-          stack_guid: 'new-stacks'
+          stack_guid: 'new-stacks',
+          command: 'X'
         }
         updated_process = process_repository.update(process, changes)
         expect(updated_process.name).to eq('my-super-awesome-name')
@@ -248,7 +249,7 @@ module VCAP::CloudController
         expect(updated_process.disk_quota).to eq(1024)
         expect(updated_process.space_guid).to eq(space_guid)
         expect(updated_process.state).to eq('STOPPED')
-        expect(updated_process.command).to eq('the-command')
+        expect(updated_process.command).to eq('X')
         expect(updated_process.buildpack).to eq('http://the-buildpack.com')
         expect(updated_process.health_check_timeout).to eq(100)
         expect(updated_process.docker_image).to be_nil

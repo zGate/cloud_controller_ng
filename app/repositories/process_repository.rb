@@ -11,15 +11,20 @@ module VCAP::CloudController
     end
 
     def persist!(desired_process)
-      process_model = if desired_process.guid
-                        raise MutationAttemptWithoutALock unless @lock_acquired
-                        changes = changes_for_process(desired_process)
-                        App.first!(guid: desired_process.guid).update(changes)
-                      else
-                        attributes = attributes_for_process(desired_process).reject { |_, v| v.nil? }
-                        App.create(attributes)
-                      end
+      # process_model = if desired_process.guid
+      #                   raise MutationAttemptWithoutALock unless @lock_acquired
+      #                   changes = changes_for_process(desired_process)
+      #                   App.first!(guid: desired_process.guid).update(changes)
+      #                 else
+      #                   attributes = attributes_for_process(desired_process).reject { |_, v| v.nil? }
+      #                   App.create(attributes)
+      #                 end
+      #
+      # ProcessMapper.map_model_to_domain(process_model)
 
+      process_model = ProcessMapper.map_domain_to_model(desired_process)
+      raise MutationAttemptWithoutALock if process_model.guid && !@lock_acquired
+      process_model.save
       ProcessMapper.map_model_to_domain(process_model)
     rescue Sequel::ValidationFailed => e
       raise InvalidProcess.new(e.message)
