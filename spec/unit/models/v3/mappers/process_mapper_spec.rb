@@ -26,33 +26,148 @@ module VCAP::CloudController
     end
 
     describe '.map_domain_to_model' do
-      context "and the app has been saved" do
-        let(:model) { AppFactory.make }
+      let(:space) { Space.make }
+      let(:stack) { Stack.make }
+
+      let(:standard_opts){stuff}
+      let(:custom_opts){ {} }
+      let(:all_opts) {standard_opts.merge(custom_opts)}
+      let(:process){AppProcess.new(all_opts)}
+
+      context 'and the app has been saved' do
+        let(:app) { AppFactory.make }
+        let(:process) do
+          AppProcess.new({
+            guid:                 app.guid,
+            name:                 'some-name',
+            space_guid:           space.guid,
+            stack_guid:           stack.guid,
+            disk_quota:           32,
+            memory:               456,
+            instances:            51,
+            state:                'STARTED',
+            command:              'start-command',
+            buildpack:            'buildpack',
+            health_check_timeout: 3,
+            docker_image:         'docker_image',
+            environment_json:     'env_json'
+          })
+        end
 
         it 'maps AppProcess to App' do
-          model1 = App.find(guid: model.guid)
-          process = ProcessMapper.map_model_to_domain(model1)
-          model2 = ProcessMapper.map_domain_to_model(process)
-          values1 = model1.values
-          values2 = model2.values
-          # Sequel reads package_pending_since from the database with differing
-          # milliseconds
-          values1.delete(:package_pending_since) && values2.delete(:package_pending_since)
-          expect(values1).to eq(values2)
+          model = ProcessMapper.map_domain_to_model(process)
+
+          expect(model.guid).to eq(app.guid)
+          expect(model.name).to eq('some-name')
+          expect(model.memory).to eq(456)
+          expect(model.instances).to eq(51)
+          expect(model.disk_quota).to eq(32)
+          expect(model.space_guid).to eq(space.guid)
+          expect(model.stack_guid).to eq(stack.guid)
+          expect(model.state).to eq('STARTED')
+          expect(model.command).to eq('start-command')
+          expect(model.buildpack.url).to eq('buildpack')
+          expect(model.health_check_timeout).to eq(3)
+          expect(model.docker_image).to eq('docker_image:latest')
+          expect(model.environment_json).to eq('env_json')
         end
       end
 
-      context "and the app has not been persisted" do
-        let(:model) { App.new }
+      context 'and the app has not been persisted' do
+        let(:process) do
+          AppProcess.new({
+            name:                 'some-name',
+            space_guid:           space.guid,
+            stack_guid:           stack.guid,
+            disk_quota:           32,
+            memory:               456,
+            instances:            51,
+            state:                'STARTED',
+            command:              'start-command',
+            buildpack:            'buildpack',
+            health_check_timeout: 3,
+            docker_image:         'docker_image',
+            environment_json:     'env_json'
+          })
+        end
 
         it 'maps AppProcess to App' do
-          process = ProcessMapper.map_model_to_domain(model)
-          model2 = ProcessMapper.map_domain_to_model(process)
+          model = ProcessMapper.map_domain_to_model(process)
 
-          # Sequel reads package_pending_since from the database with differing
-          # milliseconds
-          expect(model.values.delete(:instances)).to eq(model2.values.delete(:instances))
-          expect(model.values.delete(:memory)).to eq(model2.values.delete(:memory))
+          expect(model.guid).to be_nil
+          expect(model.name).to eq('some-name')
+          expect(model.memory).to eq(456)
+          expect(model.instances).to eq(51)
+          expect(model.disk_quota).to eq(32)
+          expect(model.space_guid).to eq(space.guid)
+          expect(model.stack_guid).to eq(stack.guid)
+          expect(model.state).to eq('STARTED')
+          expect(model.command).to eq('start-command')
+          expect(model.buildpack.url).to eq('buildpack')
+          expect(model.health_check_timeout).to eq(3)
+          expect(model.docker_image).to eq('docker_image:latest')
+          expect(model.environment_json).to eq('env_json')
+        end
+
+        context 'and some values are nil' do
+          let(:process) do
+            AppProcess.new({
+              name:                 'some-name',
+              space_guid:           space.guid,
+              stack_guid:           stack.guid,
+              disk_quota:           32,
+              memory:               456,
+              instances:            nil,
+              state:                'STARTED',
+              command:              'start-command',
+              buildpack:            'buildpack',
+              health_check_timeout: 3,
+              docker_image:         'docker_image',
+              environment_json:     'env_json'
+            })
+          end
+
+          it 'does not map map them' do
+            model = ProcessMapper.map_domain_to_model(process)
+
+            expect(model.guid).to be_nil
+            expect(model.name).to eq('some-name')
+            expect(model.memory).to eq(456)
+            expect(model.instances).to_not be_nil
+            expect(model.disk_quota).to eq(32)
+            expect(model.space_guid).to eq(space.guid)
+            expect(model.stack_guid).to eq(stack.guid)
+            expect(model.state).to eq('STARTED')
+            expect(model.command).to eq('start-command')
+            expect(model.buildpack.url).to eq('buildpack')
+            expect(model.health_check_timeout).to eq(3)
+            expect(model.docker_image).to eq('docker_image:latest')
+            expect(model.environment_json).to eq('env_json')
+          end
+        end
+
+        context 'but we search for a persisted app' do
+          let(:process) do
+            AppProcess.new({
+              guid:                 'bogus',
+              name:                 'some-name',
+              space_guid:           space.guid,
+              stack_guid:           stack.guid,
+              disk_quota:           32,
+              memory:               456,
+              instances:            51,
+              state:                'STARTED',
+              command:              'start-command',
+              buildpack:            'buildpack',
+              health_check_timeout: 3,
+              docker_image:         'docker_image',
+              environment_json:     'env_json'
+            })
+          end
+
+          it 'returns nil' do
+            expect(ProcessMapper.map_domain_to_model(process)).to be_nil
+          end
         end
       end
     end
