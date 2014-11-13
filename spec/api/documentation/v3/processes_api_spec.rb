@@ -123,7 +123,6 @@ resource 'Processes (Experimental)', type: :api do
         }
         expect {
           do_request_with_error_handling
-          p response_body
         }.to change{ VCAP::CloudController::App.count }.by(1)
         parsed_response = JSON.parse(response_body)
 

@@ -11,7 +11,7 @@ module VCAP::CloudController
         memory:               model.values[:memory],
         instances:            model.values[:instances],
         state:                model.values[:state],
-        command:              model.metadata && get_command_from_model(model),
+        command:              model.command,
         buildpack:            model.values[:buildpack],
         health_check_timeout: model.values[:health_check_timeout],
         docker_image:         model.values[:docker_image],
@@ -43,12 +43,5 @@ module VCAP::CloudController
       app
     end
 
-    private
-
-    def self.get_command_from_model(model)
-      metadata = MultiJson.load(model.values[:metadata])
-      return nil unless metadata
-      return metadata['command']
-    end
   end
 end
