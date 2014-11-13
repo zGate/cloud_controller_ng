@@ -83,8 +83,25 @@ module VCAP::CloudController
           return nil
         end
 
-        desired_process = @process_repository.update(initial_process, update_message.opts)
+        desired_process = AppProcess.new({
+          guid:                 initial_process.guid,
+          name:                 initial_process.name,
+          space_guid:           initial_process.space_guid,
+          stack_guid:           initial_process.stack_guid,
+          disk_quota:           initial_process.disk_quota,
+          memory:               initial_process.memory,
+          instances:            initial_process.instances,
+          state:                initial_process.state,
+          command:              initial_process.command,
+          buildpack:            initial_process.buildpack,
+          health_check_timeout: initial_process.health_check_timeout,
+          docker_image:         initial_process.docker_image,
+          environment_json:     initial_process.environment_json
+        }.merge(update_message.opts))
 
+        p desired_process.inspect
+        desired_process = @process_repository.update(initial_process, update_message.opts)
+        p desired_process.inspect
         raise Unauthorized if access_context.cannot?(:update, desired_process)
 
         @process_repository.persist!(desired_process)
