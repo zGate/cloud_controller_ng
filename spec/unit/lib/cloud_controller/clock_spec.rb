@@ -4,13 +4,13 @@ require "cloud_controller/clock"
 module VCAP::CloudController
   describe Clock do
     describe "#start" do
-      let(:app_usage_events_cleanup_job) { double(Jobs::Runtime::AppUsageEventsCleanup) }
+      let(:usage_events_cleanup_job) { double(Jobs::Runtime::UsageEventsCleanup) }
       let(:app_events_cleanup_job) { double(Jobs::Runtime::AppEventsCleanup) }
       let(:audit_events_cleanup_job) { double(Jobs::Runtime::EventsCleanup) }
       let(:failed_jobs_cleanup_job) { double(Jobs::Runtime::FailedJobsCleanup) }
       let(:pending_packages_cleanup_job) { double(Jobs::Runtime::PendingPackagesCleanup) }
 
-      let(:app_usage_events_cleanup_enqueuer) { double(Jobs::Enqueuer) }
+      let(:usage_events_cleanup_enqueuer) { double(Jobs::Enqueuer) }
       let(:app_events_cleanup_enqueuer) { double(Jobs::Enqueuer) }
       let(:audit_events_cleanup_enqueuer) { double(Jobs::Enqueuer) }
       let(:failed_jobs_cleanup_enqueuer) { double(Jobs::Enqueuer) }
@@ -20,7 +20,7 @@ module VCAP::CloudController
       let(:config) do
         {
           app_events: { cutoff_age_in_days: 22 },
-          app_usage_events: { cutoff_age_in_days: 33 },
+          usage_events: { cutoff_age_in_days: 33 },
           audit_events: { cutoff_age_in_days: 11 },
           failed_jobs: { cutoff_age_in_days: 44 },
           pending_packages: { frequency_in_seconds: 1.minute, expiration_in_seconds: 5.minutes },
@@ -35,9 +35,9 @@ module VCAP::CloudController
         allow(Clockwork).to receive(:run)
         allow(Steno).to receive(:logger).and_return(logger)
 
-        allow(Jobs::Runtime::AppUsageEventsCleanup).to receive(:new).and_return(app_usage_events_cleanup_job)
-        allow(Jobs::Enqueuer).to receive(:new).with(app_usage_events_cleanup_job, queue: "cc-generic").and_return(app_usage_events_cleanup_enqueuer)
-        allow(app_usage_events_cleanup_enqueuer).to receive(:enqueue)
+        allow(Jobs::Runtime::UsageEventsCleanup).to receive(:new).and_return(usage_events_cleanup_job)
+        allow(Jobs::Enqueuer).to receive(:new).with(usage_events_cleanup_job, queue: "cc-generic").and_return(usage_events_cleanup_enqueuer)
+        allow(usage_events_cleanup_enqueuer).to receive(:enqueue)
 
         allow(Jobs::Runtime::AppEventsCleanup).to receive(:new).and_return(app_events_cleanup_job)
         allow(Jobs::Enqueuer).to receive(:new).with(app_events_cleanup_job, queue: "cc-generic").and_return(app_events_cleanup_enqueuer)
@@ -62,15 +62,15 @@ module VCAP::CloudController
         expect(Clockwork).to have_received(:run)
       end
 
-      describe "app_usage_events.cleanup.job" do
-        it "schedules an AppUsageEventsCleanup job to run every day during business hours in SF" do
-          expect(Clockwork).to have_received(:every).with(1.day, "app_usage_events.cleanup.job", at: "18:00")
-          expect(Jobs::Enqueuer).to have_received(:new).with(app_usage_events_cleanup_job, queue: "cc-generic")
-          expect(app_usage_events_cleanup_enqueuer).to have_received(:enqueue)
+      describe "usage_events.cleanup.job" do
+        it "schedules an UsageEventsCleanup job to run every day during business hours in SF" do
+          expect(Clockwork).to have_received(:every).with(1.day, "usage_events.cleanup.job", at: "18:00")
+          expect(Jobs::Enqueuer).to have_received(:new).with(usage_events_cleanup_job, queue: "cc-generic")
+          expect(usage_events_cleanup_enqueuer).to have_received(:enqueue)
         end
 
         it "sets the cutoff_age_in_days for AppUsageEventsCleanup to the configured value" do
-          expect(Jobs::Runtime::AppUsageEventsCleanup).to have_received(:new).with(33)
+          expect(Jobs::Runtime::UsageEventsCleanup).to have_received(:new).with(33)
         end
       end
 

@@ -79,6 +79,12 @@ module VCAP::CloudController
           ServiceUsageEvent.insert(column_map.keys, usage_query)
         end
 
+        def delete_events_older_than(cutoff_age_in_days)
+          old_service_usage_events = ServiceUsageEvent.dataset.where("created_at < CURRENT_TIMESTAMP - INTERVAL '?' DAY", cutoff_age_in_days.to_i)
+          count_to_delete = old_service_usage_events.count
+          old_service_usage_events.delete
+          count_to_delete
+        end
       end
     end
   end

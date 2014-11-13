@@ -1,7 +1,7 @@
 require "jobs/runtime/app_bits_packer"
 require "jobs/runtime/app_bits_copier"
 require "jobs/runtime/app_events_cleanup"
-require "jobs/runtime/app_usage_events_cleanup"
+require "jobs/runtime/usage_events_cleanup"
 require "jobs/runtime/blobstore_delete"
 require "jobs/runtime/blobstore_upload"
 require "jobs/runtime/buildpack_installer"
