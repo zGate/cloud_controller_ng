@@ -141,8 +141,7 @@ module VCAP::CloudController
             message_bus.respond_to_request("staging.#{stager_id}.start", first_reply_json)
           end
 
-          response = staging_task.stage(&blk)
-          response
+          staging_task.stage(&blk)
         end
 
         context "when staging setup succeeds" do
@@ -502,7 +501,7 @@ module VCAP::CloudController
           end
 
           it "leaves the app with a generic staging failed reason" do
-            expect { stage }.to change { app.staging_failed_reason }.to("StagingError")
+            expect { stage }.to change { app.staging_failed_reason }.to(App::DEFAULT_STAGING_FAILED_REASON)
           end
         end
 
@@ -558,7 +557,7 @@ module VCAP::CloudController
             let(:reply_error_info) { nil }
 
             it "sets a generic staging failed reason" do
-              expect { stage }.to change { app.staging_failed_reason }.to("StagingError")
+              expect { stage }.to change { app.staging_failed_reason }.to(App::DEFAULT_STAGING_FAILED_REASON)
             end
           end
         end

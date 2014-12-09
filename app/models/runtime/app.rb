@@ -61,7 +61,8 @@ module VCAP::CloudController
 
     APP_STATES = %w[STOPPED STARTED].map(&:freeze).freeze
     PACKAGE_STATES = %w[PENDING STAGED FAILED].map(&:freeze).freeze
-    STAGING_FAILED_REASONS = %w[StagingError StagingTimeExpired NoAppDetectedError BuildpackCompileFailed BuildpackReleaseFailed].map(&:freeze).freeze
+    STAGING_FAILED_REASONS = %w[StagingError.generic StagingError StagingTimeExpired NoAppDetectedError BuildpackCompileFailed BuildpackReleaseFailed].map(&:freeze).freeze
+    DEFAULT_STAGING_FAILED_REASON = STAGING_FAILED_REASONS.first
 
     # marked as true on changing the associated routes, and reset by
     # +Dea::Client.start+
@@ -420,7 +421,7 @@ module VCAP::CloudController
       self.package_pending_since = nil
     end
 
-    def mark_as_failed_to_stage(reason="StagingError")
+    def mark_as_failed_to_stage(reason=DEFAULT_STAGING_FAILED_REASON)
       self.package_state = "FAILED"
       self.staging_failed_reason = reason
       self.package_pending_since = nil

@@ -1437,7 +1437,7 @@ module VCAP::CloudController
         it "should use the default, generic reason" do
           expect {
             app.mark_as_failed_to_stage
-          }.to change { app.staging_failed_reason }. to "StagingError"
+          }.to change { app.staging_failed_reason }. to "StagingError.generic"
         end
       end
     end
