@@ -179,6 +179,7 @@ module VCAP::CloudController
         optional(:uaa_client_name) => String,
         optional(:uaa_client_secret) => String,
         optional(:uaa_client_scope) => String,
+        optional(:uaa_autoapprove_clients) => bool,
 
         :renderer => {
           :max_results_per_page => Integer,

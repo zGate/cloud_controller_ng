@@ -117,13 +117,16 @@ module VCAP::Services::SSO::UAA
     end
 
     def sso_client_info(client_attrs)
-      {
+      info = {
         client_id:              client_attrs['id'],
         client_secret:          client_attrs['secret'],
         redirect_uri:           client_attrs['redirect_uri'],
         scope:                  filter_uaa_client_scope,
-        authorized_grant_types: ['authorization_code']
+        authorized_grant_types: ['authorization_code'],
       }
+      uaa_autoapprove_clients = VCAP::CloudController::Config.config[:uaa_autoapprove_clients]
+      info[:autoapprove] = uaa_autoapprove_clients if uaa_autoapprove_clients
+      info
     end
 
     def issuer_client_config

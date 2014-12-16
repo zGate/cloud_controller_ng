@@ -129,6 +129,37 @@ module VCAP::Services::SSO::UAA
         client_manager.modify_transaction(changeset)
       end
 
+      context 'when autoapprove is true' do
+        before do
+          VCAP::CloudController::Config.config[:uaa_autoapprove_clients] = true
+        end
+
+        it 'includes the autoapprove boolean in the transaction request' do
+          changeset = [
+            double('create_command', uaa_command: { action: 'add' }, client_attrs: {}),
+          ]
+
+          expected_json_body = [
+            {
+              client_id:              nil,
+              client_secret:          nil,
+              redirect_uri:           nil,
+              scope:                  ['openid', 'cloud_controller_service_permissions.read'],
+              authorized_grant_types: ['authorization_code'],
+              autoapprove:            true,
+              action:                 'add',
+              }
+          ].to_json
+
+          client_manager = UaaClientManager.new
+          client_manager.modify_transaction(changeset)
+
+          expect(a_request(:post, tx_url).with(
+            body: expected_json_body,
+            headers: {'Authorization' => auth_header})).to have_been_made
+        end
+      end
+
       context 'when the changeset is empty' do
         it 'does not make any http requests' do
           client_manager = UaaClientManager.new
