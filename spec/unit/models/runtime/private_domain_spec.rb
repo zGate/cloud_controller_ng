@@ -108,7 +108,7 @@ module VCAP::CloudController
 
     describe 'addable_to_organization!' do
       it 'raises error when the domain belongs to a different org' do
-        expect{
+        expect {
           private_domain.addable_to_organization!(Organization.new)
         }.to raise_error(Domain::UnauthorizedAccessToPrivateDomain)
       end

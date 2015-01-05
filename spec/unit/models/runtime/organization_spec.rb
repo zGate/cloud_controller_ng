@@ -478,7 +478,7 @@ module VCAP::CloudController
         end
 
         it 'should remove the user from an organization if they are not associated with any spaces' do
-          expect { org.remove_user(user) }.to change{ org.reload.user_guids }.from([user.guid]).to([])
+          expect { org.remove_user(user) }.to change { org.reload.user_guids }.from([user.guid]).to([])
         end
       end
 
@@ -492,15 +492,15 @@ module VCAP::CloudController
         end
 
         it 'should remove the space developer roles from the user' do
-          expect { org.remove_user_recursive(user) }.to change{ user.spaces.length }.from(2).to(0)
+          expect { org.remove_user_recursive(user) }.to change { user.spaces.length }.from(2).to(0)
         end
 
         it 'should remove the space manager roles from the user' do
-          expect { org.remove_user_recursive(user) }.to change{ user.managed_spaces.length }.from(2).to(0)
+          expect { org.remove_user_recursive(user) }.to change { user.managed_spaces.length }.from(2).to(0)
         end
 
         it 'should remove the space audited roles from the user' do
-          expect { org.remove_user_recursive(user) }.to change{ user.audited_spaces.length }.from(2).to(0)
+          expect { org.remove_user_recursive(user) }.to change { user.audited_spaces.length }.from(2).to(0)
         end
 
         it 'should remove the user from each spaces developer role' do
@@ -542,7 +542,7 @@ module VCAP::CloudController
           end
 
           it 'raises an exception' do
-            expect{ org.save }.to raise_error(VCAP::Errors::ApiError, /Quota Definition could not be found: default/)
+            expect { org.save }.to raise_error(VCAP::Errors::ApiError, /Quota Definition could not be found: default/)
           end
         end
       end
@@ -564,7 +564,7 @@ module VCAP::CloudController
           let(:quota_definition_guid) { 'something-invalid' }
 
           it 'uses what is provided' do
-            expect{
+            expect {
               org.save
             }.to raise_error(VCAP::Errors::ApiError, /Invalid relation: Could not find VCAP::CloudController::QuotaDefinition with guid: #{quota_definition_guid}/)
           end

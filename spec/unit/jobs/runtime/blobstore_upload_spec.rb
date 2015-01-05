@@ -70,7 +70,7 @@ module VCAP::CloudController
 
               expect {
                 worker.work_off 1
-              }.to change{
+              }.to change {
                 File.exists?(local_file.path)
               }.from(true).to(false)
             end

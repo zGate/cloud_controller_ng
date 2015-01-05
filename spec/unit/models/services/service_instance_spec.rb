@@ -38,14 +38,14 @@ module VCAP::CloudController
       describe 'changing space' do
         it 'fails when existing service bindings are in a different space' do
           service_instance.add_service_binding(ServiceBinding.make(service_instance: service_instance))
-          expect{ service_instance.space = Space.make }.to raise_error ServiceInstance::InvalidServiceBinding
+          expect { service_instance.space = Space.make }.to raise_error ServiceInstance::InvalidServiceBinding
         end
       end
     end
 
     describe '#create' do
       context 'when the name is longer than 50 characters' do
-        let(:very_long_name){ 's' * 51 }
+        let(:very_long_name) { 's' * 51 }
         it 'refuses to create this service instance' do
           service_instance_attrs[:name] = very_long_name
           expect { service_instance }.to raise_error Sequel::ValidationFailed
@@ -111,7 +111,7 @@ module VCAP::CloudController
         service_instance
         expect {
           service_instance.destroy
-        }.to change{ ServiceUsageEvent.count }.by(1)
+        }.to change { ServiceUsageEvent.count }.by(1)
         event = ServiceUsageEvent.last
         expect(event.state).to eq(Repositories::Services::ServiceUsageEventRepository::DELETED_EVENT_STATE)
         expect(event).to match_service_instance(service_instance)

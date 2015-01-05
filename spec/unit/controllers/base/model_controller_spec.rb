@@ -32,20 +32,20 @@ module VCAP::CloudController
       context 'raises an error when it fails' do
         it 'on operation_with_token' do
           expect(access_context).to receive(:cannot?).with(:read_for_update_with_token, obj).ordered.and_return(true)
-          expect{ @model_controller.validate_access(:read_for_update, obj) }.to raise_error VCAP::Errors::ApiError
+          expect { @model_controller.validate_access(:read_for_update, obj) }.to raise_error VCAP::Errors::ApiError
 
           expect(access_context).to receive(:cannot?).with(:update_with_token, obj).ordered.and_return(true)
-          expect{ @model_controller.validate_access(:update, obj) }.to raise_error VCAP::Errors::ApiError
+          expect { @model_controller.validate_access(:update, obj) }.to raise_error VCAP::Errors::ApiError
         end
 
         it 'on operation' do
           expect(access_context).to receive(:cannot?).with(:read_for_update_with_token, obj).ordered.and_return(false)
           expect(access_context).to receive(:cannot?).with(:read_for_update, obj, fields).ordered.and_return(true)
-          expect{ @model_controller.validate_access(:read_for_update, obj, fields) }.to raise_error VCAP::Errors::ApiError
+          expect { @model_controller.validate_access(:read_for_update, obj, fields) }.to raise_error VCAP::Errors::ApiError
 
           expect(access_context).to receive(:cannot?).with(:update_with_token, obj).ordered.and_return(false)
           expect(access_context).to receive(:cannot?).with(:update, obj, fields).ordered.and_return(true)
-          expect{ @model_controller.validate_access(:update, obj, fields) }.to raise_error VCAP::Errors::ApiError
+          expect { @model_controller.validate_access(:update, obj, fields) }.to raise_error VCAP::Errors::ApiError
         end
       end
     end
@@ -266,7 +266,7 @@ module VCAP::CloudController
       let(:params) { {} }
 
       def query_params
-        params.to_a.collect{ |pair| pair.join('=') }.join('&')
+        params.to_a.collect { |pair| pair.join('=') }.join('&')
       end
 
       shared_examples 'tests with associations' do

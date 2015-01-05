@@ -66,7 +66,7 @@ module VCAP::CloudController
           before { plan = ServicePlan.make(attrs1) }
 
           it 'throws a useful error' do
-            expect{ ServicePlan.make(attrs2) }.to raise_exception('Plan names must be unique within a service')
+            expect { ServicePlan.make(attrs2) }.to raise_exception('Plan names must be unique within a service')
           end
         end
 

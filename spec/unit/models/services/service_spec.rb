@@ -247,7 +247,7 @@ module VCAP::CloudController
 
         it 'does not mark apps for restaging that were bound to the deleted service' do
           service_binding.app.update(package_state: 'STAGED')
-          expect { service.purge }.not_to change{ service_binding.app.reload.pending? }
+          expect { service.purge }.not_to change { service_binding.app.reload.pending? }
         end
       end
 
@@ -275,7 +275,7 @@ module VCAP::CloudController
 
         it 'does not mark apps for restaging that were bound to the deleted service' do
           service_binding.app.update(package_state: 'STAGED')
-          expect { service.purge }.not_to change{ service_binding.app.reload.pending? }
+          expect { service.purge }.not_to change { service_binding.app.reload.pending? }
         end
       end
 

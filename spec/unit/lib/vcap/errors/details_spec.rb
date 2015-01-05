@@ -30,7 +30,7 @@ module VCAP::Errors
       let(:name) { 'invalid name' }
 
       it 'blows up immeditately' do
-        expect{ Details.new(name) }.to raise_error(KeyError)
+        expect { Details.new(name) }.to raise_error(KeyError)
       end
     end
   end

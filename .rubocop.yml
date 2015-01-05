@@ -55,3 +55,6 @@ Style/DotPosition:
 
 Style/AlignParameters:
   Enabled: false
+
+Style/NumericLiterals:
+  Enabled: false

@@ -41,7 +41,7 @@ module VCAP::CloudController
 
       context 'and the upload to the blobstore succeeds' do
         it 'updates the buildpack filename' do
-          expect{
+          expect {
             upload_buildpack.upload_buildpack(buildpack, valid_zip, filename)
           }.to change {
             Buildpack.find(name: 'upload_binary_buildpack').filename
@@ -51,7 +51,7 @@ module VCAP::CloudController
         context 'new bits (new sha)' do
           it 'copies new bits to the blobstore and updates the key' do
             expect(buildpack_blobstore).to receive(:cp_to_blobstore).with(valid_zip, expected_sha_valid_zip)
-            expect{
+            expect {
               upload_buildpack.upload_buildpack(buildpack, valid_zip, filename)
             }.to change {
               Buildpack.find(name: 'upload_binary_buildpack').key
@@ -138,7 +138,7 @@ module VCAP::CloudController
         end
 
         it 'should not update the key and filename on the existing buildpack' do
-          expect{ upload_buildpack.upload_buildpack(buildpack, valid_zip, filename) }.to raise_error
+          expect { upload_buildpack.upload_buildpack(buildpack, valid_zip, filename) }.to raise_error
           bp = Buildpack.find(name: buildpack.name)
           expect(bp).to_not be_nil
           expect(bp.key).to eq(previous_key)

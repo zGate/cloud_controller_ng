@@ -7,7 +7,7 @@ module VCAP::CloudController
 
     it "can't be created if a would become parent" do
       PrivateDomain.make name: 'bar.foo.com'
-      expect{ PrivateDomain.make name: 'foo.com' }.to raise_error
+      expect { PrivateDomain.make name: 'foo.com' }.to raise_error
     end
 
     describe 'Associations' do

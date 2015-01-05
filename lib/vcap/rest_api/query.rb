@@ -106,7 +106,7 @@ module VCAP::RestAPI
       return clean_up_foreign_key(key, values, foreign_key_association) if foreign_key_association
 
       col_type = column_type(key)
-      values = values.collect{ |value| cast_query_value(col_type, key, value) }.compact
+      values = values.collect { |value| cast_query_value(col_type, key, value) }.compact
 
       if values.empty?
         { key => nil }

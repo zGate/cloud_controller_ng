@@ -174,7 +174,7 @@ module VCAP::CloudController
         end
 
         context 'when the dea has empty placement properties' do
-          before{ message['placement_properties'] = {} }
+          before { message['placement_properties'] = {} }
 
           it 'returns default zone' do
             expect(ad.zone).to eq 'default'
@@ -182,7 +182,7 @@ module VCAP::CloudController
         end
 
         context 'when the dea has the placement properties with zone info' do
-          before{ message['placement_properties'] = { 'zone' => 'zone_cf' } }
+          before { message['placement_properties'] = { 'zone' => 'zone_cf' } }
 
           it 'returns the zone with name zone_cf' do
             expect(ad.zone).to eq 'zone_cf'

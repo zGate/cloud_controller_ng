@@ -220,7 +220,7 @@ module VCAP::CloudController
           instance = nil
           expect {
             instance = create_managed_service_instance
-          }.to change{ ServiceUsageEvent.count }.by(1)
+          }.to change { ServiceUsageEvent.count }.by(1)
 
           event = ServiceUsageEvent.last
           expect(event.state).to eq(Repositories::Services::ServiceUsageEventRepository::CREATED_EVENT_STATE)

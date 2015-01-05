@@ -59,19 +59,19 @@ module VCAP::CloudController
         it "should not alter a user's developer space" do
           expect {
             user.remove_spaces space
-          }.to_not change{ user.spaces }
+          }.to_not change { user.spaces }
         end
 
         it "should not alter a user's managed space" do
           expect {
             user.remove_spaces space
-          }.to_not change{ user.managed_spaces }
+          }.to_not change { user.managed_spaces }
         end
 
         it "should not alter a user's audited spaces" do
           expect {
             user.remove_spaces space
-          }.to_not change{ user.audited_spaces }
+          }.to_not change { user.audited_spaces }
         end
       end
 
@@ -87,37 +87,37 @@ module VCAP::CloudController
         it "should remove the space from the user's developer spaces" do
           expect {
             user.remove_spaces space
-          }.to change{ user.spaces }.from([space]).to([])
+          }.to change { user.spaces }.from([space]).to([])
         end
 
         it "should remove the space from the user's managed spaces" do
           expect {
             user.remove_spaces space
-          }.to change{ user.managed_spaces }.from([space]).to([])
+          }.to change { user.managed_spaces }.from([space]).to([])
         end
 
         it "should remove the space form the user's auditor spaces" do
           expect {
             user.remove_spaces space
-          }.to change{ user.audited_spaces }.from([space]).to([])
+          }.to change { user.audited_spaces }.from([space]).to([])
         end
 
         it "should remove the user from the space's developers role" do
           expect {
             user.remove_spaces space
-          }.to change{ space.developers }.from([user]).to([])
+          }.to change { space.developers }.from([user]).to([])
         end
 
         it "should remove the user from the space's managers role" do
           expect {
             user.remove_spaces space
-          }.to change{ space.managers }.from([user]).to([])
+          }.to change { space.managers }.from([user]).to([])
         end
 
         it "should remove the user from the space's auditors role" do
           expect {
             user.remove_spaces space
-          }.to change{ space.auditors }.from([user]).to([])
+          }.to change { space.auditors }.from([user]).to([])
         end
       end
     end
@@ -134,19 +134,19 @@ module VCAP::CloudController
         it 'should allow becoming an organization manager' do
           expect {
             user.add_managed_organization(org)
-          }.to change{ user.managed_organizations.size }.by(1)
+          }.to change { user.managed_organizations.size }.by(1)
         end
 
         it 'should allow becoming an organization billing manager' do
           expect {
             user.add_billing_managed_organization(org)
-          }.to change{ user.billing_managed_organizations.size }.by(1)
+          }.to change { user.billing_managed_organizations.size }.by(1)
         end
 
         it 'should allow becoming an organization auditor' do
           expect {
             user.add_audited_organization(org)
-          }.to change{ user.audited_organizations.size }.by(1)
+          }.to change { user.audited_organizations.size }.by(1)
         end
       end
 
@@ -225,7 +225,7 @@ module VCAP::CloudController
         it 'should remove user from organization' do
           expect {
             user.remove_organization(org)
-          }.to change{ user.organizations.size }.by(-1)
+          }.to change { user.organizations.size }.by(-1)
         end
       end
     end

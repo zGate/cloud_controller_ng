@@ -95,7 +95,7 @@ module VCAP::Services::ServiceBrokers::V2
     end
 
     def validate_all_plan_ids_are_unique!
-      errors.add('Plan ids must be unique') if plans.uniq{ |plan| plan.broker_provided_id }.count < plans.count
+      errors.add('Plan ids must be unique') if plans.uniq { |plan| plan.broker_provided_id }.count < plans.count
     end
 
     def validate_all_plan_names_are_unique!

@@ -147,7 +147,7 @@ module VCAP::CloudController
         end
 
         it 'will purge all existing events' do
-          3.times{ repository.create_from_app(app) }
+          3.times { repository.create_from_app(app) }
 
           expect {
             repository.purge_and_reseed_started_apps!

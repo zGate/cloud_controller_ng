@@ -12,7 +12,7 @@ module VCAP::CloudController
 
       context 'organization' do
         it 'fails when changing' do
-          expect{ SpaceQuotaDefinition.make.organization = Organization.make }.to raise_error SpaceQuotaDefinition::OrganizationAlreadySet
+          expect { SpaceQuotaDefinition.make.organization = Organization.make }.to raise_error SpaceQuotaDefinition::OrganizationAlreadySet
         end
       end
     end

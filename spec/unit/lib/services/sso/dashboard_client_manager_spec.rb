@@ -12,7 +12,7 @@ module VCAP::Services::SSO
     let(:security_context) { double(:security_context, current_user: user, current_user_email: email) }
 
     describe '#initialize' do
-      subject{ manager }
+      subject { manager }
 
       it 'sets the service_broker' do
         manager = DashboardClientManager.new(service_broker, services_event_repository)
@@ -199,7 +199,7 @@ module VCAP::Services::SSO
 
             it 'does not claim any clients for CC' do
               expect(VCAP::CloudController::ServiceDashboardClient.count).to eq(0)
-              expect { manager.synchronize_clients_with_catalog(catalog) }.not_to change{ VCAP::CloudController::ServiceDashboardClient.count }
+              expect { manager.synchronize_clients_with_catalog(catalog) }.not_to change { VCAP::CloudController::ServiceDashboardClient.count }
             end
 
             it 'returns false' do

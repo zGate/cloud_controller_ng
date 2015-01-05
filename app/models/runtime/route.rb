@@ -69,7 +69,7 @@ module VCAP::CloudController
     end
 
     def validate_changed_space(new_space)
-      apps.each{ |app| validate_app(app) }
+      apps.each { |app| validate_app(app) }
       domain && domain.addable_to_organization!(new_space.organization)
     end
 

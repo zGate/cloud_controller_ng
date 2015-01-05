@@ -594,7 +594,7 @@ module VCAP::Services::ServiceBrokers::V2
           let(:status_code) { '400' }
           let(:body) { { description: 'the request was malformed' }.to_json }
           it 'raises a ServiceBrokerBadResponse error' do
-            expect{ client.update_service_plan(instance, new_plan) }.to raise_error(
+            expect { client.update_service_plan(instance, new_plan) }.to raise_error(
               ServiceBrokerBadResponse, /the request was malformed/
             )
           end
@@ -604,7 +604,7 @@ module VCAP::Services::ServiceBrokers::V2
           let(:status_code) { '404' }
           let(:body) { { description: 'service instance not found' }.to_json }
           it 'raises a ServiceBrokerBadRequest error' do
-            expect{ client.update_service_plan(instance, new_plan) }.to raise_error(
+            expect { client.update_service_plan(instance, new_plan) }.to raise_error(
               ServiceBrokerBadResponse, /service instance not found/
             )
           end
@@ -614,7 +614,7 @@ module VCAP::Services::ServiceBrokers::V2
           let(:status_code) { '422' }
           let(:body) { { description: 'cannot update to this plan' }.to_json }
           it 'raises a ServiceBrokerBadResponse error' do
-            expect{ client.update_service_plan(instance, new_plan) }.to raise_error(
+            expect { client.update_service_plan(instance, new_plan) }.to raise_error(
               ServiceBrokerBadResponse, /cannot update to this plan/
             )
           end
