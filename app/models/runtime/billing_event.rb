@@ -10,7 +10,7 @@ module VCAP::CloudController
       validates_presence :organization_name
     end
 
-    def self.create(values = {}, &block)
+    def self.create(values={}, &block)
       if VCAP::CloudController::Config.config[:billing_event_writing_enabled]
         super(values, &block)
       end

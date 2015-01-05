@@ -1,6 +1,6 @@
 module Sequel::Plugins::VcapUserGroup
   module ClassMethods
-    def define_user_group(name, opts = {})
+    def define_user_group(name, opts={})
       opts = opts.merge(
         class: 'VCAP::CloudController::User',
         join_table: "#{table_name}_#{name}",

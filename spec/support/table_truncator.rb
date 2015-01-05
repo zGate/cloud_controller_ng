@@ -1,5 +1,5 @@
 class TableTruncator
-  def initialize(db, tables = nil)
+  def initialize(db, tables=nil)
     @db = db
     @tables = tables || self.class.isolated_tables(db)
   end

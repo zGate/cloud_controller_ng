@@ -8,7 +8,7 @@ module VCAP::Services
         @broker_client_timeout = VCAP::CloudController::Config.config[:broker_client_timeout_seconds] || 60
       end
 
-      def provision(plan_id, name, options = {})
+      def provision(plan_id, name, options={})
         body = options.merge(
           unique_id: plan_id,
           name: name
@@ -47,7 +47,7 @@ module VCAP::Services
 
       attr_reader :broker_client_timeout
 
-      def execute(method, path, body = nil)
+      def execute(method, path, body=nil)
         endpoint = @url + path
         uri = URI(endpoint)
         req_class = method.to_s.capitalize

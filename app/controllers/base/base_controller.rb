@@ -38,7 +38,7 @@ module VCAP::CloudController::RestController
     # agnostic in the base api and everthing build on it, but, the need to call
     # send_file changed that.
     #
-    def initialize(config, logger, env, params, body, sinatra = nil, dependencies = {})
+    def initialize(config, logger, env, params, body, sinatra=nil, dependencies={})
       @config  = config
       @logger  = logger
       @env     = env
@@ -55,7 +55,7 @@ module VCAP::CloudController::RestController
 
     # Override this to set dependencies
     #
-    def inject_dependencies(dependencies = {})
+    def inject_dependencies(dependencies={})
     end
 
     # Main entry point for the rest routes.  Acts as the final location
@@ -192,7 +192,7 @@ module VCAP::CloudController::RestController
       # /v2/apps/...
       #
       # @return [String] base path to the api endpoint
-      def path_base(base = nil)
+      def path_base(base=nil)
         @path_base = base if base
         @path_base ||= class_basename.underscore.sub(/_controller$/, '')
       end
@@ -224,7 +224,7 @@ module VCAP::CloudController::RestController
         @perserved_query_params
       end
 
-      def deprecated_endpoint(path, message = 'Endpoint deprecated')
+      def deprecated_endpoint(path, message='Endpoint deprecated')
         controller.after "#{path}*" do
           headers['X-Cf-Warnings'] ||= CGI.escape(message)
         end

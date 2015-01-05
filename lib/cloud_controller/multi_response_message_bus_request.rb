@@ -35,7 +35,7 @@ class MultiResponseMessageBusRequest
 
   private
 
-  def handle_received_response(response, response_error = nil)
+  def handle_received_response(response, response_error=nil)
     logger.debug "handle_received_response: sid=#{@sid} response='#{response}'"
 
     error = Error.new('Internal error: failed to decode response') if response_error

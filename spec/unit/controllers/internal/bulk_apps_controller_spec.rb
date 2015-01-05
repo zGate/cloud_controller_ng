@@ -15,7 +15,7 @@ module VCAP::CloudController
     end
 
     describe 'GET', '/internal/bulk/apps' do
-      def make_diego_app(options = {})
+      def make_diego_app(options={})
         AppFactory.make(options).tap do |app|
           app.environment_json = (app.environment_json || {}).merge('DIEGO_RUN_BETA' => 'true')
           app.package_state = 'STAGED'

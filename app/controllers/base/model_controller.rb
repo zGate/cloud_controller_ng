@@ -271,13 +271,13 @@ module VCAP::CloudController::RestController
     #
     # @return [Sequel::Model] The sequel model for the object, only if
     # the use has access.
-    def find_guid_and_validate_access(op, guid, find_model = model)
+    def find_guid_and_validate_access(op, guid, find_model=model)
       obj = find_guid(guid, find_model)
       validate_access(op, obj)
       obj
     end
 
-    def find_guid(guid, find_model = model)
+    def find_guid(guid, find_model=model)
       obj = find_model.find(guid: guid)
       raise self.class.not_found_exception(guid) if obj.nil?
       obj
@@ -310,7 +310,7 @@ module VCAP::CloudController::RestController
       #
       # @return [Sequel::Model] The class of the model associated with
       # this rest endpoint.
-      def model(name = nil)
+      def model(name=nil)
         @model ||= VCAP::CloudController.const_get(model_class_name(name))
       end
 
@@ -321,7 +321,7 @@ module VCAP::CloudController::RestController
       #
       # @return [String] The class name of the model associated with
       # this rest endpoint.
-      def model_class_name(name = nil)
+      def model_class_name(name=nil)
         @model_class_name = name if name
         @model_class_name ||= guess_model_class_name
       end

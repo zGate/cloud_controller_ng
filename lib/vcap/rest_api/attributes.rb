@@ -22,7 +22,7 @@ module VCAP::RestAPI
     #
     # @option opts [Object] :default default value for the attribute if it
     # isn't supplied.
-    def initialize(name, opts = {})
+    def initialize(name, opts={})
       @name        = name
       @exclude_in  = Set.new(Array(opts[:exclude_in]))
       @optional_in = Set.new(Array(opts[:optional_in]))
@@ -74,7 +74,7 @@ module VCAP::RestAPI
     #
     # @option opts [Object] :default default value for the attribute if it
     # isn't supplied.
-    def initialize(name, schema, opts = {})
+    def initialize(name, schema, opts={})
       if schema.respond_to?(:call)
         @block = schema
         @schema = nil

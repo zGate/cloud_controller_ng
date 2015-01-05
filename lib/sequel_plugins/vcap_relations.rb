@@ -37,7 +37,7 @@ module Sequel::Plugins::VcapRelations
     #
     # See the default many_to_one implementation for a description of the args
     # and return values.
-    def many_to_one(name, opts = {})
+    def many_to_one(name, opts={})
       unless opts.fetch(:without_guid_generation, false)
         define_guid_accessors(name)
       end
@@ -55,7 +55,7 @@ module Sequel::Plugins::VcapRelations
     #
     # See the default many_to_many implementation for a description of the args
     # and return values.
-    def many_to_many(name, opts = {})
+    def many_to_many(name, opts={})
       singular_name = name.to_s.singularize
       ids_attr = "#{singular_name}_ids"
       guids_attr = "#{singular_name}_guids"
@@ -85,7 +85,7 @@ module Sequel::Plugins::VcapRelations
     #
     # See the default one_to_many implementation for a description of the args
     # and return values.
-    def one_to_many(name, opts = {})
+    def one_to_many(name, opts={})
       singular_name = name.to_s.singularize
       ids_attr = "#{singular_name}_ids"
       guids_attr = "#{singular_name}_guids"

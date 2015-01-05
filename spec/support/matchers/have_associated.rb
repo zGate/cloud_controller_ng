@@ -1,4 +1,4 @@
-RSpec::Matchers.define :have_associated do |association, options = {}|
+RSpec::Matchers.define :have_associated do |association, options={}|
   description do
     "have associated #{association}"
   end

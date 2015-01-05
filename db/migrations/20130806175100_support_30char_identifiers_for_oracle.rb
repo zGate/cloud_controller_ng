@@ -23,7 +23,7 @@ def rename_foreign_key(table, current_name, new_name, &block)
   end
 end
 
-def rename_index_internal(db, alter_table, table, columns, opts = {})
+def rename_index_internal(db, alter_table, table, columns, opts={})
   columns = [columns] unless columns.is_a?(Array)
   db.indexes(table).each do | name, index |
     if ((index[:columns] - columns).empty? &&
@@ -36,7 +36,7 @@ def rename_index_internal(db, alter_table, table, columns, opts = {})
   end
 end
 
-def rename_index(table, columns, opts = {})
+def rename_index(table, columns, opts={})
   db = self
   alter_table table do
     rename_index_internal(db, self, table, columns, opts)

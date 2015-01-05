@@ -38,7 +38,7 @@ module VCAP::CloudController
         let(:worker) { Delayed::Worker.new }
         let(:blobstore_upload_job) do
           BlobstoreUpload.class_eval do
-            def reschedule_at(_, _= nil)
+            def reschedule_at(_, _=nil)
               #induce the jobs to reschedule almost immediately instead of waiting around for the backoff algorithm
               Time.now
             end

@@ -20,7 +20,7 @@ module VCAP::CloudController::BrokerApiHelper
     'password'
   end
 
-  def stub_catalog_fetch(broker_response_status=200, catalog = nil)
+  def stub_catalog_fetch(broker_response_status=200, catalog=nil)
     catalog ||= {
       services: [{
         id:          'service-guid-here',
@@ -51,7 +51,7 @@ module VCAP::CloudController::BrokerApiHelper
     @space_guid = @space.guid
   end
 
-  def setup_broker(catalog = nil)
+  def setup_broker(catalog=nil)
     stub_catalog_fetch(200, catalog)
 
     post('/v2/service_brokers',

@@ -97,7 +97,7 @@ module VCAP::CloudController
       end
     end
 
-    def list_handles(label_and_version, provider = DEFAULT_PROVIDER)
+    def list_handles(label_and_version, provider=DEFAULT_PROVIDER)
       (label, version) = label_and_version.split('-')
 
       service = Service[label: label, provider: provider]
@@ -129,7 +129,7 @@ module VCAP::CloudController
       MultiJson.dump({ handles: handles })
     end
 
-    def delete(label_and_version, provider = DEFAULT_PROVIDER)
+    def delete(label_and_version, provider=DEFAULT_PROVIDER)
       label = label_and_version.split('-')[0]
 
       validate_access(label, provider)
@@ -144,7 +144,7 @@ module VCAP::CloudController
       empty_json
     end
 
-    def validate_access(label, provider = DEFAULT_PROVIDER)
+    def validate_access(label, provider=DEFAULT_PROVIDER)
       auth_token = env[SERVICE_TOKEN_KEY]
       raise Errors::ApiError.new_from_details('NotAuthorized') unless auth_token
 
@@ -158,7 +158,7 @@ module VCAP::CloudController
       end
     end
 
-    def get(label_and_version, provider = DEFAULT_PROVIDER)
+    def get(label_and_version, provider=DEFAULT_PROVIDER)
       label = label_and_version.split('-')[0]
 
       validate_access(label, provider)

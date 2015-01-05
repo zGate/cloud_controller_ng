@@ -8,7 +8,7 @@ module VCAP::CloudController
     model_class_name :App
 
     get "#{path_guid}/stats", :stats
-    def stats(guid, opts = {})
+    def stats(guid, opts={})
       app = find_guid_and_validate_access(:read, guid)
 
       if app.stopped?

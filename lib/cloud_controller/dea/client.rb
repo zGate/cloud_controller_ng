@@ -28,14 +28,14 @@ module VCAP::CloudController
           @dea_pool.register_subscriptions
         end
 
-        def find_specific_instance(app, options = {})
+        def find_specific_instance(app, options={})
           message = { droplet: app.guid }
           message.merge!(options)
 
           dea_request_find_droplet(message, timeout: 2).first
         end
 
-        def find_instances(app, message_options = {}, request_options = {})
+        def find_instances(app, message_options={}, request_options={})
           message = { droplet: app.guid }
           message.merge!(message_options)
 
@@ -301,7 +301,7 @@ module VCAP::CloudController
           message_bus.publish("dea.#{dea_id}.start", args)
         end
 
-        def dea_request_find_droplet(args, opts = {})
+        def dea_request_find_droplet(args, opts={})
           logger.debug "sending dea.find.droplet with args: '#{args}' and opts: '#{opts}'"
           message_bus.synchronous_request('dea.find.droplet', args, opts)
         end

@@ -3,7 +3,7 @@ require 'securerandom'
 
 module VCAP::Services::ServiceBrokers::V2
   describe CatalogPlan do
-    def build_valid_plan_attrs(opts = {})
+    def build_valid_plan_attrs(opts={})
       {
         'id'          => opts[:id] || 'broker-provided-plan-id',
         'metadata'    => opts[:metadata] || {},

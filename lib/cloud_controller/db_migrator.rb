@@ -12,7 +12,7 @@ class DBMigrator
     @db = db
   end
 
-  def apply_migrations(opts = {})
+  def apply_migrations(opts={})
     Sequel.extension :migration
     require 'vcap/sequel_case_insensitive_string_monkeypatch'
     Sequel::Migrator.run(@db, SEQUEL_MIGRATIONS, opts)

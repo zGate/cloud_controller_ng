@@ -97,7 +97,7 @@ module VCAP
       migration.index :guid, unique: true, name: guid_idx
     end
 
-    def self.common(migration, table_key = nil)
+    def self.common(migration, table_key=nil)
       migration.primary_key :id
       guid(migration, table_key)
       timestamps(migration, table_key)

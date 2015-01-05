@@ -3,7 +3,7 @@ require 'active_support/concern'
 module ApiDsl
   extend ActiveSupport::Concern
 
-  def validate_response(model, json, expected_values = {}, ignored_attributes = [])
+  def validate_response(model, json, expected_values={}, ignored_attributes=[])
     ignored_attributes.push :guid
     expected_attributes_for_model(model).each do |expected_attribute|
       # refactor: pass exclusions, and figure out which are valid to not be there
@@ -76,7 +76,7 @@ module ApiDsl
     end
   end
 
-  def fields_json(overrides = {})
+  def fields_json(overrides={})
     MultiJson.dump(required_fields.merge(overrides), pretty: true)
   end
 
@@ -106,7 +106,7 @@ module ApiDsl
       "#{api_version}/#{model.to_s.pluralize}"
     end
 
-    def standard_model_list(model, controller, options = {})
+    def standard_model_list(model, controller, options={})
       outer_model_description = ''
       model_name = options[:path] || model
       title = options[:title] || model_name.to_s.pluralize.titleize
@@ -152,7 +152,7 @@ module ApiDsl
       end
     end
 
-    def standard_model_get(model, options = {})
+    def standard_model_get(model, options={})
       path = options[:path] || model
       title = options[:title] || path.to_s.singularize.titleize
       get "#{root(path)}/:guid" do
@@ -168,7 +168,7 @@ module ApiDsl
       end
     end
 
-    def standard_model_delete(model, options = {})
+    def standard_model_delete(model, options={})
       title = options[:title] || model.to_s.titleize
       delete "#{root(model)}/:guid" do
         parameter :guid, "The guid of the #{title}"
@@ -209,7 +209,7 @@ module ApiDsl
       request_parameter :'include-relations', 'comma-delimited list of the only relations to include in response', deprecated: true
     end
 
-    def request_parameter(name, description, options = {})
+    def request_parameter(name, description, options={})
       if options[:html]
         options[:description_html] = description
       end
@@ -219,7 +219,7 @@ module ApiDsl
       metadata[:request_parameters].push(options.merge(name: name.to_s, description: description))
     end
 
-    def field(name, description = '', options = {})
+    def field(name, description='', options={})
       metadata[:fields] = metadata[:fields] ? metadata[:fields].dup : []
       metadata[:fields].push(options.merge(name: name.to_s, description: description))
     end

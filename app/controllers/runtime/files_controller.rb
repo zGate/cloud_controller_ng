@@ -7,7 +7,7 @@ module VCAP::CloudController
     model_class_name :App
 
     get "#{path_guid}/instances/:instance_id/files", :files
-    def files(guid, search_param, path = nil)
+    def files(guid, search_param, path=nil)
       app = find_guid_and_validate_access(:read, guid)
 
       info = get_file_uri_for_search_param(app, path, search_param)

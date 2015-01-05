@@ -75,7 +75,7 @@ module Sinatra
     # @option opts [String] :reload_path If specified and the app is running in
     # :development mode, sinatra will reload all files under the provided path
     # whenever they change.
-    def vcap_configure(opts = {})
+    def vcap_configure(opts={})
       # we can't just do this in registered sinatra seems to reset
       # our configuration after register
       configure do

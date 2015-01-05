@@ -4,7 +4,7 @@ module VCAP::Services::ServiceBrokers::V2
   describe Catalog do
     let(:broker) { VCAP::CloudController::ServiceBroker.make }
 
-    def service_entry(opts = {})
+    def service_entry(opts={})
       {
         'id'          => opts[:id] || Sham.guid,
         'name'        => opts[:name] || Sham.name,

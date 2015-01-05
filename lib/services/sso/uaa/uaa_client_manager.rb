@@ -7,7 +7,7 @@ module VCAP::Services::SSO::UAA
     ROUTER_404_KEY   = 'X-Cf-Routererror'
     ROUTER_404_VALUE = 'unknown_route'
 
-    def initialize(opts = {})
+    def initialize(opts={})
       @opts = opts
     end
 

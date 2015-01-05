@@ -7,7 +7,7 @@ module VCAP
 
     attr_reader :config
 
-    def initialize(config, grace_period_in_seconds = 0)
+    def initialize(config, grace_period_in_seconds=0)
       @config = config
       @logger = Steno.logger('cc.uaa_token_decoder')
 

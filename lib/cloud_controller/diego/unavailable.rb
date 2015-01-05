@@ -1,7 +1,7 @@
 module VCAP::CloudController
   module Diego
     class Unavailable < RuntimeError
-      def initialize(exception = nil)
+      def initialize(exception=nil)
         @wrapped_exception = exception
       end
 

@@ -20,7 +20,7 @@ module ControllerHelpers
     { protocol: 'https', config_setting: :https_required_for_admins, user: 'admin', success: true }
   ]
 
-  def self.description_for_inline_depth(depth, pagination = 50)
+  def self.description_for_inline_depth(depth, pagination=50)
     if depth
       "?inline-relations-depth=#{depth}&results-per-page=#{pagination}"
     else
@@ -28,7 +28,7 @@ module ControllerHelpers
     end
   end
 
-  def query_params_for_inline_depth(depth, pagination = 50)
+  def query_params_for_inline_depth(depth, pagination=50)
     if depth
       { 'inline-relations-depth' => depth, 'results-per-page' => pagination }
     else
@@ -61,7 +61,7 @@ module ControllerHelpers
     FakeFrontController.new(TestConfig.config)
   end
 
-  def headers_for(user, opts = {})
+  def headers_for(user, opts={})
     opts = { email: Sham.email,
              https: false }.merge(opts)
 

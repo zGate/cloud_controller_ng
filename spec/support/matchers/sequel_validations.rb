@@ -1,4 +1,4 @@
-RSpec::Matchers.define :validate_presence do |attribute, options = {}|
+RSpec::Matchers.define :validate_presence do |attribute, options={}|
   description do
     "validate presence of #{attribute}"
   end
@@ -11,7 +11,7 @@ RSpec::Matchers.define :validate_presence do |attribute, options = {}|
   end
 end
 
-RSpec::Matchers.define :validate_not_null do |attribute, options = {}|
+RSpec::Matchers.define :validate_not_null do |attribute, options={}|
   description do
     "validate #{attribute} is not null"
   end

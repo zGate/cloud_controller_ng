@@ -5,7 +5,7 @@ module VCAP::CloudController::RestController
     end
 
     module ClassMethods
-      def define_route(verb, path, method = nil, &blk)
+      def define_route(verb, path, method=nil, &blk)
         opts = {}
         klass = self
         controller.send(verb, path, opts) do |*args|

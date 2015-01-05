@@ -3,7 +3,7 @@ require 'securerandom'
 
 module VCAP::Services::ServiceBrokers::V2
   describe CatalogService do
-    def build_valid_service_attrs(opts = {})
+    def build_valid_service_attrs(opts={})
       {
         'id' => 'broker-provided-service-id',
         'metadata' => {},
@@ -16,7 +16,7 @@ module VCAP::Services::ServiceBrokers::V2
       }.merge(opts.stringify_keys)
     end
 
-    def build_valid_plan_attrs(opts = {})
+    def build_valid_plan_attrs(opts={})
       @index ||= 0
       @index += 1
       {

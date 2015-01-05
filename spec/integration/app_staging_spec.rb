@@ -31,7 +31,7 @@ describe 'Staging an app', type: :integration do
       }
     end
 
-    def valid_zip(size = 1)
+    def valid_zip(size=1)
       @valid_zip ||= {}
       @valid_zip[size.to_s] ||= begin
         zip_name = File.join(@tmpdir, "file_#{size}.zip")

@@ -18,7 +18,7 @@ class VCAP::CloudController::ResourcePool
     attr_accessor :instance
   end
 
-  def initialize(config = {})
+  def initialize(config={})
     options = config[:resource_pool] || {}
     @cdn = options[:cdn]
 

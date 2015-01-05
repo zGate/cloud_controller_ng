@@ -59,7 +59,7 @@ module VCAP::CloudController
       Runners.new(config, message_bus, dea_pool, stager_pool)
     end
 
-    def make_diego_app(options = {})
+    def make_diego_app(options={})
       AppFactory.make(options).tap do |app|
         app.environment_json = (app.environment_json || {}).merge('DIEGO_RUN_BETA' => 'true')
         app.package_state = 'STAGED'
@@ -67,7 +67,7 @@ module VCAP::CloudController
       end
     end
 
-    def make_dea_app(options = {})
+    def make_dea_app(options={})
       AppFactory.make(options).tap do |app|
         app.package_state = 'STAGED'
         app.save
