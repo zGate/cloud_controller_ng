@@ -10,7 +10,7 @@ describe 'Stable API warning system', api_version_check: true do
 
   it 'tells the developer if the API specs change' do
     api_folder = File.expand_path('..', __FILE__)
-    filenames = Dir.glob("#{api_folder}/**/*").reject {|filename| File.directory?(filename) || filename == __FILE__ }.sort
+    filenames = Dir.glob("#{api_folder}/**/*").reject { |filename| File.directory?(filename) || filename == __FILE__ }.sort
 
     all_file_checksum = filenames.inject('') do |memo, filename|
       memo << Digest::SHA1.file(filename).hexdigest

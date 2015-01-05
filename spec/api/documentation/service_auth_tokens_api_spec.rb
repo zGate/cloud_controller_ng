@@ -21,7 +21,7 @@ resource 'ServiceAuthTokens (deprecated)', type: [:api, :legacy_api] do
     standard_list_parameters VCAP::CloudController::ServiceAuthTokensController
 
     describe 'querying by label' do
-      let(:q) { 'label:Nic-Token'}
+      let(:q) { 'label:Nic-Token' }
 
       before do
         VCAP::CloudController::ServiceAuthToken.make label: 'Nic-Token'
@@ -44,7 +44,7 @@ resource 'ServiceAuthTokens (deprecated)', type: [:api, :legacy_api] do
     end
 
     describe 'querying by provider' do
-      let(:q) { 'provider:Face-Offer'}
+      let(:q) { 'provider:Face-Offer' }
 
       before do
         VCAP::CloudController::ServiceAuthToken.make provider: 'Face-Offer'

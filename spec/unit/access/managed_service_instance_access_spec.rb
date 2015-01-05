@@ -3,7 +3,7 @@ require 'spec_helper'
 module VCAP::CloudController
   describe ManagedServiceInstanceAccess, type: :access do
     subject(:access) { ManagedServiceInstanceAccess.new(Security::AccessContext.new) }
-    let(:token) {{ 'scope' => ['cloud_controller.read', 'cloud_controller.write'] }}
+    let(:token) { { 'scope' => ['cloud_controller.read', 'cloud_controller.write'] } }
 
     let(:user) { VCAP::CloudController::User.make }
     let(:org) { VCAP::CloudController::Organization.make }

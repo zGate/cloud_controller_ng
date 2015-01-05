@@ -212,7 +212,7 @@ module VCAP::CloudController
 
           it 'does not save the detected buildpack guid' do
             expect {
-              ignore_staging_error {stage }
+              ignore_staging_error { stage }
             }.to_not change { app.detected_buildpack_guid }.from(nil)
           end
 
@@ -547,7 +547,7 @@ module VCAP::CloudController
           end
 
           context 'when a staging error is present' do
-            let(:reply_error_info) {{ 'type' => 'NoAppDetectedError', 'message' => 'uh oh' }}
+            let(:reply_error_info) { { 'type' => 'NoAppDetectedError', 'message' => 'uh oh' } }
 
             it 'sets the staging failed reason to the specified value' do
               expect { stage }.to change { app.staging_failed_reason }.to('NoAppDetectedError')

@@ -170,7 +170,7 @@ module VCAP::Services::ServiceBrokers::V2
 
     shared_examples 'handles standard error conditions' do
       context 'when the API returns an error code' do
-        let(:response_data) {{ 'foo' => 'bar' }}
+        let(:response_data) { { 'foo' => 'bar' } }
         let(:code) { '500' }
         let(:message) { 'Internal Server Error' }
 

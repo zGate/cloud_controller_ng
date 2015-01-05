@@ -16,7 +16,7 @@ module VCAP::CloudController
             }
         }
       end
-      let(:expires) {Time.now.to_i + 10}
+      let(:expires) { Time.now.to_i + 10 }
 
       subject(:ad) { DeaAdvertisement.new(message, expires) }
 

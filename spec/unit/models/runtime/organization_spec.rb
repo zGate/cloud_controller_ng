@@ -492,15 +492,15 @@ module VCAP::CloudController
         end
 
         it 'should remove the space developer roles from the user' do
-          expect { org.remove_user_recursive(user) }.to change{ user.spaces.length}.from(2).to(0)
+          expect { org.remove_user_recursive(user) }.to change{ user.spaces.length }.from(2).to(0)
         end
 
         it 'should remove the space manager roles from the user' do
-          expect { org.remove_user_recursive(user) }.to change{ user.managed_spaces.length}.from(2).to(0)
+          expect { org.remove_user_recursive(user) }.to change{ user.managed_spaces.length }.from(2).to(0)
         end
 
         it 'should remove the space audited roles from the user' do
-          expect { org.remove_user_recursive(user) }.to change{ user.audited_spaces.length}.from(2).to(0)
+          expect { org.remove_user_recursive(user) }.to change{ user.audited_spaces.length }.from(2).to(0)
         end
 
         it 'should remove the user from each spaces developer role' do
@@ -528,7 +528,7 @@ module VCAP::CloudController
 
     describe 'creating an organization' do
       context 'when a quota is not specified' do
-        let(:org) {Organization.create_from_hash(name: 'myorg')}
+        let(:org) { Organization.create_from_hash(name: 'myorg') }
 
         it 'uses the default' do
           org.save
@@ -542,13 +542,13 @@ module VCAP::CloudController
           end
 
           it 'raises an exception' do
-            expect{org.save}.to raise_error(VCAP::Errors::ApiError, /Quota Definition could not be found: default/)
+            expect{ org.save }.to raise_error(VCAP::Errors::ApiError, /Quota Definition could not be found: default/)
           end
         end
       end
 
       context 'when a quota is specified' do
-        let(:org) {Organization.make_unsaved(quota_definition: nil, quota_definition_guid: quota_definition_guid)}
+        let(:org) { Organization.make_unsaved(quota_definition: nil, quota_definition_guid: quota_definition_guid) }
 
         context "and it's valid" do
           let(:my_quota)  { QuotaDefinition.make }

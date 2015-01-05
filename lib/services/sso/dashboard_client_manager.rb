@@ -16,7 +16,7 @@ module VCAP::Services::SSO
 
     def synchronize_clients_with_catalog(catalog)
       requested_clients = catalog.services.map(&:dashboard_client).compact
-      requested_client_ids = requested_clients.map{|client| client['id']}
+      requested_client_ids = requested_clients.map{ |client| client['id'] }
 
       unless cc_configured_to_modify_uaa_clients?
         warnings << REQUESTED_FEATURE_DISABLED_WARNING unless requested_clients.empty?

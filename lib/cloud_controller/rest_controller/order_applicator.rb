@@ -9,9 +9,9 @@ module VCAP::CloudController::RestController
       validate!
 
       if descending?
-        @order_by.inject(dataset){|ds, col| ds.order_more(Sequel.desc(col))}
+        @order_by.inject(dataset){ |ds, col| ds.order_more(Sequel.desc(col)) }
       else
-        @order_by.inject(dataset){|ds, col| ds.order_more(Sequel.asc(col))}
+        @order_by.inject(dataset){ |ds, col| ds.order_more(Sequel.asc(col)) }
       end
     end
 

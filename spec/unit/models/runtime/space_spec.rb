@@ -52,7 +52,7 @@ module VCAP::CloudController
 
       context 'organization' do
         it 'fails when changing' do
-          expect{Space.make.organization = Organization.make}.to raise_error Space::OrganizationAlreadySet
+          expect{ Space.make.organization = Organization.make }.to raise_error Space::OrganizationAlreadySet
         end
       end
     end
@@ -67,7 +67,7 @@ module VCAP::CloudController
       it { is_expected.to have_associated :security_groups }
       it { is_expected.to have_associated :default_users, class: User }
       it { is_expected.to have_associated :domains, class: SharedDomain }
-      it { is_expected.to have_associated :space_quota_definition, associated_instance: ->(space) {SpaceQuotaDefinition.make(organization: space.organization)} }
+      it { is_expected.to have_associated :space_quota_definition, associated_instance: ->(space) { SpaceQuotaDefinition.make(organization: space.organization) } }
 
       describe 'space_quota_definition' do
         subject(:space) { Space.make }
@@ -79,7 +79,7 @@ module VCAP::CloudController
         end
 
         it 'allows nil' do
-          expect{space.space_quota_definition = nil }.not_to raise_error
+          expect{ space.space_quota_definition = nil }.not_to raise_error
         end
       end
 

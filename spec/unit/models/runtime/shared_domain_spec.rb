@@ -72,7 +72,7 @@ module VCAP::CloudController
 
     describe 'addable_to_organization!' do
       it 'does not raise error' do
-        expect{subject.addable_to_organization!(Organization.new)}.to_not raise_error
+        expect{ subject.addable_to_organization!(Organization.new) }.to_not raise_error
       end
     end
   end

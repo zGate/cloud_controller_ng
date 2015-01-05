@@ -31,7 +31,7 @@ module VCAP::CloudController
     describe 'POST', '/v2/snapshots' do
       let(:new_name) { 'new name' }
       let(:snapshot_created_at) { Time.now.to_s }
-      let(:new_snapshot) { VCAP::Services::Api::SnapshotV2.new(snapshot_id: '1', name: 'foo', state: 'empty', size: 0, created_time: snapshot_created_at)}
+      let(:new_snapshot) { VCAP::Services::Api::SnapshotV2.new(snapshot_id: '1', name: 'foo', state: 'empty', size: 0, created_time: snapshot_created_at) }
       let(:payload) {
         MultiJson.dump(service_instance_guid: service_instance.guid,
                              name: new_name)
@@ -68,7 +68,7 @@ module VCAP::CloudController
       end
 
       context 'once authenticated' do
-        let(:developer) {make_developer_for_space(service_instance.space)}
+        let(:developer) { make_developer_for_space(service_instance.space) }
 
         context 'without service_instance_id' do
           it 'returns a 400 status code' do
@@ -84,7 +84,7 @@ module VCAP::CloudController
         end
 
         context 'given nil name' do
-          let(:new_name) {nil}
+          let(:new_name) { nil }
 
           it 'returns a 400 status code and does not create a snapshot' do
             expect_any_instance_of(ManagedServiceInstance).not_to receive(:create_snapshot)
@@ -95,7 +95,7 @@ module VCAP::CloudController
         end
 
         context 'with a blank name' do
-          let(:new_name) {''}
+          let(:new_name) { '' }
           it 'returns a 400 status code and does not create a snapshot' do
             post '/v2/snapshots', payload, json_headers(headers_for(developer))
             expect(last_response.status).to eq(400)
@@ -141,7 +141,7 @@ module VCAP::CloudController
       end
 
       context 'once authenticated' do
-        let(:developer) {make_developer_for_space(service_instance.space)}
+        let(:developer) { make_developer_for_space(service_instance.space) }
         before do
           allow(ManagedServiceInstance).to receive(:find).
             with(guid: service_instance.guid).

@@ -81,7 +81,7 @@ module VCAP::CloudController
       end
 
       describe '#stop' do
-        let(:app_stopper) {instance_double(AppStopper)}
+        let(:app_stopper) { instance_double(AppStopper) }
 
         it 'notifies the DEA to stop the app via NATS' do
           expect(AppStopper).to receive(:new).and_return(app_stopper)

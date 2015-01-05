@@ -11,7 +11,7 @@ module VCAP::CloudController
             'available_memory' => 1024,
         }
       end
-      let(:expires) {Time.now.to_i + 10}
+      let(:expires) { Time.now.to_i + 10 }
 
       subject(:ad) { StagerAdvertisement.new(message, expires) }
 

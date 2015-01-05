@@ -208,7 +208,7 @@ describe ErrorHasher do
     end
 
     context 'with a services error where some arbitrary information is set' do
-      let(:error) {services_error}
+      let(:error) { services_error }
       
       before do
         allow(error).to receive(:to_h).and_return('arbitrary key' => 'arbitrary value')

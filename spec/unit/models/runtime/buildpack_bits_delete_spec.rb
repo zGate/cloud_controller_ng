@@ -8,7 +8,7 @@ module VCAP::CloudController
       CloudController::DependencyLocator.instance.buildpack_blobstore
     end
 
-    let(:tmpfile) { Tempfile.new('')}
+    let(:tmpfile) { Tempfile.new('') }
 
     before do
       blobstore.cp_to_blobstore(tmpfile.path, key)

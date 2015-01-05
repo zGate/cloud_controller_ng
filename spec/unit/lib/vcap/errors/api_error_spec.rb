@@ -13,7 +13,7 @@ module VCAP::Errors
     end
 
     let(:messageServiceInvalid) { 'ServiceInvalid' }
-    let(:messagePartialTranslated) { 'MessagePartialTranslated'}
+    let(:messagePartialTranslated) { 'MessagePartialTranslated' }
     let(:messageNotTranslated) { 'MessageNotTranslated' }
     let(:args) { [ 'foo', 'bar' ] }
 
@@ -53,7 +53,7 @@ module VCAP::Errors
       end
 
       context "if it doesn't recognise the error from v2.yml" do
-        let(:messageServiceInvalid) { "What is this?  I don't know?!!"}
+        let(:messageServiceInvalid) { "What is this?  I don't know?!!" }
 
         before do
           allow(Details).to receive(:new).and_call_original

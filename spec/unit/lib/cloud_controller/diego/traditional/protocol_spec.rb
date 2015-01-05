@@ -137,7 +137,7 @@ module VCAP::CloudController
           let(:app) do
             AppFactory.make
           end
-          let(:task_id) {'staging_task_id'}
+          let(:task_id) { 'staging_task_id' }
 
           subject(:request) do
             protocol.stop_staging_app_request(app, task_id)
@@ -152,7 +152,7 @@ module VCAP::CloudController
 
         describe '#stop_staging_message' do
           let(:staging_app) { AppFactory.make }
-          let(:task_id) {'staging_task_id'}
+          let(:task_id) { 'staging_task_id' }
           subject(:message) { protocol.stop_staging_message(staging_app, task_id) }
 
           it 'is a nats message with the appropriate staging subject and payload' do

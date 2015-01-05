@@ -31,7 +31,7 @@ module VCAP::CloudController
 
       context 'non admin users' do
         context 'when the user has sufficient scope and permission' do
-          let(:token) {{ 'scope' => ['cloud_controller.read'] }}
+          let(:token) { { 'scope' => ['cloud_controller.read'] } }
 
           it 'allows the user to read' do
             allow(App).to receive(:user_visible).and_return(App.where(guid: process.guid))

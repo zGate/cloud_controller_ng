@@ -3,7 +3,7 @@ require 'spec_helper'
 module VCAP::CloudController
   describe BillingEventAccess, type: :access do
     subject(:access) { BillingEventAccess.new(Security::AccessContext.new) }
-    let(:token) {{ 'scope' => ['cloud_controller.read', 'cloud_controller.write'] }}
+    let(:token) { { 'scope' => ['cloud_controller.read', 'cloud_controller.write'] } }
 
     before do
       TestConfig.override({ billing_event_writing_enabled: true })

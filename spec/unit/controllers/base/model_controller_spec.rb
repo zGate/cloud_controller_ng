@@ -7,8 +7,8 @@ module VCAP::CloudController
 
     describe '#validate_access' do
       let(:access_context) { Security::AccessContext.new }
-      let(:obj) {double('test object')}
-      let(:fields) {{ 'key' => 1 }}
+      let(:obj) { double('test object') }
+      let(:fields) { { 'key' => 1 } }
 
       before do
         allow(Security::AccessContext).to receive(:new).and_return(access_context)
@@ -32,20 +32,20 @@ module VCAP::CloudController
       context 'raises an error when it fails' do
         it 'on operation_with_token' do
           expect(access_context).to receive(:cannot?).with(:read_for_update_with_token, obj).ordered.and_return(true)
-          expect{@model_controller.validate_access(:read_for_update, obj)}.to raise_error VCAP::Errors::ApiError
+          expect{ @model_controller.validate_access(:read_for_update, obj) }.to raise_error VCAP::Errors::ApiError
 
           expect(access_context).to receive(:cannot?).with(:update_with_token, obj).ordered.and_return(true)
-          expect{@model_controller.validate_access(:update, obj)}.to raise_error VCAP::Errors::ApiError
+          expect{ @model_controller.validate_access(:update, obj) }.to raise_error VCAP::Errors::ApiError
         end
 
         it 'on operation' do
           expect(access_context).to receive(:cannot?).with(:read_for_update_with_token, obj).ordered.and_return(false)
           expect(access_context).to receive(:cannot?).with(:read_for_update, obj, fields).ordered.and_return(true)
-          expect{@model_controller.validate_access(:read_for_update, obj, fields)}.to raise_error VCAP::Errors::ApiError
+          expect{ @model_controller.validate_access(:read_for_update, obj, fields) }.to raise_error VCAP::Errors::ApiError
 
           expect(access_context).to receive(:cannot?).with(:update_with_token, obj).ordered.and_return(false)
           expect(access_context).to receive(:cannot?).with(:update, obj, fields).ordered.and_return(true)
-          expect{@model_controller.validate_access(:update, obj, fields)}.to raise_error VCAP::Errors::ApiError
+          expect{ @model_controller.validate_access(:update, obj, fields) }.to raise_error VCAP::Errors::ApiError
         end
       end
     end
@@ -191,7 +191,7 @@ module VCAP::CloudController
 
     describe '#update' do
       let!(:model) { TestModel.make }
-      let(:fields) {{ 'unique_value' => 'something' }}
+      let(:fields) { { 'unique_value' => 'something' } }
 
       it 'updates the data' do
         expect(model.updated_at).to be_nil
@@ -266,7 +266,7 @@ module VCAP::CloudController
       let(:params) { {} }
 
       def query_params
-        params.to_a.collect{|pair| pair.join('=')}.join('&')
+        params.to_a.collect{ |pair| pair.join('=') }.join('&')
       end
 
       shared_examples 'tests with associations' do
@@ -390,7 +390,7 @@ module VCAP::CloudController
         expect(decoded_response).to have_key('prev_url')
         expect(decoded_response['prev_url']).to be_nil
         expect(decoded_response['next_url']).to include('page=2&results-per-page=2')
-        found_guids = decoded_response['resources'].collect {|resource| resource['metadata']['guid']}
+        found_guids = decoded_response['resources'].collect { |resource| resource['metadata']['guid'] }
         expect(found_guids).to match_array([model1.guid, model2.guid])
       end
 
@@ -402,7 +402,7 @@ module VCAP::CloudController
         expect(decoded_response['prev_url']).to include('page=1&results-per-page=2')
         expect(decoded_response).to have_key('next_url')
         expect(decoded_response['next_url']).to be_nil
-        found_guids = decoded_response['resources'].collect {|resource| resource['metadata']['guid']}
+        found_guids = decoded_response['resources'].collect { |resource| resource['metadata']['guid'] }
         expect(found_guids).to match_array([model3.guid])
       end
 
@@ -683,7 +683,7 @@ module VCAP::CloudController
 
               expect(last_response.status).to eq(200)
               expect(decoded_response['total_results']).to eq(2)
-              found_guids = decoded_response['resources'].collect {|resource| resource['metadata']['guid']}
+              found_guids = decoded_response['resources'].collect { |resource| resource['metadata']['guid'] }
               expect(found_guids).to match_array([associated_model1.guid, associated_model2.guid])
             end
 

@@ -20,7 +20,7 @@ module VCAP::CloudController
       it { is_expected.to validate_presence :app_plan_name }
       it { is_expected.to validate_presence :app_memory }
       it { is_expected.to validate_presence :app_instance_count }
-      it { is_expected.to validate_uniqueness :app_run_id}
+      it { is_expected.to validate_uniqueness :app_run_id }
     end
 
     describe 'Serialization' do

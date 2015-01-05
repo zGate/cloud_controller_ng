@@ -3,7 +3,7 @@ require 'spec_helper'
 module VCAP::CloudController
   describe EventAccess, type: :access do
     subject(:access) { EventAccess.new(Security::AccessContext.new) }
-    let(:token) {{ 'scope' => ['cloud_controller.read', 'cloud_controller.write'] }}
+    let(:token) { { 'scope' => ['cloud_controller.read', 'cloud_controller.write'] } }
 
     let(:user) { VCAP::CloudController::User.make }
     let(:org) { VCAP::CloudController::Organization.make }
@@ -182,7 +182,7 @@ module VCAP::CloudController
     end
 
     context 'any user using client without cloud_controller.write' do
-      let(:token) { { 'scope' => ['cloud_controller.read'] }}
+      let(:token) { { 'scope' => ['cloud_controller.read'] } }
 
       before do
         org.add_user(user)
@@ -198,7 +198,7 @@ module VCAP::CloudController
     end
 
     context 'any user using client without cloud_controller.read' do
-      let(:token) { { 'scope' => [] }}
+      let(:token) { { 'scope' => [] } }
 
       before do
         org.add_user(user)

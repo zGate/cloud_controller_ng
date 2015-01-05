@@ -10,7 +10,7 @@ module VCAP::CloudController
     let(:app_model) { AppModel.make }
     let(:process) { ProcessMapper.map_model_to_domain(process_model) }
     let(:guid) { process.guid }
-    let(:req_body) {''}
+    let(:req_body) { '' }
     let(:expected_response) { 'process_response_body' }
 
     let(:process_controller) do

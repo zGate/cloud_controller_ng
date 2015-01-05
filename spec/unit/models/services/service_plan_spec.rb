@@ -59,9 +59,9 @@ module VCAP::CloudController
         end
 
         context 'when a plan with the same name has already been added for this service' do
-          let(:attrs1) { { name: 'dumbo', service_id: service.id }}
-          let(:attrs2) { { name: 'dumbo', service_id: service.id }}
-          let(:service) { Service.make({})}
+          let(:attrs1) { { name: 'dumbo', service_id: service.id } }
+          let(:attrs2) { { name: 'dumbo', service_id: service.id } }
+          let(:service) { Service.make({}) }
 
           before { plan = ServicePlan.make(attrs1) }
 

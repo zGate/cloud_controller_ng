@@ -92,7 +92,7 @@ module Sequel::Plugins::VcapSerialization
     # @return [Sequel::Model] The created model.
     def create_from_hash(hash, opts = {})
       create_opts = update_or_create_options(hash, opts)
-      create {|instance| instance.set_all(create_opts) }
+      create { |instance| instance.set_all(create_opts) }
     end
 
     # Set the default order during a to_json on the model class.

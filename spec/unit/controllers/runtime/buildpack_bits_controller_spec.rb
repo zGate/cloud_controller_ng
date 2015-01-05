@@ -233,7 +233,7 @@ module VCAP::CloudController
         end
 
         context 'when blobstore is local' do
-          let(:buildpacks_root) {Dir.mktmpdir('buildpacks', tmpdir)}
+          let(:buildpacks_root) { Dir.mktmpdir('buildpacks', tmpdir) }
           let(:blobstore_config) do
             {
               buildpacks: {

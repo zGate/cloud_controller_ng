@@ -4,7 +4,7 @@ require 'cloud_controller/blobstore/cdn'
 module CloudController
   module Blobstore
     describe Cdn do
-      let(:cdn_host) { 'https://some_distribution.cloudfront.net'}
+      let(:cdn_host) { 'https://some_distribution.cloudfront.net' }
       let(:cdn) { Cdn.make(cdn_host) }
 
       describe '.make' do

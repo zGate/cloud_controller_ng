@@ -220,7 +220,7 @@ module VCAP::CloudController
           instance = nil
           expect {
             instance = create_managed_service_instance
-          }.to change{ServiceUsageEvent.count}.by(1)
+          }.to change{ ServiceUsageEvent.count }.by(1)
 
           event = ServiceUsageEvent.last
           expect(event.state).to eq(Repositories::Services::ServiceUsageEventRepository::CREATED_EVENT_STATE)
@@ -760,7 +760,7 @@ module VCAP::CloudController
         end
 
         context 'when the service broker returns a 409' do
-          let(:body) {'{"description": "service broker error"}' }
+          let(:body) { '{"description": "service broker error"}' }
           let(:status) { 409 }
 
           it 'forwards the error message from the service broker' do
@@ -781,7 +781,7 @@ module VCAP::CloudController
 
       context 'with a v1 service instance' do
         let(:service) { Service.make(:v1) }
-        let(:service_plan) { ServicePlan.make(service: service)}
+        let(:service_plan) { ServicePlan.make(service: service) }
         let!(:service_instance) { ManagedServiceInstance.make(service_plan: service_plan) }
 
         context 'when the service gateway returns a 409' do

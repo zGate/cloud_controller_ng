@@ -91,7 +91,7 @@ module VCAP::CloudController
           end
 
           context 'when the app has a docker image' do
-            let(:docker_image) {'foobar'}
+            let(:docker_image) { 'foobar' }
 
             it 'finds a diego backend' do
               expect(runners).to receive(:diego_runner).with(app).and_call_original
@@ -127,8 +127,8 @@ module VCAP::CloudController
     end
 
     describe '#run_with_diego?' do
-      let(:diego_app) {make_diego_app}
-      let(:dea_app) {make_dea_app}
+      let(:diego_app) { make_diego_app }
+      let(:dea_app) { make_dea_app }
 
       context 'when diego is enabled' do
         it 'returns true for a diego app' do
@@ -297,7 +297,7 @@ module VCAP::CloudController
     end
 
     describe '#dea_apps' do
-      let!(:diego_app) {make_diego_app(id: 99, state: 'STARTED')}
+      let!(:diego_app) { make_diego_app(id: 99, state: 'STARTED') }
 
       before do
         allow(runners).to receive(:diego_running_optional?).and_return(true)

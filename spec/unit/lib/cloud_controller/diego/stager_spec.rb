@@ -18,7 +18,7 @@ module VCAP::CloudController
       end
 
       describe '#stage' do
-        let(:task_id) {app.staging_task_id}
+        let(:task_id) { app.staging_task_id }
 
         before do
           allow(messenger).to receive(:send_stage_request)

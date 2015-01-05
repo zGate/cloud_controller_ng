@@ -167,8 +167,8 @@ module VCAP::CloudController
     end
 
     describe 'POST /v2/routes' do
-      let(:space) {Space.make}
-      let(:user) {User.make}
+      let(:space) { Space.make }
+      let(:user) { User.make }
       let(:req) {{
                    domain_guid: SharedDomain.make.guid,
                    space_guid:  space.guid,
@@ -194,7 +194,7 @@ module VCAP::CloudController
     end
 
     describe 'GET /v2/routes/reserved/domain/:domain_guid/host/:hostname' do
-      let(:user) {User.make}
+      let(:user) { User.make }
 
       context 'when the domain does not exist' do
         it 'returns a NOT_FOUND (404)' do
@@ -204,7 +204,7 @@ module VCAP::CloudController
       end
 
       context 'when the domain exists' do
-        let(:route) {Route.make}
+        let(:route) { Route.make }
 
         context 'when the hostname is not reserved' do
           it 'returns a NOT_FOUND (404)' do

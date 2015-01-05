@@ -252,7 +252,7 @@ describe 'Service Broker' do
     end
 
     context 'when the CC dashboard_client feature is disabled and the catalog requests a client' do
-      let(:service) { build_service(dashboard_client: { id: 'client-id', secret: 'shhhhh', redirect_uri: 'http://example.com/client-id' })}
+      let(:service) { build_service(dashboard_client: { id: 'client-id', secret: 'shhhhh', redirect_uri: 'http://example.com/client-id' }) }
 
       before do
         allow(VCAP::CloudController::Config.config).to receive(:[]).with(anything).and_call_original

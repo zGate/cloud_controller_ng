@@ -3,7 +3,7 @@ require 'spec_helper'
 module VCAP::CloudController
   describe AppAccess, type: :access do
     subject(:access) { AppAccess.new(Security::AccessContext.new) }
-    let(:token) {{ 'scope' => ['cloud_controller.read', 'cloud_controller.write'] }}
+    let(:token) { { 'scope' => ['cloud_controller.read', 'cloud_controller.write'] } }
     let(:user) { VCAP::CloudController::User.make }
     let(:org) { VCAP::CloudController::Organization.make }
     let(:space) { VCAP::CloudController::Space.make(organization: org) }
@@ -20,7 +20,7 @@ module VCAP::CloudController
     context 'admin' do
       include_context :admin_setup
 
-      before {FeatureFlag.make(name: 'app_bits_upload', enabled: false)}
+      before { FeatureFlag.make(name: 'app_bits_upload', enabled: false) }
 
       it_behaves_like :full_access
 
@@ -153,7 +153,7 @@ module VCAP::CloudController
     end
 
     context 'any user using client without cloud_controller.write' do
-      let(:token) {{ 'scope' => ['cloud_controller.read'] }}
+      let(:token) { { 'scope' => ['cloud_controller.read'] } }
 
       before do
         org.add_user(user)
@@ -169,7 +169,7 @@ module VCAP::CloudController
     end
 
     context 'any user using client without cloud_controller.read' do
-      let(:token) {{ 'scope' => [] }}
+      let(:token) { { 'scope' => [] } }
 
       before do
         org.add_user(user)

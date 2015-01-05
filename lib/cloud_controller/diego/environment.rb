@@ -31,7 +31,7 @@ module VCAP::CloudController
 
       def vcap_application
         env = app.vcap_application
-        EXCLUDE.each {|k| env.delete(k)}
+        EXCLUDE.each { |k| env.delete(k) }
         env
       end
     end

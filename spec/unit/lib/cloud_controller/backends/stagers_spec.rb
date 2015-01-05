@@ -178,7 +178,7 @@ module VCAP::CloudController
         end
 
         context 'when the app has a docker image' do
-          let(:docker_image) {'foobar'}
+          let(:docker_image) { 'foobar' }
 
           it 'finds a diego stager' do
             expect(stagers).to receive(:diego_stager).with(app).and_call_original

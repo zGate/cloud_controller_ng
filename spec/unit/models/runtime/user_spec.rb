@@ -225,7 +225,7 @@ module VCAP::CloudController
         it 'should remove user from organization' do
           expect {
             user.remove_organization(org)
-          }.to change{user.organizations.size}.by(-1)
+          }.to change{ user.organizations.size }.by(-1)
         end
       end
     end

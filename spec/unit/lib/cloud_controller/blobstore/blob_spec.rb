@@ -6,7 +6,7 @@ module CloudController
       subject(:blob) do
         Blob.new(file, cdn)
       end
-      let(:attrs) {{ 'a' => 'b', 'c' => 'd' }}
+      let(:attrs) { { 'a' => 'b', 'c' => 'd' } }
       let(:file) { double('file', key: 'abcdef', attributes: attrs, destroy: nil) }
       let(:cdn) { double(:cdn) }
 

@@ -10,7 +10,7 @@ module VCAP::CloudController
     let(:second_service) {  ManagedServiceInstance.make(space: space) }
 
     let(:instances_reporters) { double(:instances_reporters) }
-    let(:running_instances) {{ app_obj.guid => 5 }}
+    let(:running_instances) { { app_obj.guid => 5 } }
 
     before do
       ServiceBinding.make(app: app_obj, service_instance: first_service)

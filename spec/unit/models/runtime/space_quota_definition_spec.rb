@@ -8,11 +8,11 @@ module VCAP::CloudController
 
     describe 'Associations' do
       it { is_expected.to have_associated :organization, associated_instance: ->(space_quota) { space_quota.organization } }
-      it { is_expected.to have_associated :spaces, associated_instance: ->(space_quota) {Space.make(organization: space_quota.organization)} }
+      it { is_expected.to have_associated :spaces, associated_instance: ->(space_quota) { Space.make(organization: space_quota.organization) } }
 
       context 'organization' do
         it 'fails when changing' do
-          expect{SpaceQuotaDefinition.make.organization = Organization.make}.to raise_error SpaceQuotaDefinition::OrganizationAlreadySet
+          expect{ SpaceQuotaDefinition.make.organization = Organization.make }.to raise_error SpaceQuotaDefinition::OrganizationAlreadySet
         end
       end
     end

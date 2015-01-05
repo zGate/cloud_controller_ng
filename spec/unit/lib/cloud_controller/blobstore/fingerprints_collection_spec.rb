@@ -12,7 +12,7 @@ module CloudController
         ]
       end
 
-      let(:collection) {FingerprintsCollection.new(fingerprints)}
+      let(:collection) { FingerprintsCollection.new(fingerprints) }
 
       describe '.new' do
         it 'validates that the input is a array of hashes' do

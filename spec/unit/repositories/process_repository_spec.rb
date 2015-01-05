@@ -346,7 +346,7 @@ module VCAP::CloudController
 
         expect {
           process_repository.create!(process)
-        }.to change{ App.count}.by(1)
+        }.to change{ App.count }.by(1)
       end
 
       context 'when the desired process is not valid' do

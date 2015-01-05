@@ -78,7 +78,7 @@ module VCAP::Services::ServiceBrokers
       subject { described_class.new(service_event_repository) }
 
       its(:has_warnings?) { should eq false }
-      its(:warnings) { should eq []}
+      its(:warnings) { should eq [] }
     end
 
     describe '#sync_services_and_plans' do

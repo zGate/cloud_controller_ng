@@ -4,7 +4,7 @@ module VCAP::CloudController
   describe AppsV3Controller do
     let(:logger) { instance_double(Steno::Logger) }
     let(:user) { User.make }
-    let(:req_body) {''}
+    let(:req_body) { '' }
     let(:process_handler) { double(:process_handler) }
     let(:process_presenter) { double(:process_presenter) }
     let(:apps_handler) { double(:apps_handler) }

@@ -13,7 +13,7 @@ Sham.define do
   url                 { |index| "https://foo.com/url-#{index}" }
   type                { |index| "type-#{index}" }
   description         { |index| "desc-#{index}" }
-  long_description    { |index| "long description-#{index} over 255 characters #{"-"*255}"}
+  long_description    { |index| "long description-#{index} over 255 characters #{"-"*255}" }
   version             { |index| "version-#{index}" }
   service_credentials { |index| { "creds-key-#{index}" => "creds-val-#{index}" } }
   binding_options     { |index| { "binding-options-#{index}" => "value-#{index}" } }
@@ -21,7 +21,7 @@ Sham.define do
   domain              { |index| "domain-#{index}.example.com" }
   host                { |index| "host-#{index}" }
   guid                { |_| "guid-#{SecureRandom.uuid}" }
-  extra               { |index| "extra-#{index}"}
+  extra               { |index| "extra-#{index}" }
   instance_index      { |index| index }
   unique_id           { |index| "unique-id-#{index}" }
   status              { |_| %w[active suspended cancelled].sample(1).first }
@@ -203,7 +203,7 @@ module VCAP::CloudController
 
   Event.blueprint do
     timestamp  { Time.now }
-    type       { Sham.name}
+    type       { Sham.name }
     actor      { Sham.guid }
     actor_type { Sham.name }
     actor_name { Sham.name }

@@ -135,7 +135,7 @@ module VCAP::CloudController
       end
 
       describe '#purge_and_reseed_started_apps!' do
-        let(:app) { AppFactory.make}
+        let(:app) { AppFactory.make }
 
         before do
           # Truncate in mysql causes an implicit commit.

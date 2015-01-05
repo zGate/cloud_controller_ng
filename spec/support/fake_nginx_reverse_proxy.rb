@@ -68,7 +68,7 @@ class FakeNginxReverseProxy
         form_hash.delete('upload'),
         'droplet',
         tmpdir
-      ).reject {|k, _| k == 'droplet_name' }
+      ).reject { |k, _| k == 'droplet_name' }
       form_hash.update(upload_form)
     end
   end

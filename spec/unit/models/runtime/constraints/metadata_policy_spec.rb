@@ -3,7 +3,7 @@ require 'spec_helper'
 describe MetadataPolicy do
   let(:app) { VCAP::CloudController::AppFactory.make }
 
-  subject(:validator) { MetadataPolicy.new(app, metadata)}
+  subject(:validator) { MetadataPolicy.new(app, metadata) }
 
   context 'when metadata is a hash' do
     let(:metadata) { {} }

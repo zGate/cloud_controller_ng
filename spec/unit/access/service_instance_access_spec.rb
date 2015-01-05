@@ -3,7 +3,7 @@ require 'spec_helper'
 module VCAP::CloudController
   describe ServiceInstanceAccess, type: :access do
     subject(:access) { ServiceInstanceAccess.new(Security::AccessContext.new) }
-    let(:token) {{ 'scope' => ['cloud_controller.read', 'cloud_controller.write'] }}
+    let(:token) { { 'scope' => ['cloud_controller.read', 'cloud_controller.write'] } }
     let(:user) { VCAP::CloudController::User.make }
 
     let(:org) { VCAP::CloudController::Organization.make }
@@ -34,7 +34,7 @@ module VCAP::CloudController
       end
 
       context 'user provided service instance' do
-        let(:object) {VCAP::CloudController::UserProvidedServiceInstance.make(space: space) }
+        let(:object) { VCAP::CloudController::UserProvidedServiceInstance.make(space: space) }
 
         it 'does not delegate to the UserProvidedServiceInstanceAccess' do
           expect_any_instance_of(UserProvidedServiceInstanceAccess).not_to receive(:allowed?).with(object)
@@ -75,7 +75,7 @@ module VCAP::CloudController
         end
 
         it 'allows all operations except create' do
-          expect{subject.create?(object)}.to raise_error(VCAP::Errors::ApiError, /service_instance_creation/)
+          expect{ subject.create?(object) }.to raise_error(VCAP::Errors::ApiError, /service_instance_creation/)
         end
       end
     end
@@ -162,7 +162,7 @@ module VCAP::CloudController
 
     context 'a user that isnt logged in (defensive)' do
       let(:user) { nil }
-      let(:token) {{ 'scope' => [] }}
+      let(:token) { { 'scope' => [] } }
 
       it_behaves_like :no_access
 
@@ -172,7 +172,7 @@ module VCAP::CloudController
     end
 
     describe 'a user with full org and space permissions using a client with limited scope' do
-      let(:token) {{ 'scope' => scope }}
+      let(:token) { { 'scope' => scope } }
 
       before do
         org.add_user(user)
@@ -218,7 +218,7 @@ module VCAP::CloudController
       end
 
       context 'user provided service instance' do
-        let(:object) {VCAP::CloudController::UserProvidedServiceInstance.make(space: space) }
+        let(:object) { VCAP::CloudController::UserProvidedServiceInstance.make(space: space) }
 
         it 'delegates to the UserProvidedServiceInstanceAccess' do
           expect_any_instance_of(UserProvidedServiceInstanceAccess).to receive(:allowed?).with(object)

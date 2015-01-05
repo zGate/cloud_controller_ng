@@ -37,3 +37,15 @@ CyclomaticComplexity:
 
 Styles/ClassAndModuleChildren:
   Enabled: false
+
+Style/Blocks:
+  Enabled: false
+
+Style/TrailingComma:
+  Enabled: false
+
+Style/BracesAroundHashParameters:
+  Enabled: false
+
+Style/IndentHash:
+  Enabled: false

@@ -40,7 +40,7 @@ module VCAP::CloudController
 
           get '/v2/events', {}, admin_headers
           parsed_body = MultiJson.load(last_response.body)
-          events = parsed_body['resources'].select {|r| r['entity']['type'] == type }.map { |r| r['entity']['actor'] }
+          events = parsed_body['resources'].select { |r| r['entity']['type'] == type }.map { |r| r['entity']['actor'] }
           expect(events).to eq(%w(earlier middle later))
         end
       end

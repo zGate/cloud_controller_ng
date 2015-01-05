@@ -18,7 +18,7 @@ module VCAP::CloudController
                 dataset: -> { VCAP::CloudController::AppEvent.filter(app: apps) }
 
     one_to_many :private_domains, key: :owning_organization_id,
-                before_add: proc { |org, private_domain| private_domain.addable_to_organization!(org)}
+                before_add: proc { |org, private_domain| private_domain.addable_to_organization!(org) }
     one_to_many :service_plan_visibilities
     many_to_one :quota_definition
 

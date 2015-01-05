@@ -3,7 +3,7 @@ require 'spec_helper'
 describe MinMemoryPolicy do
   let(:app) { VCAP::CloudController::AppFactory.make(memory: 64) }
 
-  subject(:validator) { MinMemoryPolicy.new(app)}
+  subject(:validator) { MinMemoryPolicy.new(app) }
 
   it 'registers error when requested memory is 0' do
     app.memory = 0

@@ -3,7 +3,7 @@ require 'spec_helper'
 describe InstancesPolicy do
   let(:app) { VCAP::CloudController::AppFactory.make }
 
-  subject(:validator) { InstancesPolicy.new(app)}
+  subject(:validator) { InstancesPolicy.new(app) }
 
   describe 'instances' do
     it 'registers an error if requested instances is negative' do

@@ -38,7 +38,7 @@ module VCAP::CloudController
       describe 'changing space' do
         it 'fails when existing service bindings are in a different space' do
           service_instance.add_service_binding(ServiceBinding.make(service_instance: service_instance))
-          expect{service_instance.space = Space.make}.to raise_error ServiceInstance::InvalidServiceBinding
+          expect{ service_instance.space = Space.make }.to raise_error ServiceInstance::InvalidServiceBinding
         end
       end
     end
@@ -48,7 +48,7 @@ module VCAP::CloudController
         let(:very_long_name){ 's' * 51 }
         it 'refuses to create this service instance' do
           service_instance_attrs[:name] = very_long_name
-          expect {service_instance}.to raise_error Sequel::ValidationFailed
+          expect { service_instance }.to raise_error Sequel::ValidationFailed
         end
       end
 
@@ -111,7 +111,7 @@ module VCAP::CloudController
         service_instance
         expect {
           service_instance.destroy
-        }.to change{ServiceUsageEvent.count}.by(1)
+        }.to change{ ServiceUsageEvent.count }.by(1)
         event = ServiceUsageEvent.last
         expect(event.state).to eq(Repositories::Services::ServiceUsageEventRepository::DELETED_EVENT_STATE)
         expect(event).to match_service_instance(service_instance)
@@ -184,7 +184,7 @@ module VCAP::CloudController
     end
 
     describe '#to_hash' do
-      let(:opts)      { { attrs: [:credentials] }}
+      let(:opts)      { { attrs: [:credentials] } }
       let(:developer) { make_developer_for_space(service_instance.space) }
       let(:auditor)   { make_auditor_for_space(service_instance.space) }
       let(:user)      { make_user_for_space(service_instance.space) }

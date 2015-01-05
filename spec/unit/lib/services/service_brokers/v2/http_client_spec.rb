@@ -111,7 +111,7 @@ module VCAP::Services::ServiceBrokers::V2
         end
 
         describe 'ssl cert verification' do
-          let(:response) { double(code: nil, body: nil, to_hash: nil)}
+          let(:response) { double(code: nil, body: nil, to_hash: nil) }
 
           before do
             allow(VCAP::CloudController::Config).to receive(:config).and_return(config)

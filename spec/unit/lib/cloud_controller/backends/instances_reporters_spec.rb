@@ -12,16 +12,16 @@ module VCAP::CloudController
       }
     end
 
-    let(:diego_client) {instance_double(Diego::Client)}
-    let(:hm_client) {instance_double(Dea::HM9000::Client)}
+    let(:diego_client) { instance_double(Diego::Client) }
+    let(:hm_client) { instance_double(Dea::HM9000::Client) }
 
     let(:dea_app) { AppFactory.make(package_hash: 'abc', package_state: 'STAGED') }
     let(:diego_app) { AppFactory.make(package_hash: 'abc', package_state: 'STAGED', 
       environment_json: { 'DIEGO_RUN_BETA' => 'true' }) }
 
-    let(:reporter) {double(:Reporter)}
-    let(:reporter2) {double(:Reporter)}
-    let(:instances_reporters) {InstancesReporters.new(config, diego_client, hm_client)}
+    let(:reporter) { double(:Reporter) }
+    let(:reporter2) { double(:Reporter) }
+    let(:instances_reporters) { InstancesReporters.new(config, diego_client, hm_client) }
 
 
     describe '#number_of_starting_and_running_instances_for_app' do
@@ -62,7 +62,7 @@ module VCAP::CloudController
     end
 
     describe '#number_of_starting_and_running_instances_for_apps' do
-      let(:apps) {[dea_app, diego_app]}
+      let(:apps) { [dea_app, diego_app] }
 
       before do
         allow(Dea::InstancesReporter).to receive(:new).with(hm_client).and_return(reporter)

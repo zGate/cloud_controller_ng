@@ -3,7 +3,7 @@ require 'spec_helper'
 module VCAP::CloudController
   describe ServiceBrokerAccess, type: :access do
     subject(:access) { ServiceBrokerAccess.new(Security::AccessContext.new) }
-    let(:token) {{ 'scope' => ['cloud_controller.read', 'cloud_controller.write'] }}
+    let(:token) { { 'scope' => ['cloud_controller.read', 'cloud_controller.write'] } }
     let(:user) { VCAP::CloudController::User.make }
     let(:org) { VCAP::CloudController::Organization.make }
     let(:space) { VCAP::CloudController::Space.make(organization: org) }

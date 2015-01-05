@@ -45,7 +45,7 @@ describe SafeZipper do
     end
 
     context 'when the underlying unzip fails' do
-      let(:zip_path) { File.expand_path('../../fixtures/missing.zip', File.dirname(__FILE__))}
+      let(:zip_path) { File.expand_path('../../fixtures/missing.zip', File.dirname(__FILE__)) }
 
       it 'raises an exception' do
         expect { unzip }.to raise_exception VCAP::Errors::ApiError, /unzipping had errors\n STDOUT: ""\n STDERR: "unzip:\s+cannot find or open/im

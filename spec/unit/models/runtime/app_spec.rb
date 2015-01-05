@@ -684,18 +684,18 @@ module VCAP::CloudController
       context 'when changing space' do
         it 'is allowed if there are no space related associations' do
           app = AppFactory.make
-          expect{app.space = Space.make}.not_to raise_error
+          expect{ app.space = Space.make }.not_to raise_error
         end
 
         it 'should fail if routes do not exist in that spaces' do
           app = AppFactory.make
           app.add_route(Route.make(space: app.space))
-          expect{app.space = Space.make}.to raise_error Errors::InvalidRouteRelation
+          expect{ app.space = Space.make }.to raise_error Errors::InvalidRouteRelation
         end
 
         it 'should fail if service bindings do not exist in that space' do
           app = ServiceBinding.make.app
-          expect{app.space = Space.make}.to raise_error ServiceBinding::InvalidAppAndServiceRelation
+          expect{ app.space = Space.make }.to raise_error ServiceBinding::InvalidAppAndServiceRelation
         end
       end
 
@@ -1664,7 +1664,7 @@ module VCAP::CloudController
       end
 
       context 'when AppObserver.updated fails' do
-        let(:undo_app) {double(:undo_app_changes, undo: true)}
+        let(:undo_app) { double(:undo_app_changes, undo: true) }
 
         it 'should undo any change', isolation: :truncation do
           app = AppFactory.make
@@ -1672,7 +1672,7 @@ module VCAP::CloudController
 
           expect(AppObserver).to receive(:updated).once.with(app).and_raise Errors::ApiError.new_from_details('AppPackageInvalid', 'The app package hash is empty')
           expect(undo_app).to receive(:undo)
-          expect{app.update(state: 'STARTED')}.to raise_error
+          expect{ app.update(state: 'STARTED') }.to raise_error
         end
 
         it 'does not call UndoAppChanges when its not an ApiError', isolation: :truncation do
@@ -1680,7 +1680,7 @@ module VCAP::CloudController
 
           expect(AppObserver).to receive(:updated).once.with(app).and_raise('boom')
           expect(UndoAppChanges).not_to receive(:new)
-          expect{app.update(state: 'STARTED')}.to raise_error
+          expect{ app.update(state: 'STARTED') }.to raise_error
         end
       end
 
@@ -1747,7 +1747,7 @@ module VCAP::CloudController
           app = AppFactory.make(buildpack: 'https://example.com/repo.git', state: 'STOPPED')
           expect {
             app.update(state: 'STARTED')
-          }.to change {AppUsageEvent.count}.by(1)
+          }.to change { AppUsageEvent.count }.by(1)
           event = AppUsageEvent.last
           expect(event.buildpack_name).to eq('https://example.com/repo.git')
           expect(event).to match_app(app)
@@ -1764,7 +1764,7 @@ module VCAP::CloudController
           )
           expect {
             app.update(state: 'STARTED')
-          }.to change {AppUsageEvent.count}.by(1)
+          }.to change { AppUsageEvent.count }.by(1)
           event = AppUsageEvent.last
           expect(event.buildpack_guid).to eq(buildpack.guid)
           expect(event).to match_app(app)

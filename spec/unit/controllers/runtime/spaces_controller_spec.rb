@@ -428,7 +428,7 @@ module VCAP::CloudController
     describe 'GET', '/v2/spaces/:guid/services' do
       let(:organization_two) { Organization.make }
       let(:space_one) { Space.make(organization: organization_one) }
-      let(:space_two) { Space.make(organization: organization_two)}
+      let(:space_two) { Space.make(organization: organization_two) }
       let(:user) { make_developer_for_space(space_one) }
       let (:headers) do
         headers_for(user)
@@ -488,8 +488,8 @@ module VCAP::CloudController
 
       describe 'get /v2/spaces/:guid/services?q=active:<t|f>' do
         before(:each) do
-          @active = 3.times.map { Service.make(active: true).tap{|svc| ServicePlan.make(service: svc) } }
-          @inactive = 2.times.map { Service.make(active: false).tap{|svc| ServicePlan.make(service: svc) } }
+          @active = 3.times.map { Service.make(active: true).tap{ |svc| ServicePlan.make(service: svc) } }
+          @inactive = 2.times.map { Service.make(active: false).tap{ |svc| ServicePlan.make(service: svc) } }
         end
 
         it 'can remove inactive services' do

@@ -4,7 +4,7 @@ describe CustomBuildpackPolicy do
   let(:app) { VCAP::CloudController::AppFactory.make }
   let(:buildpack) { double('build') }
 
-  subject(:validator) { CustomBuildpackPolicy.new(app, custom_buildpacks_enabled)}
+  subject(:validator) { CustomBuildpackPolicy.new(app, custom_buildpacks_enabled) }
   before do
     allow(app).to receive(:buildpack).and_return(buildpack)
   end

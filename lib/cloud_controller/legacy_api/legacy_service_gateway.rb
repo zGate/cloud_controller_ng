@@ -67,7 +67,7 @@ module VCAP::CloudController
         }
       end
 
-      new_plan_attrs.each {|attrs| attrs['description'] ||= 'dummy description' }
+      new_plan_attrs.each { |attrs| attrs['description'] ||= 'dummy description' }
 
       old_plan_names = ServicePlan.dataset.
         join(:services, id: :service_id).
@@ -84,7 +84,7 @@ module VCAP::CloudController
         end
       end
 
-      missing = old_plan_names - new_plan_attrs.map {|attrs| attrs['name']}
+      missing = old_plan_names - new_plan_attrs.map { |attrs| attrs['name'] }
       if missing.any?
         logger.info("Attempting to remove old plans: #{missing.inspect}")
         service.service_plans_dataset.filter(name: missing).each do |plan|

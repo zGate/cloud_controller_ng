@@ -6,7 +6,7 @@ describe 'Service Broker API integration' do
 
     before { setup_cc }
 
-    let(:space_guid) { @space_guid}
+    let(:space_guid) { @space_guid }
     let(:org_guid) { @org_guid }
 
     let(:api_header) { 'X-Broker-Api-Version' }

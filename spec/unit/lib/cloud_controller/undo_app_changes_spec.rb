@@ -2,8 +2,8 @@ require 'spec_helper'
 
 module VCAP::CloudController
   describe UndoAppChanges do
-    let(:state) {'STARTED'}
-    let(:instances) {2}
+    let(:state) { 'STARTED' }
+    let(:instances) { 2 }
     let(:app) do
       AppFactory.make(package_hash: 'abc',
                       name: 'app-name',
@@ -13,7 +13,7 @@ module VCAP::CloudController
                       )
     end
     let(:changes) { { updated_at: [1, app.updated_at] } }
-    let(:undo_changes) {UndoAppChanges.new(app)}
+    let(:undo_changes) { UndoAppChanges.new(app) }
 
     describe '#undo' do
       context 'state has changed' do
@@ -31,7 +31,7 @@ module VCAP::CloudController
         end
 
         context('when the app is stopped') do
-          let(:state) {'STOPPED'}
+          let(:state) { 'STOPPED' }
 
           it 'should not undo any stop' do
             changes[:state] = ['STARTED', 'STOPPED']

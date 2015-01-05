@@ -12,7 +12,7 @@ module VCAP::CloudController
         CloudController::DependencyLocator.instance.droplet_blobstore
       end
 
-      let(:tmpfile) { Tempfile.new('')}
+      let(:tmpfile) { Tempfile.new('') }
 
       before do
         allow(CloudController::DependencyLocator.instance).to receive(:droplet_blobstore).and_return(blobstore)

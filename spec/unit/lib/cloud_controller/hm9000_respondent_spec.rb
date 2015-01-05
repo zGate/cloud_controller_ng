@@ -67,9 +67,9 @@ module VCAP::CloudController
       end
 
       context 'if the app does not exist' do
-        let(:start_droplet) {'a-non-existent-app'}
+        let(:start_droplet) { 'a-non-existent-app' }
         let(:start_version) { app.version }
-        let(:start_instance_index) {1}
+        let(:start_instance_index) { 1 }
 
         it 'should not do anything' do
           expect(dea_client).not_to receive(:start_instance_at_index)
@@ -83,7 +83,7 @@ module VCAP::CloudController
         context 'if the version matches' do
           let(:start_version) { app.version }
           context 'if the desired index is within the desired number of instances' do
-            let(:start_instance_index) {1}
+            let(:start_instance_index) { 1 }
             context 'if app is in STARTED state' do
               context 'and the DIEGO_RUN_BETA flag is set' do
                 let(:environment) { { 'DIEGO_RUN_BETA' => 'true' } }
@@ -138,7 +138,7 @@ module VCAP::CloudController
           end
 
           context 'if the desired index is outside the desired number of instances' do
-            let(:start_instance_index) {2}
+            let(:start_instance_index) { 2 }
 
             it 'should not do anything' do
               expect(dea_client).not_to receive(:start_instance_at_index)
@@ -148,8 +148,8 @@ module VCAP::CloudController
         end
 
         context 'if the version does not match' do
-          let(:start_version) {'another-version'}
-          let(:start_instance_index) {1}
+          let(:start_version) { 'another-version' }
+          let(:start_instance_index) { 1 }
 
           it 'should not do anything' do
             expect(dea_client).not_to receive(:start_instance_at_index)

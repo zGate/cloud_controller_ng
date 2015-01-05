@@ -204,7 +204,7 @@ module VCAP::CloudController
         end
 
         context 'when the expiration timeout is specified' do
-          before { TestConfig.override({ dea_advertisement_timeout_in_seconds: 15 })}
+          before { TestConfig.override({ dea_advertisement_timeout_in_seconds: 15 }) }
           it 'only finds deas with that have not expired' do
             Timecop.freeze do
               subject.process_advertise_message(dea_advertise_msg)

@@ -24,7 +24,7 @@ module VCAP::CloudController
 
       def enum_snapshots
         list = VCAP::Services::Api::SnapshotListV2.decode(do_request(:get))
-        list.snapshots.collect{|e| VCAP::Services::Api::SnapshotV2.new(e) }
+        list.snapshots.collect{ |e| VCAP::Services::Api::SnapshotV2.new(e) }
       end
 
       private

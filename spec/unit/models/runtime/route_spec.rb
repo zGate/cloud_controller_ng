@@ -65,8 +65,8 @@ module VCAP::CloudController
         end
 
         context 'when private' do
-          let(:space) {Space.make}
-          let(:domain) {PrivateDomain.make(owning_organization: space.organization)}
+          let(:space) { Space.make }
+          let(:domain) { PrivateDomain.make(owning_organization: space.organization) }
           it 'succeeds if it is the same domain' do
             route = Route.make(space: space, domain: domain)
             route.domain = domain

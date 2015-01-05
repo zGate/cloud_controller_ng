@@ -4,7 +4,7 @@ module VCAP::CloudController
   describe IndexStopper do
     let(:runners) { double(:runners, runner_for_app: runner) }
     let(:runner) { double(:runner, stop_index: nil) }
-    let(:app) { double(:app, guid: 'app-guid')}
+    let(:app) { double(:app, guid: 'app-guid') }
 
     subject(:index_stopper) { described_class.new(runners) }
     
