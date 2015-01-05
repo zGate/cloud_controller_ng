@@ -1,5 +1,3 @@
-inherit_from: rubocop-todo.yml
-
 AllCops:
   Includes:
     - Gemfile
@@ -9,3 +7,33 @@ AllCops:
 
 RegexpLiteral:
   MaxSlashes: 1
+
+UnusedMethodArgument:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/SpaceAroundEqualsInParameterDefault:
+  EnforcedStyle: no_space
+
+Style/SignalException:
+  Enabled: false
+
+LineLength:
+  Max: 160
+
+MethodLength:
+  Max: 60
+ 
+Metrics/AbcSize:
+  Max: 30
+
+Style/DoubleNegation:
+  Enabled: false
+
+CyclomaticComplexity:
+  Max: 12
+
+Styles/ClassAndModuleChildren:
+  Enabled: false
