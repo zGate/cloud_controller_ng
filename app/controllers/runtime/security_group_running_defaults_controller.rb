@@ -20,7 +20,7 @@ module VCAP::CloudController
 
       model.db.transaction do
         obj.lock!
-        obj.update_from_hash({'running_default' => true})
+        obj.update_from_hash({ 'running_default' => true })
       end
 
       [
@@ -35,7 +35,7 @@ module VCAP::CloudController
 
       model.db.transaction do
         obj.lock!
-        obj.update_from_hash({'running_default' => false})
+        obj.update_from_hash({ 'running_default' => false })
       end
 
       [

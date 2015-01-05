@@ -12,7 +12,7 @@ module VCAP::CloudController
       end
     end
 
-    SHARED_DOMAIN_CONDITION =  {owning_organization_id: nil}
+    SHARED_DOMAIN_CONDITION =  { owning_organization_id: nil }
 
     dataset_module do
       def shared_domains

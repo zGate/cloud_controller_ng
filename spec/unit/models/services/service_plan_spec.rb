@@ -41,7 +41,7 @@ module VCAP::CloudController
     describe '#save' do
       context 'on create' do
         context 'when no unique_id is set' do
-          let(:attrs) { {unique_id: nil} }
+          let(:attrs) { { unique_id: nil } }
 
           it 'generates guid for the unique_id' do
             plan = ServicePlan.make(attrs)
@@ -50,7 +50,7 @@ module VCAP::CloudController
         end
 
         context 'when a unique_id is set' do
-          let(:attrs) { {unique_id: Sham.guid} }
+          let(:attrs) { { unique_id: Sham.guid } }
 
           it 'persists the given unique_id' do
             plan = ServicePlan.make(attrs)
@@ -59,8 +59,8 @@ module VCAP::CloudController
         end
 
         context 'when a plan with the same name has already been added for this service' do
-          let(:attrs1) { {name: 'dumbo', service_id: service.id }}
-          let(:attrs2) { {name: 'dumbo', service_id: service.id }}
+          let(:attrs1) { { name: 'dumbo', service_id: service.id }}
+          let(:attrs2) { { name: 'dumbo', service_id: service.id }}
           let(:service) { Service.make({})}
 
           before { plan = ServicePlan.make(attrs1) }

@@ -29,7 +29,7 @@ module VCAP::CloudController::RestController
       end
 
       context 'when order_by is specified' do
-        let(:opts) {{order_by: 'field'}}
+        let(:opts) {{ order_by: 'field' }}
 
         it 'orders by the specified column' do
           expect(sql).to eq(normalize_quotes 'SELECT * FROM `test_models` ORDER BY `field` ASC')
@@ -37,7 +37,7 @@ module VCAP::CloudController::RestController
       end
 
       context 'when order_by has multiple values' do
-        let(:opts) {{order_by: ['field', 'id']}}
+        let(:opts) {{ order_by: ['field', 'id'] }}
 
         it 'orders by the specified column' do
           expect(sql).to eq(normalize_quotes 'SELECT * FROM `test_models` ORDER BY `field` ASC, `id` ASC')
@@ -46,14 +46,14 @@ module VCAP::CloudController::RestController
 
       context 'when order_direction is specified' do
         let(:order_by) {{}}
-        let(:opts) {{order_direction: 'desc'}.merge(order_by)}
+        let(:opts) {{ order_direction: 'desc' }.merge(order_by)}
 
         it 'orders by id in the specified direction' do
           expect(sql).to eq(normalize_quotes 'SELECT * FROM `test_models` ORDER BY `id` DESC')
         end
 
         context 'when order_by has multiple values' do
-          let(:order_by) {{order_by: ['field', 'id']}}
+          let(:order_by) {{ order_by: ['field', 'id'] }}
 
           it 'orders by the specified column' do
             expect(sql).to eq(normalize_quotes 'SELECT * FROM `test_models` ORDER BY `field` DESC, `id` DESC')
@@ -62,7 +62,7 @@ module VCAP::CloudController::RestController
       end
 
       context 'when order_direction is specified with an invalid value' do
-        let(:opts) {{order_direction: 'decs'}}
+        let(:opts) {{ order_direction: 'decs' }}
 
         it 'raises an error which makes sense to an api client' do
           expect { sql }.to raise_error(VCAP::Errors::ApiError)

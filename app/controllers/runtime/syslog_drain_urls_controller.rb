@@ -30,7 +30,7 @@ module VCAP::CloudController
         hash
       end
 
-      [HTTP::OK, {}, MultiJson.dump({results: drain_urls, next_id: id_for_next_token}, pretty: true)]
+      [HTTP::OK, {}, MultiJson.dump({ results: drain_urls, next_id: id_for_next_token }, pretty: true)]
     end
 
     private

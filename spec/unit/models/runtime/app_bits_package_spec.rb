@@ -7,7 +7,7 @@ describe AppBitsPackage do
     File.open(path, 'w' ) { |f| f.write 'content'  }
     global_app_bits_cache.cp_to_blobstore(path, sha)
 
-    CloudController::Blobstore::FingerprintsCollection.new([{'fn' => 'path/to/content.txt', 'size' => 123, 'sha1' => sha}])
+    CloudController::Blobstore::FingerprintsCollection.new([{ 'fn' => 'path/to/content.txt', 'size' => 123, 'sha1' => sha }])
   end
 
   let(:compressed_path) { File.expand_path('../../../fixtures/good.zip', File.dirname(__FILE__)) }
@@ -16,11 +16,11 @@ describe AppBitsPackage do
   let(:local_tmp_dir) { Dir.mktmpdir }
 
   let(:global_app_bits_cache) do
-    CloudController::Blobstore::Client.new({provider: 'Local', local_root: blobstore_dir}, 'global_app_bits_cache', nil, nil, 4, 8)
+    CloudController::Blobstore::Client.new({ provider: 'Local', local_root: blobstore_dir }, 'global_app_bits_cache', nil, nil, 4, 8)
   end
 
   let(:package_blobstore) do
-    CloudController::Blobstore::Client.new({provider: 'Local', local_root: blobstore_dir}, 'package')
+    CloudController::Blobstore::Client.new({ provider: 'Local', local_root: blobstore_dir }, 'package')
   end
 
   let(:packer) { AppBitsPackage.new(package_blobstore, global_app_bits_cache, max_package_size, local_tmp_dir) }
@@ -125,7 +125,7 @@ describe AppBitsPackage do
 
       it 'always accepts any droplet size' do
         fingerprints_in_app_cache = CloudController::Blobstore::FingerprintsCollection.new(
-          [{'fn' => 'file.txt', 'size' => (2048 * 1024 * 1024) + 1, 'sha1' => 'a_sha'}]
+          [{ 'fn' => 'file.txt', 'size' => (2048 * 1024 * 1024) + 1, 'sha1' => 'a_sha' }]
         )
         packer.create(app, compressed_path, fingerprints_in_app_cache)
       end

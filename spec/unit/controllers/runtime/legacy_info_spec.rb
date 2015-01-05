@@ -35,7 +35,7 @@ module VCAP::CloudController
     end
 
     it 'includes login url when configured' do
-      TestConfig.override(login: {url: 'login_url'})
+      TestConfig.override(login: { url: 'login_url' })
       get '/info', {}, {}
       hash = MultiJson.load(last_response.body)
       expect(hash['authorization_endpoint']).to eq('login_url')

@@ -29,14 +29,14 @@ module VCAP::CloudController
         end
 
         def find_specific_instance(app, options = {})
-          message = {droplet: app.guid}
+          message = { droplet: app.guid }
           message.merge!(options)
 
           dea_request_find_droplet(message, timeout: 2).first
         end
 
         def find_instances(app, message_options = {}, request_options = {})
-          message = {droplet: app.guid}
+          message = { droplet: app.guid }
           message.merge!(message_options)
 
           request_options[:result_count] ||= app.instances
@@ -68,7 +68,7 @@ module VCAP::CloudController
 
           expected_running_instances = num_instances - all_instances.length
           if expected_running_instances > 0
-            request_options = {expected: expected_running_instances}
+            request_options = { expected: expected_running_instances }
             running_instances = find_instances(app, message, request_options)
 
             running_instances.each do |instance|

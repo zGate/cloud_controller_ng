@@ -19,7 +19,7 @@ module CloudController
 
       describe '#send_blob' do
         it 'returns the correct status and headers' do
-          expect(sender.send_blob('app_guid', 'a blob', blob, controller)).to eql([200, {'X-Accel-Redirect' => 'http://url/to/blob'}, ''])
+          expect(sender.send_blob('app_guid', 'a blob', blob, controller)).to eql([200, { 'X-Accel-Redirect' => 'http://url/to/blob' }, ''])
         end
 
         it 'calls handler when the path of the blob does not exist' do

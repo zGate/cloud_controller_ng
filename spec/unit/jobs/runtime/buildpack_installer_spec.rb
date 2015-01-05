@@ -8,7 +8,7 @@ module VCAP::CloudController
       let(:zipfile) { File.expand_path('../../../fixtures/good.zip', File.dirname(__FILE__)) }
       let(:zipfile2) { File.expand_path('../../../fixtures/good_relative_paths.zip', File.dirname(__FILE__)) }
 
-      let(:options) { { enabled: true, locked: false, position: 1} }
+      let(:options) { { enabled: true, locked: false, position: 1 } }
 
       let(:job) { BuildpackInstaller.new(buildpack_name, zipfile, options, TestConfig.config) }
 

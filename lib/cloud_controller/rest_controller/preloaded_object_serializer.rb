@@ -50,7 +50,7 @@ module VCAP::CloudController::RestController
         metadata_hash['updated_at'] = obj.updated_at
       end
 
-      {'metadata' => metadata_hash, 'entity' => entity_hash}
+      { 'metadata' => metadata_hash, 'entity' => entity_hash }
     end
 
     def relations_hash(controller, obj, opts, depth, parents, orphans=nil)

@@ -28,7 +28,7 @@ module VCAP::CloudController
     end
 
     context 'using a client without cloud_controller.read' do
-      let(:token) { {'scope' => []}}
+      let(:token) { { 'scope' => [] }}
       it_behaves_like :no_access
       it { is_expected.not_to allow_op_on_object :index, VCAP::CloudController::AppUsageEvent }
       it { is_expected.not_to allow_op_on_object :reset, VCAP::CloudController::AppUsageEvent }

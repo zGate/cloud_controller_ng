@@ -5,15 +5,15 @@ module VCAP::CloudController
     describe 'Attributes' do
       it do
         expect(described_class).to have_creatable_attributes({
-          service_plan_guid: {type: 'string', required: true},
-          organization_guid: {type: 'string', required: true}
+          service_plan_guid: { type: 'string', required: true },
+          organization_guid: { type: 'string', required: true }
         })
       end
 
       it do
         expect(described_class).to have_updatable_attributes({
-          service_plan_guid: {type: 'string'},
-          organization_guid: {type: 'string'}
+          service_plan_guid: { type: 'string' },
+          organization_guid: { type: 'string' }
         })
       end
     end
@@ -98,7 +98,7 @@ module VCAP::CloudController
       let!(:visibility) { ServicePlanVisibility.make(organization_guid: organization.guid, service_plan_guid: service_plan.guid) }
 
       it 'updates the service plan visibility' do
-        put "/v2/service_plan_visibilities/#{visibility.guid}", MultiJson.dump({organization_guid: new_organization.guid}), headers
+        put "/v2/service_plan_visibilities/#{visibility.guid}", MultiJson.dump({ organization_guid: new_organization.guid }), headers
 
         expect(last_response.status).to eq(201)
         service_plan_visibility = ServicePlanVisibility.find(guid: visibility.guid)
@@ -120,7 +120,7 @@ module VCAP::CloudController
         expect(event.actee_name).to eq('')
         expect(event.space_guid).to be_empty
         expect(event.organization_guid).to eq(new_organization.guid)
-        expect(event.metadata).to eq({'request' => params })
+        expect(event.metadata).to eq({ 'request' => params })
       end
     end
 

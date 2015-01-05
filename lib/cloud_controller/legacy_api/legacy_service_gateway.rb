@@ -126,7 +126,7 @@ module VCAP::CloudController
           configuration: sb.gateway_data,
         }
       end
-      MultiJson.dump({handles: handles})
+      MultiJson.dump({ handles: handles })
     end
 
     def delete(label_and_version, provider = DEFAULT_PROVIDER)

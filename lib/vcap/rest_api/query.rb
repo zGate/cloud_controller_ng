@@ -151,7 +151,7 @@ module VCAP::RestAPI
     end
 
     TINYINT_TYPE = 'tinyint(1)'.freeze
-    TINYINT_FROM_TRUE_FALSE = {'t' => 1, 'f' => 0}.freeze
+    TINYINT_FROM_TRUE_FALSE = { 't' => 1, 'f' => 0 }.freeze
 
     # Sequel uses tinyint(1) to store booleans in Mysql.
     # Mysql does not support using 't'/'f' for querying.

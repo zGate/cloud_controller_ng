@@ -6,9 +6,9 @@ module CloudController
     describe FingerprintsCollection do
       let(:fingerprints) do
         [
-          {'fn' => 'path/to/file.txt', 'size' => 123, 'sha1' => 'abc'},
-          {'fn' => 'path/to/file2.txt', 'size' => 321, 'sha1' => 'def'},
-          {'fn' => 'path/to/file3.txt', 'size' => 112, 'sha1' => 'fad'}
+          { 'fn' => 'path/to/file.txt', 'size' => 123, 'sha1' => 'abc' },
+          { 'fn' => 'path/to/file2.txt', 'size' => 321, 'sha1' => 'def' },
+          { 'fn' => 'path/to/file3.txt', 'size' => 112, 'sha1' => 'fad' }
         ]
       end
 

@@ -20,7 +20,7 @@ module VCAP::CloudController
 
       uri = info.file_uri_v2
       uri = add_tail(uri) if params.include?('tail')
-      [HTTP::FOUND, {'Location' => uri}, nil]
+      [HTTP::FOUND, { 'Location' => uri }, nil]
     end
 
     get "#{path_guid}/instances/:instance_id/files/*", :files

@@ -36,8 +36,8 @@ module VCAP::Services
         let(:expected_response) do
           {
             'service_id' => '456',
-            'configuration' => {'setting' => true},
-            'credentials' => {'user' => 'admin', 'pass' => 'secret'}
+            'configuration' => { 'setting' => true },
+            'credentials' => { 'user' => 'admin', 'pass' => 'secret' }
           }.to_json
         end
 
@@ -53,7 +53,7 @@ module VCAP::Services
         end
 
         context 'when the broker client timeout is set' do
-          let(:config) { {broker_client_timeout_seconds: 100} }
+          let(:config) { { broker_client_timeout_seconds: 100 } }
 
           it 'sets HTTP timeouts on provisions' do
             expect_timeout_to_be 100
@@ -62,7 +62,7 @@ module VCAP::Services
         end
 
         context 'when the broker timeout is not set' do
-          let(:config) { {missing_broker_client_timeout: nil} }
+          let(:config) { { missing_broker_client_timeout: nil } }
 
 
           it 'sets HTTP timeouts on provisions' do
@@ -111,8 +111,8 @@ module VCAP::Services
         let(:expected_response) do
           {
             'service_id' => '456',
-            'configuration' => {'setting' => true},
-            'credentials' => {'user' => 'admin', 'pass' => 'secret'}
+            'configuration' => { 'setting' => true },
+            'credentials' => { 'user' => 'admin', 'pass' => 'secret' }
           }
         end
 
@@ -159,8 +159,8 @@ module VCAP::Services
         let(:expected_response) do
           {
             'service_id' => binding_id,
-            'configuration' => {'setting' => true},
-            'credentials' => {'user' => 'admin', 'pass' => 'secret'}
+            'configuration' => { 'setting' => true },
+            'credentials' => { 'user' => 'admin', 'pass' => 'secret' }
           }
         end
 

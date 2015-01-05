@@ -4,8 +4,8 @@ describe ErrorPresenter do
   subject(:presenter) { ErrorPresenter.new(error, test_mode, error_hasher) }
 
   let(:error) { StandardError.new }
-  let(:sanitized_error_hash) { {'fake' => 'sane'} }
-  let(:unsanitized_error_hash) { {'fake' => 'insane'} }
+  let(:sanitized_error_hash) { { 'fake' => 'sane' } }
+  let(:unsanitized_error_hash) { { 'fake' => 'insane' } }
   let(:error_hasher) { double(ErrorHasher, unsanitized_hash: unsanitized_error_hash, sanitized_hash: sanitized_error_hash, api_error?: false) }
   let(:test_mode) { false }
 

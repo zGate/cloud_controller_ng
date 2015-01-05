@@ -614,7 +614,7 @@ module VCAP::CloudController
             end
 
             context 'when the all rule contains extraneous fields' do
-              let(:rule) { build_all_rule({foobar: 'foobar'}) }
+              let(:rule) { build_all_rule({ foobar: 'foobar' }) }
 
               it 'is not valid' do
                 expect(subject).to_not be_valid
@@ -661,7 +661,7 @@ module VCAP::CloudController
 
         context 'when rules is not an array' do
           before do
-            subject.rules = {'valid' => 'json'}
+            subject.rules = { 'valid' => 'json' }
           end
 
           it 'is not valid' do

@@ -360,7 +360,7 @@ module VCAP::CloudController
 
       context 'when the app already has a process with the same type' do
         let(:req_body) do
-          MultiJson.dump({process_guid: process_guid})
+          MultiJson.dump({ process_guid: process_guid })
         end
         before do
           allow(apps_handler).to receive(:add_process).and_raise(AppsHandler::DuplicateProcessType)

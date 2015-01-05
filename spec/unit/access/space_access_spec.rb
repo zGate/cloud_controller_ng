@@ -106,7 +106,7 @@ module VCAP::CloudController
     end
 
     context 'any user using client without cloud_controller.write' do
-      let(:token) {{'scope' => ['cloud_controller.read']}}
+      let(:token) {{ 'scope' => ['cloud_controller.read'] }}
 
       before do
         org.add_user(user)
@@ -122,7 +122,7 @@ module VCAP::CloudController
     end
 
     context 'any user using client without cloud_controller.read' do
-      let(:token) {{'scope' => []}}
+      let(:token) {{ 'scope' => [] }}
 
       before do
         org.add_user(user)

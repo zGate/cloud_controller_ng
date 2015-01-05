@@ -15,7 +15,7 @@ module VCAP::CloudController
         'detected_buildpack' => 'INTERCAL',
         'buildpack_key' => buildpack.key,
         'execution_metadata' => '{command: [' ']}',
-        'detected_start_command' => {'web' => ''},
+        'detected_start_command' => { 'web' => '' },
       }
     end
 
@@ -101,7 +101,7 @@ module VCAP::CloudController
       end
 
       context 'when running in diego is enabled' do
-        let(:environment) { {'DIEGO_RUN_BETA' => 'true'} }
+        let(:environment) { { 'DIEGO_RUN_BETA' => 'true' } }
 
         it 'desires the app using the diego client' do
           expect(runners).to receive(:runner_for_app) do |received_app|

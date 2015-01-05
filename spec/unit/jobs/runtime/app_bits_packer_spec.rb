@@ -21,7 +21,7 @@ module VCAP::CloudController
         let(:max_package_size) { 256 }
 
         before do
-          TestConfig.override({directories: {tmpdir: tmpdir}, packages: TestConfig.config[:packages].merge(max_package_size: max_package_size)})
+          TestConfig.override({ directories: { tmpdir: tmpdir }, packages: TestConfig.config[:packages].merge(max_package_size: max_package_size) })
 
           allow(CloudController::Blobstore::FingerprintsCollection).to receive(:new) { fingerprints }
           allow(App).to receive(:find) { app }

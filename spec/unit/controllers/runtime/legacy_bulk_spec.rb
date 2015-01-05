@@ -196,14 +196,14 @@ module VCAP::CloudController
 
     describe 'GET', '/bulk/counts' do
       it 'requires authentication' do
-        get '/bulk/counts', {'model' => 'user'}
+        get '/bulk/counts', { 'model' => 'user' }
         expect(last_response.status).to eq(401)
       end
 
       it 'returns the number of users' do
         4.times { User.make }
         authorize @bulk_user, @bulk_password
-        get '/bulk/counts', {'model' => 'user'}
+        get '/bulk/counts', { 'model' => 'user' }
         expect(decoded_response['counts']).to include('user' => kind_of(Integer))
         expect(decoded_response['counts']['user']).to eq(User.count)
       end

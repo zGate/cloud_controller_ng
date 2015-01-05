@@ -19,11 +19,11 @@ module VCAP::CloudController::Diego
       encoded_vcap_services_json = app.system_env_json['VCAP_SERVICES'].to_json
 
       expect(Environment.new(app).as_json).to eq([
-        {'name' => 'VCAP_APPLICATION', 'value' => encoded_vcap_application_json},
-        {'name' => 'VCAP_SERVICES', 'value' => encoded_vcap_services_json},
-        {'name' => 'MEMORY_LIMIT', 'value' => "#{app.memory}m"},
-        {'name' => 'APP_KEY1', 'value' => 'APP_VAL1'},
-        {'name' => 'APP_KEY2', 'value' => 'APP_VAL2'},
+        { 'name' => 'VCAP_APPLICATION', 'value' => encoded_vcap_application_json },
+        { 'name' => 'VCAP_SERVICES', 'value' => encoded_vcap_services_json },
+        { 'name' => 'MEMORY_LIMIT', 'value' => "#{app.memory}m" },
+        { 'name' => 'APP_KEY1', 'value' => 'APP_VAL1' },
+        { 'name' => 'APP_KEY2', 'value' => 'APP_VAL2' },
       ])
     end
 

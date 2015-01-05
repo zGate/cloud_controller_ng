@@ -47,7 +47,7 @@ module VCAP::CloudController
                 'app_id' => app.guid,
                 'task_id' => app.staging_task_id,
                 'execution_metadata' => '"{\"cmd\":[\"start\"]}"',
-                'detected_start_command' => {'web' => 'start'},
+                'detected_start_command' => { 'web' => 'start' },
               }
             end
 

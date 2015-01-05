@@ -16,7 +16,7 @@ module VCAP
       end
 
       let(:request_id) { SecureRandom.uuid }
-      let(:data) { { } }
+      let(:data) { {} }
 
       before do
         allow(Steno.config.context).to receive(:data).and_return(data)

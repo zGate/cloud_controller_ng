@@ -4,7 +4,7 @@ module VCAP::CloudController::Jobs
   describe Enqueuer do
     describe '#enqueue' do
       let(:wrapped_job) { Runtime::DropletDeletion.new('one', 'two') }
-      let(:opts) { {queue: 'my-queue'} }
+      let(:opts) { { queue: 'my-queue' } }
       let(:request_id) { 'abc123' }
 
       it 'delegates to Delayed::Job' do

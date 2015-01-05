@@ -26,10 +26,10 @@ DESC
     field :name, 'The name of the security group.', required: opts[:required], example_values: ['my_super_sec_group']
     field :rules, rules_description, default: [], render_example_pre_tag: true,
       example_values: [JSON.pretty_generate([
-        {protocol: 'icmp', destination: '0.0.0.0/0', type: 0, code: 1},
-        {protocol: 'tcp', destination: '0.0.0.0/0', ports: '2048-3000', log: true},
-        {protocol: 'udp', destination: '0.0.0.0/0', ports: '53, 5353'},
-        {protocol: 'all', destination: '0.0.0.0/0'},
+        { protocol: 'icmp', destination: '0.0.0.0/0', type: 0, code: 1 },
+        { protocol: 'tcp', destination: '0.0.0.0/0', ports: '2048-3000', log: true },
+        { protocol: 'udp', destination: '0.0.0.0/0', ports: '53, 5353' },
+        { protocol: 'all', destination: '0.0.0.0/0' },
       ])]
     field :space_guids, 'The list of associated spaces.', default: []
   end
@@ -42,7 +42,7 @@ DESC
     post '/v2/security_groups/' do
       include_context 'updatable_fields', required: true
       example 'Creating a Security Group' do
-        client.post '/v2/security_groups', fields_json({rules: MultiJson.load(field_data('rules')[:example_values].first)}), headers
+        client.post '/v2/security_groups', fields_json({ rules: MultiJson.load(field_data('rules')[:example_values].first) }), headers
         expect(status).to eq(201)
 
         standard_entity_response parsed_response, :security_group
@@ -54,7 +54,7 @@ DESC
       include_context 'updatable_fields', required: false
       modify_fields_for_update
       example 'Updating a Security Group' do
-        new_security_group = {name: 'new_name', rules: []}
+        new_security_group = { name: 'new_name', rules: [] }
 
         client.put "/v2/security_groups/#{guid}", MultiJson.dump(new_security_group, pretty: true), headers
         expect(status).to eq(201)

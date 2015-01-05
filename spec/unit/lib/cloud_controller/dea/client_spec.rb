@@ -262,9 +262,9 @@ module VCAP::CloudController
       it 'should find a specific instance' do
         expect(app).to receive(:guid).and_return(1)
 
-        encoded = {droplet: 1, other_opt: 'value'}
+        encoded = { droplet: 1, other_opt: 'value' }
         expect(message_bus).to receive(:synchronous_request).
-          with('dea.find.droplet', encoded, {timeout: 2}).
+          with('dea.find.droplet', encoded, { timeout: 2 }).
           and_return(['instance'])
 
         expect(Dea::Client.find_specific_instance(app, { other_opt: 'value' })).to eq('instance')
@@ -385,7 +385,7 @@ module VCAP::CloudController
         expect(result.file_uri_v2).to be_nil
         expect(result.credentials).to eq(['username', 'password'])
 
-        expect(message_bus).to have_requested_synchronous_messages('dea.find.droplet', search_options, {timeout: 2})
+        expect(message_bus).to have_requested_synchronous_messages('dea.find.droplet', search_options, { timeout: 2 })
       end
 
       it 'should return both file_uri_v2 and file_uri_v1 from DEA v2' do
@@ -417,7 +417,7 @@ module VCAP::CloudController
         expect(info.file_uri_v1).to eq('http://1.2.3.4/staged/test')
         expect(info.credentials).to eq(['username', 'password'])
 
-        expect(message_bus).to have_requested_synchronous_messages('dea.find.droplet', search_options, {timeout: 2})
+        expect(message_bus).to have_requested_synchronous_messages('dea.find.droplet', search_options, { timeout: 2 })
       end
 
       it 'should raise an error if the instance is not found' do
@@ -444,7 +444,7 @@ module VCAP::CloudController
           Dea::Client.get_file_uri_for_active_instance_by_index(app, path, instance)
         }.to raise_error Errors::ApiError, msg
 
-        expect(message_bus).to have_requested_synchronous_messages('dea.find.droplet', search_options, {timeout: 2})
+        expect(message_bus).to have_requested_synchronous_messages('dea.find.droplet', search_options, { timeout: 2 })
       end
     end
 
@@ -491,7 +491,7 @@ module VCAP::CloudController
         expect(result.file_uri_v2).to be_nil
         expect(result.credentials).to eq(['username', 'password'])
 
-        expect(message_bus).to have_requested_synchronous_messages('dea.find.droplet', search_options, {timeout: 2})
+        expect(message_bus).to have_requested_synchronous_messages('dea.find.droplet', search_options, { timeout: 2 })
       end
 
       it 'should return both file_uri_v2 and file_uri_v1 from DEA v2' do
@@ -522,7 +522,7 @@ module VCAP::CloudController
         expect(info.file_uri_v1).to eq('http://1.2.3.4/staged/test')
         expect(info.credentials).to eq(['username', 'password'])
 
-        expect(message_bus).to have_requested_synchronous_messages('dea.find.droplet', search_options, {timeout: 2})
+        expect(message_bus).to have_requested_synchronous_messages('dea.find.droplet', search_options, { timeout: 2 })
       end
 
       it 'should raise an error if the instance_id is not found' do
@@ -622,7 +622,7 @@ module VCAP::CloudController
           }
         )
 
-        expect(message_bus).to have_requested_synchronous_messages('dea.find.droplet', search_options, {result_count: 2, timeout: 2})
+        expect(message_bus).to have_requested_synchronous_messages('dea.find.droplet', search_options, { result_count: 2, timeout: 2 })
       end
 
       it 'should return filler stats for instances with out of range indices' do
@@ -670,7 +670,7 @@ module VCAP::CloudController
           }
         )
 
-        expect(message_bus).to have_requested_synchronous_messages('dea.find.droplet', search_options, {result_count: 2, timeout: 2})
+        expect(message_bus).to have_requested_synchronous_messages('dea.find.droplet', search_options, { result_count: 2, timeout: 2 })
       end
     end
 
@@ -719,7 +719,7 @@ module VCAP::CloudController
         }
 
         expect(Dea::Client).to receive(:find_instances).
-          with(app, search_options, {expected: 2}).
+          with(app, search_options, { expected: 2 }).
           and_return([starting_instance, running_instance])
 
         app_instances = Dea::Client.find_all_instances(app)
@@ -808,7 +808,7 @@ module VCAP::CloudController
         }
 
         expect(Dea::Client).to receive(:find_instances).
-          with(app, search_options, {expected: 2}).
+          with(app, search_options, { expected: 2 }).
           and_return([])
 
         allow(Time).to receive(:now) { 1 }

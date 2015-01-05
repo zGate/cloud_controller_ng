@@ -34,7 +34,7 @@ module VCAP::CloudController
 
               it "should use the CustomBuildpack's uri and name it 'custom', and use the url as the key" do
                 expect(buildpack_entry_generator.buildpack_entries(app)).to eq([
-                  {name: 'custom', key: 'http://example.com/mybuildpack.zip', url: 'http://example.com/mybuildpack.zip'}
+                  { name: 'custom', key: 'http://example.com/mybuildpack.zip', url: 'http://example.com/mybuildpack.zip' }
                 ])
               end
             end
@@ -46,7 +46,7 @@ module VCAP::CloudController
 
               it "should use the CustomBuildpack's uri and name it 'custom', and use the url as the key" do
                 expect(buildpack_entry_generator.buildpack_entries(app)).to eq([
-                  {name: 'custom', key: 'http://example.com/mybuildpack', url: 'http://example.com/mybuildpack'}
+                  { name: 'custom', key: 'http://example.com/mybuildpack', url: 'http://example.com/mybuildpack' }
                 ])
               end
             end
@@ -59,7 +59,7 @@ module VCAP::CloudController
 
             it 'should use that buildpack' do
               expect(buildpack_entry_generator.buildpack_entries(app)).to eq([
-                {name: 'java', key: 'java-buildpack-key', url: admin_buildpack_download_url},
+                { name: 'java', key: 'java-buildpack-key', url: admin_buildpack_download_url },
               ])
             end
           end
@@ -67,8 +67,8 @@ module VCAP::CloudController
           context 'when the app has no buildpack specified' do
             it 'should use the list of admin buildpacks' do
               expect(buildpack_entry_generator.buildpack_entries(app)).to eq([
-                {name: 'java', key: 'java-buildpack-key', url: admin_buildpack_download_url},
-                {name: 'ruby', key: 'ruby-buildpack-key', url: admin_buildpack_download_url},
+                { name: 'java', key: 'java-buildpack-key', url: admin_buildpack_download_url },
+                { name: 'ruby', key: 'ruby-buildpack-key', url: admin_buildpack_download_url },
               ])
             end
           end

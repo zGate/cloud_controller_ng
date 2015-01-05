@@ -8,7 +8,7 @@ module VCAP::CloudController
       attribute :long_description,  String, default: nil
       attribute :info_url,          Message::URL, default: nil
       attribute :documentation_url, Message::URL, default: nil
-      attribute :acls,              {'users' => [String], 'wildcards' => [String]}, default: nil
+      attribute :acls,              { 'users' => [String], 'wildcards' => [String] }, default: nil
       attribute :timeout,           Integer, default: nil
       attribute :active,            Message::Boolean, default: false
       attribute :bindable,          Message::Boolean, default: true

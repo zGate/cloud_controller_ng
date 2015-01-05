@@ -59,7 +59,7 @@ module VCAP::CloudController
 
     def to_hash(opts={})
       if !VCAP::CloudController::SecurityContext.admin? && !app.space.developers.include?(VCAP::CloudController::SecurityContext.current_user)
-        opts.merge!({redact: ['credentials']})
+        opts.merge!({ redact: ['credentials'] })
       end
       super(opts)
     end
@@ -95,7 +95,7 @@ module VCAP::CloudController
     end
 
     def self.user_visibility_filter(user)
-      {service_instance: ServiceInstance.user_visible(user)}
+      { service_instance: ServiceInstance.user_visible(user) }
     end
 
     def credentials_with_serialization=(val)

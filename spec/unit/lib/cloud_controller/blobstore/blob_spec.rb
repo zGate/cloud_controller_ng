@@ -6,7 +6,7 @@ module CloudController
       subject(:blob) do
         Blob.new(file, cdn)
       end
-      let(:attrs) {{'a' => 'b', 'c' => 'd'}}
+      let(:attrs) {{ 'a' => 'b', 'c' => 'd' }}
       let(:file) { double('file', key: 'abcdef', attributes: attrs, destroy: nil) }
       let(:cdn) { double(:cdn) }
 
@@ -74,7 +74,7 @@ module CloudController
         end
 
         it 'returns attributes for a set of keys' do
-          expect(blob.attributes('c')).to eq({'c'=>'d'})
+          expect(blob.attributes('c')).to eq({ 'c'=>'d' })
         end
       end
     end

@@ -55,7 +55,7 @@ module VCAP::CloudController
         instance = described_class.create(
           name: 'awesome-service',
           space: VCAP::CloudController::Space.make,
-          credentials: {'foo' => 'bar'},
+          credentials: { 'foo' => 'bar' },
         )
         expect(instance.refresh.is_gateway_service).to be false
       end

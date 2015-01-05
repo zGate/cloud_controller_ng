@@ -17,10 +17,10 @@ module VCAP::Services::ServiceBrokers
     let(:plan_name) { Sham.name }
     let(:plan_description) { Sham.description }
     let(:service_metadata_hash) do
-      {'metadata' => {'foo' => 'bar'}}
+      { 'metadata' => { 'foo' => 'bar' } }
     end
     let(:plan_metadata_hash) do
-      {'metadata' => { 'cost' => '0.0' }}
+      { 'metadata' => { 'cost' => '0.0' } }
     end
     let(:dashboard_client_attrs) do
       {
@@ -93,7 +93,7 @@ module VCAP::Services::ServiceBrokers
         expect(service.description).to eq(service_description)
         expect(service.bindable).to be true
         expect(service.tags).to match_array(['mysql', 'relational'])
-        expect(JSON.parse(service.extra)).to eq( {'foo' => 'bar'} )
+        expect(JSON.parse(service.extra)).to eq( { 'foo' => 'bar' } )
         expect(service.requires).to eq(['ultimate', 'power'])
         expect(service.plan_updateable).to eq true
       end
@@ -157,7 +157,7 @@ module VCAP::Services::ServiceBrokers
       end
 
       context 'when catalog service metadata is nil' do
-        let(:service_metadata_hash) { {'metadata' => nil} }
+        let(:service_metadata_hash) { { 'metadata' => nil } }
 
         it 'leaves the extra field as nil' do
           service_manager.sync_services_and_plans(catalog)
@@ -199,7 +199,7 @@ module VCAP::Services::ServiceBrokers
       end
 
       context 'when the catalog service plan metadata is empty' do
-        let(:plan_metadata_hash) { {'metadata' => nil} }
+        let(:plan_metadata_hash) { { 'metadata' => nil } }
 
         it 'leaves the plan extra field as nil' do
           service_manager.sync_services_and_plans(catalog)

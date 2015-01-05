@@ -30,7 +30,7 @@ module VCAP::CloudController
 
       MultiJson.dump(
         apps: messages,
-        token: {'id' => id_for_next_token}
+        token: { 'id' => id_for_next_token }
       )
     rescue IndexError => e
       raise ApiError.new_from_details('BadQueryParameter', e.message)

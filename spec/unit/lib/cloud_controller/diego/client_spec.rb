@@ -27,18 +27,18 @@ module VCAP::CloudController::Diego
           before do
             stub_request(:get, "http://some-tps-addr:5151/lrps/#{app.guid}-#{app.version}").to_return(
               status: 200,
-              body: [{process_guid: 'abc', instance_guid: '123', index: 0, state: 'running', since_in_ns: '1257894000000000001'},
-                {process_guid: 'abc', instance_guid: '456', index: 1, state: 'starting', since_in_ns: '1257895000000000001'},
-                {process_guid: 'abc', instance_guid: '789', index: 1, state: 'crashed', since_in_ns: '1257896000000000001'}].to_json)
+              body: [{ process_guid: 'abc', instance_guid: '123', index: 0, state: 'running', since_in_ns: '1257894000000000001' },
+                { process_guid: 'abc', instance_guid: '456', index: 1, state: 'starting', since_in_ns: '1257895000000000001' },
+                { process_guid: 'abc', instance_guid: '789', index: 1, state: 'crashed', since_in_ns: '1257896000000000001' }].to_json)
 
             allow(service_registry).to receive(:tps_addrs).and_return(['http://some-tps-addr:5151'])
           end
 
           it "reports each instance's index, state, since, process_guid, instance_guid" do
             expect(client.lrp_instances(app)).to eq([
-              {process_guid: 'abc', instance_guid: '123', index: 0, state: 'RUNNING', since: 1257894000},
-              {process_guid: 'abc', instance_guid: '456', index: 1, state: 'STARTING', since: 1257895000},
-              {process_guid: 'abc', instance_guid: '789', index: 1, state: 'CRASHED', since: 1257896000}
+              { process_guid: 'abc', instance_guid: '123', index: 0, state: 'RUNNING', since: 1257894000 },
+              { process_guid: 'abc', instance_guid: '456', index: 1, state: 'STARTING', since: 1257895000 },
+              { process_guid: 'abc', instance_guid: '789', index: 1, state: 'CRASHED', since: 1257896000 }
             ])
           end
         end

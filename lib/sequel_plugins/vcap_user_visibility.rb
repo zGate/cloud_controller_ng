@@ -24,11 +24,11 @@ module Sequel::Plugins::VcapUserVisibility
 
     # this is overridden by models to determine which objects a user can see
     def user_visibility_filter(_)
-      {id: nil}
+      { id: nil }
     end
 
     def unauthenticated_visibility_filter
-      {id: nil}
+      { id: nil }
     end
 
     def full_dataset_filter

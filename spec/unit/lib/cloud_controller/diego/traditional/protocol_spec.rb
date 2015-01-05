@@ -95,7 +95,7 @@ module VCAP::CloudController
           end
 
           before do
-            environment = instance_double(Environment, as_json: [{'name' => 'fake', 'value' => 'environment'}])
+            environment = instance_double(Environment, as_json: [{ 'name' => 'fake', 'value' => 'environment' }])
             allow(Environment).to receive(:new).with(app).and_return(environment)
           end
 
@@ -107,7 +107,7 @@ module VCAP::CloudController
             expect(message).to eq(
               'disk_mb' => 222,
               'droplet_uri' => 'fake-droplet_uri',
-              'environment' => [{'name' => 'fake', 'value' => 'environment'}],
+              'environment' => [{ 'name' => 'fake', 'value' => 'environment' }],
               'file_descriptors' => 333,
               'health_check_type' => 'some-health-check',
               'health_check_timeout_in_seconds' => 444,

@@ -50,7 +50,7 @@ module VCAP::CloudController
 
       context 'when attributes do not match' do
         let(:job) do
-          BlobstoreDelete.new(key, :droplet_blobstore, { 'mis' => 'match'})
+          BlobstoreDelete.new(key, :droplet_blobstore, { 'mis' => 'match' })
         end
 
         it 'does not delete the blob' do

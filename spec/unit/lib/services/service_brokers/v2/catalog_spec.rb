@@ -54,13 +54,13 @@ module VCAP::Services::ServiceBrokers::V2
           'description' =>'the service description',
           'bindable' =>true,
           'tags' =>['tag1'],
-          'metadata' => {'foo' =>'bar'},
+          'metadata' => { 'foo' =>'bar' },
           'plans' =>[
             {
               'id' => "#{@index}",
               'name' => "#{@index}",
               'description' => 'the plan description',
-              'metadata' => {'foo' =>'bar'}
+              'metadata' => { 'foo' =>'bar' }
             }
           ]
         }.merge(attrs)
@@ -107,7 +107,7 @@ module VCAP::Services::ServiceBrokers::V2
 
       context "when a service's dashboard_client attribute is not a hash" do
         let(:catalog_hash) do
-          {'services' => [build_service('dashboard_client' => 1)]}
+          { 'services' => [build_service('dashboard_client' => 1)] }
         end
 
         it 'gives an error' do
@@ -118,7 +118,7 @@ module VCAP::Services::ServiceBrokers::V2
 
       context 'when there are multiple services without a dashboard_client' do
         let(:catalog_hash) do
-          {'services' => [build_service, build_service]}
+          { 'services' => [build_service, build_service] }
         end
 
         it 'does not give a uniqueness error on dashboard_client id' do
@@ -131,8 +131,8 @@ module VCAP::Services::ServiceBrokers::V2
         let(:catalog_hash) do
           {
             'services' => [
-              build_service('dashboard_client' => {'id' => nil}),
-              build_service('dashboard_client' => {'id' => nil})
+              build_service('dashboard_client' => { 'id' => nil }),
+              build_service('dashboard_client' => { 'id' => nil })
             ]
           }
         end
@@ -146,7 +146,7 @@ module VCAP::Services::ServiceBrokers::V2
 
       context 'when there are multiple services with an empty id' do
         let(:catalog_hash) do
-          {'services' => [build_service('id' => nil), build_service('id' => nil)]}
+          { 'services' => [build_service('id' => nil), build_service('id' => nil)] }
         end
 
         it 'is invalid, but not due to uniqueness constraints' do
@@ -160,8 +160,8 @@ module VCAP::Services::ServiceBrokers::V2
         let(:catalog_hash) do
           {
             'services' => [
-              build_service('id' => 'service-1', 'dashboard_client' => {'id' => 'client-1'}),
-              build_service('id' => 'service-1', 'dashboard_client' => {'id' => 'client-1'}),
+              build_service('id' => 'service-1', 'dashboard_client' => { 'id' => 'client-1' }),
+              build_service('id' => 'service-1', 'dashboard_client' => { 'id' => 'client-1' }),
             ]
           }
         end

@@ -60,14 +60,14 @@ module ApiDsl
   def audited_event event
     attributes = event.columns.map do |column|
       if column == :metadata
-        {attribute_name: column.to_s, value: JSON.pretty_generate(JSON.parse(event[column])), is_json: true}
+        { attribute_name: column.to_s, value: JSON.pretty_generate(JSON.parse(event[column])), is_json: true }
       else
-        {attribute_name: column.to_s, value: event[column], is_json: false}
+        { attribute_name: column.to_s, value: event[column], is_json: false }
       end
     end
 
     RSpec.current_example.metadata[:audit_records] ||= []
-    RSpec.current_example.metadata[:audit_records] << {type: event[:type], attributes: attributes}
+    RSpec.current_example.metadata[:audit_records] << { type: event[:type], attributes: attributes }
   end
 
   def field_data(name)

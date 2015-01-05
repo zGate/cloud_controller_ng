@@ -14,19 +14,19 @@ module VCAP::CloudController
     describe 'Attributes' do
       it do
         expect(described_class).to have_creatable_attributes({
-          name: {type: 'string', required: true},
-          space_guid: {type: 'string', required: true},
-          service_plan_guid: {type: 'string', required: true},
-          service_binding_guids: {type: '[string]'}
+          name: { type: 'string', required: true },
+          space_guid: { type: 'string', required: true },
+          service_plan_guid: { type: 'string', required: true },
+          service_binding_guids: { type: '[string]' }
         })
       end
 
       it do
         expect(described_class).to have_updatable_attributes({
-          name: {type: 'string'},
-          space_guid: {type: 'string'},
-          service_plan_guid: {type: 'string'},
-          service_binding_guids: {type: '[string]'}
+          name: { type: 'string' },
+          space_guid: { type: 'string' },
+          service_plan_guid: { type: 'string' },
+          service_binding_guids: { type: '[string]' }
         })
       end
     end
@@ -719,7 +719,7 @@ module VCAP::CloudController
             expect(event.space_guid).to eq(service_instance.space.guid)
             expect(event.space_id).to eq(service_instance.space.id)
             expect(event.organization_guid).to eq(service_instance.space.organization.guid)
-            expect(event.metadata).to eq({'request' => {}})
+            expect(event.metadata).to eq({ 'request' => {} })
           end
         end
 
@@ -741,7 +741,7 @@ module VCAP::CloudController
             expect(event.space_guid).to eq(service_instance.space.guid)
             expect(event.space_id).to eq(service_instance.space.id)
             expect(event.organization_guid).to eq(service_instance.space.organization.guid)
-            expect(event.metadata).to eq({'request' => {}})
+            expect(event.metadata).to eq({ 'request' => {} })
           end
         end
 
@@ -828,7 +828,7 @@ module VCAP::CloudController
 
         context 'when the user has only the cloud_controller.read scope' do
           it 'returns a JSON payload indicating they have permission to manage this instance' do
-            get "/v2/service_instances/#{instance.guid}/permissions", {}, json_headers(headers_for(developer, {scopes: ['cloud_controller.read']}))
+            get "/v2/service_instances/#{instance.guid}/permissions", {}, json_headers(headers_for(developer, { scopes: ['cloud_controller.read'] }))
             expect(last_response.status).to eql(200)
             expect(JSON.parse(last_response.body)['manage']).to be true
           end
@@ -836,7 +836,7 @@ module VCAP::CloudController
 
         context 'when the user has only the cloud_controller_service_permissions.read scope' do
           it 'returns a JSON payload indicating they have permission to manage this instance' do
-            get "/v2/service_instances/#{instance.guid}/permissions", {}, json_headers(headers_for(developer, {scopes: ['cloud_controller_service_permissions.read']}))
+            get "/v2/service_instances/#{instance.guid}/permissions", {}, json_headers(headers_for(developer, { scopes: ['cloud_controller_service_permissions.read'] }))
             expect(last_response.status).to eql(200)
             expect(JSON.parse(last_response.body)['manage']).to be true
           end
@@ -844,7 +844,7 @@ module VCAP::CloudController
 
         context 'when the user does not have either necessary scope' do
           it 'returns InvalidAuthToken' do
-            get "/v2/service_instances/#{instance.guid}/permissions", {}, json_headers(headers_for(developer, {scopes: ['cloud_controller.write']}))
+            get "/v2/service_instances/#{instance.guid}/permissions", {}, json_headers(headers_for(developer, { scopes: ['cloud_controller.write'] }))
             expect(last_response.status).to eql(403)
             expect(JSON.parse(last_response.body)['description']).to eql('Your token lacks the necessary scopes to access this resource.')
           end

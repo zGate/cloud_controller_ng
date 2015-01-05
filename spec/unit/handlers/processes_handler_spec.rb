@@ -32,7 +32,7 @@ module VCAP::CloudController
     let(:process_event_repo) { double(:process_event_repo) }
     let(:space) { Space.make }
     let!(:handler) { ProcessesHandler.new(process_repo, process_event_repo) }
-    let(:process_opts) { {space: space} }
+    let(:process_opts) { { space: space } }
     let!(:process) do
       process_model = AppFactory.make(process_opts)
       ProcessMapper.map_model_to_domain(process_model)

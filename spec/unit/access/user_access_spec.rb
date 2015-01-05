@@ -41,7 +41,7 @@ module VCAP::CloudController
     end
 
     context 'any user using client without cloud_controller.read' do
-      let(:token) { {'scope' => []}}
+      let(:token) { { 'scope' => [] }}
 
       it_behaves_like :no_access
       it { should_not allow_op_on_object :index, object.class }

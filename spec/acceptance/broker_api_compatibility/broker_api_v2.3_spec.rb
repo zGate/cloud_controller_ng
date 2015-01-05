@@ -97,14 +97,14 @@ describe 'Service Broker API integration' do
             # stub uaa token request
             stub_request(:post, 'http://cc-service-dashboards:some-sekret@localhost:8080/uaa/oauth/token').to_return(
               status: 200,
-              body: {token_type: 'token-type', access_token: 'access-token'}.to_json,
-              headers: {'content-type' => 'application/json'})
+              body: { token_type: 'token-type', access_token: 'access-token' }.to_json,
+              headers: { 'content-type' => 'application/json' })
 
             # stub uaa client search request
             stub_request(:get, 'http://localhost:8080/uaa/oauth/clients/dash-id').to_return(
               status: 200,
-              body: {id: 'some-id', client_id: 'dash-id', redirect_uri: 'http://redirect.to.me.plz'}.to_json,
-              headers: {'content-type' => 'application/json'})
+              body: { id: 'some-id', client_id: 'dash-id', redirect_uri: 'http://redirect.to.me.plz' }.to_json,
+              headers: { 'content-type' => 'application/json' })
 
             # stub uaa client update request
             stub_request(:post, 'http://localhost:8080/uaa/oauth/clients/tx/modify').to_return(

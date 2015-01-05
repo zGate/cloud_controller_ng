@@ -15,7 +15,7 @@ module VCAP::CloudController
             
             expect(request.size).to eq(2)
             expect(request.first).to eq('diego.stop.index')
-            expect(request.last).to match_json({'process_guid' => 'versioned-guid', 'index' => 33})
+            expect(request.last).to match_json({ 'process_guid' => 'versioned-guid', 'index' => 33 })
           end
         end
       end

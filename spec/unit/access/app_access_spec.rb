@@ -77,17 +77,17 @@ module VCAP::CloudController
         before { FeatureFlag.make(name: 'app_scaling', enabled: false, error_message: nil) }
 
         it 'cannot scale' do
-          expect{ subject.read_for_update?(object, {'memory' => 2}) }.to raise_error(VCAP::Errors::ApiError, /app_scaling/)
-          expect{ subject.read_for_update?(object, {'disk_quota' => 2}) }.to raise_error(VCAP::Errors::ApiError, /app_scaling/)
-          expect{ subject.read_for_update?(object, {'instances' => 2}) }.to raise_error(VCAP::Errors::ApiError, /app_scaling/)
+          expect{ subject.read_for_update?(object, { 'memory' => 2 }) }.to raise_error(VCAP::Errors::ApiError, /app_scaling/)
+          expect{ subject.read_for_update?(object, { 'disk_quota' => 2 }) }.to raise_error(VCAP::Errors::ApiError, /app_scaling/)
+          expect{ subject.read_for_update?(object, { 'instances' => 2 }) }.to raise_error(VCAP::Errors::ApiError, /app_scaling/)
         end
 
         it 'allows unchanged fields to be specified' do
-          expect{ subject.read_for_update?(object, {'instances' => 1}) }.to_not raise_error
+          expect{ subject.read_for_update?(object, { 'instances' => 1 }) }.to_not raise_error
         end
 
         it 'allows changing other fields' do
-          expect(subject.read_for_update?(object, {'buildpack' => 'http://foo.git'})).to be_truthy
+          expect(subject.read_for_update?(object, { 'buildpack' => 'http://foo.git' })).to be_truthy
         end
       end
     end
@@ -153,7 +153,7 @@ module VCAP::CloudController
     end
 
     context 'any user using client without cloud_controller.write' do
-      let(:token) {{'scope' => ['cloud_controller.read']}}
+      let(:token) {{ 'scope' => ['cloud_controller.read'] }}
 
       before do
         org.add_user(user)
@@ -169,7 +169,7 @@ module VCAP::CloudController
     end
 
     context 'any user using client without cloud_controller.read' do
-      let(:token) {{'scope' => []}}
+      let(:token) {{ 'scope' => [] }}
 
       before do
         org.add_user(user)

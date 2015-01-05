@@ -298,7 +298,7 @@ module VCAP::CloudController
 
       it 'does not modify the frozen hash provided by Sequel' do
         expect {
-          buildpacks.first.update({position: 2}.freeze)
+          buildpacks.first.update({ position: 2 }.freeze)
         }.not_to raise_error
       end
 
@@ -328,7 +328,7 @@ module VCAP::CloudController
 
       it 'shifts from the beginning to the end' do
         expect {
-          buildpacks.first.update({position: 4})
+          buildpacks.first.update({ position: 4 })
         }.to change {
           get_bp_ordered
         }.from(
@@ -370,8 +370,8 @@ module VCAP::CloudController
     end
 
     describe 'destroy' do
-      let!(:buildpack1) { VCAP::CloudController::Buildpack.create({name: 'first_buildpack', key: 'xyz', position: 5}) }
-      let!(:buildpack2) { VCAP::CloudController::Buildpack.create({name: 'second_buildpack', key: 'xyz', position: 10}) }
+      let!(:buildpack1) { VCAP::CloudController::Buildpack.create({ name: 'first_buildpack', key: 'xyz', position: 5 }) }
+      let!(:buildpack2) { VCAP::CloudController::Buildpack.create({ name: 'second_buildpack', key: 'xyz', position: 10 }) }
 
       it 'removes the specified buildpack' do
         expect {

@@ -9,13 +9,13 @@ module VCAP::CloudController
       let(:desired_instances) { 3 }
       let(:instances_to_return) {
         [
-            {process_guid: 'process-guid', instance_guid: 'instance-A', index: 0, state: 'RUNNING', since: 1},
-            {process_guid: 'process-guid', instance_guid: 'instance-B', index: 1, state: 'RUNNING', since: 2},
-            {process_guid: 'process-guid', instance_guid: 'instance-C', index: 1, state: 'CRASHED', since: 3},
-            {process_guid: 'process-guid', instance_guid: 'instance-D', index: 2, state: 'RUNNING', since: 4},
-            {process_guid: 'process-guid', instance_guid: 'instance-E', index: 2, state: 'STARTING', since: 5},
-            {process_guid: 'process-guid', instance_guid: 'instance-F', index: 3, state: 'STARTING', since: 6},
-            {process_guid: 'process-guid', instance_guid: 'instance-G', index: 4, state: 'CRASHED', since: 7},
+            { process_guid: 'process-guid', instance_guid: 'instance-A', index: 0, state: 'RUNNING', since: 1 },
+            { process_guid: 'process-guid', instance_guid: 'instance-B', index: 1, state: 'RUNNING', since: 2 },
+            { process_guid: 'process-guid', instance_guid: 'instance-C', index: 1, state: 'CRASHED', since: 3 },
+            { process_guid: 'process-guid', instance_guid: 'instance-D', index: 2, state: 'RUNNING', since: 4 },
+            { process_guid: 'process-guid', instance_guid: 'instance-E', index: 2, state: 'STARTING', since: 5 },
+            { process_guid: 'process-guid', instance_guid: 'instance-F', index: 3, state: 'STARTING', since: 6 },
+            { process_guid: 'process-guid', instance_guid: 'instance-G', index: 4, state: 'CRASHED', since: 7 },
         ]
       }
 
@@ -82,8 +82,8 @@ module VCAP::CloudController
           context 'when a desired instance is missing' do
             let(:instances_to_return) {
               [
-                  {process_guid: 'process-guid', instance_guid: 'instance-A', index: 0, state: 'RUNNING', since: 1},
-                  {process_guid: 'process-guid', instance_guid: 'instance-D', index: 2, state: 'STARTING', since: 4},
+                  { process_guid: 'process-guid', instance_guid: 'instance-A', index: 0, state: 'RUNNING', since: 1 },
+                  { process_guid: 'process-guid', instance_guid: 'instance-D', index: 2, state: 'STARTING', since: 4 },
               ]
             }
 
@@ -98,10 +98,10 @@ module VCAP::CloudController
           context 'when multiple instances are reporting as running/started at a desired index' do
             let(:instances_to_return) {
               [
-                  {process_guid: 'process-guid', instance_guid: 'instance-A', index: 0, state: 'RUNNING', since: 1},
-                  {process_guid: 'process-guid', instance_guid: 'instance-B', index: 0, state: 'STARTING', since: 1},
-                  {process_guid: 'process-guid', instance_guid: 'instance-C', index: 1, state: 'RUNNING', since: 1},
-                  {process_guid: 'process-guid', instance_guid: 'instance-D', index: 2, state: 'STARTING', since: 4},
+                  { process_guid: 'process-guid', instance_guid: 'instance-A', index: 0, state: 'RUNNING', since: 1 },
+                  { process_guid: 'process-guid', instance_guid: 'instance-B', index: 0, state: 'STARTING', since: 1 },
+                  { process_guid: 'process-guid', instance_guid: 'instance-C', index: 1, state: 'RUNNING', since: 1 },
+                  { process_guid: 'process-guid', instance_guid: 'instance-D', index: 2, state: 'STARTING', since: 4 },
               ]
             }
 
@@ -116,10 +116,10 @@ module VCAP::CloudController
           context 'when there are undesired instances that are running/starting' do
             let(:instances_to_return) {
               [
-                  {process_guid: 'process-guid', instance_guid: 'instance-A', index: 0, state: 'RUNNING', since: 1},
-                  {process_guid: 'process-guid', instance_guid: 'instance-B', index: 1, state: 'RUNNING', since: 1},
-                  {process_guid: 'process-guid', instance_guid: 'instance-C', index: 2, state: 'STARTING', since: 4},
-                  {process_guid: 'process-guid', instance_guid: 'instance-D', index: 3, state: 'RUNNING', since: 1},
+                  { process_guid: 'process-guid', instance_guid: 'instance-A', index: 0, state: 'RUNNING', since: 1 },
+                  { process_guid: 'process-guid', instance_guid: 'instance-B', index: 1, state: 'RUNNING', since: 1 },
+                  { process_guid: 'process-guid', instance_guid: 'instance-C', index: 2, state: 'STARTING', since: 4 },
+                  { process_guid: 'process-guid', instance_guid: 'instance-D', index: 3, state: 'RUNNING', since: 1 },
               ]
             }
 
@@ -134,10 +134,10 @@ module VCAP::CloudController
           context 'when there are crashed instances at a desired index' do
             let(:instances_to_return) {
               [
-                  {process_guid: 'process-guid', instance_guid: 'instance-A', index: 0, state: 'RUNNING', since: 1},
-                  {process_guid: 'process-guid', instance_guid: 'instance-B', index: 0, state: 'CRASHED', since: 1},
-                  {process_guid: 'process-guid', instance_guid: 'instance-C', index: 1, state: 'CRASHED', since: 1},
-                  {process_guid: 'process-guid', instance_guid: 'instance-D', index: 2, state: 'STARTING', since: 1},
+                  { process_guid: 'process-guid', instance_guid: 'instance-A', index: 0, state: 'RUNNING', since: 1 },
+                  { process_guid: 'process-guid', instance_guid: 'instance-B', index: 0, state: 'CRASHED', since: 1 },
+                  { process_guid: 'process-guid', instance_guid: 'instance-C', index: 1, state: 'CRASHED', since: 1 },
+                  { process_guid: 'process-guid', instance_guid: 'instance-D', index: 2, state: 'STARTING', since: 1 },
               ]
             }
 

@@ -172,7 +172,7 @@ module VCAP::CloudController
     end
 
     describe 'a user with full org and space permissions using a client with limited scope' do
-      let(:token) {{'scope' => scope}}
+      let(:token) {{ 'scope' => scope }}
 
       before do
         org.add_user(user)

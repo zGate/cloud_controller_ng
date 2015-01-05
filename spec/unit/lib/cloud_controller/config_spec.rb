@@ -85,7 +85,7 @@ module VCAP::CloudController
           end
 
           it 'preserves the directories value from the file' do
-            expect(config[:directories]).to eq({some: 'value'})
+            expect(config[:directories]).to eq({ some: 'value' })
           end
 
           it 'preserves the external_protocol value from the file' do
@@ -219,14 +219,14 @@ module VCAP::CloudController
       end
 
       it 'sets up the account capacity' do
-        Config.configure_components(@test_config.merge(admin_account_capacity: {memory: 64*1024}))
+        Config.configure_components(@test_config.merge(admin_account_capacity: { memory: 64*1024 }))
         expect(AccountCapacity.admin[:memory]).to eq(64*1024)
 
         AccountCapacity.admin[:memory] = AccountCapacity::ADMIN_MEM
       end
 
       it 'sets up the resource pool instance' do
-        Config.configure_components(@test_config.merge(resource_pool: {minimum_size: 9001}))
+        Config.configure_components(@test_config.merge(resource_pool: { minimum_size: 9001 }))
         expect(ResourcePool.instance.minimum_size).to eq(9001)
       end
 
@@ -276,7 +276,7 @@ module VCAP::CloudController
       end
 
       it 'sets the legacy bulk' do
-        bulk_config = {bulk_api: {auth_user: 'user', auth_password: 'password'}}
+        bulk_config = { bulk_api: { auth_user: 'user', auth_password: 'password' } }
         Config.configure_components(@test_config.merge(bulk_config))
         Config.configure_components_depending_on_message_bus(message_bus)
         expect(LegacyBulk.config[:auth_user]).to eq('user')
@@ -347,14 +347,14 @@ module VCAP::CloudController
     end
 
     describe 'diego config validation' do
-      base_config = {staging: {auth: {user: 'user', password: 'password'}}}
+      base_config = { staging: { auth: { user: 'user', password: 'password' } } }
 
       context 'valid configurations' do
         let(:valid_configs) do
           [
-            {diego: {staging: 'optional', running: 'optional'}},
-            {diego: {staging: 'optional', running: 'disabled'}},
-            {diego: {staging: 'disabled', running: 'disabled'}},
+            { diego: { staging: 'optional', running: 'optional' } },
+            { diego: { staging: 'optional', running: 'disabled' } },
+            { diego: { staging: 'disabled', running: 'disabled' } },
           ]
         end
 
@@ -371,7 +371,7 @@ module VCAP::CloudController
 
       context 'invalid configurations' do
         let(:invalid_config) do
-          {diego: {staging: 'disabled', running: 'optional'}}
+          { diego: { staging: 'disabled', running: 'optional' } }
         end
 
         it 'raises a validation exception' do

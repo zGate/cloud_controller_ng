@@ -6,8 +6,8 @@ module VCAP
     subject { described_class.new(config_hash) }
 
     let(:config_hash) do
-      {resource_id: 'resource-id',
-       symmetric_secret: nil}
+      { resource_id: 'resource-id',
+       symmetric_secret: nil }
     end
 
     let(:uaa_info) { double(CF::UAA::Info) }
@@ -47,14 +47,14 @@ module VCAP
 
       context 'when symmetric key is used' do
         let(:token_content) do
-          {'aud' => 'resource-id', 'payload' => 123, 'exp' => Time.now.to_i + 10_000}
+          { 'aud' => 'resource-id', 'payload' => 123, 'exp' => Time.now.to_i + 10_000 }
         end
 
         before { config_hash[:symmetric_secret] = 'symmetric-key' }
 
         context 'when token is valid' do
           it 'uses UAA::TokenCoder to decode the token with skey' do
-            token = CF::UAA::TokenCoder.encode(token_content, {skey: 'symmetric-key' })
+            token = CF::UAA::TokenCoder.encode(token_content, { skey: 'symmetric-key' })
 
             expect(subject.decode_token("bearer #{token}")).to eq(token_content)
           end
@@ -75,11 +75,11 @@ module VCAP
         before { config_hash[:symmetric_secret] = nil }
 
         let(:rsa_key) { OpenSSL::PKey::RSA.new(2048) }
-        before { allow(uaa_info).to receive_messages(validation_key: {'value' => rsa_key.public_key.to_pem}) }
+        before { allow(uaa_info).to receive_messages(validation_key: { 'value' => rsa_key.public_key.to_pem }) }
 
         context 'when token is valid' do
           let(:token_content) do
-            {'aud' => 'resource-id', 'payload' => 123, 'exp' => Time.now.to_i + 10_000}
+            { 'aud' => 'resource-id', 'payload' => 123, 'exp' => Time.now.to_i + 10_000 }
           end
 
           it 'successfully decodes token and caches key' do
@@ -97,8 +97,8 @@ module VCAP
 
             it 'retries to decode token with newly fetched asymmetric key' do
               allow(uaa_info).to receive(:validation_key).and_return(
-                  {'value' => old_rsa_key.public_key.to_pem},
-                  {'value' => rsa_key.public_key.to_pem},
+                  { 'value' => old_rsa_key.public_key.to_pem },
+                  { 'value' => rsa_key.public_key.to_pem },
               )
               expect(subject.decode_token("bearer #{generate_token(rsa_key, token_content)}")).to eq(token_content)
             end
@@ -116,7 +116,7 @@ module VCAP
 
         context 'when token has invalid audience' do
           let(:token_content) do
-            {'aud' => 'invalid-audience', 'payload' => 123, 'exp' => Time.now.to_i + 10_000}
+            { 'aud' => 'invalid-audience', 'payload' => 123, 'exp' => Time.now.to_i + 10_000 }
           end
 
           it 'raises an BadToken error' do
@@ -129,7 +129,7 @@ module VCAP
 
         context 'when token has expired' do
           let(:token_content) do
-            {'aud' => 'resource-id', 'payload' => 123, 'exp' => Time.now.to_i}
+            { 'aud' => 'resource-id', 'payload' => 123, 'exp' => Time.now.to_i }
           end
 
           it 'raises a BadToken error' do
@@ -153,7 +153,7 @@ module VCAP
           subject { described_class.new(config_hash, 100) }
 
           let(:token_content) do
-            {'aud' => 'resource-id', 'payload' => 123, 'exp' => Time.now.to_i}
+            { 'aud' => 'resource-id', 'payload' => 123, 'exp' => Time.now.to_i }
           end
 
           let(:token) { generate_token(rsa_key, token_content) }

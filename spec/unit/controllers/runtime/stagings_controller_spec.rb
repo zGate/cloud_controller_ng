@@ -26,7 +26,7 @@ module VCAP::CloudController
                   password: staging_password
               }
           },
-          nginx: {use_nginx: true},
+          nginx: { use_nginx: true },
           resource_pool: {
               resource_directory_key: 'cc-resources',
               fog_connection: {
@@ -113,7 +113,7 @@ module VCAP::CloudController
 
       context 'when not using with nginx' do
         before do
-          TestConfig.override(staging_config.merge(nginx: {use_nginx: false}))
+          TestConfig.override(staging_config.merge(nginx: { use_nginx: false }))
           authorize(staging_user, staging_password)
         end
 
@@ -128,7 +128,7 @@ module VCAP::CloudController
       let(:file_content) { 'droplet content' }
 
       let(:upload_req) do
-        {upload: {droplet: Rack::Test::UploadedFile.new(temp_file_with_content(file_content))}}
+        { upload: { droplet: Rack::Test::UploadedFile.new(temp_file_with_content(file_content)) } }
       end
 
       before do
@@ -196,7 +196,7 @@ module VCAP::CloudController
 
           context 'when the upload path is nil' do
             let(:upload_req) do
-              {upload: {droplet: nil}}
+              { upload: { droplet: nil } }
             end
 
             it 'deletes the uploaded file' do
@@ -260,7 +260,7 @@ module VCAP::CloudController
 
           context 'when the upload path is nil' do
             let(:upload_req) do
-              {upload: {droplet: nil}}
+              { upload: { droplet: nil } }
             end
 
             it 'does not add a job' do
@@ -432,7 +432,7 @@ module VCAP::CloudController
 
         context 'when the upload path is nil' do
           let(:upload_req) do
-            {upload: {droplet: nil}}
+            { upload: { droplet: nil } }
           end
 
           it 'deletes the uploaded file' do
@@ -475,7 +475,7 @@ module VCAP::CloudController
 
         context 'when nginx is disabled' do
           let(:staging_config) do
-            original_staging_config.merge({nginx: {use_nginx: false}})
+            original_staging_config.merge({ nginx: { use_nginx: false } })
           end
 
           it 'should return the buildpack cache' do

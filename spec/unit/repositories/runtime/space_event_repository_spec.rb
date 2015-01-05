@@ -22,7 +22,7 @@ module VCAP::CloudController
           expect(event.actor).to eq(user.guid)
           expect(event.actor_type).to eq('user')
           expect(event.actor_name).to eq(user_email)
-          expect(event.metadata).to eq({ 'request' => request_attrs})
+          expect(event.metadata).to eq({ 'request' => request_attrs })
         end
 
         context 'when the user email is unknown' do
@@ -46,7 +46,7 @@ module VCAP::CloudController
           expect(event.actor).to eq(user.guid)
           expect(event.actor_type).to eq('user')
           expect(event.actor_name).to eq(user_email)
-          expect(event.metadata).to eq({ 'request' => request_attrs})
+          expect(event.metadata).to eq({ 'request' => request_attrs })
         end
       end
 
@@ -64,7 +64,7 @@ module VCAP::CloudController
           expect(event.actor).to eq(user.guid)
           expect(event.actor_type).to eq('user')
           expect(event.actor_name).to eq(user_email)
-          expect(event.metadata).to eq({ 'request' => { 'recursive' => true}})
+          expect(event.metadata).to eq({ 'request' => { 'recursive' => true } })
         end
       end
     end

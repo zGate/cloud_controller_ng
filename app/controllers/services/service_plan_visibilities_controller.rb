@@ -42,7 +42,7 @@ module VCAP::CloudController
 
       [
         HTTP::CREATED,
-        {'Location' => "#{self.class.path}/#{service_plan_visibility.guid}"},
+        { 'Location' => "#{self.class.path}/#{service_plan_visibility.guid}" },
         object_renderer.render_json(self.class, service_plan_visibility, @opts)
       ]
     end

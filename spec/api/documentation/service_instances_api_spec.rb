@@ -23,7 +23,7 @@ resource 'Service Instances', type: [:api, :legacy_api] do
       example 'Creating a Service Instance' do
         space_guid = VCAP::CloudController::Space.make.guid
         service_plan_guid = VCAP::CloudController::ServicePlan.make(public: true).guid
-        request_hash = {space_guid: space_guid, name: 'my-service-instance', service_plan_guid: service_plan_guid}
+        request_hash = { space_guid: space_guid, name: 'my-service-instance', service_plan_guid: service_plan_guid }
 
         client.post '/v2/service_instances', MultiJson.dump(request_hash, pretty: true), headers
         expect(status).to eq(201)
@@ -75,14 +75,14 @@ resource 'Service Instances', type: [:api, :legacy_api] do
       client.get "/v2/service_instances/#{service_instance.guid}/permissions", {}, headers
       expect(status).to eq(200)
 
-      expect(parsed_response).to eql({'manage' => true})
+      expect(parsed_response).to eql({ 'manage' => true })
     end
   end
 
   put '/v2/service_plans/:service_plan_guid/service_instances' do
     let(:new_plan) { VCAP::CloudController::ServicePlan.make }
     let(:old_plan) { service_instance.service_plan }
-    let(:request_json) { {service_plan_guid: new_plan.guid}.to_json }
+    let(:request_json) { { service_plan_guid: new_plan.guid }.to_json }
 
     field :service_plan_guid, 'The guid of the plan to move the existing instances to', required: true, example_values: %w(6c4bd80f-4593-41d1-a2c9-b20cb65ec76e)
 

@@ -185,11 +185,11 @@ module VCAP::CloudController
           managed_service_instance_1 = ManagedServiceInstance.make(space: space, name: 'managed service 1')
           managed_service_instance_2 = ManagedServiceInstance.make(space: space, name: 'managed service 2')
 
-          get "v2/spaces/#{space.guid}/service_instances", {'q' => 'name:provided service 1;', 'return_user_provided_service_instances' => true}, headers_for(developer)
+          get "v2/spaces/#{space.guid}/service_instances", { 'q' => 'name:provided service 1;', 'return_user_provided_service_instances' => true }, headers_for(developer)
           guids = decoded_response.fetch('resources').map { |service| service.fetch('metadata').fetch('guid') }
           expect(guids).to eq([user_provided_service_instance_1.guid])
 
-          get "v2/spaces/#{space.guid}/service_instances", {'q' => 'name:managed service 1;', 'return_user_provided_service_instances' => true}, headers_for(developer)
+          get "v2/spaces/#{space.guid}/service_instances", { 'q' => 'name:managed service 1;', 'return_user_provided_service_instances' => true }, headers_for(developer)
           guids = decoded_response.fetch('resources').map { |service| service.fetch('metadata').fetch('guid') }
           expect(guids).to eq([managed_service_instance_1.guid])
         end
@@ -201,14 +201,14 @@ module VCAP::CloudController
 
         describe 'when return_user_provided_service_instances is true' do
           it 'returns ManagedServiceInstances and UserProvidedServiceInstances' do
-            get "v2/spaces/#{space.guid}/service_instances", {return_user_provided_service_instances: true}, headers_for(developer)
+            get "v2/spaces/#{space.guid}/service_instances", { return_user_provided_service_instances: true }, headers_for(developer)
 
             guids = decoded_response.fetch('resources').map { |service| service.fetch('metadata').fetch('guid') }
             expect(guids).to include(user_provided_service_instance.guid, managed_service_instance.guid)
           end
 
           it 'includes service_plan_url for managed service instances' do
-            get "/v2/spaces/#{space.guid}/service_instances", {return_user_provided_service_instances: true}, headers_for(developer)
+            get "/v2/spaces/#{space.guid}/service_instances", { return_user_provided_service_instances: true }, headers_for(developer)
             service_instances_response = decoded_response.fetch('resources')
             managed_service_instance_response = service_instances_response.detect {|si|
               si.fetch('metadata').fetch('guid') == managed_service_instance.guid
@@ -219,7 +219,7 @@ module VCAP::CloudController
           end
 
           it 'includes the correct service binding url' do
-            get "/v2/spaces/#{space.guid}/service_instances", {return_user_provided_service_instances: true}, headers_for(developer)
+            get "/v2/spaces/#{space.guid}/service_instances", { return_user_provided_service_instances: true }, headers_for(developer)
             service_instances_response = decoded_response.fetch('resources')
             user_provided_service_instance_response = service_instances_response.detect {|si|
               si.fetch('metadata').fetch('guid') == user_provided_service_instance.guid
@@ -510,7 +510,7 @@ module VCAP::CloudController
       let(:organization) { Organization.make }
 
       it 'logs audit.space.create when creating a space' do
-        request_body = {organization_guid: organization.guid, name: 'space_name'}.to_json
+        request_body = { organization_guid: organization.guid, name: 'space_name' }.to_json
         post '/v2/spaces', request_body, json_headers(admin_headers)
 
         expect(last_response.status).to eq(201)
@@ -524,7 +524,7 @@ module VCAP::CloudController
 
       it 'logs audit.space.update when updating a space' do
         space = Space.make
-        request_body = {name: 'new_space_name'}.to_json
+        request_body = { name: 'new_space_name' }.to_json
         put "/v2/spaces/#{space.guid}", request_body, json_headers(admin_headers)
 
         expect(last_response.status).to eq(201)

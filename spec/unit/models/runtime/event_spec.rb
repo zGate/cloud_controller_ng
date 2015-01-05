@@ -13,7 +13,7 @@ module VCAP::CloudController
         actee_type: 'Scientologist',
         actee_name: 'John Travolta',
         timestamp: Time.new(1997, 6, 27),
-        metadata: {'popcorn_price' => '$(arm + leg)'},
+        metadata: { 'popcorn_price' => '$(arm + leg)' },
         space: space
     end
 
@@ -40,7 +40,7 @@ module VCAP::CloudController
     end
 
     it 'has a data bag' do
-      expect(event.metadata).to eq({'popcorn_price' => '$(arm + leg)'})
+      expect(event.metadata).to eq({ 'popcorn_price' => '$(arm + leg)' })
     end
 
     it 'has a space' do

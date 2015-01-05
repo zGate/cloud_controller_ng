@@ -184,7 +184,7 @@ module VCAP::CloudController
     end
 
     describe '#to_hash' do
-      let(:opts)      { {attrs: [:credentials]}}
+      let(:opts)      { { attrs: [:credentials] }}
       let(:developer) { make_developer_for_space(service_instance.space) }
       let(:auditor)   { make_auditor_for_space(service_instance.space) }
       let(:user)      { make_user_for_space(service_instance.space) }

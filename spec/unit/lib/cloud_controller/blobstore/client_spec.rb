@@ -64,7 +64,7 @@ module CloudController
 
       context 'a local blobstore' do
         subject(:client) do
-          Client.new({provider: 'Local'}, directory_key)
+          Client.new({ provider: 'Local' }, directory_key)
         end
 
         it 'is true if the provider is local' do
@@ -174,7 +174,7 @@ module CloudController
         describe 'returns a download uri' do
           context 'when the blob store is a local' do
             subject(:client) do
-              Client.new({provider: 'Local', local_root: '/tmp'}, directory_key)
+              Client.new({ provider: 'Local', local_root: '/tmp' }, directory_key)
             end
 
             before do

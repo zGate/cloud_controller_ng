@@ -32,7 +32,7 @@ module VCAP::CloudController
       where_columns[key] = changes[key][1]
       where_columns[:updated_at] = changes[:updated_at][1]
 
-      update_columns = { key => changes[key][0]}
+      update_columns = { key => changes[key][0] }
 
       count = App.dataset.where(where_columns).update(update_columns)      
       app.refresh

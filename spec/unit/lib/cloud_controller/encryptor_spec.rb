@@ -191,7 +191,7 @@ module VCAP::CloudController
 
       describe 'alternative storage column is specified' do
         let(:columns) { [:sekret, :sekret_salt, :encrypted_sekret] }
-        let(:encryption_args) { {column: :encrypted_sekret} }
+        let(:encryption_args) { { column: :encrypted_sekret } }
 
         it 'stores the encrypted value in that column' do
           expect(subject.encrypted_sekret).to eq nil

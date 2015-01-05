@@ -135,7 +135,7 @@ module Sinatra
     def self.init_varz
       ::VCAP::Component.varz.threadsafe!
 
-      requests = {outstanding: 0, completed: 0}
+      requests = { outstanding: 0, completed: 0 }
       http_status = {}
       [(100..101), (200..206), (300..307), (400..417), (500..505)].each do |r|
         r.each { |c| http_status[c] = 0 }

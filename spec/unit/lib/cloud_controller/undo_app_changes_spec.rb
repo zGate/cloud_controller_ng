@@ -12,7 +12,7 @@ module VCAP::CloudController
                       instances: instances,
                       )
     end
-    let(:changes) { {updated_at: [1, app.updated_at]} }
+    let(:changes) { { updated_at: [1, app.updated_at] } }
     let(:undo_changes) {UndoAppChanges.new(app)}
 
     describe '#undo' do

@@ -24,7 +24,7 @@ resource 'User Provided Service Instances', type: [:api, :legacy_api] do
         request_hash = {
           space_guid: space_guid,
           name: 'my-user-provided-instance',
-          credentials: {somekey: 'somevalue'},
+          credentials: { somekey: 'somevalue' },
           syslog_drain_url: 'syslog://example.com'
         }
 
@@ -40,12 +40,12 @@ resource 'User Provided Service Instances', type: [:api, :legacy_api] do
 
       example 'Updating a User Provided Service Instance' do
         request_hash = {
-          credentials: {somekey: 'somenewvalue'}
+          credentials: { somekey: 'somenewvalue' }
         }
 
         client.put "/v2/user_provided_service_instances/#{guid}", MultiJson.dump(request_hash, pretty: true), headers
         expect(status).to eq(201)
-        standard_entity_response parsed_response, :user_provided_service_instance, credentials: {'somekey' => 'somenewvalue'}
+        standard_entity_response parsed_response, :user_provided_service_instance, credentials: { 'somekey' => 'somenewvalue' }
       end
     end
   end

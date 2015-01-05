@@ -147,35 +147,35 @@ module VCAP::CloudController
       let(:service_broker) { ServiceBroker.make(name: 'FreeWidgets') }
 
       let!(:public_and_active) do
-        opts = { active: true, long_description: Sham.long_description, service_broker: service_broker}
+        opts = { active: true, long_description: Sham.long_description, service_broker: service_broker }
         Service.make(opts).tap do |svc|
           ServicePlan.make(public: true, active: true, service: svc)
         end
       end
 
       let!(:public_and_inactive) do
-        opts = { active: false, long_description: Sham.long_description, service_broker: service_broker}
+        opts = { active: false, long_description: Sham.long_description, service_broker: service_broker }
         Service.make(opts).tap do |svc|
           ServicePlan.make(public: true, active: false, service: svc)
         end
       end
 
       let!(:private_and_active) do
-        opts = { active: true, long_description: Sham.long_description, service_broker: service_broker}
+        opts = { active: true, long_description: Sham.long_description, service_broker: service_broker }
         Service.make(opts).tap do |svc|
           ServicePlan.make(public: false, active: true, service: svc)
         end
       end
 
       let!(:private_and_inactive) do
-        opts = { active: false, long_description: Sham.long_description, service_broker: service_broker}
+        opts = { active: false, long_description: Sham.long_description, service_broker: service_broker }
         Service.make(opts).tap do |svc|
           ServicePlan.make(public: false, active: false, service: svc)
         end
       end
 
       let!(:private_with_visibility_to_user) do
-        opts = { active: true, long_description: Sham.long_description, service_broker: service_broker}
+        opts = { active: true, long_description: Sham.long_description, service_broker: service_broker }
         Service.make(opts).tap do |svc|
           plan = ServicePlan.make(public: false, active: true, service: svc)
           ServicePlanVisibility.make(service_plan: plan, organization: organization)

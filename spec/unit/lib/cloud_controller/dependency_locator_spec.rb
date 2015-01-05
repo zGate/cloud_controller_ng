@@ -236,7 +236,7 @@ describe CloudController::DependencyLocator do
     it 'returns paginated collection renderer configured via config' do
       eager_loader = instance_of(VCAP::CloudController::RestController::SecureEagerLoader)
       serializer = instance_of(VCAP::CloudController::RestController::PreloadedObjectSerializer)
-      opts = {max_inline_relations_depth: 100_002}
+      opts = { max_inline_relations_depth: 100_002 }
 
       TestConfig.override(renderer: opts)
 

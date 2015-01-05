@@ -29,16 +29,16 @@ module VCAP::CloudController
 
         it 'updates the object on save' do
           staging = EnvironmentVariableGroup.staging
-          staging.environment_json = {'abc' => 'easy as 123'}
+          staging.environment_json = { 'abc' => 'easy as 123' }
           staging.save
 
-          expect(EnvironmentVariableGroup.staging.environment_json).to eq({'abc' => 'easy as 123'})
+          expect(EnvironmentVariableGroup.staging.environment_json).to eq({ 'abc' => 'easy as 123' })
         end
       end
 
       context 'when the corresponding db object exists' do
         it 'returns the existing object' do
-          EnvironmentVariableGroup.make(name: 'staging', environment_json: {'abc' => 123})
+          EnvironmentVariableGroup.make(name: 'staging', environment_json: { 'abc' => 123 })
           expect(EnvironmentVariableGroup.staging.environment_json).to eq('abc' => 123)
         end
       end
@@ -57,23 +57,23 @@ module VCAP::CloudController
 
         it 'updates the object on save' do
           running = EnvironmentVariableGroup.running
-          running.environment_json = {'abc' => 'easy as 123'}
+          running.environment_json = { 'abc' => 'easy as 123' }
           running.save
 
-          expect(EnvironmentVariableGroup.running.environment_json).to eq({'abc' => 'easy as 123'})
+          expect(EnvironmentVariableGroup.running.environment_json).to eq({ 'abc' => 'easy as 123' })
         end
       end
 
       context 'when the corresponding db object exists' do
         it 'returns the existing object' do
-          EnvironmentVariableGroup.make(name: 'running', environment_json: {'abc' => 123})
+          EnvironmentVariableGroup.make(name: 'running', environment_json: { 'abc' => 123 })
           expect(EnvironmentVariableGroup.running.environment_json).to eq('abc' => 123)
         end
       end
     end
 
     describe 'environment_json encryption' do
-      let(:long_env) { {'many_os' => 'o' * 10_000} }
+      let(:long_env) { { 'many_os' => 'o' * 10_000 } }
 
       it 'works with long serialized environments' do
         var_group = EnvironmentVariableGroup.make(environment_json: long_env)

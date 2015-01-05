@@ -122,7 +122,7 @@ module VCAP::Services::SSO
 
         context 'when some, but not all dashboard sso clients exist in UAA' do
           before do
-            allow(client_manager).to receive(:get_clients).and_return([{'client_id' => catalog_service.dashboard_client['id']}])
+            allow(client_manager).to receive(:get_clients).and_return([{ 'client_id' => catalog_service.dashboard_client['id'] }])
           end
 
           context 'when the broker has already claimed a requested UAA client' do
@@ -323,7 +323,7 @@ module VCAP::Services::SSO
           let(:unused_id) { 'no-longer-used' }
 
           before do
-            allow(client_manager).to receive(:get_clients).and_return([{'client_id' => unused_id}])
+            allow(client_manager).to receive(:get_clients).and_return([{ 'client_id' => unused_id }])
             allow(client_manager).to receive(:modify_transaction).and_raise(VCAP::Services::SSO::UAA::UaaError.new('error message'))
 
             VCAP::CloudController::ServiceDashboardClient.new(
@@ -446,8 +446,8 @@ module VCAP::Services::SSO
 
         allow(client_manager).to receive(:get_clients).and_return(
           [
-            {'client_id' => client_to_delete_1},
-            {'client_id' => client_to_delete_2}
+            { 'client_id' => client_to_delete_1 },
+            { 'client_id' => client_to_delete_2 }
           ])
       end
 

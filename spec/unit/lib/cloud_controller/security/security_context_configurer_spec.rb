@@ -9,7 +9,7 @@ module VCAP::CloudController
 
       describe '#configure' do
         let(:auth_token) { 'auth-token' }
-        let(:token_information) { {'user_id' => user_guid} }
+        let(:token_information) { { 'user_id' => user_guid } }
         let(:user_guid) { 'user-id-1' }
 
         before do
@@ -32,7 +32,7 @@ module VCAP::CloudController
         end
 
         context 'when a user_id is present' do
-          let(:token_information) { {'user_id' => user_guid, 'client_id' => 'foobar'} }
+          let(:token_information) { { 'user_id' => user_guid, 'client_id' => 'foobar' } }
 
           context 'when the specified user already exists' do
             let!(:user) { User.make(guid: user_guid) }
@@ -67,7 +67,7 @@ module VCAP::CloudController
         end
 
         context 'when only a client_id is present' do
-          let(:token_information) { {'client_id' => user_guid} }
+          let(:token_information) { { 'client_id' => user_guid } }
           let!(:user) { User.make(guid: user_guid) }
 
           it 'uses the client_id to set the user_id' do

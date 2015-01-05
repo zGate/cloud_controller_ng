@@ -80,7 +80,7 @@ module VCAP::CloudController
         # try to pretent otherwise.
         tiers: {
           'free' => {
-            'options' => { },
+            'options' => {},
             'order' => 1
           }
         }

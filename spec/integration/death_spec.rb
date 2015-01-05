@@ -50,7 +50,7 @@ describe 'Cloud controller', type: :integration do
       expected = {
         'host' => '127.0.0.1',
         'port' => 8181,
-        'tags' => {'component' => 'CloudController'},
+        'tags' => { 'component' => 'CloudController' },
         'uris' => ['api2.vcap.me'],
         'private_instance_id' => nil,
       }

@@ -30,7 +30,7 @@ module VCAP::CloudController
 
           response['instance_heartbeats'].each_with_object([]) do |instance, result|
             if instance['state'] == 'CRASHED'
-              result << {'instance' => instance['instance'], 'since' => instance['state_timestamp']}
+              result << { 'instance' => instance['instance'], 'since' => instance['state_timestamp'] }
             end
           end
         end
@@ -41,7 +41,7 @@ module VCAP::CloudController
 
           response['crash_counts'].each_with_object([]) do |crash_count, result|
             if crash_count['crash_count'] >= @config[:flapping_crash_count_threshold]
-              result << {'index' => crash_count['instance_index'], 'since' => crash_count['created_at']}
+              result << { 'index' => crash_count['instance_index'], 'since' => crash_count['created_at'] }
             end
           end
         end

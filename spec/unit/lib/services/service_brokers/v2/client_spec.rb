@@ -35,7 +35,7 @@ module VCAP::Services::ServiceBrokers::V2
 
     context 'without a description in the body' do
       let(:response_body) do
-        {'foo' => 'bar'}.to_json
+        { 'foo' => 'bar' }.to_json
       end
       it 'generates the correct hash' do
         exception = described_class.new(uri, method, response)
@@ -49,7 +49,7 @@ module VCAP::Services::ServiceBrokers::V2
             'uri' => uri,
             'method' => 'PUT'
           },
-          'source' => {'foo' => 'bar'}
+          'source' => { 'foo' => 'bar' }
         })
       end
 
@@ -181,7 +181,7 @@ module VCAP::Services::ServiceBrokers::V2
             expect(e).to be_a(ServiceBrokerBadResponse)
             error_hash = e.to_h
             expect(error_hash.fetch('description')).to eq("The service broker API returned an error from #{service_broker.broker_url}#{path}: 500 Internal Server Error")
-            expect(error_hash.fetch('source')).to include({'foo' => 'bar'})
+            expect(error_hash.fetch('source')).to include({ 'foo' => 'bar' })
           }
         end
       end
@@ -602,7 +602,7 @@ module VCAP::Services::ServiceBrokers::V2
 
         context 'when the broker returns a 404' do
           let(:status_code) { '404' }
-          let(:body) { { description: 'service instance not found'}.to_json }
+          let(:body) { { description: 'service instance not found' }.to_json }
           it 'raises a ServiceBrokerBadRequest error' do
             expect{ client.update_service_plan(instance, new_plan) }.to raise_error(
               ServiceBrokerBadResponse, /service instance not found/
@@ -688,7 +688,7 @@ module VCAP::Services::ServiceBrokers::V2
 
         let(:response_data) do
           {
-              'credentials' => { },
+              'credentials' => {},
               'syslog_drain_url' => 'syslog://example.com:514'
           }
         end
@@ -704,7 +704,7 @@ module VCAP::Services::ServiceBrokers::V2
 
         let(:response_data) do
           {
-              'credentials' => { }
+              'credentials' => {}
           }
         end
 

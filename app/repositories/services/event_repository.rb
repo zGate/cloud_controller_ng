@@ -83,7 +83,7 @@ module VCAP::CloudController
             actee_type: 'service_instance',
             actee_name: service_instance.name,
           }
-          space_data = {space: service_instance.space}
+          space_data = { space: service_instance.space }
           create_event("audit.service_instance.#{type}", user_actor, actee, { request: params }, space_data)
         end
 
@@ -116,7 +116,7 @@ module VCAP::CloudController
             actee_type: 'service_binding',
             actee_name: '',
           }
-          space_data = {space: service_binding.space}
+          space_data = { space: service_binding.space }
           create_event("audit.service_binding.#{type}", user_actor, actee, metadata, space_data)
         end
 

@@ -69,7 +69,7 @@ module VCAP::CloudController
             'host' => @route2.host,
             'domain' => {
               'guid' => @route2.domain.guid,
-              'name' => @route2.domain.name}
+              'name' => @route2.domain.name }
           }])
         end
 

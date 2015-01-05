@@ -8,7 +8,7 @@ module VCAP::CloudController
           label: 'foobar-1.0',
           url: 'https://www.google.com',
           supported_versions: ['1.0', '2.0'],
-          version_aliases: {'current' => '2.0'},
+          version_aliases: { 'current' => '2.0' },
           description: 'the foobar svc',
         }
         VCAP::Services::Api::ServiceOfferingRequest.new(defaults.merge(attrs))
@@ -32,7 +32,7 @@ module VCAP::CloudController
             label: 'foo-bar-1.0',
             url: 'https://www.google.com',
             supported_versions: ['1.0', '2.0'],
-            version_aliases: {'current' => '2.0'},
+            version_aliases: { 'current' => '2.0' },
             description: 'the foobar svc')
         end
 
@@ -118,12 +118,12 @@ module VCAP::CloudController
         end
 
         context "using the 'plan_details' key" do
-          let(:just_free_plan) { build_offering(plan_details: [{'name' => 'free', 'free' => true}]) }
+          let(:just_free_plan) { build_offering(plan_details: [{ 'name' => 'free', 'free' => true }]) }
           let(:both_plans) {
             build_offering(
               plan_details: [
-                {'name' => 'free',    'free' => true},
-                {'name' => 'nonfree', 'free' => false},
+                { 'name' => 'free',    'free' => true },
+                { 'name' => 'nonfree', 'free' => false },
               ]
             )
           }
@@ -156,7 +156,7 @@ module VCAP::CloudController
             post path, just_free_plan.encode, json_headers(auth_header)
             expect(last_response.status).to eq(200)
 
-            offer2 = build_offering(plan_details: [{'name' => 'free', 'free' => false, 'description' => 'tetris'}])
+            offer2 = build_offering(plan_details: [{ 'name' => 'free', 'free' => false, 'description' => 'tetris' }])
             post path, offer2.encode, json_headers(auth_header)
             expect(last_response.status).to eq(200)
 
@@ -168,7 +168,7 @@ module VCAP::CloudController
 
           it 'prevents the request from setting the plan guid' do
             offer = build_offering(
-              plan_details:[{'name' => 'plan name', 'free' => true, 'guid' => 'myguid'}]
+              plan_details:[{ 'name' => 'plan name', 'free' => true, 'guid' => 'myguid' }]
             )
             post path, offer.encode, json_headers(auth_header)
             expect(last_response.status).to eq(200)
@@ -183,7 +183,7 @@ module VCAP::CloudController
           it_behaves_like 'offering containing service plans' do
             let(:just_free_plan) {
               build_offering(
-                plan_details: [{'name' => 'free', 'free' => true}],
+                plan_details: [{ 'name' => 'free', 'free' => true }],
                 plans: %w[free],
               )
             }
@@ -191,8 +191,8 @@ module VCAP::CloudController
             let(:both_plans) {
               build_offering(
                 plan_details: [
-                  {'name' => 'free',    'free' => true},
-                  {'name' => 'nonfree', 'free' => false},
+                  { 'name' => 'free',    'free' => true },
+                  { 'name' => 'nonfree', 'free' => false },
                 ],
                 plans: %w[free nonfree],
               )
@@ -242,7 +242,7 @@ module VCAP::CloudController
           )
         end
 
-        let(:auth_header) { {'HTTP_X_VCAP_SERVICE_TOKEN' => @svc1.service_auth_token.token} }
+        let(:auth_header) { { 'HTTP_X_VCAP_SERVICE_TOKEN' => @svc1.service_auth_token.token } }
 
         it 'should return not found for unknown label services' do
           get 'services/v1/offerings/xxx', {}, auth_header
@@ -273,7 +273,7 @@ module VCAP::CloudController
         end
 
         it 'should return the specific service offering which has specific provider' do
-          get 'services/v1/offerings/foobar-version/test', {}, {'HTTP_X_VCAP_SERVICE_TOKEN' => @svc2.service_auth_token.token}
+          get 'services/v1/offerings/foobar-version/test', {}, { 'HTTP_X_VCAP_SERVICE_TOKEN' => @svc2.service_auth_token.token }
           expect(last_response.status).to eq(200)
 
           resp = MultiJson.load(last_response.body)
@@ -340,7 +340,7 @@ module VCAP::CloudController
         end
 
         it 'should return provisioned and bound handles' do
-          get '/services/v1/offerings/foobar-version/handles', {}, {'HTTP_X_VCAP_SERVICE_TOKEN' => svc1.service_auth_token.token}
+          get '/services/v1/offerings/foobar-version/handles', {}, { 'HTTP_X_VCAP_SERVICE_TOKEN' => svc1.service_auth_token.token }
           expect(last_response.status).to eq(200)
 
           handles = JSON.parse(last_response.body)['handles']
@@ -350,7 +350,7 @@ module VCAP::CloudController
           expect(handles[1]['service_id']).to eq('bind1')
           expect(handles[1]['configuration']).to eq({ 'config' => 'bind1' })
 
-          get '/services/v1/offerings/foobar-version/test/handles', {}, {'HTTP_X_VCAP_SERVICE_TOKEN' => svc2.service_auth_token.token }
+          get '/services/v1/offerings/foobar-version/test/handles', {}, { 'HTTP_X_VCAP_SERVICE_TOKEN' => svc2.service_auth_token.token }
           expect(last_response.status).to eq(200)
 
           handles = JSON.parse(last_response.body)['handles']
@@ -365,7 +365,7 @@ module VCAP::CloudController
       describe 'POST services/v1/offerings/:label_and_version(/:provider)/handles/:id' do
         let!(:svc) { svc = Service.make(label: 'foobar', provider: 'core') }
 
-        before { @auth_header = {'HTTP_X_VCAP_SERVICE_TOKEN' => svc.service_auth_token.token} }
+        before { @auth_header = { 'HTTP_X_VCAP_SERVICE_TOKEN' => svc.service_auth_token.token } }
 
         describe 'with default provider' do
           before :each do
@@ -462,7 +462,7 @@ module VCAP::CloudController
       describe 'DELETE /services/v1/offerings/:label_and_version/(:provider)' do
         let!(:service_plan_core) { ServicePlan.make(service: Service.make(label: 'foobar', provider: 'core')) }
         let!(:service_plan_test) { ServicePlan.make(service: Service.make(label: 'foobar', provider: 'test')) }
-        let(:auth_header) { {'HTTP_X_VCAP_SERVICE_TOKEN' => service_plan_core.service.service_auth_token.token} }
+        let(:auth_header) { { 'HTTP_X_VCAP_SERVICE_TOKEN' => service_plan_core.service.service_auth_token.token } }
 
         it 'should return not found for unknown label services' do
           delete '/services/v1/offerings/xxx', {}, auth_header
@@ -490,7 +490,7 @@ module VCAP::CloudController
         end
 
         it 'should delete existing offerings which has specific provider' do
-          delete '/services/v1/offerings/foobar-version/test', {}, {'HTTP_X_VCAP_SERVICE_TOKEN' => service_plan_test.service.service_auth_token.token}
+          delete '/services/v1/offerings/foobar-version/test', {}, { 'HTTP_X_VCAP_SERVICE_TOKEN' => service_plan_test.service.service_auth_token.token }
           expect(last_response.status).to eq(200)
 
           svc = Service[label: 'foobar', provider: 'test']

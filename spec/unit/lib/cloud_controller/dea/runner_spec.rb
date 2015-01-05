@@ -36,7 +36,7 @@ module VCAP::CloudController
         end
 
         context 'when the app now desires more instances than it used to' do
-          let(:previous_changes) { {instances: [10, 15]} }
+          let(:previous_changes) { { instances: [10, 15] } }
 
           it 'increases the number instances' do
             expect(Client).to have_received(:change_running_instances).with(app, 5)
@@ -45,7 +45,7 @@ module VCAP::CloudController
 
         context 'when the app now desires fewer instances than it used to' do
           let(:previous_changes) do
-            {instances: [10, 5]}
+            { instances: [10, 5] }
           end
 
           it 'reduces the number instances' do
@@ -66,7 +66,7 @@ module VCAP::CloudController
           it 'only starts the number of additional required' do
             expect(Client).to receive(:start).with(app, instances_to_start: 5)
 
-            staging_result = {started_instances: 5}
+            staging_result = { started_instances: 5 }
             runner.start(staging_result)
           end
         end
@@ -85,7 +85,7 @@ module VCAP::CloudController
 
         it 'notifies the DEA to stop the app via NATS' do
           expect(AppStopper).to receive(:new).and_return(app_stopper)
-          expect(app_stopper).to receive(:publish_stop).with({droplet: app.guid})
+          expect(app_stopper).to receive(:publish_stop).with({ droplet: app.guid })
 
           runner.stop
         end

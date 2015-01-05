@@ -89,7 +89,7 @@ resource 'Apps', type: [:api, :legacy_api] do
       include_context 'guid_parameter'
       include_context 'fields', required: false
       example 'Updating an App' do
-        new_attributes = {name: 'new_name'}
+        new_attributes = { name: 'new_name' }
 
         client.put "/v2/apps/#{guid}", MultiJson.dump(new_attributes, pretty: true), headers
         expect(status).to eq(201)
@@ -131,7 +131,7 @@ resource 'Apps', type: [:api, :legacy_api] do
 
   get '/v2/apps/:guid/env' do
     include_context 'guid_parameter'
-    let(:app_obj) { VCAP::CloudController::AppFactory.make(detected_buildpack: 'buildpack-name', environment_json: {env_var: 'env_val'})}
+    let(:app_obj) { VCAP::CloudController::AppFactory.make(detected_buildpack: 'buildpack-name', environment_json: { env_var: 'env_val' })}
 
     before do
       VCAP::CloudController::EnvironmentVariableGroup.make name: :staging, environment_json: { STAGING_ENV: 'staging_value' }

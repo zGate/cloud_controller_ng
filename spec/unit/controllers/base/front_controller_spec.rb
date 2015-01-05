@@ -21,7 +21,7 @@ module VCAP::CloudController
 
       context 'When the Accept-Language header is set' do
         it 'sets the locale based on the Accept-Language header' do
-          get '/test_front_endpoint', '', {'HTTP_ACCEPT_LANGUAGE' => 'gotham_City'}
+          get '/test_front_endpoint', '', { 'HTTP_ACCEPT_LANGUAGE' => 'gotham_City' }
           expect(I18n.locale).to eq(:gotham_City)
         end
       end
@@ -227,7 +227,7 @@ module VCAP::CloudController
       let(:config) do
         {
           quota_definitions: [],
-          uaa: {resource_id: 'cloud_controller'}
+          uaa: { resource_id: 'cloud_controller' }
         }
       end
       let(:token_decoder) do
@@ -241,7 +241,7 @@ module VCAP::CloudController
       end
 
       def make_request
-        get '/test_front_endpoint', '', {'HTTP_AUTHORIZATION' => 'bearer token'}
+        get '/test_front_endpoint', '', { 'HTTP_AUTHORIZATION' => 'bearer token' }
       end
 
       context 'when user_id is present' do

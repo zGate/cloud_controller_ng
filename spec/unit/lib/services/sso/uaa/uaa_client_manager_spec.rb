@@ -108,12 +108,12 @@ module VCAP::Services::SSO::UAA
 
         expect(a_request(:post, tx_url).with(
           body: expected_json_body,
-          headers: {'Authorization' => auth_header})).to have_been_made
+          headers: { 'Authorization' => auth_header })).to have_been_made
       end
 
       it 'logs a sanitized version of the request' do
         changeset = [
-          double('update_command', uaa_command: {client_id: 'id', client_secret: 'secret'}, client_attrs: {}),
+          double('update_command', uaa_command: { client_id: 'id', client_secret: 'secret' }, client_attrs: {}),
         ]
 
         logger = double('logger')
@@ -159,7 +159,7 @@ module VCAP::Services::SSO::UAA
       context 'when the CF router returns a 404' do
         before do
           stub_request(:post, tx_url).to_return(
-            status: 404, headers: {'X-Cf-Routererror' => 'unknown_route'})
+            status: 404, headers: { 'X-Cf-Routererror' => 'unknown_route' })
         end
 
         it 'raises a UaaUnavailable error' do
@@ -353,7 +353,7 @@ module VCAP::Services::SSO::UAA
           it 'makes a request to UAA with minimal scope' do
             expect(a_request(:post, tx_url).with(
               body: expected_json_body,
-              headers: {'Authorization' => auth_header})).to have_been_made
+              headers: { 'Authorization' => auth_header })).to have_been_made
           end
         end
 
@@ -364,7 +364,7 @@ module VCAP::Services::SSO::UAA
           it 'makes a request to UAA with extended scope' do
             expect(a_request(:post, tx_url).with(
               body: expected_json_body,
-              headers: {'Authorization' => auth_header})).to have_been_made
+              headers: { 'Authorization' => auth_header })).to have_been_made
           end
         end
 
@@ -375,7 +375,7 @@ module VCAP::Services::SSO::UAA
           it 'makes a request to UAA with extended scope' do
             expect(a_request(:post, tx_url).with(
               body: expected_json_body,
-              headers: {'Authorization' => auth_header})).to have_been_made
+              headers: { 'Authorization' => auth_header })).to have_been_made
           end
         end
       end

@@ -159,7 +159,7 @@ module VCAP::CloudController
       end
 
       describe 'events' do
-        let(:update_hash) { {instances: 2, foo: 'foo_value'} }
+        let(:update_hash) { { instances: 2, foo: 'foo_value' } }
 
         context 'when the update succeeds' do
           it 'records app update with whitelisted attributes' do
@@ -170,7 +170,7 @@ module VCAP::CloudController
               expect(recorded_app.instances).to eq(2)
               expect(user).to eq(admin_user)
               expect(user_name).to eq(SecurityContext.current_user_email)
-              expect(attributes).to eq({'instances' => 2})
+              expect(attributes).to eq({ 'instances' => 2 })
             end
 
             update_app
@@ -268,7 +268,7 @@ module VCAP::CloudController
 
         context 'when the user is not a space developer' do
           it 'returns a JSON payload indicating they do not have permission to manage this instance' do
-            get "/v2/apps/#{app_obj.guid}/env", '{}', json_headers(headers_for(auditor, {scopes: ['cloud_controller.read']}))
+            get "/v2/apps/#{app_obj.guid}/env", '{}', json_headers(headers_for(auditor, { scopes: ['cloud_controller.read'] }))
             expect(last_response.status).to eql(403)
             expect(JSON.parse(last_response.body)['description']).to eql('You are not authorized to perform the requested action')
           end
@@ -276,7 +276,7 @@ module VCAP::CloudController
 
         context 'when the user has only the cloud_controller.read scope' do
           it 'returns successfully' do
-            get "/v2/apps/#{app_obj.guid}/env", '{}', json_headers(headers_for(developer, {scopes: ['cloud_controller.read']}))
+            get "/v2/apps/#{app_obj.guid}/env", '{}', json_headers(headers_for(developer, { scopes: ['cloud_controller.read'] }))
             expect(last_response.status).to eql(200)
             parsed_body = parse(last_response.body)
             expect(parsed_body).to have_key('staging_env_json')
@@ -290,7 +290,7 @@ module VCAP::CloudController
         it 'returns application environment with VCAP_APPLICATION' do
           expected_vcap_application = MultiJson.load(MultiJson.dump(app_obj.vcap_application))
 
-          get "/v2/apps/#{app_obj.guid}/env", '{}', json_headers(headers_for(developer, {scopes: ['cloud_controller.read']}))
+          get "/v2/apps/#{app_obj.guid}/env", '{}', json_headers(headers_for(developer, { scopes: ['cloud_controller.read'] }))
           expect(last_response.status).to eql(200)
 
           expect(decoded_response['application_env_json']).to have_key('VCAP_APPLICATION')
@@ -302,7 +302,7 @@ module VCAP::CloudController
           let!(:service_binding) { ServiceBinding.make(app: app_obj, service_instance: service_instance) }
 
           it 'returns system environment with VCAP_SERVICES'do
-            get "/v2/apps/#{app_obj.guid}/env", '{}', json_headers(headers_for(developer, {scopes: ['cloud_controller.read']}))
+            get "/v2/apps/#{app_obj.guid}/env", '{}', json_headers(headers_for(developer, { scopes: ['cloud_controller.read'] }))
             expect(last_response.status).to eql(200)
 
             expect(decoded_response['system_env_json'].size).to eq(1)
@@ -316,7 +316,7 @@ module VCAP::CloudController
           end
 
           it 'returns staging_env_json with those variables'do
-            get "/v2/apps/#{app_obj.guid}/env", '{}', json_headers(headers_for(developer, {scopes: ['cloud_controller.read']}))
+            get "/v2/apps/#{app_obj.guid}/env", '{}', json_headers(headers_for(developer, { scopes: ['cloud_controller.read'] }))
             expect(last_response.status).to eql(200)
 
             expect(decoded_response['staging_env_json'].size).to eq(1)
@@ -331,7 +331,7 @@ module VCAP::CloudController
           end
 
           it 'returns staging_env_json with those variables'do
-            get "/v2/apps/#{app_obj.guid}/env", '{}', json_headers(headers_for(developer, {scopes: ['cloud_controller.read']}))
+            get "/v2/apps/#{app_obj.guid}/env", '{}', json_headers(headers_for(developer, { scopes: ['cloud_controller.read'] }))
             expect(last_response.status).to eql(200)
 
             expect(decoded_response['running_env_json'].size).to eq(1)
@@ -342,7 +342,7 @@ module VCAP::CloudController
 
         context 'when the user does not have the necessary scope' do
           it 'returns InvalidAuthToken' do
-            get "/v2/apps/#{app_obj.guid}/env", {}, json_headers(headers_for(developer, {scopes: ['cloud_controller.write']}))
+            get "/v2/apps/#{app_obj.guid}/env", {}, json_headers(headers_for(developer, { scopes: ['cloud_controller.write'] }))
             expect(last_response.status).to eql(403)
             expect(JSON.parse(last_response.body)['description']).to eql('Your token lacks the necessary scopes to access this resource.')
           end
@@ -350,7 +350,7 @@ module VCAP::CloudController
       end
 
       context 'when the user reads environment variables from the app endpoint using inline-relations-depth=2' do
-        let!(:test_environment_json) { {'environ_key' => 'value' } }
+        let!(:test_environment_json) { { 'environ_key' => 'value' } }
         let!(:app_obj) { AppFactory.make(detected_buildpack: 'buildpack-name',
                                          space:              space,
                                          environment_json:   test_environment_json) }
@@ -359,7 +359,7 @@ module VCAP::CloudController
 
         context 'when the user is a space developer' do
           it 'returns non-redacted environment values' do
-            get '/v2/apps?inline-relations-depth=2', {}, json_headers(headers_for(developer, {scopes: ['cloud_controller.read']}))
+            get '/v2/apps?inline-relations-depth=2', {}, json_headers(headers_for(developer, { scopes: ['cloud_controller.read'] }))
             expect(last_response.status).to eql(200)
 
             expect(decoded_response['resources'].first['entity']['environment_json']).to eq(test_environment_json)
@@ -369,7 +369,7 @@ module VCAP::CloudController
 
         context 'when the user is not a space developer' do
           it 'returns redacted values' do
-            get '/v2/apps?inline-relations-depth=2', {}, json_headers(headers_for(auditor, {scopes: ['cloud_controller.read']}))
+            get '/v2/apps?inline-relations-depth=2', {}, json_headers(headers_for(auditor, { scopes: ['cloud_controller.read'] }))
             expect(last_response.status).to eql(200)
 
             expect(decoded_response['resources'].first['entity']['environment_json']).to eq({ 'redacted_message' => '[PRIVATE DATA HIDDEN]' })
@@ -475,7 +475,7 @@ module VCAP::CloudController
           expect(app.uris).to include('app.jesse.cloud')
         end
 
-        put @app_url, MultiJson.dump({route_guids: [route.guid]}), json_headers(@headers_for_user)
+        put @app_url, MultiJson.dump({ route_guids: [route.guid] }), json_headers(@headers_for_user)
         expect(last_response.status).to eq(201)
       end
 
@@ -499,7 +499,7 @@ module VCAP::CloudController
           expect(app.uris).to include('foo.jesse.cloud')
         end
 
-        put @app_url, MultiJson.dump({route_guids: [route.guid]}), json_headers(@headers_for_user)
+        put @app_url, MultiJson.dump({ route_guids: [route.guid] }), json_headers(@headers_for_user)
 
         expect(last_response.status).to eq(201)
       end

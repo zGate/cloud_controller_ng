@@ -70,7 +70,7 @@ module VCAP::CloudController
               Steno.logger('cc.seeds').warn('seeds.system-domain.collision', organization: domain.owning_organization)
             end
           else
-            PrivateDomain.create({owning_organization: system_org, name: config[:system_domain]})
+            PrivateDomain.create({ owning_organization: system_org, name: config[:system_domain] })
           end
         end
       end

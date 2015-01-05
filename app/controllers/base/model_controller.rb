@@ -32,7 +32,7 @@ module VCAP::CloudController::RestController
 
       [
         HTTP::CREATED,
-        {'Location' => "#{self.class.path}/#{obj.guid}"},
+        { 'Location' => "#{self.class.path}/#{obj.guid}" },
         object_renderer.render_json(self.class, obj, @opts)
       ]
     end
@@ -119,7 +119,7 @@ module VCAP::CloudController::RestController
 
       associated_path = "#{self.class.url_for_guid(guid)}/#{name}"
 
-      validate_access(:index, associated_model, {related_obj: obj, related_model: model})
+      validate_access(:index, associated_model, { related_obj: obj, related_model: model })
 
       filtered_dataset =
       Query.filtered_dataset_from_query_params(
@@ -181,7 +181,7 @@ module VCAP::CloudController::RestController
 
       singular_name = "#{name.to_s.singularize}"
 
-      @request_attrs = {singular_name => other_guid}
+      @request_attrs = { singular_name => other_guid }
 
       obj = find_guid(guid)
 

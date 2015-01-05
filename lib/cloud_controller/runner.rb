@@ -221,7 +221,7 @@ module VCAP::CloudController
           host: @config[:external_host],
           port: @config[:external_port],
           uri: @config[:external_domain],
-          tags: {component: 'CloudController'},
+          tags: { component: 'CloudController' },
           index: @config[:index],
       )
     end

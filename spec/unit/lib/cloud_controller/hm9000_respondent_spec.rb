@@ -62,7 +62,7 @@ module VCAP::CloudController
       context 'when the message is missing fields' do
         it 'should not do anything' do
           expect(dea_client).not_to receive(:start_instance_at_index)
-          subject.process_hm9000_stop({'droplet' => app.guid, 'instance_index' => 2})
+          subject.process_hm9000_stop({ 'droplet' => app.guid, 'instance_index' => 2 })
         end
       end
 
@@ -86,7 +86,7 @@ module VCAP::CloudController
             let(:start_instance_index) {1}
             context 'if app is in STARTED state' do
               context 'and the DIEGO_RUN_BETA flag is set' do
-                let(:environment) { {'DIEGO_RUN_BETA' => 'true'} }
+                let(:environment) { { 'DIEGO_RUN_BETA' => 'true' } }
 
                 it 'should not send the start message' do
                   expect(dea_client).not_to receive(:start_instance_at_index)
@@ -175,7 +175,7 @@ module VCAP::CloudController
       context 'when the message is missing fields' do
         it 'should not do anything' do
           expect(dea_client).not_to receive(:stop_instances)
-          subject.process_hm9000_stop({'droplet' => app.guid, 'instance_guid' => 'abc'})
+          subject.process_hm9000_stop({ 'droplet' => app.guid, 'instance_guid' => 'abc' })
         end
       end
 
@@ -280,7 +280,7 @@ module VCAP::CloudController
             end
 
             context 'and the DIEGO_RUN_BETA flag is set ' do
-              let(:environment) { {'DIEGO_RUN_BETA' => 'true'} }
+              let(:environment) { { 'DIEGO_RUN_BETA' => 'true' } }
 
               context 'and diego is disabled' do
                 before do

@@ -348,7 +348,7 @@ describe 'Service Broker' do
         # change client secret - should post to /clients/<client-id>/secret
         service_3[:dashboard_client][:secret] = 'SUPERsecret'
         # add client
-        service_4[:dashboard_client] = {id: 'client-4', secret: '1337', redirect_uri: 'http://example.com/client-4'}
+        service_4[:dashboard_client] = { id: 'client-4', secret: '1337', redirect_uri: 'http://example.com/client-4' }
         # change property other than ID or secret
         service_5[:dashboard_client][:redirect_uri] = 'http://nowhere.net'
 
@@ -357,7 +357,7 @@ describe 'Service Broker' do
         stub_request(:post, %r{http://localhost:8080/uaa/oauth/clients/tx/modify}).
           to_return(
           status: 200,
-          headers: {'content-type' => 'application/json'},
+          headers: { 'content-type' => 'application/json' },
           body: ''
         )
       end
@@ -616,7 +616,7 @@ HEREDOC
         stub_request(:post, %r{http://localhost:8080/uaa/oauth/clients/tx/modify}).
           to_return(
           status: 200,
-          headers: {'content-type' => 'application/json'},
+          headers: { 'content-type' => 'application/json' },
           body: ''
         )
       end

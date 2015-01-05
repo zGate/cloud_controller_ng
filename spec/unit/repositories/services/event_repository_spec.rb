@@ -32,7 +32,7 @@ module VCAP::CloudController
           expect(event.actee_name).to eq('')
           expect(event.space_guid).to be_empty
           expect(event.organization_guid).to eq(service_plan_visibility.organization.guid)
-          expect(event.metadata).to eq({'request' => params })
+          expect(event.metadata).to eq({ 'request' => params })
         end
       end
 
@@ -64,7 +64,7 @@ module VCAP::CloudController
 
         describe 'the metadata field' do
           it 'only includes param keys that have values' do
-            repository.record_broker_event(:create, service_broker, { name: 'new-name'} )
+            repository.record_broker_event(:create, service_broker, { name: 'new-name' } )
             metadata = Event.first.metadata
             expect(metadata['request']).to include('name' => 'new-name')
             expect(metadata['request']).not_to have_key('broker_url')
@@ -73,7 +73,7 @@ module VCAP::CloudController
           end
 
           it 'redacts the auth_password field' do
-            repository.record_broker_event(:create, service_broker, { auth_password: 'new-passord'} )
+            repository.record_broker_event(:create, service_broker, { auth_password: 'new-passord' } )
 
             metadata = Event.first.metadata
             expect(metadata['request']).to include('auth_password' => '[REDACTED]')
@@ -83,7 +83,7 @@ module VCAP::CloudController
             it 'saves an empty request' do
               repository.record_broker_event(:create, service_broker, {})
 
-              expect(Event.first.metadata).to eq({'request' => {}})
+              expect(Event.first.metadata).to eq({ 'request' => {} })
             end
           end
         end
@@ -184,7 +184,7 @@ module VCAP::CloudController
             metadata = VCAP::CloudController::Event.first(type: 'audit.service.update').metadata
             expect(metadata.keys.length).to eq 2
             expect(metadata['plan_updateable']).to eq true
-            expect(metadata['extra']).to eq({'extra' => 'data'}.to_json)
+            expect(metadata['extra']).to eq({ 'extra' => 'data' }.to_json)
           end
         end
       end
@@ -275,7 +275,7 @@ module VCAP::CloudController
 
             metadata = VCAP::CloudController::Event.first(type: 'audit.service_plan.update').metadata
             expect(metadata.keys.length).to eq 1
-            expect(metadata['extra']).to eq({'extra' => 'data'}.to_json)
+            expect(metadata['extra']).to eq({ 'extra' => 'data' }.to_json)
           end
         end
       end
@@ -488,7 +488,7 @@ module VCAP::CloudController
             repository.record_service_binding_event(:delete, service_binding)
             event = Event.first(type: 'audit.service_binding.delete')
 
-            expect(event.metadata).to eq({'request' => {}})
+            expect(event.metadata).to eq({ 'request' => {} })
           end
         end
       end

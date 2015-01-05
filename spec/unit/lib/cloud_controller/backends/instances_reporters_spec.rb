@@ -17,7 +17,7 @@ module VCAP::CloudController
 
     let(:dea_app) { AppFactory.make(package_hash: 'abc', package_state: 'STAGED') }
     let(:diego_app) { AppFactory.make(package_hash: 'abc', package_state: 'STAGED', 
-      environment_json: {'DIEGO_RUN_BETA' => 'true'}) }
+      environment_json: { 'DIEGO_RUN_BETA' => 'true' }) }
 
     let(:reporter) {double(:Reporter)}
     let(:reporter2) {double(:Reporter)}
@@ -72,11 +72,11 @@ module VCAP::CloudController
       context 'when diego running is enabled' do
         it 'delegates to the proper reporter' do
           expect(reporter).to receive(:number_of_starting_and_running_instances_for_apps).
-            with([dea_app]).and_return({1 => {}})
+            with([dea_app]).and_return({ 1 => {} })
           expect(reporter2).to receive(:number_of_starting_and_running_instances_for_apps).
-            with([diego_app]).and_return({2 => {}})
+            with([diego_app]).and_return({ 2 => {} })
           expect(instances_reporters.number_of_starting_and_running_instances_for_apps(apps)).
-            to eq({1 => {}, 2 => {}})
+            to eq({ 1 => {}, 2 => {} })
         end
       end
 
@@ -87,11 +87,11 @@ module VCAP::CloudController
 
         it 'delegates to the proper reporter' do
           expect(reporter).to receive(:number_of_starting_and_running_instances_for_apps).
-            with([dea_app, diego_app]).and_return({1 => {}, 3 => {}})
+            with([dea_app, diego_app]).and_return({ 1 => {}, 3 => {} })
           expect(reporter2).to receive(:number_of_starting_and_running_instances_for_apps).
             with([]).and_return({})
           expect(instances_reporters.number_of_starting_and_running_instances_for_apps(apps)).
-            to eq({1 => {}, 3 => {}})
+            to eq({ 1 => {}, 3 => {} })
         end
       end
     end

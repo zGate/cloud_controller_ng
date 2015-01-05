@@ -37,7 +37,7 @@ module IntegrationSetup
     end
 
     @cc_pids ||= []
-    @cc_pids << run_cmd("bin/cloud_controller -s -c #{config_file}", opts.merge(env: {'DB_CONNECTION_STRING' => db_connection_string}.merge(opts[:env] || {})))
+    @cc_pids << run_cmd("bin/cloud_controller -s -c #{config_file}", opts.merge(env: { 'DB_CONNECTION_STRING' => db_connection_string }.merge(opts[:env] || {})))
 
     info_endpoint = "http://localhost:#{config["external_port"]}/info"
 

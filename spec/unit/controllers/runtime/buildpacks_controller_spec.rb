@@ -9,25 +9,25 @@ module VCAP::CloudController
     describe 'Attributes' do
       it do
         expect(described_class).to have_creatable_attributes({
-          name: {type: 'string', required: true},
-          position: {type: 'integer', default: 0},
-          enabled: {type: 'bool', default: true},
-          locked: {type: 'bool', default: false}
+          name: { type: 'string', required: true },
+          position: { type: 'integer', default: 0 },
+          enabled: { type: 'bool', default: true },
+          locked: { type: 'bool', default: false }
         })
       end
 
       it do
         expect(described_class).to have_updatable_attributes({
-          name: {type: 'string'},
-          position: {type: 'integer'},
-          enabled: {type: 'bool'},
-          locked: {type: 'bool'}
+          name: { type: 'string' },
+          position: { type: 'integer' },
+          enabled: { type: 'bool' },
+          locked: { type: 'bool' }
         })
       end
     end
 
     let(:user) { make_user }
-    let(:req_body) { MultiJson.dump({name: 'dynamic_test_buildpack'}) }
+    let(:req_body) { MultiJson.dump({ name: 'dynamic_test_buildpack' }) }
 
     describe 'create' do
       it 'returns 403 for non admins' do
@@ -43,7 +43,7 @@ module VCAP::CloudController
       end
 
       it 'returns buildpack invalid message correctly' do
-        post '/v2/buildpacks', MultiJson.dump({name: 'invalid_name!'}), admin_headers
+        post '/v2/buildpacks', MultiJson.dump({ name: 'invalid_name!' }), admin_headers
         expect(last_response.status).to eq(400)
         expect(decoded_response['code']).to eq(290003)
       end
@@ -52,12 +52,12 @@ module VCAP::CloudController
     context 'UPDATE' do
       let!(:buildpack1) do
         should_have_been_1 = 5
-        VCAP::CloudController::Buildpack.create({name: 'first_buildpack', key: 'xyz', filename: 'a', position: should_have_been_1})
+        VCAP::CloudController::Buildpack.create({ name: 'first_buildpack', key: 'xyz', filename: 'a', position: should_have_been_1 })
       end
 
       let!(:buildpack2) do
         should_have_been_2 = 10
-        VCAP::CloudController::Buildpack.create({name: 'second_buildpack', key: 'xyz', filename: 'b', position: should_have_been_2})
+        VCAP::CloudController::Buildpack.create({ name: 'second_buildpack', key: 'xyz', filename: 'b', position: should_have_been_2 })
       end
 
       it 'returns NOT AUTHORIZED (403) for non admins' do
@@ -68,7 +68,7 @@ module VCAP::CloudController
 
     context 'DELETE' do
       let!(:buildpack1) do
-        VCAP::CloudController::Buildpack.create({name: 'first_buildpack', key: 'xyz', position: 1})
+        VCAP::CloudController::Buildpack.create({ name: 'first_buildpack', key: 'xyz', position: 1 })
       end
 
       before { Delayed::Worker.delay_jobs = false }

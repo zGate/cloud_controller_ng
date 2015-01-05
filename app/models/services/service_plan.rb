@@ -28,8 +28,8 @@ module VCAP::CloudController
 
     def_dataset_method(:organization_visible) do |organization|
       filter(Sequel.|(
-        {public: true},
-        {id: ServicePlanVisibility.visible_private_plan_ids_for_organization(organization)}
+        { public: true },
+        { id: ServicePlanVisibility.visible_private_plan_ids_for_organization(organization) }
       ).&(active: true))
     end
 

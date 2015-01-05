@@ -28,7 +28,7 @@ module VCAP::CloudController
 
       context 'as an admin' do
         let(:headers) { admin_headers }
-        let(:req_body) { {resources: '[]', application: valid_zip} }
+        let(:req_body) { { resources: '[]', application: valid_zip } }
 
         it 'allows upload even if app_bits_upload flag is disabled' do
           FeatureFlag.make(name: 'app_bits_upload', enabled: false)
@@ -41,7 +41,7 @@ module VCAP::CloudController
         let(:user) { make_developer_for_space(app_obj.space) }
 
         context 'when the app_bits_upload feature flag is disabled' do
-          let(:req_body) { {resources: '[]', application: valid_zip} }
+          let(:req_body) { { resources: '[]', application: valid_zip } }
 
           before do
             FeatureFlag.make(name: 'app_bits_upload', enabled: false, error_message: nil)
@@ -83,7 +83,7 @@ module VCAP::CloudController
           end
 
           context 'with empty resources and no application' do
-            let(:req_body) { {resources: '[]'} }
+            let(:req_body) { { resources: '[]' } }
 
             it 'fails to upload' do
               make_request
@@ -98,7 +98,7 @@ module VCAP::CloudController
           end
 
           context 'with at least one resource and no application' do
-            let(:req_body) { {resources: JSON.dump([{'fn' => 'lol', 'sha1' => 'abc', 'size' => 2048}])} }
+            let(:req_body) { { resources: JSON.dump([{ 'fn' => 'lol', 'sha1' => 'abc', 'size' => 2048 }]) } }
 
             it 'succeeds to upload' do
               make_request
@@ -108,7 +108,7 @@ module VCAP::CloudController
           end
 
           context 'with no resources and application' do
-            let(:req_body) { {application: valid_zip} }
+            let(:req_body) { { application: valid_zip } }
 
             it 'fails to upload' do
               make_request
@@ -124,7 +124,7 @@ module VCAP::CloudController
 
           context 'with empty resources' do
             let(:req_body) do
-              {resources: '[]', application: valid_zip}
+              { resources: '[]', application: valid_zip }
             end
 
             it 'succeeds to upload' do
@@ -137,7 +137,7 @@ module VCAP::CloudController
           context 'with a bad zip file' do
             let(:bad_zip) { Rack::Test::UploadedFile.new(Tempfile.new('bad_zip')) }
             let(:req_body) do
-              {resources: '[]', application: bad_zip}
+              { resources: '[]', application: bad_zip }
             end
 
             it 'fails to upload' do
@@ -154,7 +154,7 @@ module VCAP::CloudController
 
           context 'with a valid zip file' do
             let(:req_body) do
-              {resources: '[]', application: valid_zip}
+              { resources: '[]', application: valid_zip }
             end
 
             it 'succeeds to upload' do
@@ -197,7 +197,7 @@ module VCAP::CloudController
       context 'as a non-developer' do
         let(:user) { make_user_for_space(app_obj.space) }
         let(:req_body) do
-          {resources: '[]', application: valid_zip}
+          { resources: '[]', application: valid_zip }
         end
 
         it 'returns 403' do
@@ -209,7 +209,7 @@ module VCAP::CloudController
       context 'when running async' do
         let(:user) { make_developer_for_space(app_obj.space) }
         let(:req_body) do
-          {resources: '[]', application: valid_zip}
+          { resources: '[]', application: valid_zip }
         end
 
         before do

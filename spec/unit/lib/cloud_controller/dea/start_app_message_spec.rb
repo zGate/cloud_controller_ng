@@ -98,9 +98,9 @@ module VCAP::CloudController
       end
 
       context 'when security groups are configured' do
-        let(:sg_default_rules_1) { [{'protocol' => 'udp', 'ports' => '8080', 'destination' => '198.41.191.47/1'}] }
-        let(:sg_default_rules_2) { [{'protocol' => 'tcp', 'ports' => '9090', 'destination' => '198.41.191.48/1', 'log' => true}] }
-        let(:sg_for_space_rules) { [{'protocol' => 'udp', 'ports' => '1010', 'destination' => '198.41.191.49/1'}] }
+        let(:sg_default_rules_1) { [{ 'protocol' => 'udp', 'ports' => '8080', 'destination' => '198.41.191.47/1' }] }
+        let(:sg_default_rules_2) { [{ 'protocol' => 'tcp', 'ports' => '9090', 'destination' => '198.41.191.48/1', 'log' => true }] }
+        let(:sg_for_space_rules) { [{ 'protocol' => 'udp', 'ports' => '1010', 'destination' => '198.41.191.49/1' }] }
 
         before do
           SecurityGroup.make(rules: sg_default_rules_1, running_default: true)

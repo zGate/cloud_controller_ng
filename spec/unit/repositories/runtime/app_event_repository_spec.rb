@@ -14,7 +14,7 @@ module VCAP::CloudController
             'instances' => 1,
             'memory' => 84,
             'state' => 'STOPPED',
-            'environment_json' => {'foo' => 1},
+            'environment_json' => { 'foo' => 1 },
           }
         end
 
@@ -57,7 +57,7 @@ module VCAP::CloudController
             'instances' => 1,
             'memory' => 84,
             'state' => 'STOPPED',
-            'environment_json' => {'super' => 'secret '}
+            'environment_json' => { 'super' => 'secret ' }
           }
         end
 

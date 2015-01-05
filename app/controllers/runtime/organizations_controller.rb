@@ -70,7 +70,7 @@ module VCAP::CloudController
     get '/v2/organizations/:guid/memory_usage', :get_memory_usage
     def get_memory_usage(guid)
       org = find_guid_and_validate_access(:read, guid)
-      [HTTP::OK, MultiJson.dump({memory_usage_in_mb: OrganizationMemoryCalculator.get_memory_usage(org)})]
+      [HTTP::OK, MultiJson.dump({ memory_usage_in_mb: OrganizationMemoryCalculator.get_memory_usage(org) })]
     end
 
     def delete(guid)
@@ -92,7 +92,7 @@ module VCAP::CloudController
 
     delete "#{path_guid}/domains/:domain_guid" do |controller_instance|
       controller_instance.add_warning('Endpoint removed')
-      headers = {'Location' => '/v2/private_domains/:domain_guid'}
+      headers = { 'Location' => '/v2/private_domains/:domain_guid' }
       [HTTP::MOVED_PERMANENTLY, headers, 'Use DELETE /v2/private_domains/:domain_guid']
     end
 

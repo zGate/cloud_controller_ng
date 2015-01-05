@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module VCAP::CloudController
   describe StenoConfigurer do
-    let(:config_hash) { { level: 'debug2'} }
+    let(:config_hash) { { level: 'debug2' } }
     subject(:configurer) { StenoConfigurer.new(config_hash) }
 
     before do

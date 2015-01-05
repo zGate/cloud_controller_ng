@@ -158,7 +158,7 @@ module VCAP::CloudController
         context 'when the app has a web process' do
           let(:space) { Space.find(guid: app_model.space_guid) }
           let(:user) { User.make }
-          let(:process_opts) { {space: space} }
+          let(:process_opts) { { space: space } }
           let(:process) { AppFactory.make(process_opts) }
           let(:process_guid) { process.guid }
 

@@ -52,7 +52,7 @@ module VCAP::CloudController
     end
 
     def staging_message
-      {buildpack_key: self.key}
+      { buildpack_key: self.key }
     end
 
     # This is used in the serialization of apps to JSON. The buildpack object is left in the hash for the app, then the

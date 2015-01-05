@@ -154,7 +154,7 @@ module VCAP::CloudController
       end
 
       context 'when, mysteriously, a response is received that is not empty but is missing instance heartbeats' do
-        let(:app_0_api_response) { {droplet: app0.guid, version: app0.version } }
+        let(:app_0_api_response) { { droplet: app0.guid, version: app0.version } }
 
         it 'should return 0' do
           stub_request(:post, "#{hm9000_url}/bulk_app_state").
@@ -224,7 +224,7 @@ module VCAP::CloudController
     end
 
     describe 'find_flapping_indices' do
-      let(:app_0_api_response) { generate_hm_api_response(app0, [], [{instance_index:0, crash_count:3}, {instance_index:1, crash_count:1}, {instance_index:2, crash_count:10}]) }
+      let(:app_0_api_response) { generate_hm_api_response(app0, [], [{ instance_index:0, crash_count:3 }, { instance_index:1, crash_count:1 }, { instance_index:2, crash_count:10 }]) }
 
       context 'when the request fails' do
         it 'should return an empty array' do

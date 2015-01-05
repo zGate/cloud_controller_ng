@@ -79,7 +79,7 @@ module VCAP::CloudController
       context 'when the dispatch is successful' do
         let(:token_decoder) { double(:decoder) }
         let(:header_token) { 'some token' }
-        let(:token_info) { {'user_id' => 'some user'} }
+        let(:token_info) { { 'user_id' => 'some user' } }
 
         it 'should dispatch the request' do
           get '/test_endpoint', '', headers_for(user)
@@ -141,7 +141,7 @@ module VCAP::CloudController
 
       describe 'internationalization' do
         it 'should record the locale during dispatching the request' do
-          get '/test_i18n', '', headers_for(user).merge({'HTTP_ACCEPT_LANGUAGE' => 'never_Neverland'})
+          get '/test_i18n', '', headers_for(user).merge({ 'HTTP_ACCEPT_LANGUAGE' => 'never_Neverland' })
           expect(last_response.body).to eq('never_Neverland')
         end
       end
@@ -205,12 +205,12 @@ module VCAP::CloudController
 
       context 'when the recursive flag is present' do
         context 'and the flag is true' do
-          let(:params) { {'recursive' => 'true'} }
+          let(:params) { { 'recursive' => 'true' } }
           it { is_expected.to be_recursive }
         end
 
         context 'and the flag is false' do
-          let(:params) { {'recursive' => 'false'} }
+          let(:params) { { 'recursive' => 'false' } }
           it { is_expected.not_to be_recursive }
         end
       end
@@ -251,12 +251,12 @@ module VCAP::CloudController
       end
       context 'when the async flag is present' do
         context 'and the flag is true' do
-          let(:params) { {'async' => 'true'} }
+          let(:params) { { 'async' => 'true' } }
           it { is_expected.to be_async }
         end
 
         context 'and the flag is false' do
-          let(:params) { {'async' => 'false'} }
+          let(:params) { { 'async' => 'false' } }
           it { is_expected.not_to be_async }
         end
       end

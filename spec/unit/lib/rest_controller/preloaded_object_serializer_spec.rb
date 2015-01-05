@@ -104,8 +104,8 @@ module VCAP::CloudController
           'entity' => {
             'test_model_second_levels_url' => "/v2/test_model_many_to_manies/#{test_model_many_to_many.guid}/test_model_second_levels",
             'test_model_second_levels' => [
-              {'metadata' =>
-                 {'guid' => test_model_second_level.guid,
+              { 'metadata' =>
+                 { 'guid' => test_model_second_level.guid,
                   'url' => "/v2/test_model_second_levels/#{test_model_second_level.guid}",
                   'created_at' => test_model_second_level.created_at
                  },

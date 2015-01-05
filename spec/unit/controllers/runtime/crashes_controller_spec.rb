@@ -13,8 +13,8 @@ module VCAP::CloudController
         let(:instances_reporters) { double(:instances_reporters) }
         let(:crashed_instances) do
           [
-            {instance: 'instance_1', since: 1},
-            {instance: 'instance_2', since: 1},
+            { instance: 'instance_1', since: 1 },
+            { instance: 'instance_2', since: 1 },
           ]
         end
 
@@ -25,8 +25,8 @@ module VCAP::CloudController
 
         it 'returns the crashed instances' do
           expected = [
-            {'instance' => 'instance_1', 'since' => 1},
-            {'instance' => 'instance_2', 'since' => 1},
+            { 'instance' => 'instance_1', 'since' => 1 },
+            { 'instance' => 'instance_2', 'since' => 1 },
           ]
 
           get("/v2/apps/#{@app.guid}/crashes", {}, headers_for(@developer))

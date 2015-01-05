@@ -11,11 +11,11 @@ module VCAP::CloudController
     let(:route) { Route.make(domain: domain, space: space) }
 
     def enable_custom_buildpacks
-      TestConfig.override({disable_custom_buildpacks: nil})
+      TestConfig.override({ disable_custom_buildpacks: nil })
     end
 
     def disable_custom_buildpacks
-      TestConfig.override({disable_custom_buildpacks: true})
+      TestConfig.override({ disable_custom_buildpacks: true })
     end
 
     def expect_validator(validator_class)
@@ -761,7 +761,7 @@ module VCAP::CloudController
 
     describe '#environment_json' do
       it 'deserializes the serialized value' do
-        app = AppFactory.make(environment_json: {'jesse' => 'awesome'})
+        app = AppFactory.make(environment_json: { 'jesse' => 'awesome' })
         expect(app.environment_json).to eq('jesse' => 'awesome')
       end
 
@@ -782,19 +782,19 @@ module VCAP::CloudController
 
       context 'if env changes' do
         let(:old_env_json) { {} }
-        let(:new_env_json) { {'key' => 'value'} }
+        let(:new_env_json) { { 'key' => 'value' } }
         it_does_not_mark_for_re_staging
       end
 
       context 'if BUNDLE_WITHOUT in env changes' do
-        let(:old_env_json) { {'BUNDLE_WITHOUT' => 'test'} }
-        let(:new_env_json) { {'BUNDLE_WITHOUT' => 'development'} }
+        let(:old_env_json) { { 'BUNDLE_WITHOUT' => 'test' } }
+        let(:new_env_json) { { 'BUNDLE_WITHOUT' => 'development' } }
         it_does_not_mark_for_re_staging
       end
 
       describe 'env is encrypted' do
-        let(:env) { {'jesse' => 'awesome'} }
-        let(:long_env) { {'many_os' => 'o' * 10_000} }
+        let(:env) { { 'jesse' => 'awesome' } }
+        let(:long_env) { { 'many_os' => 'o' * 10_000 } }
         let!(:app) { AppFactory.make(environment_json: env) }
         let(:last_row) { VCAP::CloudController::App.dataset.naked.order_by(:id).last }
 
@@ -835,17 +835,17 @@ module VCAP::CloudController
 
     describe '#database_uri' do
       let(:space) { Space.make }
-      let(:app) { App.make(environment_json: {'jesse' => 'awesome'}, space: space) }
+      let(:app) { App.make(environment_json: { 'jesse' => 'awesome' }, space: space) }
 
       context 'when there are database-like services' do
         before do
           sql_service_plan = ServicePlan.make(service: Service.make(label: 'elephantsql-n/a'))
           sql_service_instance = ManagedServiceInstance.make(space: space, service_plan: sql_service_plan, name: 'elephantsql-vip-uat')
-          sql_binding = ServiceBinding.make(app: app, service_instance: sql_service_instance, credentials: {'uri' => 'mysql://foo.com'})
+          sql_binding = ServiceBinding.make(app: app, service_instance: sql_service_instance, credentials: { 'uri' => 'mysql://foo.com' })
 
           banana_service_plan = ServicePlan.make(service: Service.make(label: 'chiquita-n/a'))
           banana_service_instance = ManagedServiceInstance.make(space: space, service_plan: banana_service_plan, name: 'chiqiuta-yummy')
-          banana_binding = ServiceBinding.make(app: app, service_instance: banana_service_instance, credentials: {'uri' => 'banana://yum.com'})
+          banana_binding = ServiceBinding.make(app: app, service_instance: banana_service_instance, credentials: { 'uri' => 'banana://yum.com' })
         end
 
         it 'returns database uri' do
@@ -857,7 +857,7 @@ module VCAP::CloudController
         before do
           banana_service_plan = ServicePlan.make(service: Service.make(label: 'chiquita-n/a'))
           banana_service_instance = ManagedServiceInstance.make(space: space, service_plan: banana_service_plan, name: 'chiqiuta-yummy')
-          banana_binding = ServiceBinding.make(app: app, service_instance: banana_service_instance, credentials: {'uri' => 'banana://yum.com'})
+          banana_binding = ServiceBinding.make(app: app, service_instance: banana_service_instance, credentials: { 'uri' => 'banana://yum.com' })
 
           uncredentialed_service_plan = ServicePlan.make(service: Service.make(label: 'mysterious-n/a'))
           uncredentialed_service_instance = ManagedServiceInstance.make(space: space, service_plan: uncredentialed_service_plan, name: 'mysterious-mystery')
@@ -879,14 +879,14 @@ module VCAP::CloudController
     describe '#system_env_json' do
       context 'when there are no services' do
         it 'contains an empty vcap_services' do
-          app = App.make(environment_json: {'jesse' => 'awesome'})
+          app = App.make(environment_json: { 'jesse' => 'awesome' })
           expect(app.system_env_json['VCAP_SERVICES']).to eq({})
         end
       end
 
       context 'when there are services' do
         let(:space) { Space.make }
-        let(:app) { App.make(environment_json: {'jesse' => 'awesome'}, space: space) }
+        let(:app) { App.make(environment_json: { 'jesse' => 'awesome' }, space: space) }
         let(:service) { Service.make(label: 'elephantsql-n/a') }
         let(:service_alt) { Service.make(label: 'giraffesql-n/a') }
         let(:service_plan) { ServicePlan.make(service: service) }
@@ -936,7 +936,7 @@ module VCAP::CloudController
     describe 'metadata' do
       it 'deserializes the serialized value' do
         app = AppFactory.make(
-            metadata: {'jesse' => 'super awesome'},
+            metadata: { 'jesse' => 'super awesome' },
         )
         expect(app.metadata).to eq('jesse' => 'super awesome')
       end
@@ -1157,7 +1157,7 @@ module VCAP::CloudController
 
     describe 'health_check_timeout' do
       before do
-        TestConfig.override({maximum_health_check_timeout: 512})
+        TestConfig.override({ maximum_health_check_timeout: 512 })
       end
 
       context 'when the health_check_timeout was not specified' do
@@ -1625,7 +1625,7 @@ module VCAP::CloudController
 
       describe 'default_app_memory' do
         before do
-          TestConfig.override({default_app_memory: 200})
+          TestConfig.override({ default_app_memory: 200 })
         end
 
         it 'uses the provided memory' do
@@ -1830,7 +1830,7 @@ module VCAP::CloudController
 
     describe 'billing', deprecated_billing: true do
       before do
-        TestConfig.override({billing_event_writing_enabled: true})
+        TestConfig.override({ billing_event_writing_enabled: true })
       end
 
       context 'app state changes' do
@@ -2081,7 +2081,7 @@ module VCAP::CloudController
 
       context 'when the DIEGO_RUN_BETA environment variable is set and saved' do
         before do
-          subject.environment_json = {'DIEGO_RUN_BETA' => 'true'}
+          subject.environment_json = { 'DIEGO_RUN_BETA' => 'true' }
         end
 
         it 'becomes a diego app' do
@@ -2100,7 +2100,7 @@ module VCAP::CloudController
 
       context 'when the DIEGO_STAGE_BETA environment variable is set and saved' do
         before do
-          subject.environment_json = {'DIEGO_STAGE_BETA' => 'true'}
+          subject.environment_json = { 'DIEGO_STAGE_BETA' => 'true' }
         end
 
         it 'stages with diego' do
@@ -2125,7 +2125,7 @@ module VCAP::CloudController
         let(:route) { Route.make domain: domain, space: subject.space }
 
         before do
-          subject.environment_json = {'DIEGO_RUN_BETA' => 'true'}
+          subject.environment_json = { 'DIEGO_RUN_BETA' => 'true' }
         end
 
         it "do not update the app's version" do

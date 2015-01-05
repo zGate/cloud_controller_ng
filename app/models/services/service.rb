@@ -55,11 +55,11 @@ module VCAP::CloudController
 
     def self.user_visibility_filter(current_user)
       plans_I_can_see = ServicePlan.user_visible(current_user)
-      {id: plans_I_can_see.map(&:service_id).uniq}
+      { id: plans_I_can_see.map(&:service_id).uniq }
     end
 
     def self.unauthenticated_visibility_filter
-      {id: self.public_visible.map(&:id)}
+      { id: self.public_visible.map(&:id) }
     end
 
     def provider

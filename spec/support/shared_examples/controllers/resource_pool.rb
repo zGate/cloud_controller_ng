@@ -8,7 +8,7 @@ shared_context 'resource pool' do
     @total_allowed_files =
         num_dirs * num_unique_allowed_files_per_dir * file_duplication_factor
 
-    @dummy_descriptor = {'sha1' => Digest::SHA1.hexdigest('abc'), 'size' => 1}
+    @dummy_descriptor = { 'sha1' => Digest::SHA1.hexdigest('abc'), 'size' => 1 }
     @tmpdir = Dir.mktmpdir
 
     @descriptors = []

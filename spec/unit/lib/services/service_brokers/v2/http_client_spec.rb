@@ -79,7 +79,7 @@ module VCAP::Services::ServiceBrokers::V2
         make_request
         expect(a_request(http_method, full_url).
           with(query: hash_including({})).
-          with(headers: {'X-Broker-Api-Version' => '2.4'})).
+          with(headers: { 'X-Broker-Api-Version' => '2.4' })).
           to have_been_made
       end
 
@@ -118,26 +118,26 @@ module VCAP::Services::ServiceBrokers::V2
           end
 
           context 'and the skip_cert_verify is set to true' do
-            let(:config) { {skip_cert_verify: true } }
+            let(:config) { { skip_cert_verify: true } }
 
             it 'accepts self-signed cert from the broker' do
               expect(Net::HTTP).to receive(:start) { |host, port, opts, &blk|
                 expect(host).to eq 'broker.example.com'
                 expect(port).to eq 443
-                expect(opts).to eq({use_ssl: true, verify_mode: OpenSSL::SSL::VERIFY_NONE})
+                expect(opts).to eq({ use_ssl: true, verify_mode: OpenSSL::SSL::VERIFY_NONE })
               }.and_return(response)
               make_request
             end
           end
 
           context 'and the skip_cert_verify is set to false' do
-            let(:config) { {skip_cert_verify: false } }
+            let(:config) { { skip_cert_verify: false } }
 
             it 'does not accept self-signed cert from the broker' do
               expect(Net::HTTP).to receive(:start) { |host, port, opts, &blk|
                 expect(host).to eq 'broker.example.com'
                 expect(port).to eq 443
-                expect(opts).to eq({use_ssl: true, verify_mode: OpenSSL::SSL::VERIFY_PEER})
+                expect(opts).to eq({ use_ssl: true, verify_mode: OpenSSL::SSL::VERIFY_PEER })
               }.and_return(response)
               make_request
             end
@@ -200,7 +200,7 @@ module VCAP::Services::ServiceBrokers::V2
       end
 
       context 'when the broker client timeout is set' do
-        let(:config) { {broker_client_timeout_seconds: 100} }
+        let(:config) { { broker_client_timeout_seconds: 100 } }
 
         it 'sets HTTP timeouts on request' do
           expect_timeout_to_be 100
@@ -209,7 +209,7 @@ module VCAP::Services::ServiceBrokers::V2
       end
 
       context 'when the broker client timeout is not set' do
-        let(:config) { {missing_broker_client_timeout: nil} }
+        let(:config) { { missing_broker_client_timeout: nil } }
 
         it 'defaults to a 60 second timeout' do
           expect_timeout_to_be 60

@@ -16,19 +16,19 @@ module VCAP::CloudController
     describe 'Attributes' do
       it do
         expect(described_class).to have_creatable_attributes({
-          name: {type: 'string', required: true},
-          broker_url: {type: 'string', required: true},
-          auth_username: {type: 'string', required: true},
-          auth_password: {type: 'string', required: true}
+          name: { type: 'string', required: true },
+          broker_url: { type: 'string', required: true },
+          auth_username: { type: 'string', required: true },
+          auth_password: { type: 'string', required: true }
         })
       end
 
       it do
         expect(described_class).to have_updatable_attributes({
-          name: {type: 'string'},
-          broker_url: {type: 'string'},
-          auth_username: {type: 'string'},
-          auth_password: {type: 'string'}
+          name: { type: 'string' },
+          broker_url: { type: 'string' },
+          auth_username: { type: 'string' },
+          auth_password: { type: 'string' }
         })
       end
     end

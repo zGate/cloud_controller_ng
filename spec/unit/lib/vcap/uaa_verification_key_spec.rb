@@ -6,7 +6,7 @@ module VCAP
     subject { described_class.new(config_hash[:verification_key], uaa_info) }
 
     let(:config_hash) do
-      {url: 'http://uaa-url'}
+      { url: 'http://uaa-url' }
     end
 
     let(:uaa_info) { double(CF::UAA::Info) }
@@ -14,7 +14,7 @@ module VCAP
     describe '#value' do
       context 'when config does not specify verification key' do
         before { config_hash[:verification_key] = nil }
-        before { allow(uaa_info).to receive_messages(validation_key: {'value' => 'value-from-uaa'}) }
+        before { allow(uaa_info).to receive_messages(validation_key: { 'value' => 'value-from-uaa' }) }
 
         context 'when key was never fetched' do
           it 'is fetched' do
@@ -53,7 +53,7 @@ module VCAP
     describe '#refresh' do
       context 'when config does not specify verification key' do
         before { config_hash[:verification_key] = nil }
-        before { allow(uaa_info).to receive_messages(validation_key: {'value' => 'value-from-uaa'}) }
+        before { allow(uaa_info).to receive_messages(validation_key: { 'value' => 'value-from-uaa' }) }
 
         context 'when key was never fetched' do
           it 'is fetched' do

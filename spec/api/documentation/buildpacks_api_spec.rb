@@ -118,7 +118,7 @@ resource 'Buildpacks', type: [:api, :legacy_api] do
       explanation 'PUT not shown because it involves putting a large zip file. Right now only zipped admin buildpacks are accepted'
 
       no_doc do
-        client.put "/v2/buildpacks/#{guid}/bits", {buildpack: valid_zip}, headers
+        client.put "/v2/buildpacks/#{guid}/bits", { buildpack: valid_zip }, headers
       end
 
       expect(status).to eq(201)

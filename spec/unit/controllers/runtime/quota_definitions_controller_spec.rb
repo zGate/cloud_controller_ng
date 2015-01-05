@@ -10,23 +10,23 @@ module VCAP::CloudController
     describe 'Attributes' do
       it do
         expect(described_class).to have_creatable_attributes({
-          name: {type: 'string', required: true},
-          non_basic_services_allowed: {type: 'bool', required: true},
-          total_services: {type: 'integer', required: true},
-          total_routes: {type: 'integer', required: true},
-          memory_limit: {type: 'integer', required: true},
-          instance_memory_limit: {type: 'integer', required: false, default: -1}
+          name: { type: 'string', required: true },
+          non_basic_services_allowed: { type: 'bool', required: true },
+          total_services: { type: 'integer', required: true },
+          total_routes: { type: 'integer', required: true },
+          memory_limit: { type: 'integer', required: true },
+          instance_memory_limit: { type: 'integer', required: false, default: -1 }
         })
       end
 
       it do
         expect(described_class).to have_updatable_attributes({
-          name: {type: 'string'},
-          non_basic_services_allowed: {type: 'bool'},
-          total_services: {type: 'integer'},
-          total_routes: {type: 'integer'},
-          memory_limit: {type: 'integer'},
-          instance_memory_limit: {type: 'integer'}
+          name: { type: 'string' },
+          non_basic_services_allowed: { type: 'bool' },
+          total_services: { type: 'integer' },
+          total_routes: { type: 'integer' },
+          memory_limit: { type: 'integer' },
+          instance_memory_limit: { type: 'integer' }
         })
       end
     end
@@ -59,7 +59,7 @@ module VCAP::CloudController
         end
 
         it 'does allow update of a quota def' do
-          put "/v2/quota_definitions/#{existing_quota.guid}", MultiJson.dump({total_services: 2}), json_headers(headers)
+          put "/v2/quota_definitions/#{existing_quota.guid}", MultiJson.dump({ total_services: 2 }), json_headers(headers)
           expect(last_response.status).to eq(201)
         end
 
@@ -99,7 +99,7 @@ module VCAP::CloudController
       let(:quota_definition) { QuotaDefinition.make }
 
       it 'returns QuotaDefinitionMemoryLimitNegative error correctly' do
-        put "/v2/quota_definitions/#{quota_definition.guid}", MultiJson.dump({memory_limit: -100}), json_headers(admin_headers)
+        put "/v2/quota_definitions/#{quota_definition.guid}", MultiJson.dump({ memory_limit: -100 }), json_headers(admin_headers)
 
         expect(last_response.status).to eq(400)
         expect(decoded_response['code']).to eq(240004)

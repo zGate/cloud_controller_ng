@@ -63,7 +63,7 @@ module VCAP::CloudController
           }
         }
         if options[:zone]
-          dea_advertisement['placement_properties'] = {'zone' => options[:zone]}
+          dea_advertisement['placement_properties'] = { 'zone' => options[:zone] }
         end
 
         dea_advertisement
@@ -204,7 +204,7 @@ module VCAP::CloudController
         end
 
         context 'when the expiration timeout is specified' do
-          before { TestConfig.override({dea_advertisement_timeout_in_seconds: 15})}
+          before { TestConfig.override({ dea_advertisement_timeout_in_seconds: 15 })}
           it 'only finds deas with that have not expired' do
             Timecop.freeze do
               subject.process_advertise_message(dea_advertise_msg)
@@ -374,7 +374,7 @@ module VCAP::CloudController
       describe 'changing advertisements for the same dea' do
         it 'only uses the newest message from a given dea' do
           Timecop.freeze do
-            advertisement = dea_advertise_msg.merge('app_id_to_count' => {'app-id' => 1})
+            advertisement = dea_advertise_msg.merge('app_id_to_count' => { 'app-id' => 1 })
             subject.process_advertise_message(advertisement)
 
             Timecop.travel(5)

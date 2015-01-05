@@ -43,7 +43,7 @@ module VCAP::CloudController
         registration.warnings.each { |warning| add_warning(warning) }
       end
 
-      headers = {'Location' => url_of(broker)}
+      headers = { 'Location' => url_of(broker) }
       body = ServiceBrokerPresenter.new(broker).to_json
       [HTTP::CREATED, headers, body]
     end

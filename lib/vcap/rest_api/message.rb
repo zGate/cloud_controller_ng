@@ -57,7 +57,7 @@ module VCAP
       required :total_results, Integer
       required :prev_url, Message::HTTPS_URL
       required :next_url, Message::HTTPS_URL
-      required :resources, [ {metadata: Hash, entity: Hash} ]
+      required :resources, [ { metadata: Hash, entity: Hash } ]
     end
 
     class Response < Message
