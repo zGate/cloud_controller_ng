@@ -22,8 +22,8 @@ module VCAP::CloudController
     one_to_many  :routes
     many_to_many :security_groups,
     dataset: -> {
-      SecurityGroup.left_join(:security_groups_spaces, security_group_id: :id)
-      .where(Sequel.or(security_groups_spaces__space_id: id, security_groups__running_default: true))
+      SecurityGroup.left_join(:security_groups_spaces, security_group_id: :id).
+        where(Sequel.or(security_groups_spaces__space_id: id, security_groups__running_default: true))
     },
     eager_loader: ->(spaces_map) {
       space_ids = spaces_map[:id_map].keys
@@ -51,26 +51,26 @@ module VCAP::CloudController
     one_to_many :domains,
       dataset: -> { organization.domains_dataset },
       adder: ->(domain) { domain.addable_to_organization!(organization) },
-    eager_loader: proc { |eo|
-      id_map = {}
-      eo[:rows].each do |space|
-        space.associations[:domains] = []
-        id_map[space.organization_id] ||= []
-        id_map[space.organization_id] << space
-      end
+      eager_loader: proc do |eo|
+        id_map = {}
+        eo[:rows].each do |space|
+          space.associations[:domains] = []
+          id_map[space.organization_id] ||= []
+          id_map[space.organization_id] << space
+        end
 
-      ds = Domain.shared_or_owned_by(id_map.keys)
-      ds = ds.eager(eo[:associations]) if eo[:associations]
-      ds = eo[:eager_block].call(ds) if eo[:eager_block]
+        ds = Domain.shared_or_owned_by(id_map.keys)
+        ds = ds.eager(eo[:associations]) if eo[:associations]
+        ds = eo[:eager_block].call(ds) if eo[:eager_block]
 
-      ds.all do |domain|
-        if domain.shared?
-          id_map.each { |_, spaces| spaces.each { |space| space.associations[:domains] << domain } }
-        else
-          id_map[domain.owning_organization_id].each { |space| space.associations[:domains] << domain }
+        ds.all do |domain|
+          if domain.shared?
+            id_map.each { |_, spaces| spaces.each { |space| space.associations[:domains] << domain } }
+          else
+            id_map[domain.owning_organization_id].each { |space| space.associations[:domains] << domain }
+          end
         end
       end
-    }
 
     many_to_one :space_quota_definition
 

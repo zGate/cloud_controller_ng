@@ -4,9 +4,9 @@ require 'membrane'
 module VCAP::CloudController
   describe BulkAppsController do
     before do
-      allow_any_instance_of(::CloudController::Blobstore::UrlGenerator)
-      .to receive(:perma_droplet_download_url)
-      .and_return('http://blobsto.re/droplet')
+      allow_any_instance_of(::CloudController::Blobstore::UrlGenerator).
+        to receive(:perma_droplet_download_url).
+        and_return('http://blobsto.re/droplet')
     end
 
     before do

@@ -16,9 +16,9 @@ module VCAP::CloudController
       it 'should be able to discover credentials through message bus' do
         LegacyBulk.configure(TestConfig.config, mbus)
 
-        expect(mbus).to receive(:subscribe)
-          .with('cloudcontroller.bulk.credentials.ng')
-          .and_yield('xxx', 'inbox')
+        expect(mbus).to receive(:subscribe).
+          with('cloudcontroller.bulk.credentials.ng').
+          and_yield('xxx', 'inbox')
 
         expect(mbus).to receive(:publish).with('inbox', anything) do |_, msg|
           expect(msg).to eq({

@@ -368,14 +368,14 @@ module VCAP::CloudController
 
       it 'paginates the dataset with query params' do
         expect_any_instance_of(TestModelsController).to receive(:validate_access).with(:index, TestModel)
-        expect_any_instance_of(RestController::PaginatedCollectionRenderer)
-        .to receive(:render_json).with(
-          TestModelsController,
-          anything,
-          anything,
-          anything,
-          anything,
-        ).and_call_original
+        expect_any_instance_of(RestController::PaginatedCollectionRenderer).
+          to receive(:render_json).with(
+            TestModelsController,
+            anything,
+            anything,
+            anything,
+            anything,
+          ).and_call_original
 
         get '/v2/test_models', '', admin_headers
         expect(last_response.status).to eq(200)

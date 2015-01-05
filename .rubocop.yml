@@ -49,3 +49,6 @@ Style/BracesAroundHashParameters:
 
 Style/IndentHash:
   Enabled: false
+
+Style/DotPosition:
+  EnforcedStyle: trailing
