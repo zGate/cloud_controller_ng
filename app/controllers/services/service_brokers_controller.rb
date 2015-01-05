@@ -81,16 +81,16 @@ module VCAP::CloudController
 
       HTTP::NO_CONTENT
     rescue Sequel::ForeignKeyConstraintViolation
-      raise VCAP::Errors::ApiError.new_from_details("ServiceBrokerNotRemovable")
+      raise VCAP::Errors::ApiError.new_from_details('ServiceBrokerNotRemovable')
     end
 
     def self.translate_validation_exception(e, _)
       if e.errors.on(:name) && e.errors.on(:name).include?(:unique)
-        Errors::ApiError.new_from_details("ServiceBrokerNameTaken", e.model.name)
+        Errors::ApiError.new_from_details('ServiceBrokerNameTaken', e.model.name)
       elsif e.errors.on(:broker_url) && e.errors.on(:broker_url).include?(:unique)
-        Errors::ApiError.new_from_details("ServiceBrokerUrlTaken", e.model.broker_url)
+        Errors::ApiError.new_from_details('ServiceBrokerUrlTaken', e.model.broker_url)
       else
-        Errors::ApiError.new_from_details("ServiceBrokerCatalogInvalid", e.errors.full_messages)
+        Errors::ApiError.new_from_details('ServiceBrokerCatalogInvalid', e.errors.full_messages)
       end
     end
 
@@ -108,15 +108,15 @@ module VCAP::CloudController
       broker = registration.broker
 
       if errors.on(:broker_url) && errors.on(:broker_url).include?(:url)
-        Errors::ApiError.new_from_details("ServiceBrokerUrlInvalid", broker.broker_url)
+        Errors::ApiError.new_from_details('ServiceBrokerUrlInvalid', broker.broker_url)
       elsif errors.on(:broker_url) && errors.on(:broker_url).include?(:unique)
-        Errors::ApiError.new_from_details("ServiceBrokerUrlTaken", broker.broker_url)
+        Errors::ApiError.new_from_details('ServiceBrokerUrlTaken', broker.broker_url)
       elsif errors.on(:name) && errors.on(:name).include?(:unique)
-        Errors::ApiError.new_from_details("ServiceBrokerNameTaken", broker.name)
+        Errors::ApiError.new_from_details('ServiceBrokerNameTaken', broker.name)
       elsif errors.on(:services)
-        Errors::ApiError.new_from_details("ServiceBrokerInvalid", errors.on(:services))
+        Errors::ApiError.new_from_details('ServiceBrokerInvalid', errors.on(:services))
       else
-        Errors::ApiError.new_from_details("ServiceBrokerInvalid", errors.full_messages)
+        Errors::ApiError.new_from_details('ServiceBrokerInvalid', errors.full_messages)
       end
     end
   end

@@ -91,7 +91,7 @@ class FakeModelTables
       foreign_key :name_id, :names, :null => false
 
       # needed to expose the many_to_many add flaw in native Sequel
-      index [:dog_id, :name_id], :unique => true, :name => "dog_id_name_id_idx"
+      index [:dog_id, :name_id], :unique => true, :name => 'dog_id_name_id_idx'
     end
 
     db.create_table :tops do
@@ -119,13 +119,13 @@ class FakeModelTables
     db.create_table :unique_str_case_sensitive do
       primary_key :id
       String :str, :case_insensitive => false
-      index [:str], :unique => true, :name => "uniq_str_sensitive"
+      index [:str], :unique => true, :name => 'uniq_str_sensitive'
     end
 
     db.create_table :unique_str_case_insensitive do
       primary_key :id
       String :str, :case_insensitive => true
-      index [:str], :unique => true, :name => "uniq_str_insensitive"
+      index [:str], :unique => true, :name => 'uniq_str_insensitive'
     end
 
     db.create_table :unique_str_altered do
@@ -134,9 +134,9 @@ class FakeModelTables
       String :altered_to_case_sensitive
       String :altered_to_case_insensitive
 
-      index [:altered_to_default], :unique => true, :name => "uniq_str_altered_1"
-      index [:altered_to_case_sensitive], :unique => true, :name => "uniq_str_altered_2"
-      index [:altered_to_case_insensitive], :unique => true, :name => "uniq_str_altered_3"
+      index [:altered_to_default], :unique => true, :name => 'uniq_str_altered_1'
+      index [:altered_to_case_sensitive], :unique => true, :name => 'uniq_str_altered_2'
+      index [:altered_to_case_insensitive], :unique => true, :name => 'uniq_str_altered_3'
     end
 
     db.alter_table :unique_str_altered do

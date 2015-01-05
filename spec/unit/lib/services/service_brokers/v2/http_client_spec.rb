@@ -34,7 +34,7 @@ module VCAP::Services::ServiceBrokers::V2
     let(:method) { 'POST' }
     let(:error) { StandardError.new }
 
-    it "initializes the base class correctly" do
+    it 'initializes the base class correctly' do
       exception = ServiceBrokerApiTimeout.new(uri, method, error)
       expect(exception.message).to eq("The service broker API timed out: #{uri}")
       expect(exception.uri).to eq(uri)
@@ -100,7 +100,7 @@ module VCAP::Services::ServiceBrokers::V2
       end
 
       context 'when an https URL is used' do
-        let(:url) { "https://broker.example.com" }
+        let(:url) { 'https://broker.example.com' }
         let(:full_url) { "https://#{auth_username}:#{auth_password}@broker.example.com#{path}" }
 
         it 'uses SSL' do

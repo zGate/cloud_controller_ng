@@ -6,7 +6,7 @@ module VCAP::CloudController
       end
 
       def to_s
-        message = "Diego runtime is unavailable."
+        message = 'Diego runtime is unavailable.'
         message << " Error: #{@wrapped_exception}" if @wrapped_exception
         message
       end

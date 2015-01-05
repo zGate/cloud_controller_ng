@@ -5,7 +5,7 @@ module VCAP::CloudController
 
         def perform
           old_app_events = AppEvent.where("created_at < CURRENT_TIMESTAMP - INTERVAL '?' DAY", cutoff_age_in_days.to_i)
-          logger = Steno.logger("cc.background")
+          logger = Steno.logger('cc.background')
           logger.info("Cleaning up #{old_app_events.count} AppEvent rows")
           old_app_events.delete
         end

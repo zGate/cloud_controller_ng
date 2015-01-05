@@ -1,21 +1,21 @@
-require "spec_helper"
+require 'spec_helper'
 
 module VCAP::CloudController
   describe ServicePlan, type: :model do
 
     it { is_expected.to have_timestamp_columns }
 
-    describe "Associations" do
+    describe 'Associations' do
       it { is_expected.to have_associated :service }
       it { is_expected.to have_associated :service_instances, class: ManagedServiceInstance }
       it { is_expected.to have_associated :service_plan_visibilities }
     end
 
-    describe "Validations" do
-      it { is_expected.to validate_presence :name, message: "is required" }
-      it { is_expected.to validate_presence :free, message: "is required" }
-      it { is_expected.to validate_presence :description, message: "is required" }
-      it { is_expected.to validate_presence :service, message: "is required" }
+    describe 'Validations' do
+      it { is_expected.to validate_presence :name, message: 'is required' }
+      it { is_expected.to validate_presence :free, message: 'is required' }
+      it { is_expected.to validate_presence :description, message: 'is required' }
+      it { is_expected.to validate_presence :service, message: 'is required' }
       it { is_expected.to strip_whitespace :name }
 
       context 'when the unique_id is not unique' do
@@ -28,12 +28,12 @@ module VCAP::CloudController
 
         it 'raises an error on save' do
           expect { service_plan.save }.
-            to raise_error(Sequel::ValidationFailed, "Plan ids must be unique")
+            to raise_error(Sequel::ValidationFailed, 'Plan ids must be unique')
         end
       end
     end
 
-    describe "Serialization" do
+    describe 'Serialization' do
       it { is_expected.to export_attributes :name, :free, :description, :service_guid, :extra, :unique_id, :public, :active }
       it { is_expected.to import_attributes :name, :free, :description, :service_guid, :extra, :unique_id, :public }
     end
@@ -93,17 +93,17 @@ module VCAP::CloudController
       end
     end
 
-    describe "#destroy" do
+    describe '#destroy' do
       let(:service_plan) { ServicePlan.make }
 
-      it "destroys all service plan visibilities" do
+      it 'destroys all service plan visibilities' do
         service_plan_visibility = ServicePlanVisibility.make(:service_plan => service_plan)
         expect { service_plan.destroy }.to change {
           ServicePlanVisibility.where(:id => service_plan_visibility.id).any?
         }.to(false)
       end
 
-      it "cannot be destroyed if associated service_instances exist" do
+      it 'cannot be destroyed if associated service_instances exist' do
         service_plan = ServicePlan.make
         ManagedServiceInstance.make(service_plan: service_plan)
         expect {
@@ -112,8 +112,8 @@ module VCAP::CloudController
       end
     end
 
-    describe ".organization_visible" do
-      it "returns plans that are visible to the organization" do
+    describe '.organization_visible' do
+      it 'returns plans that are visible to the organization' do
         hidden_private_plan = ServicePlan.make(public: false)
         visible_public_plan = ServicePlan.make(public: true)
         visible_private_plan = ServicePlan.make(public: false)
@@ -130,15 +130,15 @@ module VCAP::CloudController
       end
     end
 
-    describe "#bindable?" do
+    describe '#bindable?' do
       let(:service_plan) { ServicePlan.make(service: service) }
 
-      context "when the service is bindable" do
+      context 'when the service is bindable' do
         let(:service) { Service.make(bindable: true) }
         specify { expect(service_plan).to be_bindable }
       end
 
-      context "when the service is unbindable" do
+      context 'when the service is unbindable' do
         let(:service) { Service.make(bindable: false) }
         specify { expect(service_plan).not_to be_bindable }
       end

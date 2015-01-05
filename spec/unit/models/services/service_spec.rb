@@ -1,20 +1,20 @@
-require "spec_helper"
+require 'spec_helper'
 
 module VCAP::CloudController
   describe Service, type: :model do
     it { is_expected.to have_timestamp_columns }
 
-    describe "Associations" do
+    describe 'Associations' do
       it { is_expected.to have_associated :service_broker }
       it { is_expected.to have_associated :service_plans }
 
-      it "has associated service_auth_token" do
+      it 'has associated service_auth_token' do
         service = Service.make
         expect(service.reload.service_auth_token).to be_a ServiceAuthToken
       end
     end
 
-    describe "Validations" do
+    describe 'Validations' do
       it { is_expected.to validate_presence :label, message: 'Service name is required' }
       it { is_expected.to validate_presence :description, message: 'is required' }
       it { is_expected.to validate_presence :bindable, message: 'is required' }
@@ -37,17 +37,17 @@ module VCAP::CloudController
         end
       end
 
-      describe "urls" do
-        it "validates format of url" do
-          service = Service.make_unsaved(url: "bogus_url")
+      describe 'urls' do
+        it 'validates format of url' do
+          service = Service.make_unsaved(url: 'bogus_url')
           expect(service).to_not be_valid
-          expect(service.errors.on(:url)).to include "must be a valid url"
+          expect(service.errors.on(:url)).to include 'must be a valid url'
         end
 
-        it "validates format of info_url" do
-          service = Service.make_unsaved(info_url: "bogus_url")
+        it 'validates format of info_url' do
+          service = Service.make_unsaved(info_url: 'bogus_url')
           expect(service).to_not be_valid
-          expect(service.errors.on(:info_url)).to include "must be a valid url"
+          expect(service.errors.on(:info_url)).to include 'must be a valid url'
         end
       end
 
@@ -88,7 +88,7 @@ module VCAP::CloudController
       end
     end
 
-    describe "Serialization" do
+    describe 'Serialization' do
       it { is_expected.to export_attributes :label, :provider, :url, :description, :long_description, :version, :info_url, :active, :bindable,
                                     :unique_id, :extra, :tags, :requires, :documentation_url, :service_broker_guid, :plan_updateable }
       it { is_expected.to import_attributes :label, :provider, :url, :description, :long_description, :version, :info_url,
@@ -100,7 +100,7 @@ module VCAP::CloudController
       expect(service.provider).to be_nil
     end
 
-    describe "#destroy" do
+    describe '#destroy' do
       let!(:service) { Service.make }
       subject { service.destroy }
 
@@ -114,7 +114,7 @@ module VCAP::CloudController
       end
     end
 
-    describe "#user_visibility_filter" do
+    describe '#user_visibility_filter' do
       let(:private_service) { Service.make }
       let(:public_service) { Service.make }
       let(:nonadmin_org) { Organization.make }
@@ -133,16 +133,16 @@ module VCAP::CloudController
         Service.user_visible(user, user.admin?).all
       end
 
-      it "returns all services for admins" do
+      it 'returns all services for admins' do
         expect(records(admin_user)).to include(private_service, public_service)
       end
 
-      it "only returns public services for nonadmins" do
+      it 'only returns public services for nonadmins' do
         expect(records(nonadmin_user)).to include(public_service)
         expect(records(nonadmin_user)).not_to include(private_service)
       end
 
-      it "returns private services if a user can see a plan inside them" do
+      it 'returns private services if a user can see a plan inside them' do
         ServicePlanVisibility.create(
           organization: nonadmin_org,
           service_plan: private_plan,
@@ -150,13 +150,13 @@ module VCAP::CloudController
         expect(records(nonadmin_user)).to include(private_service, public_service)
       end
 
-      it "returns public services for unauthenticated users" do
+      it 'returns public services for unauthenticated users' do
         records = Service.user_visible(nil).all
         expect(records).to eq [public_service]
       end
     end
 
-    describe "#tags" do
+    describe '#tags' do
       context 'null tags in the database' do
         it 'returns an empty array' do
           service = Service.make(tags: nil)
@@ -165,7 +165,7 @@ module VCAP::CloudController
       end
     end
 
-    describe "#requires" do
+    describe '#requires' do
       context 'null requires in the database' do
         it 'returns an empty array' do
           service = Service.make(requires: nil)
@@ -174,7 +174,7 @@ module VCAP::CloudController
       end
     end
 
-    describe "#documentation_url" do
+    describe '#documentation_url' do
       context 'with a URL in the database' do
         it 'returns the appropriate URL' do
           sham_url = Sham.url
@@ -184,7 +184,7 @@ module VCAP::CloudController
       end
     end
 
-    describe "#long_description" do
+    describe '#long_description' do
       context 'with a long description in the database' do
         it 'return the appropriate long description' do
           sham_long_description = Sham.long_description
@@ -194,13 +194,13 @@ module VCAP::CloudController
       end
     end
 
-    describe "#v2?" do
-      it "returns true when the service is associated with a broker" do
+    describe '#v2?' do
+      it 'returns true when the service is associated with a broker' do
         service = Service.make(service_broker: ServiceBroker.make)
         expect(service).to be_v2
       end
 
-      it "returns false when the service is not associated with a broker" do
+      it 'returns false when the service is not associated with a broker' do
         service = Service.make(service_broker: nil)
         expect(service).not_to be_v2
       end

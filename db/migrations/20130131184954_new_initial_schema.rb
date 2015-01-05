@@ -186,15 +186,15 @@ Sequel.migration do
       Integer :disk_quota,       :default => 2048
 
       # app state
-      String :state,             :null => false, :default => "STOPPED"
+      String :state,             :null => false, :default => 'STOPPED'
 
       # package state
-      String :package_state,     :null => false, :default => "PENDING"
+      String :package_state,     :null => false, :default => 'PENDING'
       String :package_hash
 
       String :droplet_hash
       String :version
-      String :metadata, :default => "{}", :null => false
+      String :metadata, :default => '{}', :null => false
       String :buildpack
 
       Integer :space_id, :null => false
@@ -232,7 +232,7 @@ Sequel.migration do
     create_table :routes do
       VCAP::Migration.common(self)
 
-      String :host, :null => false, :default => "", :case_insensitive => true
+      String :host, :null => false, :default => '', :case_insensitive => true
 
       Integer :domain_id, :null => false
       foreign_key [:domain_id], :domains, :name => :fk_routes_domain_id

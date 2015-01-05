@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 describe SpacePresenter do
-  describe "#to_hash" do
+  describe '#to_hash' do
     let(:space) { VCAP::CloudController::Space.make }
     subject { SpacePresenter.new(space) }
 
-    it "creates a valid JSON" do
+    it 'creates a valid JSON' do
       expect(subject.to_hash).to eq({
         :metadata => {
           :guid => space.guid,

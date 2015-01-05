@@ -29,8 +29,8 @@ module VCAP::CloudController
     end
 
     one_to_many :spaces_sti_eager_load,
-                class: "VCAP::CloudController::Space",
-                dataset: -> { raise "Must be used for eager loading" },
+                class: 'VCAP::CloudController::Space',
+                dataset: -> { raise 'Must be used for eager loading' },
                 eager_loader: proc { |eo|
                   id_map = {}
                   eo[:rows].each do |domain|
@@ -47,7 +47,7 @@ module VCAP::CloudController
                   end
                 }
 
-    many_to_one :owning_organization, class: "VCAP::CloudController::Organization",
+    many_to_one :owning_organization, class: 'VCAP::CloudController::Organization',
                   :before_set => :validate_change_owning_organization
     one_to_many :routes
 
@@ -93,7 +93,7 @@ module VCAP::CloudController
     def self.intermediate_domains(name)
       return [] unless name and name =~ DOMAIN_REGEX
 
-      name.split(".").reverse.inject([]) do |a, e|
+      name.split('.').reverse.inject([]) do |a, e|
         a.push(a.empty? ? e : "#{e}.#{a.last}")
       end
     end

@@ -1,13 +1,13 @@
-require "cloud_controller/rest_controller/common_params"
-require "cloud_controller/rest_controller/messages"
-require "cloud_controller/rest_controller/routes"
-require "cloud_controller/security/access_context"
+require 'cloud_controller/rest_controller/common_params'
+require 'cloud_controller/rest_controller/messages'
+require 'cloud_controller/rest_controller/routes'
+require 'cloud_controller/security/access_context'
 
 module VCAP::CloudController::RestController
 
   # The base class for all api endpoints.
   class BaseController
-    ROUTE_PREFIX = "/v2"
+    ROUTE_PREFIX = '/v2'
 
     include VCAP::CloudController
     include VCAP::Errors
@@ -72,20 +72,20 @@ module VCAP::CloudController::RestController
     # @return [Object] Returns an array of [http response code, Header hash,
     # body string], or just a body string.
     def dispatch(op, *args)
-      logger.debug "cc.dispatch", endpoint: op, args: args
+      logger.debug 'cc.dispatch', endpoint: op, args: args
       check_authentication(op)
       send(op, *args)
     rescue Sequel::ValidationFailed => e
       raise self.class.translate_validation_exception(e, request_attrs)
     rescue Sequel::HookFailed => e
-      raise VCAP::Errors::ApiError.new_from_details("InvalidRequest", e.message)
+      raise VCAP::Errors::ApiError.new_from_details('InvalidRequest', e.message)
     rescue Sequel::DatabaseError => e
       raise self.class.translate_and_log_exception(logger, e)
     rescue JsonMessage::Error => e
       logger.debug("Rescued JsonMessage::Error at #{__FILE__}:#{__LINE__}\n#{e.inspect}\n#{e.backtrace.join("\n")}")
-      raise VCAP::Errors::ApiError.new_from_details("MessageParseError", e)
+      raise VCAP::Errors::ApiError.new_from_details('MessageParseError', e)
     rescue VCAP::Errors::InvalidRelation => e
-      raise VCAP::Errors::ApiError.new_from_details("InvalidRelation", e)
+      raise VCAP::Errors::ApiError.new_from_details('InvalidRelation', e)
     end
 
     # Fetch the current active user.  May be nil
@@ -132,22 +132,22 @@ module VCAP::CloudController::RestController
       elsif VCAP::CloudController::SecurityContext.invalid_token?
         raise VCAP::Errors::ApiError.new_from_details('InvalidAuthToken')
       else
-        logger.error "Unexpected condition: valid token with no user/client id " +
+        logger.error 'Unexpected condition: valid token with no user/client id ' +
                        "or admin scope. Token hash: #{VCAP::CloudController::SecurityContext.token}"
         raise VCAP::Errors::ApiError.new_from_details('InvalidAuthToken')
       end
     end
 
     def v2_api?
-      env["PATH_INFO"] =~ /^#{ROUTE_PREFIX}/
+      env['PATH_INFO'] =~ /^#{ROUTE_PREFIX}/
     end
 
     def recursive?
-      params["recursive"] == "true"
+      params['recursive'] == 'true'
     end
 
     def async?
-      params["async"] == "true"
+      params['async'] == 'true'
     end
 
     # hook called before +create+
@@ -175,7 +175,7 @@ module VCAP::CloudController::RestController
       #
       # @return [String] basename of the class
       def class_basename
-        self.name.split("::").last
+        self.name.split('::').last
       end
 
       # path
@@ -224,9 +224,9 @@ module VCAP::CloudController::RestController
         @perserved_query_params
       end
 
-      def deprecated_endpoint(path, message = "Endpoint deprecated")
+      def deprecated_endpoint(path, message = 'Endpoint deprecated')
         controller.after "#{path}*" do
-          headers["X-Cf-Warnings"] ||= CGI.escape(message)
+          headers['X-Cf-Warnings'] ||= CGI.escape(message)
         end
       end
 
@@ -242,7 +242,7 @@ module VCAP::CloudController::RestController
         controller.before path do
           auth = Rack::Auth::Basic::Request.new(env)
           unless auth.provided? && auth.basic? && auth.credentials == block.call
-            raise Errors::ApiError.new_from_details("NotAuthenticated")
+            raise Errors::ApiError.new_from_details('NotAuthenticated')
           end
         end
       end
@@ -257,10 +257,10 @@ module VCAP::CloudController::RestController
 
       def translate_and_log_exception(logger, e)
         msg = ["exception not translated: #{e.class} - #{e.message}"]
-        msg[0] = msg[0] + ":"
-        msg.concat(e.backtrace).join("\\n")
-        logger.warn(msg.join("\\n"))
-        Errors::ApiError.new_from_details("InvalidRequest")
+        msg[0] = msg[0] + ':'
+        msg.concat(e.backtrace).join('\\n')
+        logger.warn(msg.join('\\n'))
+        Errors::ApiError.new_from_details('InvalidRequest')
       end
     end
   end

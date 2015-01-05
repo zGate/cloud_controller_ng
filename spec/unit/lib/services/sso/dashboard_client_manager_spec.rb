@@ -532,11 +532,11 @@ module VCAP::Services::SSO
 
       context 'when removing CC claims raises an exception' do
         before do
-          allow(VCAP::CloudController::ServiceDashboardClient).to receive(:remove_claim_on_client).and_raise("test error")
+          allow(VCAP::CloudController::ServiceDashboardClient).to receive(:remove_claim_on_client).and_raise('test error')
         end
 
         it 'reraises the error' do
-          expect { manager.remove_clients_for_broker }.to raise_error("test error")
+          expect { manager.remove_clients_for_broker }.to raise_error('test error')
         end
 
         it 'does not delete the UAA clients' do

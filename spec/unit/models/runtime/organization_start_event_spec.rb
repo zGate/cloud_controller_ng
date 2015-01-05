@@ -1,4 +1,4 @@
-require "spec_helper"
+require 'spec_helper'
 
 module VCAP::CloudController
   describe VCAP::CloudController::OrganizationStartEvent, type: :model do
@@ -8,20 +8,20 @@ module VCAP::CloudController
 
     it { is_expected.to have_timestamp_columns }
 
-    describe "Validations" do
+    describe 'Validations' do
       it { is_expected.to validate_presence :timestamp }
       it { is_expected.to validate_presence :organization_guid }
       it { is_expected.to validate_presence :organization_name }
     end
 
-    describe "Serialization" do
+    describe 'Serialization' do
       it { is_expected.to export_attributes :timestamp, :event_type, :organization_guid, :organization_name }
       it { is_expected.to import_attributes }
     end
 
-    describe "create_from_org" do
-      context "on an org without billing enabled" do
-        it "should raise an error" do
+    describe 'create_from_org' do
+      context 'on an org without billing enabled' do
+        it 'should raise an error' do
           expect(OrganizationStartEvent).not_to receive(:create)
           org = Organization.make
           org.billing_enabled = false

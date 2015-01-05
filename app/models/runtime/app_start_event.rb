@@ -29,7 +29,7 @@ module VCAP::CloudController
     end
 
     def event_type
-      "app_start"
+      'app_start'
     end
 
     def self.create_from_app(app)
@@ -43,7 +43,7 @@ module VCAP::CloudController
         :app_guid => app.guid,
         :app_name => app.name,
         :app_run_id => SecureRandom.uuid,
-        :app_plan_name => app.production ? "paid" : "free",
+        :app_plan_name => app.production ? 'paid' : 'free',
         :app_memory => app.memory,
         :app_instance_count => app.instances,
       )

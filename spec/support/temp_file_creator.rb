@@ -6,7 +6,7 @@ module TempFileCreator
   end
 
   def temp_file_with_content(content = Sham.guid)
-    file = Tempfile.new("a_file")
+    file = Tempfile.new('a_file')
     file.write(content)
     file.flush
     @created_temp_files ||= []

@@ -16,13 +16,13 @@ module IntegrationSetup
 
   def kill_nats
     if @nats_pid
-      Process.kill("KILL", @nats_pid)
+      Process.kill('KILL', @nats_pid)
       @nats_pid = nil
     end
   end
 
   def start_cc(opts={})
-    config_file = opts[:config] || "config/cloud_controller.yml"
+    config_file = opts[:config] || 'config/cloud_controller.yml'
     config = YAML.load_file(config_file)
 
     FileUtils.rm(config['pid_filename']) if File.exists?(config['pid_filename'])
@@ -30,14 +30,14 @@ module IntegrationSetup
     db_connection_string = "#{TestConfig.config[:db][:database]}_integration_cc"
     if !opts[:preserve_database]
       env = {
-        "DB_CONNECTION_STRING" => db_connection_string,
+        'DB_CONNECTION_STRING' => db_connection_string,
         'DB' => ENV['DB'] || 'postgres',
       }.merge(opts[:env] || {})
-      run_cmd("bundle exec rake db:recreate db:migrate", wait: true, env: env)
+      run_cmd('bundle exec rake db:recreate db:migrate', wait: true, env: env)
     end
 
     @cc_pids ||= []
-    @cc_pids << run_cmd("bin/cloud_controller -s -c #{config_file}", opts.merge(env: {"DB_CONNECTION_STRING" => db_connection_string}.merge(opts[:env] || {})))
+    @cc_pids << run_cmd("bin/cloud_controller -s -c #{config_file}", opts.merge(env: {'DB_CONNECTION_STRING' => db_connection_string}.merge(opts[:env] || {})))
 
     info_endpoint = "http://localhost:#{config["external_port"]}/info"
 
@@ -76,11 +76,11 @@ end
 module IntegrationSetupHelpers
   def run_cmd(cmd, opts={})
     opts[:env] ||= {}
-    project_path = File.join(File.dirname(__FILE__), "../../..")
+    project_path = File.join(File.dirname(__FILE__), '../../..')
     spawn_opts = {
       :chdir => project_path,
-      :out => opts[:debug] ? :out : "/dev/null",
-      :err => opts[:debug] ? :out : "/dev/null",
+      :out => opts[:debug] ? :out : '/dev/null',
+      :err => opts[:debug] ? :out : '/dev/null',
     }
 
     pid = Process.spawn(opts[:env], cmd, spawn_opts)
@@ -94,13 +94,13 @@ module IntegrationSetupHelpers
   end
 
   def graceful_kill(name, pid)
-    Process.kill("TERM", pid)
+    Process.kill('TERM', pid)
     Timeout::timeout(1) do
       Process.wait(pid)
     end
   rescue Timeout::Error
     Process.detach(pid)
-    Process.kill("KILL", pid)
+    Process.kill('KILL', pid)
   rescue Errno::ESRCH
     true
   end

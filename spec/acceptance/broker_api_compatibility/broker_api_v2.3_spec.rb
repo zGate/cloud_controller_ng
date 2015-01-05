@@ -20,23 +20,23 @@ describe 'Service Broker API integration' do
         let(:catalog) do
           {
             services: [{
-                         id:          "service-guid-here",
-                         name:        "MySQL",
-                         description: "A MySQL-compatible relational database",
+                         id:          'service-guid-here',
+                         name:        'MySQL',
+                         description: 'A MySQL-compatible relational database',
                          bindable:    true,
                          dashboard_client: {
-                           id:           "dash-id",
-                           secret:       "dash-board-confessional-ahhhhh",
-                           redirect_uri: "http://redirect.to.me.plz"
+                           id:           'dash-id',
+                           secret:       'dash-board-confessional-ahhhhh',
+                           redirect_uri: 'http://redirect.to.me.plz'
                          },
                          plans:       [{
-                                         id:          "plan1-guid-here",
-                                         name:        "small",
-                                         description: "A small shared database with 100mb storage quota and 10 connections"
+                                         id:          'plan1-guid-here',
+                                         name:        'small',
+                                         description: 'A small shared database with 100mb storage quota and 10 connections'
                                        }, {
-                                         id:          "plan2-guid-here",
-                                         name:        "large",
-                                         description: "A large dedicated database with 10GB storage quota, 512MB of RAM, and 100 connections"
+                                         id:          'plan2-guid-here',
+                                         name:        'large',
+                                         description: 'A large dedicated database with 10GB storage quota, 512MB of RAM, and 100 connections'
                                        }]
                        }]
           }
@@ -67,23 +67,23 @@ describe 'Service Broker API integration' do
           let(:catalog_with_updated_secret) do
             {
               services: [{
-                id: "service-guid-here",
-                name: "MySQL",
-                description: "A MySQL-compatible relational database",
+                id: 'service-guid-here',
+                name: 'MySQL',
+                description: 'A MySQL-compatible relational database',
                 bindable: true,
                 dashboard_client: {
-                  id: "dash-id",
-                  secret: "UPDATED_DASHBOARD_CLIENT_SECRET",
-                  redirect_uri: "http://redirect.to.me.plz"
+                  id: 'dash-id',
+                  secret: 'UPDATED_DASHBOARD_CLIENT_SECRET',
+                  redirect_uri: 'http://redirect.to.me.plz'
                 },
                 plans: [{
-                  id: "plan1-guid-here",
-                  name: "small",
-                  description: "A small shared database with 100mb storage quota and 10 connections"
+                  id: 'plan1-guid-here',
+                  name: 'small',
+                  description: 'A small shared database with 100mb storage quota and 10 connections'
                 }, {
-                  id: "plan2-guid-here",
-                  name: "large",
-                  description: "A large dedicated database with 10GB storage quota, 512MB of RAM, and 100 connections"
+                  id: 'plan2-guid-here',
+                  name: 'large',
+                  description: 'A large dedicated database with 10GB storage quota, 512MB of RAM, and 100 connections'
                 }]
               }]
             }

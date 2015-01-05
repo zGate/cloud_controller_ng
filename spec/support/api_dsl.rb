@@ -21,15 +21,15 @@ module ApiDsl
 
   def standard_list_response response_json, model
     standard_paginated_response_format? response_json
-    resource = response_json["resources"].first
+    resource = response_json['resources'].first
     standard_entity_response resource, model
   end
 
   def standard_entity_response json, model, expected_values={}
-    expect(json).to include("metadata")
-    expect(json).to include("entity")
-    standard_metadata_response_format? json["metadata"], model
-    validate_response model, json["entity"], expected_values
+    expect(json).to include('metadata')
+    expect(json).to include('entity')
+    standard_metadata_response_format? json['metadata'], model
+    validate_response model, json['entity'], expected_values
   end
 
   def standard_paginated_response_format? json
@@ -94,12 +94,12 @@ module ApiDsl
   end
 
   def add_deprecation_warning
-    example.metadata[:description] << " (deprecated)" if response_headers['X-Cf-Warnings'] && response_headers['X-Cf-Warnings'][/deprecated/i]
+    example.metadata[:description] << ' (deprecated)' if response_headers['X-Cf-Warnings'] && response_headers['X-Cf-Warnings'][/deprecated/i]
   end
 
   module ClassMethods
     def api_version
-      "/v2"
+      '/v2'
     end
 
     def root(model)
@@ -145,7 +145,7 @@ module ApiDsl
       delete path_name do
         example "Remove #{model.to_s.titleize} from the #{outer_model.to_s.titleize}" do
           path = "#{self.class.api_version}/#{outer_model.to_s.pluralize}/#{send(:guid)}/#{model.to_s.pluralize}/#{send("associated_#{model}_guid")}"
-          client.delete path, "", headers
+          client.delete path, '', headers
           expect(status).to eq 201
           standard_entity_response parsed_response, outer_model
         end
@@ -192,21 +192,21 @@ module ApiDsl
 
     def standard_list_parameters(controller)
       if controller.query_parameters.size > 0
-        query_parameter_description = "Parameters used to filter the result set.<br/>"
-        query_parameter_description += "Format queries as &lt;filter&gt;&lt;op&gt;&lt;value&gt;<br/>"
-        query_parameter_description += " Valid ops: : &gt;= &lt;= &lt; &gt; IN<br/>"
+        query_parameter_description = 'Parameters used to filter the result set.<br/>'
+        query_parameter_description += 'Format queries as &lt;filter&gt;&lt;op&gt;&lt;value&gt;<br/>'
+        query_parameter_description += ' Valid ops: : &gt;= &lt;= &lt; &gt; IN<br/>'
         query_parameter_description += " Valid filters: #{controller.query_parameters.to_a.join(", ")}"
 
-        examples = ["q=filter:value", "q=filter>value", "q=filter IN a,b,c"]
+        examples = ['q=filter:value', 'q=filter>value', 'q=filter IN a,b,c']
         request_parameter :q, query_parameter_description, { html: true, example_values: examples }
       end
-      request_parameter :page, "Page of results to fetch"
-      request_parameter :'results-per-page', "Number of results per page"
-      request_parameter :'order-direction', "Order of the results: asc (default) or desc"
+      request_parameter :page, 'Page of results to fetch'
+      request_parameter :'results-per-page', 'Number of results per page'
+      request_parameter :'order-direction', 'Order of the results: asc (default) or desc'
       request_parameter :'inline-relations-depth', "0 - don't inline any relations and return URLs.  Otherwise, inline to depth N.", deprecated: true
-      request_parameter :'orphan-relations', "0 - de-duplicate object entries in response", deprecated: true
-      request_parameter :'exclude-relations', "comma-delimited list of relations to drop from response", deprecated: true
-      request_parameter :'include-relations', "comma-delimited list of the only relations to include in response", deprecated: true
+      request_parameter :'orphan-relations', '0 - de-duplicate object entries in response', deprecated: true
+      request_parameter :'exclude-relations', 'comma-delimited list of relations to drop from response', deprecated: true
+      request_parameter :'include-relations', 'comma-delimited list of the only relations to include in response', deprecated: true
     end
 
     def request_parameter(name, description, options = {})
@@ -219,7 +219,7 @@ module ApiDsl
       metadata[:request_parameters].push(options.merge(:name => name.to_s, :description => description))
     end
 
-    def field(name, description = "", options = {})
+    def field(name, description = '', options = {})
       metadata[:fields] = metadata[:fields] ? metadata[:fields].dup : []
       metadata[:fields].push(options.merge(:name => name.to_s, :description => description))
     end
@@ -233,7 +233,7 @@ module ApiDsl
     end
 
     def authenticated_request
-      header "AUTHORIZATION", :admin_auth_header
+      header 'AUTHORIZATION', :admin_auth_header
     end
   end
 end

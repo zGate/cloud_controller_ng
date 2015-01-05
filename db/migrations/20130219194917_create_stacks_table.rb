@@ -1,5 +1,5 @@
 # Copyright (c) 2009-2013 VMware, Inc.
-require "securerandom"
+require 'securerandom'
 
 Sequel.migration do
   change do
@@ -17,8 +17,8 @@ Sequel.migration do
     # we cannot add non_null constraint on apps.stack_id.
     lucid64_stack_id = self[:stacks].insert(
       :guid => SecureRandom.uuid,
-      :name => "lucid64",
-      :description => "Ubuntu 10.04 on x86-64",
+      :name => 'lucid64',
+      :description => 'Ubuntu 10.04 on x86-64',
       :created_at => Time.now,
     )
 

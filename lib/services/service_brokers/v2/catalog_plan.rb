@@ -38,11 +38,11 @@ module VCAP::Services::ServiceBrokers::V2
 
     def human_readable_attr_name(name)
       {
-        broker_provided_id: "Plan id",
-        name:               "Plan name",
-        description:        "Plan description",
-        metadata:           "Plan metadata",
-        free:               "Plan free"
+        broker_provided_id: 'Plan id',
+        name:               'Plan name',
+        description:        'Plan description',
+        metadata:           'Plan metadata',
+        free:               'Plan free'
       }.fetch(name) { raise NotImplementedError }
     end
   end

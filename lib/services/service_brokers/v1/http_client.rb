@@ -93,7 +93,7 @@ module VCAP::Services
       end
 
       def logger
-        @logger ||= Steno.logger("cc.service_broker.v1.http_client")
+        @logger ||= Steno.logger('cc.service_broker.v1.http_client')
       end
     end
   end

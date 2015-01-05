@@ -41,16 +41,16 @@ module VCAP::CloudController::RestController
       entity_hash = obj_hash.merge(rel_hash)
 
       metadata_hash = {
-        "guid" => obj.guid,
-        "url" => controller.url_for_guid(obj.guid),
-        "created_at" => obj.created_at,
+        'guid' => obj.guid,
+        'url' => controller.url_for_guid(obj.guid),
+        'created_at' => obj.created_at,
       }
 
       if obj.respond_to?(:updated_at)
-        metadata_hash["updated_at"] = obj.updated_at
+        metadata_hash['updated_at'] = obj.updated_at
       end
 
-      {"metadata" => metadata_hash, "entity" => entity_hash}
+      {'metadata' => metadata_hash, 'entity' => entity_hash}
     end
 
     def relations_hash(controller, obj, opts, depth, parents, orphans=nil)

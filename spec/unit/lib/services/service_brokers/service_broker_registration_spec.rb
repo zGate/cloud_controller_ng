@@ -223,7 +223,7 @@ module VCAP::Services::ServiceBrokers
           allow(client_manager).to receive(:synchronize_clients_with_catalog) {
             VCAP::CloudController::ServiceDashboardClient.make(uaa_id: 'my-uaa-id', service_broker_id: broker.id)
           }
-          allow(service_manager).to receive(:sync_services_and_plans).and_raise(VCAP::Errors::ApiError.new_from_details("ServiceBrokerCatalogInvalid", 'omg it broke'))
+          allow(service_manager).to receive(:sync_services_and_plans).and_raise(VCAP::Errors::ApiError.new_from_details('ServiceBrokerCatalogInvalid', 'omg it broke'))
         end
 
         it 'does not save new broker' do
@@ -502,7 +502,7 @@ module VCAP::Services::ServiceBrokers
       context 'when exception is raised during transaction' do
         before do
           allow(catalog).to receive(:valid?).and_return(true)
-          allow(service_manager).to receive(:sync_services_and_plans).and_raise(VCAP::Errors::ApiError.new_from_details("ServiceBrokerCatalogInvalid", 'omg it broke'))
+          allow(service_manager).to receive(:sync_services_and_plans).and_raise(VCAP::Errors::ApiError.new_from_details('ServiceBrokerCatalogInvalid', 'omg it broke'))
         end
 
         it 'does not update the broker' do

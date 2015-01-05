@@ -27,17 +27,17 @@ module VCAP::CloudController
       quota_def_errors = e.errors.on(:quota_definition_id)
       name_errors = e.errors.on(:name)
       if quota_def_errors && quota_def_errors.include?(:not_authorized)
-        Errors::ApiError.new_from_details("NotAuthorized", attributes["quota_definition_id"])
+        Errors::ApiError.new_from_details('NotAuthorized', attributes['quota_definition_id'])
       elsif name_errors && name_errors.include?(:unique)
-        Errors::ApiError.new_from_details("OrganizationNameTaken", attributes["name"])
+        Errors::ApiError.new_from_details('OrganizationNameTaken', attributes['name'])
       else
-        Errors::ApiError.new_from_details("OrganizationInvalid", e.errors.full_messages)
+        Errors::ApiError.new_from_details('OrganizationInvalid', e.errors.full_messages)
       end
     end
 
-    get "/v2/organizations/:guid/services", :enumerate_services
+    get '/v2/organizations/:guid/services', :enumerate_services
     def enumerate_services(guid)
-      logger.debug "cc.enumerate.related", guid: guid, association: "services"
+      logger.debug 'cc.enumerate.related', guid: guid, association: 'services'
 
       org = find_guid_and_validate_access(:read, guid)
 
@@ -67,7 +67,7 @@ module VCAP::CloudController
       )
     end
 
-    get "/v2/organizations/:guid/memory_usage", :get_memory_usage
+    get '/v2/organizations/:guid/memory_usage', :get_memory_usage
     def get_memory_usage(guid)
       org = find_guid_and_validate_access(:read, guid)
       [HTTP::OK, MultiJson.dump({memory_usage_in_mb: OrganizationMemoryCalculator.get_memory_usage(org)})]
@@ -79,7 +79,7 @@ module VCAP::CloudController
 
     def remove_related(guid, name, other_guid)
       model.db.transaction do
-        if recursive? && name.to_s.eql?("users")
+        if recursive? && name.to_s.eql?('users')
           org = find_guid_and_validate_access(:update, guid)
           user = User.find(:guid => other_guid)
 
@@ -91,9 +91,9 @@ module VCAP::CloudController
     end
 
     delete "#{path_guid}/domains/:domain_guid" do |controller_instance|
-      controller_instance.add_warning("Endpoint removed")
-      headers = {"Location" => "/v2/private_domains/:domain_guid"}
-      [HTTP::MOVED_PERMANENTLY, headers, "Use DELETE /v2/private_domains/:domain_guid"]
+      controller_instance.add_warning('Endpoint removed')
+      headers = {'Location' => '/v2/private_domains/:domain_guid'}
+      [HTTP::MOVED_PERMANENTLY, headers, 'Use DELETE /v2/private_domains/:domain_guid']
     end
 
     define_messages

@@ -18,12 +18,12 @@ module VCAP::Services::ServiceBrokers::V2
         exception.set_backtrace(['/foo:1', '/bar:2'])
 
         expect(exception.to_h).to eq({
-          'description' => "Service broker error: Some error text",
+          'description' => 'Service broker error: Some error text',
           'backtrace' => ['/foo:1', '/bar:2'],
-          "http" => {
-            "status" => 500,
-            "uri" => uri,
-            "method" => "PUT"
+          'http' => {
+            'status' => 500,
+            'uri' => uri,
+            'method' => 'PUT'
           },
           'source' => {
             'description' => 'Some error text'
@@ -42,12 +42,12 @@ module VCAP::Services::ServiceBrokers::V2
         exception.set_backtrace(['/foo:1', '/bar:2'])
 
         expect(exception.to_h).to eq({
-          'description' => "The service broker API returned an error from http://www.example.com/: 500 Internal Server Error",
+          'description' => 'The service broker API returned an error from http://www.example.com/: 500 Internal Server Error',
           'backtrace' => ['/foo:1', '/bar:2'],
-          "http" => {
-            "status" => 500,
-            "uri" => uri,
-            "method" => "PUT"
+          'http' => {
+            'status' => 500,
+            'uri' => uri,
+            'method' => 'PUT'
           },
           'source' => {'foo' => 'bar'}
         })
@@ -66,9 +66,9 @@ module VCAP::Services::ServiceBrokers::V2
       let(:response_body) { 'foo' }
       let(:response) { double(code: 200, reason: 'OK', body: response_body) }
 
-      it "initializes the base class correctly" do
+      it 'initializes the base class correctly' do
         exception = ServiceBrokerResponseMalformed.new(uri, method, response)
-        expect(exception.message).to eq("The service broker response was not understood")
+        expect(exception.message).to eq('The service broker response was not understood')
         expect(exception.uri).to eq(uri)
         expect(exception.method).to eq(method)
         expect(exception.source).to be(response.body)
@@ -79,7 +79,7 @@ module VCAP::Services::ServiceBrokers::V2
       let(:response_body) { 'foo' }
       let(:response) { double(code: 401, reason: 'Auth Error', body: response_body) }
 
-      it "initializes the base class correctly" do
+      it 'initializes the base class correctly' do
         exception = ServiceBrokerApiAuthenticationFailed.new(uri, method, response)
         expect(exception.message).to eq("Authentication failed for the service broker API. Double-check that the username and password are correct: #{uri}")
         expect(exception.uri).to eq(uri)
@@ -92,36 +92,36 @@ module VCAP::Services::ServiceBrokers::V2
       let(:response_body) { '{"message": "error message"}' }
       let(:response) { double(code: 409, reason: 'Conflict', body: response_body) }
 
-      it "initializes the base class correctly" do
+      it 'initializes the base class correctly' do
         exception = ServiceBrokerConflict.new(uri, method, response)
-        expect(exception.message).to eq("error message")
+        expect(exception.message).to eq('error message')
         expect(exception.uri).to eq(uri)
         expect(exception.method).to eq(method)
         expect(exception.source).to eq(MultiJson.load(response.body))
       end
 
-      it "has a response_code of 409" do
+      it 'has a response_code of 409' do
         exception = ServiceBrokerConflict.new(uri, method, response)
         expect(exception.response_code).to eq(409)
       end
 
-      context "when the response body has no message" do
+      context 'when the response body has no message' do
         let(:response_body) { '{"description": "error description"}' }
 
-        context "and there is a description field" do
-            it "initializes the base class correctly" do
+        context 'and there is a description field' do
+            it 'initializes the base class correctly' do
               exception = ServiceBrokerConflict.new(uri, method, response)
-              expect(exception.message).to eq("error description")
+              expect(exception.message).to eq('error description')
               expect(exception.uri).to eq(uri)
               expect(exception.method).to eq(method)
               expect(exception.source).to eq(MultiJson.load(response.body))
             end
         end
 
-        context "and there is no description field" do
+        context 'and there is no description field' do
           let(:response_body) { '{"field": "value"}' }
 
-            it "initializes the base class correctly" do
+            it 'initializes the base class correctly' do
               exception = ServiceBrokerConflict.new(uri, method, response)
               expect(exception.message).to eq("Resource conflict: #{uri}")
               expect(exception.uri).to eq(uri)
@@ -131,10 +131,10 @@ module VCAP::Services::ServiceBrokers::V2
           end
       end
 
-      context "when the body is not JSON-parsable" do
+      context 'when the body is not JSON-parsable' do
         let(:response_body) { 'foo' }
 
-        it "initializes the base class correctly" do
+        it 'initializes the base class correctly' do
           exception = ServiceBrokerConflict.new(uri, method, response)
           expect(exception.message).to eq("Resource conflict: #{uri}")
           expect(exception.uri).to eq(uri)

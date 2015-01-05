@@ -9,7 +9,7 @@ module VCAP::CloudController
         end
 
         def logger
-          Steno.logger("cc.event_repository")
+          Steno.logger('cc.event_repository')
         end
 
         def record_service_plan_visibility_event(type, visibility, params)
@@ -96,7 +96,7 @@ module VCAP::CloudController
 
           metadata = { request: params.dup }
           if params.has_key?('credentials')
-            metadata[:request]['credentials'] = "[REDACTED]"
+            metadata[:request]['credentials'] = '[REDACTED]'
           end
 
           space_data = { space: service_instance.space }
@@ -136,7 +136,7 @@ module VCAP::CloudController
 
         def with_service_event(service, &saveBlock)
           actee = {
-            actee_type: "service",
+            actee_type: 'service',
             actee_name: service.label,
           }
           actor = broker_actor(service.service_broker)
@@ -145,7 +145,7 @@ module VCAP::CloudController
 
         def with_service_plan_event(plan, &saveBlock)
           actee = {
-            actee_type: "service_plan",
+            actee_type: 'service_plan',
             actee_name: plan.name,
           }
           actor = broker_actor(plan.service.service_broker)

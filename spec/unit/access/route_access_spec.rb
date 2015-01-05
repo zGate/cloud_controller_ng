@@ -23,7 +23,7 @@ module VCAP::CloudController
     context 'admin' do
       include_context :admin_setup
 
-      before { FeatureFlag.make(name: "route_creation", enabled: false) }
+      before { FeatureFlag.make(name: 'route_creation', enabled: false) }
 
       it_behaves_like :full_access
       it { is_expected.to allow_op_on_object :reserved, nil }
@@ -93,7 +93,7 @@ module VCAP::CloudController
       end
 
       context 'when the route_creation feature flag is disabled' do
-        before { FeatureFlag.make(name: "route_creation", enabled: false, error_message: nil) }
+        before { FeatureFlag.make(name: 'route_creation', enabled: false, error_message: nil) }
 
         it 'raises when attempting to create a route' do
           expect { subject.create?(object) }.to raise_error(VCAP::Errors::ApiError, /route_creation/)

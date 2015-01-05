@@ -209,7 +209,7 @@ module VCAP::CloudController
       end
     end
 
-    describe "#allowed?" do
+    describe '#allowed?' do
       context 'managed service instance' do
         it 'delegates to the ManagedServiceInstanceAccess' do
           expect_any_instance_of(ManagedServiceInstanceAccess).to receive(:allowed?).with(object)

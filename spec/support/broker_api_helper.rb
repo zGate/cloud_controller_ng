@@ -1,7 +1,7 @@
 
 module VCAP::CloudController::BrokerApiHelper
   def service_name
-    "MySQL"
+    'MySQL'
   end
 
   def stubbed_broker_url
@@ -23,18 +23,18 @@ module VCAP::CloudController::BrokerApiHelper
   def stub_catalog_fetch(broker_response_status=200, catalog = nil)
     catalog ||= {
       services: [{
-        id:          "service-guid-here",
+        id:          'service-guid-here',
         name:        service_name,
-        description: "A MySQL-compatible relational database",
+        description: 'A MySQL-compatible relational database',
         bindable:    true,
         plans:       [{
-          id:          "plan1-guid-here",
-          name:        "small",
-          description: "A small shared database with 100mb storage quota and 10 connections"
+          id:          'plan1-guid-here',
+          name:        'small',
+          description: 'A small shared database with 100mb storage quota and 10 connections'
         }, {
-          id:          "plan2-guid-here",
-          name:        "large",
-          description: "A large dedicated database with 10GB storage quota, 512MB of RAM, and 100 connections"
+          id:          'plan2-guid-here',
+          name:        'large',
+          description: 'A large dedicated database with 10GB storage quota, 512MB of RAM, and 100 connections'
         }]
       }]
     }
@@ -91,7 +91,7 @@ module VCAP::CloudController::BrokerApiHelper
   end
 
   def provision_service
-    body = { dashboard_url: "https://your.service.com/dashboard" }.to_json
+    body = { dashboard_url: 'https://your.service.com/dashboard' }.to_json
     stub_request(:put, %r(broker-url/v2/service_instances/[[:alnum:]-]+)).
       to_return(status: 201, body: "#{body}")
 
@@ -129,7 +129,7 @@ module VCAP::CloudController::BrokerApiHelper
       { app_guid: app_guid, service_instance_guid: @service_instance_guid }.to_json,
       json_headers(admin_headers))
 
-    @binding_id = JSON.parse(last_response.body)["metadata"]["guid"]
+    @binding_id = JSON.parse(last_response.body)['metadata']['guid']
   end
 
   def deprovision_service

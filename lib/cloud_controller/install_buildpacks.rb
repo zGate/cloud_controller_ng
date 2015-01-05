@@ -41,7 +41,7 @@ module VCAP::CloudController
     end
 
     def logger
-      @logger ||= Steno.logger("cc.install_buildpacks")
+      @logger ||= Steno.logger('cc.install_buildpacks')
     end
 
     private

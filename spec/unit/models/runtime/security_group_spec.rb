@@ -197,11 +197,11 @@ module VCAP::CloudController
 
     it { is_expected.to have_timestamp_columns }
 
-    describe "Associations" do
+    describe 'Associations' do
       it { is_expected.to have_associated :spaces }
     end
 
-    describe "Validations" do
+    describe 'Validations' do
       it { is_expected.to validate_presence :name }
       it { is_expected.to validate_uniqueness :name }
 
@@ -216,14 +216,14 @@ module VCAP::CloudController
         end
 
         it 'should allow backslash characters' do
-          sec_group.name = "a\\word"
+          sec_group.name = 'a\\word'
           expect {
             sec_group.save
           }.to_not raise_error
         end
 
         it 'should allow unicode characters' do
-          sec_group.name = "Ω∂∂ƒƒß√˜˙∆ß"
+          sec_group.name = 'Ω∂∂ƒƒß√˜˙∆ß'
           expect {
             sec_group.save
           }.to_not raise_error
@@ -462,7 +462,7 @@ module VCAP::CloudController
             end
 
             context 'when the icmp rule contains extraneous fields' do
-              let(:rule) { build_icmp_rule(foobar: "asdf") }
+              let(:rule) { build_icmp_rule(foobar: 'asdf') }
 
               it 'is not valid' do
                 expect(subject).to_not be_valid
@@ -614,7 +614,7 @@ module VCAP::CloudController
             end
 
             context 'when the all rule contains extraneous fields' do
-              let(:rule) { build_all_rule({foobar: "foobar"}) }
+              let(:rule) { build_all_rule({foobar: 'foobar'}) }
 
               it 'is not valid' do
                 expect(subject).to_not be_valid
@@ -661,7 +661,7 @@ module VCAP::CloudController
 
         context 'when rules is not an array' do
           before do
-            subject.rules = {"valid" => "json"}
+            subject.rules = {'valid' => 'json'}
           end
 
           it 'is not valid' do
@@ -673,7 +673,7 @@ module VCAP::CloudController
 
         context 'when rules is not an array of hashes' do
           before do
-            subject.rules = ["valid", "json"]
+            subject.rules = ['valid', 'json']
           end
 
           it 'is not valid' do
@@ -685,7 +685,7 @@ module VCAP::CloudController
       end
     end
 
-    describe "Serialization" do
+    describe 'Serialization' do
       it { is_expected.to export_attributes :name, :rules, :running_default, :staging_default }
       it { is_expected.to import_attributes :name, :rules, :running_default, :staging_default, :space_guids }
     end

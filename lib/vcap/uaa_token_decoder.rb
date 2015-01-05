@@ -1,4 +1,4 @@
-require "uaa/info"
+require 'uaa/info'
 
 module VCAP
   class UaaTokenDecoder
@@ -11,7 +11,7 @@ module VCAP
       @config = config
       @logger = Steno.logger('cc.uaa_token_decoder')
 
-      raise ArgumentError, "grace period should be an integer" unless grace_period_in_seconds.is_a? Integer
+      raise ArgumentError, 'grace period should be an integer' unless grace_period_in_seconds.is_a? Integer
 
       @grace_period_in_seconds = grace_period_in_seconds
       if grace_period_in_seconds < 0
@@ -29,7 +29,7 @@ module VCAP
         decode_token_with_asymmetric_key(auth_token)
       end
     rescue CF::UAA::TokenExpired => e
-      @logger.warn("Token expired")
+      @logger.warn('Token expired')
       raise BadToken.new(e.message)
     rescue CF::UAA::DecodeError, CF::UAA::AuthError => e
       @logger.warn("Invalid bearer token: #{e.inspect} #{e.backtrace}")
@@ -39,7 +39,7 @@ module VCAP
     private
 
     def token_format_valid?(auth_token)
-      auth_token && auth_token.upcase.start_with?("BEARER")
+      auth_token && auth_token.upcase.start_with?('BEARER')
     end
 
     def decode_token_with_symmetric_key(auth_token)

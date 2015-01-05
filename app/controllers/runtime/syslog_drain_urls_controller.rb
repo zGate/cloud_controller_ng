@@ -14,8 +14,8 @@ module VCAP::CloudController
       apps_with_bindings = App.
         select_all(:apps).
         join(:service_bindings, app_id: :id).
-        where("apps.id > ?", last_id).
-        where("syslog_drain_url IS NOT NULL").
+        where('apps.id > ?', last_id).
+        where('syslog_drain_url IS NOT NULL').
         where("syslog_drain_url != ''").
         order(:app_id).
         distinct(:app_id).
@@ -36,11 +36,11 @@ module VCAP::CloudController
     private
 
     def last_id
-      Integer(params.fetch("next_id",  0))
+      Integer(params.fetch('next_id',  0))
     end
 
     def batch_size
-      Integer(params.fetch("batch_size", 50))
+      Integer(params.fetch('batch_size', 50))
     end
   end
 end

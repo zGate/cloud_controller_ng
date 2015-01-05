@@ -164,7 +164,7 @@ module VCAP::CloudController
 
           before do
             allow(access_context).to receive(:user).and_return(user)
-            allow(access_context).to receive(:user_email).and_return("email")
+            allow(access_context).to receive(:user_email).and_return('email')
             apps_handler.add_process(app_model, process, access_context)
 
             allow(process_handler).to receive(:update) do

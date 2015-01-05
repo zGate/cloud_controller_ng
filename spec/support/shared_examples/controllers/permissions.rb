@@ -1,4 +1,4 @@
-shared_context "permissions" do
+shared_context 'permissions' do
   let(:headers_a) { headers_for(member_a) }
   let(:headers_b) { headers_for(member_b) }
 
@@ -50,7 +50,7 @@ shared_context "permissions" do
 end
 
 
-shared_examples "permission enumeration" do |perm_name, opts|
+shared_examples 'permission enumeration' do |perm_name, opts|
   name = opts[:name]
   path = opts[:path]
   expected = opts[:enumerate]
@@ -63,8 +63,8 @@ shared_examples "permission enumeration" do |perm_name, opts|
         expect(last_response.status).to eq(403)
       else
         expect(last_response).to be_ok
-        expect(decoded_response["total_results"]).to eq(expected_count)
-        guids = decoded_response["resources"].map { |o| o["metadata"]["guid"] }
+        expect(decoded_response['total_results']).to eq(expected_count)
+        guids = decoded_response['resources'].map { |o| o['metadata']['guid'] }
         if respond_to?(:enumeration_expectation_a)
           expect(guids.sort).to eq enumeration_expectation_a.map(&:guid).sort
         else

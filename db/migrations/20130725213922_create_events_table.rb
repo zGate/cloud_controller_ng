@@ -9,7 +9,7 @@ Sequel.migration do
       String :actor_type, :null => false
       String :actee, :null => false
       String :actee_type, :null => false
-      String :metadata, :null => false, :default => "{}"
+      String :metadata, :null => false, :default => '{}'
 
       Integer :space_id, :null => false
 

@@ -1,4 +1,4 @@
-require "models/runtime/domain"
+require 'models/runtime/domain'
 
 module VCAP::CloudController
   class SharedDomain < Domain
@@ -18,7 +18,7 @@ module VCAP::CloudController
     end
 
     def self.find_or_create(name)
-      logger = Steno.logger("cc.db.domain")
+      logger = Steno.logger('cc.db.domain')
       domain = nil
 
       Domain.db.transaction do

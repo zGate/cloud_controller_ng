@@ -2,7 +2,7 @@ RSpec::Matchers.define :be_a_valid_job do
   problems = []
   match do |actual_job|
     unless actual_job.respond_to?(:max_attempts)
-      problems << "max_attempts not implemented"
+      problems << 'max_attempts not implemented'
     end
     problems.empty?
   end

@@ -46,7 +46,7 @@ module VCAP::CloudController
     one_to_many :app_events,
       dataset: -> { AppEvent.filter(app: apps) }
 
-    one_to_many :default_users, class: "VCAP::CloudController::User", key: :default_space_id
+    one_to_many :default_users, class: 'VCAP::CloudController::User', key: :default_space_id
 
     one_to_many :domains,
       dataset: -> { organization.domains_dataset },

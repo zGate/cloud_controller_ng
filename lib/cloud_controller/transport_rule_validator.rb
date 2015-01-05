@@ -1,13 +1,13 @@
 module CloudController
   class TransportRuleValidator < RuleValidator
-    self.required_fields += ["ports"]
+    self.required_fields += ['ports']
 
     def self.validate(rule)
       errs = super
       return errs unless errs.empty?
 
       unless validate_port(rule['ports'])
-        errs << "contains invalid ports"
+        errs << 'contains invalid ports'
       end
 
       errs

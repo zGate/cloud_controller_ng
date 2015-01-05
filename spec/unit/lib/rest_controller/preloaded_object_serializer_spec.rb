@@ -1,4 +1,4 @@
-require "spec_helper"
+require 'spec_helper'
 
 module VCAP::CloudController
   describe RestController::PreloadedObjectSerializer do
@@ -155,7 +155,7 @@ module VCAP::CloudController
 
           orphans = {}
           hash = subject.serialize(TestModelManyToOnesController, test_model_many_to_one, opts.merge(inline_relations_depth: 1), orphans)
-          expect(hash["entity"]).not_to have_key "test_model"
+          expect(hash['entity']).not_to have_key 'test_model'
           expect(orphans.keys.size).to eql(1)
           expect(orphans[test_model_many_to_one.test_model.guid]).to eql(
             'metadata' => {

@@ -4,7 +4,7 @@ module VCAP::CloudController
       [ :instances_reporters ]
     end
 
-    path_base "apps"
+    path_base 'apps'
     model_class_name :App
 
     get  "#{path_guid}/stats", :stats
@@ -13,7 +13,7 @@ module VCAP::CloudController
 
       if app.stopped?
         msg = "Request failed for app: #{app.name}"
-        msg << " as the app is in stopped state."
+        msg << ' as the app is in stopped state.'
 
         raise ApiError.new_from_details('StatsError', msg)
       end

@@ -1,4 +1,4 @@
-require "presenters/api/feature_flag_presenter"
+require 'presenters/api/feature_flag_presenter'
 
 module VCAP::CloudController
   class FeatureFlagsController < RestController::ModelController

@@ -1,4 +1,4 @@
-require "spec_helper"
+require 'spec_helper'
 
 module VCAP::CloudController
   module Diego
@@ -17,7 +17,7 @@ module VCAP::CloudController
         Stager.new(app, messenger, completion_handler, 900)
       end
 
-      describe "#stage" do
+      describe '#stage' do
         let(:task_id) {app.staging_task_id}
 
         before do
@@ -25,22 +25,22 @@ module VCAP::CloudController
           allow(messenger).to receive(:send_stop_staging_request)
         end
 
-        it "notifies Diego that the app needs staging" do
+        it 'notifies Diego that the app needs staging' do
           expect(messenger).to receive(:send_stage_request).with(app, 900)
           stager.stage
         end
 
-        context "when there is a pending stage" do
-          it "attempts to stop the outstanding stage request" do
+        context 'when there is a pending stage' do
+          it 'attempts to stop the outstanding stage request' do
             expect(messenger).to receive(:send_stop_staging_request).with(app, task_id)
             stager.stage
           end
         end
       end
 
-      describe "#staging_complete" do
+      describe '#staging_complete' do
         let (:staging_response) do
-          { app_id: "app-id", task_id: "task_id" }
+          { app_id: 'app-id', task_id: 'task_id' }
         end
 
         before do
@@ -49,7 +49,7 @@ module VCAP::CloudController
           stager.staging_complete(staging_response)
         end
 
-        it "delegates to the staging completion handler" do
+        it 'delegates to the staging completion handler' do
           expect(completion_handler).to have_received(:staging_complete).with(staging_response)
         end
       end

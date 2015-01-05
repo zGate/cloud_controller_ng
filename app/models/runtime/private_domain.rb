@@ -1,4 +1,4 @@
-require "models/runtime/domain"
+require 'models/runtime/domain'
 
 module VCAP::CloudController
   class PrivateDomain < Domain

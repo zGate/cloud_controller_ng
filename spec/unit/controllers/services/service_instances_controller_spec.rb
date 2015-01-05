@@ -1,8 +1,8 @@
-require "spec_helper"
+require 'spec_helper'
 
 module VCAP::CloudController
   describe VCAP::CloudController::ServiceInstancesController, :services do
-    describe "Query Parameters" do
+    describe 'Query Parameters' do
       it { expect(described_class).to be_queryable_by(:name) }
       it { expect(described_class).to be_queryable_by(:space_guid) }
       it { expect(described_class).to be_queryable_by(:service_plan_guid) }
@@ -11,28 +11,28 @@ module VCAP::CloudController
       it { expect(described_class).to be_queryable_by(:organization_guid) }
     end
 
-    describe "Attributes" do
+    describe 'Attributes' do
       it do
         expect(described_class).to have_creatable_attributes({
-          name: {type: "string", required: true},
-          space_guid: {type: "string", required: true},
-          service_plan_guid: {type: "string", required: true},
-          service_binding_guids: {type: "[string]"}
+          name: {type: 'string', required: true},
+          space_guid: {type: 'string', required: true},
+          service_plan_guid: {type: 'string', required: true},
+          service_binding_guids: {type: '[string]'}
         })
       end
 
       it do
         expect(described_class).to have_updatable_attributes({
-          name: {type: "string"},
-          space_guid: {type: "string"},
-          service_plan_guid: {type: "string"},
-          service_binding_guids: {type: "[string]"}
+          name: {type: 'string'},
+          space_guid: {type: 'string'},
+          service_plan_guid: {type: 'string'},
+          service_binding_guids: {type: '[string]'}
         })
       end
     end
 
-    describe "Permissions" do
-      include_context "permissions"
+    describe 'Permissions' do
+      include_context 'permissions'
 
       before do
         @obj_a = ManagedServiceInstance.make(:space => @space_a)
@@ -44,30 +44,30 @@ module VCAP::CloudController
           let(:member_a) { instance_variable_get(member_a_ivar) }
           let(:member_b) { instance_variable_get(member_b_ivar) }
 
-          include_examples "permission enumeration", user_role,
+          include_examples 'permission enumeration', user_role,
                            :name => 'managed service instance',
-                           :path => "/v2/service_instances",
+                           :path => '/v2/service_instances',
                            :enumerate => 0
         end
       end
 
-      describe "Org Level Permissions" do
-        user_sees_empty_enumerate("OrgManager",     :@org_a_manager,         :@org_b_manager)
-        user_sees_empty_enumerate("OrgUser",        :@org_a_member,          :@org_b_member)
-        user_sees_empty_enumerate("BillingManager", :@org_a_billing_manager, :@org_b_billing_manager)
-        user_sees_empty_enumerate("Auditor",        :@org_a_auditor,         :@org_b_auditor)
+      describe 'Org Level Permissions' do
+        user_sees_empty_enumerate('OrgManager',     :@org_a_manager,         :@org_b_manager)
+        user_sees_empty_enumerate('OrgUser',        :@org_a_member,          :@org_b_member)
+        user_sees_empty_enumerate('BillingManager', :@org_a_billing_manager, :@org_b_billing_manager)
+        user_sees_empty_enumerate('Auditor',        :@org_a_auditor,         :@org_b_auditor)
       end
 
-      describe "App Space Level Permissions" do
-        user_sees_empty_enumerate("SpaceManager", :@space_a_manager, :@space_b_manager)
+      describe 'App Space Level Permissions' do
+        user_sees_empty_enumerate('SpaceManager', :@space_a_manager, :@space_b_manager)
 
-        describe "Developer" do
+        describe 'Developer' do
           let(:member_a) { @space_a_developer }
           let(:member_b) { @space_b_developer }
 
-          include_examples "permission enumeration", "Developer",
+          include_examples 'permission enumeration', 'Developer',
                            :name => 'managed service instance',
-                           :path => "/v2/service_instances",
+                           :path => '/v2/service_instances',
                            :enumerate => 1
 
           it 'prevents a developer from creating a service instance in an unauthorized space' do
@@ -79,21 +79,21 @@ module VCAP::CloudController
               :service_plan_guid => plan.guid
             )
 
-            post "/v2/service_instances", req, json_headers(headers_for(member_a))
+            post '/v2/service_instances', req, json_headers(headers_for(member_a))
 
             expect(last_response.status).to eq(403)
-            expect(MultiJson.load(last_response.body)['description']).to eq("You are not authorized to perform the requested action")
+            expect(MultiJson.load(last_response.body)['description']).to eq('You are not authorized to perform the requested action')
           end
         end
 
-        describe "private plans" do
+        describe 'private plans' do
           let!(:unprivileged_organization) { Organization.make }
           let!(:private_plan) { ServicePlan.make(public: false) }
           let!(:unprivileged_space) { Space.make(organization: unprivileged_organization) }
           let!(:developer) { make_developer_for_space(unprivileged_space) }
 
-          describe "a user who does not belong to a privileged organization" do
-            it "does not allow a user to create a service instance" do
+          describe 'a user who does not belong to a privileged organization' do
+            it 'does not allow a user to create a service instance' do
               payload = MultiJson.dump(
                 'space_guid' => unprivileged_space.guid,
                 'name' => Sham.name,
@@ -103,11 +103,11 @@ module VCAP::CloudController
               post 'v2/service_instances', payload, json_headers(headers_for(developer))
 
               expect(last_response.status).to eq(403)
-              expect(MultiJson.load(last_response.body)['description']).to eq("You are not authorized to perform the requested action")
+              expect(MultiJson.load(last_response.body)['description']).to eq('You are not authorized to perform the requested action')
             end
           end
 
-          describe "a user who belongs to a privileged organization" do
+          describe 'a user who belongs to a privileged organization' do
             let!(:privileged_organization) do
               Organization.make.tap do |org|
                 ServicePlanVisibility.create(
@@ -123,7 +123,7 @@ module VCAP::CloudController
               privileged_space.add_developer(developer)
             end
 
-            it "allows user to create a service instance in a privileged organization" do
+            it 'allows user to create a service instance in a privileged organization' do
               payload = MultiJson.dump(
                 'space_guid' => privileged_space.guid,
                 'name' => Sham.name,
@@ -134,7 +134,7 @@ module VCAP::CloudController
               expect(last_response.status).to eq(201)
             end
 
-            it "does not allow a user to create a service instance in an unprivileged organization" do
+            it 'does not allow a user to create a service instance in an unprivileged organization' do
               payload = MultiJson.dump(
                 'space_guid' => unprivileged_space.guid,
                 'name' => Sham.name,
@@ -149,19 +149,19 @@ module VCAP::CloudController
           end
         end
 
-        describe "SpaceAuditor" do
+        describe 'SpaceAuditor' do
           let(:member_a) { @space_a_auditor }
           let(:member_b) { @space_b_auditor }
 
-          include_examples "permission enumeration", "SpaceAuditor",
+          include_examples 'permission enumeration', 'SpaceAuditor',
                            :name => 'managed service instance',
-                           :path => "/v2/service_instances",
+                           :path => '/v2/service_instances',
                            :enumerate => 1
         end
       end
     end
 
-    describe "Associations" do
+    describe 'Associations' do
       it do
         expect(described_class).to have_nested_routes({ service_bindings: [:get, :put, :delete] })
       end
@@ -267,15 +267,15 @@ module VCAP::CloudController
 
           allow_any_instance_of(ManagedServiceInstance).to receive(:save).and_raise
 
-          post "/v2/service_instances", req, json_headers(headers_for(developer))
+          post '/v2/service_instances', req, json_headers(headers_for(developer))
 
           expect(last_response.status).to eq(500)
           expect(client).to have_received(:deprovision).with(an_instance_of(ManagedServiceInstance))
         end
 
         context 'when the model save and the subsequent deprovision both raise errors' do
-          let(:save_error_text) { "InvalidRequest" }
-          let(:deprovision_error_text) { "NotAuthorized" }
+          let(:save_error_text) { 'InvalidRequest' }
+          let(:deprovision_error_text) { 'NotAuthorized' }
 
           before do
             allow(client).to receive(:deprovision).and_raise(Errors::ApiError.new_from_details(deprovision_error_text))
@@ -289,7 +289,7 @@ module VCAP::CloudController
               :service_plan_guid => plan.guid
             )
 
-            post "/v2/service_instances", req, json_headers(headers_for(developer))
+            post '/v2/service_instances', req, json_headers(headers_for(developer))
 
             expect(last_response.body).to_not match(deprovision_error_text)
             expect(last_response.body).to match(save_error_text)
@@ -299,7 +299,7 @@ module VCAP::CloudController
         context 'creating a service instance with a name over 50 characters' do
           let(:very_long_name) { 's' * 51 }
 
-          it "returns an error if the service instance name is over 50 characters" do
+          it 'returns an error if the service instance name is over 50 characters' do
             req = MultiJson.dump(
               name: very_long_name,
               space_guid: space.guid,
@@ -307,10 +307,10 @@ module VCAP::CloudController
             )
             headers = json_headers(headers_for(developer))
 
-            post "/v2/service_instances", req, headers
+            post '/v2/service_instances', req, headers
 
             expect(last_response.status).to eq(400)
-            expect(decoded_response["code"]).to eq 60009
+            expect(decoded_response['code']).to eq 60009
           end
         end
 
@@ -363,13 +363,13 @@ module VCAP::CloudController
             )
             headers = json_headers(headers_for(developer))
 
-            post "/v2/service_instances", req, headers
+            post '/v2/service_instances', req, headers
           end
 
           it 'returns a 404' do
             expect(last_response.status).to eq(400)
             expect(decoded_response['code']).to eq(60003)
-            expect(decoded_response['description']).to include("not a valid service plan")
+            expect(decoded_response['description']).to include('not a valid service plan')
           end
         end
       end
@@ -378,7 +378,7 @@ module VCAP::CloudController
         let(:space) { Space.make }
         let(:developer) { make_developer_for_space(space) }
         let(:plan) { ServicePlan.make(:service => service) }
-        let(:service) { Service.make(:description => "blah blah foobar") }
+        let(:service) { Service.make(:description => 'blah blah foobar') }
 
         before do
           allow(service).to receive(:v2?) { false }
@@ -395,7 +395,7 @@ module VCAP::CloudController
 
             expect(plan.service.service_auth_token).to eq(nil)
 
-            post "/v2/service_instances", req, headers
+            post '/v2/service_instances', req, headers
 
             expect(last_response.status).to eq(500)
           end
@@ -407,13 +407,13 @@ module VCAP::CloudController
     describe 'GET', '/v2/service_instances' do
       let(:service_instance) { ManagedServiceInstance.make(gateway_name: Sham.name) }
 
-      it "shows the dashboard_url if there is" do
+      it 'shows the dashboard_url if there is' do
         service_instance.update(dashboard_url: 'http://dashboard.io')
         get "v2/service_instances/#{service_instance.guid}", {}, admin_headers
         expect(decoded_response.fetch('entity').fetch('dashboard_url')).to eq('http://dashboard.io')
       end
 
-      context "filtering" do
+      context 'filtering' do
         let(:first_found_instance) { decoded_response.fetch('resources').first }
 
         it 'allows filtering by organization_guid' do
@@ -433,7 +433,7 @@ module VCAP::CloudController
       context 'with a managed service instance' do
         let(:service_instance) { ManagedServiceInstance.make }
 
-        it "returns the service instance with the given guid" do
+        it 'returns the service instance with the given guid' do
           get "v2/service_instances/#{service_instance.guid}", {}, admin_headers
           expect(last_response.status).to eq(200)
           expect(decoded_response.fetch('metadata').fetch('guid')).to eq(service_instance.guid)
@@ -443,16 +443,16 @@ module VCAP::CloudController
       context 'with a user provided service instance' do
         let(:service_instance) { UserProvidedServiceInstance.make }
 
-        it "returns the service instance with the given guid" do
+        it 'returns the service instance with the given guid' do
           get "v2/service_instances/#{service_instance.guid}", {}, admin_headers
           expect(last_response.status).to eq(200)
           expect(decoded_response.fetch('metadata').fetch('guid')).to eq(service_instance.guid)
         end
 
-        it "returns the bindings URL with user_provided_service_instance" do
+        it 'returns the bindings URL with user_provided_service_instance' do
           get "v2/service_instances/#{service_instance.guid}", {}, admin_headers
           expect(last_response.status).to eq(200)
-          expect(decoded_response.fetch('entity').fetch('service_bindings_url')).to include("user_provided_service_instances")
+          expect(decoded_response.fetch('entity').fetch('service_bindings_url')).to include('user_provided_service_instances')
         end
       end
     end
@@ -644,7 +644,7 @@ module VCAP::CloudController
       end
 
       context 'when given an invalid new plan guid' do
-        let(:new_plan_guid) { "a-plan-that-does-not-exist" }
+        let(:new_plan_guid) { 'a-plan-that-does-not-exist' }
 
         it 'does not update any service instances' do
           put "/v2/service_plans/#{first_service_plan.guid}/service_instances", body, admin_headers
@@ -658,7 +658,7 @@ module VCAP::CloudController
 
       context 'when given an invalid existing plan guid' do
         it 'does not update any service instances' do
-          put "/v2/service_plans/some-non-existant-plan/service_instances", body, admin_headers
+          put '/v2/service_plans/some-non-existant-plan/service_instances', body, admin_headers
 
           expect(last_response.status).to eql(400)
           expect(first_service_plan.service_instances.count).to eql(1)
@@ -695,7 +695,7 @@ module VCAP::CloudController
           stub_request(:delete, uri.to_s).to_return(body: body, status: status)
         end
 
-        it "deletes the service instance with the given guid" do
+        it 'deletes the service instance with the given guid' do
           expect {
             delete "/v2/service_instances/#{service_instance.guid}", {}, admin_headers
           }.to change(ServiceInstance, :count).by(-1)
@@ -773,7 +773,7 @@ module VCAP::CloudController
 
         context 'and the instance cannot be found' do
           it 'returns a 404' do
-            delete "/v2/service_instances/non-existing-instance", {}, admin_headers
+            delete '/v2/service_instances/non-existing-instance', {}, admin_headers
             expect(last_response.status).to eq 404
           end
         end
@@ -809,7 +809,7 @@ module VCAP::CloudController
       context 'with a user provided service instance' do
         let!(:service_instance) { UserProvidedServiceInstance.make }
 
-        it "deletes the service instance with the given guid" do
+        it 'deletes the service instance with the given guid' do
           expect {
             delete "/v2/service_instances/#{service_instance.guid}", {}, admin_headers
           }.to change(ServiceInstance, :count).by(-1)
@@ -879,7 +879,7 @@ module VCAP::CloudController
       end
     end
 
-    describe "Validation messages" do
+    describe 'Validation messages' do
       let(:paid_quota) { QuotaDefinition.make(:total_services => 1) }
       let(:free_quota_with_no_services) do
         QuotaDefinition.make(:total_services => 0,
@@ -894,101 +894,101 @@ module VCAP::CloudController
       let(:org) { Organization.make(:quota_definition => paid_quota) }
       let(:space) { Space.make(:organization => org) }
 
-      it "returns duplicate name message correctly" do
+      it 'returns duplicate name message correctly' do
         existing_service_instance = ManagedServiceInstance.make(space: space)
         service_instance_params = {
           name: existing_service_instance.name,
           space_guid: space.guid,
           service_plan_guid: free_plan.guid
         }
-        post "/v2/service_instances", MultiJson.dump(service_instance_params), json_headers(admin_headers)
+        post '/v2/service_instances', MultiJson.dump(service_instance_params), json_headers(admin_headers)
 
         expect(last_response.status).to eq(400)
-        expect(decoded_response["code"]).to eq(60002)
+        expect(decoded_response['code']).to eq(60002)
       end
 
-      it "returns space quota exceeded message correctly" do
+      it 'returns space quota exceeded message correctly' do
         space.space_quota_definition = SpaceQuotaDefinition.make(total_services: 0, organization: space.organization)
         space.save
         service_instance_params = {
-          name: "name",
+          name: 'name',
           space_guid: space.guid,
           service_plan_guid: free_plan.guid
         }
-        post "/v2/service_instances", MultiJson.dump(service_instance_params), json_headers(admin_headers)
+        post '/v2/service_instances', MultiJson.dump(service_instance_params), json_headers(admin_headers)
 
         expect(last_response.status).to eq(400)
-        expect(decoded_response["code"]).to eq(60012)
+        expect(decoded_response['code']).to eq(60012)
       end
 
-      it "returns service plan not allowed by space quota message correctly" do
+      it 'returns service plan not allowed by space quota message correctly' do
         space.space_quota_definition = SpaceQuotaDefinition.make(non_basic_services_allowed: false, organization: space.organization)
         space.save
         service_instance_params = {
-          name: "name",
+          name: 'name',
           space_guid: space.guid,
           service_plan_guid: paid_plan.guid
         }
-        post "/v2/service_instances", MultiJson.dump(service_instance_params), json_headers(admin_headers)
+        post '/v2/service_instances', MultiJson.dump(service_instance_params), json_headers(admin_headers)
 
         expect(last_response.status).to eq(400)
-        expect(decoded_response["code"]).to eq(60013)
+        expect(decoded_response['code']).to eq(60013)
       end
 
-      it "returns quota exceeded message correctly" do
+      it 'returns quota exceeded message correctly' do
         org.quota_definition.total_services = 0
         org.quota_definition.save
         service_instance_params = {
-          name: "name",
+          name: 'name',
           space_guid: space.guid,
           service_plan_guid: free_plan.guid
         }
-        post "/v2/service_instances", MultiJson.dump(service_instance_params), json_headers(admin_headers)
+        post '/v2/service_instances', MultiJson.dump(service_instance_params), json_headers(admin_headers)
 
         expect(last_response.status).to eq(400)
-        expect(decoded_response["code"]).to eq(60005)
+        expect(decoded_response['code']).to eq(60005)
       end
 
-      it "returns service plan not allowed by quota message correctly" do
+      it 'returns service plan not allowed by quota message correctly' do
         org.quota_definition.non_basic_services_allowed = false
         org.quota_definition.save
         service_instance_params = {
-          name: "name",
+          name: 'name',
           space_guid: space.guid,
           service_plan_guid: paid_plan.guid
         }
-        post "/v2/service_instances", MultiJson.dump(service_instance_params), json_headers(admin_headers)
+        post '/v2/service_instances', MultiJson.dump(service_instance_params), json_headers(admin_headers)
 
         expect(last_response.status).to eq(400)
-        expect(decoded_response["code"]).to eq(60007)
+        expect(decoded_response['code']).to eq(60007)
       end
 
-      it "returns service plan name too long message correctly" do
+      it 'returns service plan name too long message correctly' do
         service_instance_params = {
-          name: "n" * 51,
+          name: 'n' * 51,
           space_guid: space.guid,
           service_plan_guid: free_plan.guid
         }
-        post "/v2/service_instances", MultiJson.dump(service_instance_params), json_headers(admin_headers)
+        post '/v2/service_instances', MultiJson.dump(service_instance_params), json_headers(admin_headers)
 
         expect(last_response.status).to eq(400)
-        expect(decoded_response["code"]).to eq(60009)
+        expect(decoded_response['code']).to eq(60009)
       end
 
       context 'invalid space guid' do
-        it "returns a user friendly error" do
+        it 'returns a user friendly error' do
           org = Organization.make()
           space = Space.make(:organization => org)
           plan = ServicePlan.make(free: true)
 
           body = {
-            "space_guid" => "invalid_space_guid",
-            "name" => 'name',
-            "service_plan_guid" => plan.guid
+            'space_guid' => 'invalid_space_guid',
+            'name' => 'name',
+            'service_plan_guid' => plan.guid
           }
 
-          post "/v2/service_instances", MultiJson.dump(body), json_headers(headers_for(make_developer_for_space(space)))
-          expect(decoded_response["description"]).to match(/invalid.*space.*/)
+          post '/v2/service_instances', MultiJson.dump(body), json_headers(headers_for(make_developer_for_space(space)))
+          expect(decoded_response['description']).to match(/invalid.*space.*/)
           expect(last_response.status).to eq(400)
         end
       end
@@ -1002,7 +1002,7 @@ module VCAP::CloudController
       )
       headers = json_headers(headers_for(developer, user_opts))
 
-      post "/v2/service_instances", req, headers
+      post '/v2/service_instances', req, headers
 
       ServiceInstance.last
     end
@@ -1014,7 +1014,7 @@ module VCAP::CloudController
       )
       headers = json_headers(headers_for(developer))
 
-      post "/v2/user_provided_service_instances", req, headers
+      post '/v2/user_provided_service_instances', req, headers
 
       ServiceInstance.last
     end

@@ -28,7 +28,7 @@ module VCAP::CloudController
 
       @request_attrs = json_msg.extract(:stringify_keys => true)
 
-      logger.debug "cc.create", :model => self.class.model_class_name,
+      logger.debug 'cc.create', :model => self.class.model_class_name,
         :attributes => request_attrs
 
       raise InvalidRequest unless request_attrs
@@ -51,7 +51,7 @@ module VCAP::CloudController
       @services_event_repository.record_service_binding_event(:create, service_binding)
 
       [ HTTP::CREATED,
-        { "Location" => "#{self.class.path}/#{service_binding.guid}" },
+        { 'Location' => "#{self.class.path}/#{service_binding.guid}" },
         object_renderer.render_json(self.class, service_binding, @opts)
       ]
     end
@@ -65,7 +65,7 @@ module VCAP::CloudController
       delete_and_audit_job = Jobs::AuditEventJob.new(deletion_job, @services_event_repository, :record_service_binding_event, :delete, service_binding)
 
       if async?
-        job = Jobs::Enqueuer.new(delete_and_audit_job, queue: "cc-generic").enqueue()
+        job = Jobs::Enqueuer.new(delete_and_audit_job, queue: 'cc-generic').enqueue()
         [HTTP::ACCEPTED, JobPresenter.new(job).to_json]
       else
         delete_and_audit_job.perform
@@ -90,13 +90,13 @@ module VCAP::CloudController
     def self.translate_validation_exception(e, attributes)
       unique_errors = e.errors.on([:app_id, :service_instance_id])
       if unique_errors && unique_errors.include?(:unique)
-        Errors::ApiError.new_from_details("ServiceBindingAppServiceTaken", "#{attributes["app_guid"]} #{attributes["service_instance_guid"]}")
+        Errors::ApiError.new_from_details('ServiceBindingAppServiceTaken', "#{attributes["app_guid"]} #{attributes["service_instance_guid"]}")
       elsif e.errors.on(:app) && e.errors.on(:app).include?(:presence)
         Errors::ApiError.new_from_details('AppNotFound', attributes['app_guid'])
       elsif e.errors.on(:service_instance) && e.errors.on(:service_instance).include?(:presence)
         Errors::ApiError.new_from_details('ServiceInstanceNotFound', attributes['service_instance_guid'])
       else
-        Errors::ApiError.new_from_details("ServiceBindingInvalid", e.errors.full_messages)
+        Errors::ApiError.new_from_details('ServiceBindingInvalid', e.errors.full_messages)
       end
     end
 

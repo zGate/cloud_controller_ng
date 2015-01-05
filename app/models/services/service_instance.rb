@@ -20,8 +20,8 @@ module VCAP::CloudController
     many_to_one :space, :after_set => :validate_space
 
     many_to_one :service_plan_sti_eager_load,
-                class: "VCAP::CloudController::ServicePlan",
-                dataset: -> { raise "Must be used for eager loading" },
+                class: 'VCAP::CloudController::ServicePlan',
+                dataset: -> { raise 'Must be used for eager loading' },
                 eager_loader_key: nil, # set up id_map ourselves
                 eager_loader: proc { |eo|
                   id_map = {}
@@ -95,14 +95,14 @@ module VCAP::CloudController
     def credentials_with_serialization=(val)
       self.credentials_without_serialization = MultiJson.dump(val)
     end
-    alias_method_chain :credentials=, "serialization"
+    alias_method_chain :credentials=, 'serialization'
 
     def credentials_with_serialization
       string = credentials_without_serialization
       return if string.blank?
       MultiJson.load string
     end
-    alias_method_chain :credentials, "serialization"
+    alias_method_chain :credentials, 'serialization'
 
     def in_suspended_org?
       space.in_suspended_org?

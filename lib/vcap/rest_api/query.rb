@@ -1,4 +1,4 @@
-require "time"
+require 'time'
 
 module VCAP::RestAPI
   #
@@ -77,18 +77,18 @@ module VCAP::RestAPI
       segments = []
 
       query.each do |q|
-        q.gsub!(";;", @@v)
-        segments.concat(q.split(";"))
+        q.gsub!(';;', @@v)
+        segments.concat(q.split(';'))
       end
 
       segments.collect do |segment|
-        segment.gsub!(@@v, ";")
+        segment.gsub!(@@v, ';')
         key, comparison, value = segment.split(/(:|>=|<=|<|>| IN )/, 2)
 
-        comparison = "=" if comparison == ":"
+        comparison = '=' if comparison == ':'
 
         unless queryable_attributes.include?(key)
-          raise VCAP::Errors::ApiError.new_from_details("BadQueryParameter", key)
+          raise VCAP::Errors::ApiError.new_from_details('BadQueryParameter', key)
         end
 
         [key.to_sym, comparison, value]
@@ -97,8 +97,8 @@ module VCAP::RestAPI
 
     def query_filter(key, comparison, val)
       foreign_key_association = foreign_key_association(key)
-      if comparison == " IN "
-        values = val.split(",")
+      if comparison == ' IN '
+        values = val.split(',')
       else
         values = [val]
       end
@@ -150,8 +150,8 @@ module VCAP::RestAPI
       { foreign_key_column_name => foreign_key_value }
     end
 
-    TINYINT_TYPE = "tinyint(1)".freeze
-    TINYINT_FROM_TRUE_FALSE = {"t" => 1, "f" => 0}.freeze
+    TINYINT_TYPE = 'tinyint(1)'.freeze
+    TINYINT_FROM_TRUE_FALSE = {'t' => 1, 'f' => 0}.freeze
 
     # Sequel uses tinyint(1) to store booleans in Mysql.
     # Mysql does not support using 't'/'f' for querying.
@@ -161,7 +161,7 @@ module VCAP::RestAPI
       if column[:db_type] == TINYINT_TYPE
         TINYINT_FROM_TRUE_FALSE.fetch(q_val, q_val)
       else
-        q_val == "t"
+        q_val == 't'
       end
     end
 
@@ -184,7 +184,7 @@ module VCAP::RestAPI
       # that a query key came in for an attribute that is explicitly
       # in the queryable_attributes, but is not a column or an association.
 
-      raise VCAP::Errors::ApiError.new_from_details("BadQueryParameter", query_key) unless column
+      raise VCAP::Errors::ApiError.new_from_details('BadQueryParameter', query_key) unless column
     end
 
     attr_accessor :model, :access_filter, :queryable_attributes, :query

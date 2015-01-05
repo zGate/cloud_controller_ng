@@ -15,9 +15,9 @@ module VCAP::CloudController
     def self.translate_validation_exception(e, attributes)
       name_errors = e.errors.on([:organization_id, :name])
       if name_errors && name_errors.include?(:unique)
-        Errors::ApiError.new_from_details("SpaceQuotaDefinitionNameTaken", attributes["name"])
+        Errors::ApiError.new_from_details('SpaceQuotaDefinitionNameTaken', attributes['name'])
       else
-        Errors::ApiError.new_from_details("SpaceQuotaDefinitionInvalid", e.errors.full_messages)
+        Errors::ApiError.new_from_details('SpaceQuotaDefinitionInvalid', e.errors.full_messages)
       end
     end
 

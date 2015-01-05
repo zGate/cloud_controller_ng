@@ -30,7 +30,7 @@ module VCAP::CloudController
     end
 
     def event_type
-      "service_create"
+      'service_create'
     end
 
     def self.create_from_service_instance(instance)

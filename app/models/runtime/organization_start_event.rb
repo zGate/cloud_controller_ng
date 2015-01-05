@@ -10,7 +10,7 @@ module VCAP::CloudController
     )
 
     def event_type
-      "organization_billing_start"
+      'organization_billing_start'
     end
 
     def self.create_from_org(org)

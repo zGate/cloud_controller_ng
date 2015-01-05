@@ -17,7 +17,7 @@ module VCAP::CloudController
 
     let(:dea_app) { AppFactory.make(package_hash: 'abc', package_state: 'STAGED') }
     let(:diego_app) { AppFactory.make(package_hash: 'abc', package_state: 'STAGED', 
-      environment_json: {"DIEGO_RUN_BETA" => "true"}) }
+      environment_json: {'DIEGO_RUN_BETA' => 'true'}) }
 
     let(:reporter) {double(:Reporter)}
     let(:reporter2) {double(:Reporter)}

@@ -4,7 +4,7 @@ module VCAP::CloudController
       [ :app_event_repository ]
     end
 
-    path_base "apps"
+    path_base 'apps'
     model_class_name :App
 
     def inject_dependencies(dependencies)
@@ -21,7 +21,7 @@ module VCAP::CloudController
         app.lock!
 
         if app.pending?
-          raise VCAP::Errors::ApiError.new_from_details("NotStaged")
+          raise VCAP::Errors::ApiError.new_from_details('NotStaged')
         end
 
         app.restage!
@@ -31,7 +31,7 @@ module VCAP::CloudController
 
       [
           HTTP::CREATED,
-          {"Location" => "#{self.class.path}/#{app.guid}"},
+          {'Location' => "#{self.class.path}/#{app.guid}"},
           object_renderer.render_json(self.class, app, @opts)
       ]
     end

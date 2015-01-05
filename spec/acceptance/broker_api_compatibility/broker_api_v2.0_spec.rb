@@ -233,8 +233,8 @@ describe 'Service Broker API integration' do
       let(:service_instance_guid) { @service_instance_guid }
       let(:request_from_cc_to_broker) do
         {
-          plan_id: "plan1-guid-here",
-          service_id:"service-guid-here"
+          plan_id: 'plan1-guid-here',
+          service_id:'service-guid-here'
         }
       end
 

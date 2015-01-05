@@ -20,7 +20,7 @@ module VCAP::Services::ServiceBrokers
       {'metadata' => {'foo' => 'bar'}}
     end
     let(:plan_metadata_hash) do
-      {'metadata' => { "cost" => "0.0" }}
+      {'metadata' => { 'cost' => '0.0' }}
     end
     let(:dashboard_client_attrs) do
       {
@@ -145,14 +145,14 @@ module VCAP::Services::ServiceBrokers
         expect(event.space_guid).to eq('')
         expect(event.organization_guid).to eq('')
         expect(event.metadata).to include({
-          "name"=>service_plan.name,
-          "free"=>service_plan.free,
-          "description"=>service_plan.description,
-          "service_guid"=>service_plan.service.guid,
-          "extra"=>"{\"cost\":\"0.0\"}",
-          "unique_id"=>service_plan.unique_id,
-          "public"=>service_plan.public,
-          "active"=>service_plan.active
+          'name'=>service_plan.name,
+          'free'=>service_plan.free,
+          'description'=>service_plan.description,
+          'service_guid'=>service_plan.service.guid,
+          'extra'=>"{\"cost\":\"0.0\"}",
+          'unique_id'=>service_plan.unique_id,
+          'public'=>service_plan.public,
+          'active'=>service_plan.active
         })
       end
 
@@ -306,7 +306,7 @@ module VCAP::Services::ServiceBrokers
         end
 
         context 'and a plan exists that has been removed from the broker catalog' do
-          let(:missing_plan_name) { "111" }
+          let(:missing_plan_name) { '111' }
           let!(:missing_plan) do
             VCAP::CloudController::ServicePlan.make(
               service: service,
@@ -338,10 +338,10 @@ module VCAP::Services::ServiceBrokers
           end
 
           context 'when an instance for the plan exists' do
-            let(:service_name) { "AAA" }
-            let(:missing_plan2_name) { "222" }
-            let(:missing_service2_name) { "BBB" }
-            let(:missing_service2_plan_name) { "111-B" }
+            let(:service_name) { 'AAA' }
+            let(:missing_plan2_name) { '222' }
+            let(:missing_service2_name) { 'BBB' }
+            let(:missing_service2_plan_name) { '111-B' }
 
             before do
               VCAP::CloudController::ManagedServiceInstance.make(service_plan: missing_plan)
@@ -359,7 +359,7 @@ module VCAP::Services::ServiceBrokers
               expect(missing_plan).not_to be_active
             end
 
-            context "when there are existing service instances" do
+            context 'when there are existing service instances' do
               before do
                 missing_service2 = VCAP::CloudController::Service.make(service_broker: broker, label: missing_service2_name)
                 missing_service2_plan = VCAP::CloudController::ServicePlan.make(service: missing_service2, unique_id: 'i_be_gone', name: missing_service2_plan_name)
@@ -381,7 +381,7 @@ HEREDOC
               end
             end
 
-            context "when there are no existing service instances" do
+            context 'when there are no existing service instances' do
               it 'does not add a formatted warning' do
                 service_manager.sync_services_and_plans(catalog)
 # rubocop:disable LineLength

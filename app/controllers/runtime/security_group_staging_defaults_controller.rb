@@ -9,7 +9,7 @@ module VCAP::CloudController
     end
 
     def self.not_found_exception(guid)
-      Errors::ApiError.new_from_details("SecurityGroupStagingDefaultInvalid", guid)
+      Errors::ApiError.new_from_details('SecurityGroupStagingDefaultInvalid', guid)
     end
 
     get path, :enumerate
@@ -20,7 +20,7 @@ module VCAP::CloudController
 
       model.db.transaction do
         obj.lock!
-        obj.update_from_hash({"staging_default" => true})
+        obj.update_from_hash({'staging_default' => true})
       end
 
       [
@@ -35,7 +35,7 @@ module VCAP::CloudController
 
       model.db.transaction do
         obj.lock!
-        obj.update_from_hash({"staging_default" => false})
+        obj.update_from_hash({'staging_default' => false})
       end
 
       [
@@ -44,12 +44,12 @@ module VCAP::CloudController
     end
 
     def read(_)
-      raise Errors::ApiError.new_from_details("NotAuthorized") unless roles.admin?
+      raise Errors::ApiError.new_from_details('NotAuthorized') unless roles.admin?
       super
     end
 
     def enumerate
-      raise Errors::ApiError.new_from_details("NotAuthorized") unless roles.admin?
+      raise Errors::ApiError.new_from_details('NotAuthorized') unless roles.admin?
       super
     end
 

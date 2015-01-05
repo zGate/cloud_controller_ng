@@ -9,11 +9,11 @@ module CloudController
         url = blob.download_url
         @missing_blob_handler.handle_missing_blob!(app_guid, blob_name) unless url
         logger.debug "nginx redirect #{url}"
-        return [200, {"X-Accel-Redirect" => url}, ""]
+        return [200, {'X-Accel-Redirect' => url}, '']
       end
 
       def logger
-        @logger ||= Steno.logger("cc.nginx_blob_sender")
+        @logger ||= Steno.logger('cc.nginx_blob_sender')
       end
     end
   end

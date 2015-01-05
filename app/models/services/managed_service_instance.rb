@@ -12,7 +12,7 @@ module VCAP::CloudController
         @token   = service.service_auth_token
         @service_id = service_id
         unless token
-          raise VCAP::Errors::ApiError.new_from_details("MissingServiceAuthToken", service)
+          raise VCAP::Errors::ApiError.new_from_details('MissingServiceAuthToken', service)
         end
       end
 
@@ -36,7 +36,7 @@ module VCAP::CloudController
 
         response = client.public_send(method, u,
           :header => { VCAP::Services::Api::GATEWAY_TOKEN_HEADER => token.token,
-            "Content-Type" => "application/json"
+            'Content-Type' => 'application/json'
           },
           :body   => payload)
         if response.ok?
@@ -147,7 +147,7 @@ module VCAP::CloudController
     end
 
     def logger
-      @logger ||= Steno.logger("cc.models.service_instance")
+      @logger ||= Steno.logger('cc.models.service_instance')
     end
 
     def bindable?

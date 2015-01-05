@@ -1,4 +1,4 @@
-require "cloud_controller/encryptor"
+require 'cloud_controller/encryptor'
 
 Sequel.migration do
   up do

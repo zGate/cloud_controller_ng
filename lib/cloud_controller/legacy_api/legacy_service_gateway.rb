@@ -1,4 +1,4 @@
-require "services/api"
+require 'services/api'
 
 module VCAP::CloudController
   class LegacyServiceGateway < LegacyApiBase
@@ -6,22 +6,22 @@ module VCAP::CloudController
     allow_unauthenticated_access
 
     include VCAP::Errors
-    SERVICE_TOKEN_KEY = "HTTP_X_VCAP_SERVICE_TOKEN"
-    DEFAULT_PROVIDER = "core"
-    LEGACY_API_USER_GUID = "legacy-api"
-    LEGACY_PLAN_OVERIDE = "100"
+    SERVICE_TOKEN_KEY = 'HTTP_X_VCAP_SERVICE_TOKEN'
+    DEFAULT_PROVIDER = 'core'
+    LEGACY_API_USER_GUID = 'legacy-api'
+    LEGACY_PLAN_OVERIDE = '100'
 
     def create_offering
       req = VCAP::Services::Api::ServiceOfferingRequest.decode(body)
       logger.debug("Update or create legacy service request: #{req.extract.inspect}")
 
-      (label, version_from_label, label_dash_check) = req.label.split("-")
+      (label, version_from_label, label_dash_check) = req.label.split('-')
       if label_dash_check
         logger.warn("Unexpected dash in label: #{req.label} ")
-        raise Errors::ApiError.new_from_details("InvalidRequest")
+        raise Errors::ApiError.new_from_details('InvalidRequest')
       end
 
-      version = req.version_aliases["current"] || version_from_label
+      version = req.version_aliases['current'] || version_from_label
 
       provider = DEFAULT_PROVIDER
       validate_access(label, provider)
@@ -32,7 +32,7 @@ module VCAP::CloudController
           :label => label, :provider => provider
         ) do |svc|
           if svc.new?
-            logger.debug2("Creating service")
+            logger.debug2('Creating service')
           else
             logger.debug2("Updating service #{svc.guid}")
           end
@@ -61,13 +61,13 @@ module VCAP::CloudController
       else
         new_plan_attrs = Array(req.plans).map {|plan_name|
           {
-            "name" => plan_name,
-            "free" => !!(plan_name =~ /^1[0-9][0-9]$/), #only 100-level plans are free
+            'name' => plan_name,
+            'free' => !!(plan_name =~ /^1[0-9][0-9]$/), #only 100-level plans are free
           }
         }
       end
 
-      new_plan_attrs.each {|attrs| attrs["description"] ||= "dummy description" }
+      new_plan_attrs.each {|attrs| attrs['description'] ||= 'dummy description' }
 
       old_plan_names = ServicePlan.dataset.
         join(:services, :id => :service_id).
@@ -84,7 +84,7 @@ module VCAP::CloudController
         end
       end
 
-      missing = old_plan_names - new_plan_attrs.map {|attrs| attrs["name"]}
+      missing = old_plan_names - new_plan_attrs.map {|attrs| attrs['name']}
       if missing.any?
         logger.info("Attempting to remove old plans: #{missing.inspect}")
         service.service_plans_dataset.filter(:name => missing).each do |plan|
@@ -98,10 +98,10 @@ module VCAP::CloudController
     end
 
     def list_handles(label_and_version, provider = DEFAULT_PROVIDER)
-      (label, version) = label_and_version.split("-")
+      (label, version) = label_and_version.split('-')
 
       service = Service[:label => label, :provider => provider]
-      raise ApiError.new_from_details("ServiceNotFound", "label=#{label} provider=#{provider}") unless service
+      raise ApiError.new_from_details('ServiceNotFound', "label=#{label} provider=#{provider}") unless service
       validate_access(label, provider)
       logger.debug("Listing handles for service: #{service.inspect}")
 
@@ -130,7 +130,7 @@ module VCAP::CloudController
     end
 
     def delete(label_and_version, provider = DEFAULT_PROVIDER)
-      label = label_and_version.split("-")[0]
+      label = label_and_version.split('-')[0]
 
       validate_access(label, provider)
 
@@ -146,20 +146,20 @@ module VCAP::CloudController
 
     def validate_access(label, provider = DEFAULT_PROVIDER)
       auth_token = env[SERVICE_TOKEN_KEY]
-      raise Errors::ApiError.new_from_details("NotAuthorized") unless auth_token
+      raise Errors::ApiError.new_from_details('NotAuthorized') unless auth_token
 
       svc_auth_token = ServiceAuthToken[
         :label => label, :provider => provider,
       ]
 
       unless (svc_auth_token && svc_auth_token.token_matches?(auth_token))
-        logger.warn("unauthorized service offering")
-        raise Errors::ApiError.new_from_details("NotAuthorized")
+        logger.warn('unauthorized service offering')
+        raise Errors::ApiError.new_from_details('NotAuthorized')
       end
     end
 
     def get(label_and_version, provider = DEFAULT_PROVIDER)
-      label = label_and_version.split("-")[0]
+      label = label_and_version.split('-')[0]
 
       validate_access(label, provider)
 
@@ -199,7 +199,7 @@ module VCAP::CloudController
     # P.S. While I applaud Ruby for allowing this default parameter in the
     # middle, I'm really not wild for _any_ function overloading in Ruby
     def update_handle(label_and_version, provider=DEFAULT_PROVIDER, id)
-      (label, version) = label_and_version.split("-")
+      (label, version) = label_and_version.split('-')
 
       validate_access(label, provider)
       set_v2_security_context
@@ -207,7 +207,7 @@ module VCAP::CloudController
       req = VCAP::Services::Api::HandleUpdateRequest.decode(body)
 
       service = Service[:label => label, :provider => provider]
-      raise ApiError.new_from_details("ServiceNotFound", "label=#{label} provider=#{provider}") unless service
+      raise ApiError.new_from_details('ServiceNotFound', "label=#{label} provider=#{provider}") unless service
 
 
       plans_ds = service.service_plans_dataset
@@ -230,14 +230,14 @@ module VCAP::CloudController
         )
         binding.save_changes
       else
-        raise ApiError.new_from_details("ServiceInstanceNotFound", "label=#{label} provider=#{provider} id=#{id}")
+        raise ApiError.new_from_details('ServiceInstanceNotFound', "label=#{label} provider=#{provider} id=#{id}")
       end
     end
 
     private
 
     def empty_json
-      "{}"
+      '{}'
     end
 
     def legacy_api_user
@@ -261,20 +261,20 @@ module VCAP::CloudController
     end
 
     def self.setup_routes
-      get    "/services/v1/offerings/:label_and_version/handles",               :list_handles
-      get    "/services/v1/offerings/:label_and_version/:provider/handles",     :list_handles
-      get    "/services/v1/offerings/:label_and_version/:provider",             :get
-      get    "/services/v1/offerings/:label_and_version",                       :get
-      delete "/services/v1/offerings/:label_and_version",                       :delete
-      delete "/services/v1/offerings/:label_and_version/:provider",             :delete
-      post   "/services/v1/offerings",                                          :create_offering
-      post   "/services/v1/offerings/:label_and_version/handles/:id",           :update_handle
-      post   "/services/v1/offerings/:label_and_version/:provider/handles/:id", :update_handle
+      get    '/services/v1/offerings/:label_and_version/handles',               :list_handles
+      get    '/services/v1/offerings/:label_and_version/:provider/handles',     :list_handles
+      get    '/services/v1/offerings/:label_and_version/:provider',             :get
+      get    '/services/v1/offerings/:label_and_version',                       :get
+      delete '/services/v1/offerings/:label_and_version',                       :delete
+      delete '/services/v1/offerings/:label_and_version/:provider',             :delete
+      post   '/services/v1/offerings',                                          :create_offering
+      post   '/services/v1/offerings/:label_and_version/handles/:id',           :update_handle
+      post   '/services/v1/offerings/:label_and_version/:provider/handles/:id', :update_handle
     end
 
     def self.translate_validation_exception(e, attributes)
-      Steno.logger("cc.api.legacy_svc_gw").error "#{attributes} #{e}"
-      Errors::ApiError.new_from_details("InvalidRequest.new")
+      Steno.logger('cc.api.legacy_svc_gw').error "#{attributes} #{e}"
+      Errors::ApiError.new_from_details('InvalidRequest.new')
     end
 
     setup_routes

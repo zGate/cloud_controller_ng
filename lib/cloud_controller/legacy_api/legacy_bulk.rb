@@ -1,5 +1,5 @@
-require "sinatra"
-require "controllers/base/base_controller"
+require 'sinatra'
+require 'controllers/base/base_controller'
 
 module VCAP::CloudController
   class BulkResponse < JsonMessage
@@ -7,13 +7,13 @@ module VCAP::CloudController
       dict(
         any,
         {
-          "id"              => String,
-          "instances"       => Integer,
-          "state"           => String,
-          "memory"          => Integer,
-          "package_state"   => String,
-          "updated_at"      => Time,
-          "version"         => String
+          'id'              => String,
+          'instances'       => Integer,
+          'state'           => String,
+          'memory'          => Integer,
+          'package_state'   => String,
+          'updated_at'      => Time,
+          'version'         => String
         },
       )
     end
@@ -23,7 +23,7 @@ module VCAP::CloudController
   class UserCountsResponse < JsonMessage
     required :counts do
       {
-        "user" => Integer,
+        'user' => Integer,
       }
     end
   end
@@ -46,8 +46,8 @@ module VCAP::CloudController
         message_bus.subscribe(subject) do |_, reply|
           message_bus.publish(
               reply,
-              "user"      => config[:auth_user],
-              "password"  => config[:auth_password],
+              'user'      => config[:auth_user],
+              'password'  => config[:auth_password],
           )
         end
       end
@@ -64,14 +64,14 @@ module VCAP::CloudController
       super
       auth = Rack::Auth::Basic::Request.new(env)
       unless auth.provided? && auth.basic? && auth.credentials == self.class.credentials
-        raise Errors::ApiError.new_from_details("NotAuthenticated")
+        raise Errors::ApiError.new_from_details('NotAuthenticated')
       end
     end
 
     def bulk_apps
-      batch_size = Integer(params.fetch("batch_size"))
-      bulk_token = MultiJson.load(params.fetch("bulk_token"))
-      last_id = Integer(bulk_token["id"] || 0)
+      batch_size = Integer(params.fetch('batch_size'))
+      bulk_token = MultiJson.load(params.fetch('bulk_token'))
+      last_id = Integer(bulk_token['id'] || 0)
 
       dependency_locator = ::CloudController::DependencyLocator.instance
       runners = dependency_locator.runners
@@ -82,23 +82,23 @@ module VCAP::CloudController
 
       BulkResponse.new(
         :results => app_hashes,
-        :bulk_token => { "id" => id_for_next_token }
+        :bulk_token => { 'id' => id_for_next_token }
       ).encode
     rescue IndexError => e
-      raise ApiError.new_from_details("BadQueryParameter", e.message)
+      raise ApiError.new_from_details('BadQueryParameter', e.message)
     end
 
     def bulk_user_count
-      model = params.fetch("model", "user")
-      raise ApiError.new_from_details("BadQueryParameter", "model") unless model == "user"
+      model = params.fetch('model', 'user')
+      raise ApiError.new_from_details('BadQueryParameter', 'model') unless model == 'user'
       UserCountsResponse.new(
         :counts => {
-          "user" => User.count,
+          'user' => User.count,
         },
       ).encode
     end
 
-    get "/bulk/apps",     :bulk_apps
-    get "/bulk/counts",   :bulk_user_count
+    get '/bulk/apps',     :bulk_apps
+    get '/bulk/counts',   :bulk_user_count
   end
 end

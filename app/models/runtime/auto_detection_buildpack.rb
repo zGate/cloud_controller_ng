@@ -21,7 +21,7 @@ module VCAP::CloudController
     end
 
     def to_s
-      "Auto Detection Buildpack"
+      'Auto Detection Buildpack'
     end
 
     def to_json

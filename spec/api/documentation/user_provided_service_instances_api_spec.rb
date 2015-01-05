@@ -1,14 +1,14 @@
 require 'spec_helper'
 require 'rspec_api_documentation/dsl'
 
-resource "User Provided Service Instances", :type => [:api, :legacy_api] do
-  let(:admin_auth_header) { admin_headers["HTTP_AUTHORIZATION"] }
+resource 'User Provided Service Instances', :type => [:api, :legacy_api] do
+  let(:admin_auth_header) { admin_headers['HTTP_AUTHORIZATION'] }
   let!(:service_instance) { VCAP::CloudController::UserProvidedServiceInstance.make }
   let(:guid) { service_instance.guid }
 
   authenticated_request
 
-  describe "Standard endpoints" do
+  describe 'Standard endpoints' do
     standard_model_list :user_provided_service_instance, VCAP::CloudController::UserProvidedServiceInstancesController
     standard_model_get :user_provided_service_instance, nested_attributes: [:space]
     standard_model_delete_without_async :user_provided_service_instance
@@ -50,10 +50,10 @@ resource "User Provided Service Instances", :type => [:api, :legacy_api] do
     end
   end
 
-  describe "Nested endpoints" do
-    field :guid, "The guid of the Service Instance.", required: true
+  describe 'Nested endpoints' do
+    field :guid, 'The guid of the Service Instance.', required: true
 
-    describe "Service Bindings" do
+    describe 'Service Bindings' do
       before do
         VCAP::CloudController::ServiceBinding.make(service_instance: service_instance)
       end

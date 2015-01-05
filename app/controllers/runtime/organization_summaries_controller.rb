@@ -1,6 +1,6 @@
 module VCAP::CloudController
   class OrganizationSummariesController < RestController::ModelController
-    path_base "organizations"
+    path_base 'organizations'
     model_class_name :Organization
 
     get "#{path_guid}/summary", :summary

@@ -3,9 +3,9 @@
 module VCAP::CloudController
   class LegacyService < LegacyApiBase
     include VCAP::Errors
-    DEFAULT_PROVIDER = "core"
-    LEGACY_API_USER_GUID = "legacy-api"
-    LEGACY_PLAN_OVERIDE = "100"
+    DEFAULT_PROVIDER = 'core'
+    LEGACY_API_USER_GUID = 'legacy-api'
+    LEGACY_PLAN_OVERIDE = '100'
 
     def enumerate
       resp = default_space.service_instances.map do |svc_instance|
@@ -21,20 +21,20 @@ module VCAP::CloudController
 
       logger.debug("legacy service create #{legacy_attrs}")
 
-      svc = Service.find({:label => legacy_attrs["vendor"],
-                                  :version => legacy_attrs["version"]})
+      svc = Service.find({:label => legacy_attrs['vendor'],
+                                  :version => legacy_attrs['version']})
       unless svc
         msg = "#{legacy_attrs["vendor"]}-#{legacy_attrs["version"]}"
-        raise ApiError.new_from_details("ServiceInvalid", msg)
+        raise ApiError.new_from_details('ServiceInvalid', msg)
       end
 
       plans = svc.service_plans_dataset.filter(:name => LEGACY_PLAN_OVERIDE)
       raise ServicePlanInvalid.new(LEGACY_PLAN_OVERIDE) if plans.count == 0
-      logger.warn("legacy create matched > 1 plan") unless plans.count == 1
+      logger.warn('legacy create matched > 1 plan') unless plans.count == 1
       plan = plans.first
 
       attrs = {
-        :name => legacy_attrs["name"],
+        :name => legacy_attrs['name'],
         :space_guid => default_space.guid,
         :service_plan_guid => plan.guid
       }
@@ -43,7 +43,7 @@ module VCAP::CloudController
       controller_factory = CloudController::ControllerFactory.new(config, logger, env, params, req)
       svc_api = controller_factory.create_controller(VCAP::CloudController::ServiceInstancesController)
       svc_api.dispatch(:create)
-      "{}"
+      '{}'
     end
 
     def read(name)
@@ -78,28 +78,28 @@ module VCAP::CloudController
     def self.synthesize_service_type(svc)
       case svc.label
       when /mysql/
-        "database"
+        'database'
       when /postgresql/
-        "database"
+        'database'
       when /redis/
-        "key-value"
+        'key-value'
       when /mongodb/
-        "key-value"
+        'key-value'
       else
-        "generic"
+        'generic'
       end
     end
 
     private
 
     def empty_json
-      "{}"
+      '{}'
     end
 
     def service_instance_from_name(name)
       visible_instances = ManagedServiceInstance.user_visible(SecurityContext.current_user, SecurityContext.admin?)
       svc = visible_instances[:name => name, :space => default_space]
-      raise ApiError.new_from_details("ServiceInstanceNotFound", name) unless svc
+      raise ApiError.new_from_details('ServiceInstanceNotFound', name) unless svc
       svc
     end
 
@@ -132,12 +132,12 @@ module VCAP::CloudController
     end
 
     def self.setup_routes
-      get    "/services",       :enumerate
-      post   "/services",       :create
-      get    "/services/:name", :read
-      delete "/services/:name", :delete
+      get    '/services',       :enumerate
+      post   '/services',       :create
+      get    '/services/:name', :read
+      delete '/services/:name', :delete
 
-      get    "/services/v1/offerings", :enumerate_offerings
+      get    '/services/v1/offerings', :enumerate_offerings
     end
 
     setup_routes

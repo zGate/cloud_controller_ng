@@ -1,16 +1,16 @@
-require "spec_helper"
+require 'spec_helper'
 
 module VCAP::CloudController
   describe EventsController do
     let(:admin_user) { User.make :admin => true }
 
-    describe "Query Parameters" do
+    describe 'Query Parameters' do
       it { expect(described_class).to be_queryable_by(:timestamp) }
       it { expect(described_class).to be_queryable_by(:type) }
       it { expect(described_class).to be_queryable_by(:actee) }
     end
 
-    describe "GET /v2/events" do
+    describe 'GET /v2/events' do
       before do
         @user_a = User.make
         @user_b = User.make
@@ -31,54 +31,54 @@ module VCAP::CloudController
       end
 
 
-      describe "default order" do
-        it "sorts by timestamp" do
+      describe 'default order' do
+        it 'sorts by timestamp' do
           type = SecureRandom.uuid
-          Event.make(:timestamp => Time.new(1990, 1, 1), :type => type, :actor => "earlier")
-          Event.make(:timestamp => Time.new(2000, 1, 1), :type => type, :actor => "later")
-          Event.make(:timestamp => Time.new(1995, 1, 1), :type => type, :actor => "middle")
+          Event.make(:timestamp => Time.new(1990, 1, 1), :type => type, :actor => 'earlier')
+          Event.make(:timestamp => Time.new(2000, 1, 1), :type => type, :actor => 'later')
+          Event.make(:timestamp => Time.new(1995, 1, 1), :type => type, :actor => 'middle')
 
-          get "/v2/events", {}, admin_headers
+          get '/v2/events', {}, admin_headers
           parsed_body = MultiJson.load(last_response.body)
-          events = parsed_body["resources"].select {|r| r["entity"]["type"] == type }.map { |r| r["entity"]["actor"] }
+          events = parsed_body['resources'].select {|r| r['entity']['type'] == type }.map { |r| r['entity']['actor'] }
           expect(events).to eq(%w(earlier middle later))
         end
       end
 
-      context "as an admin" do
-        it "includes all events" do
-          get "/v2/events", {}, admin_headers
+      context 'as an admin' do
+        it 'includes all events' do
+          get '/v2/events', {}, admin_headers
 
           parsed_body = MultiJson.load(last_response.body)
-          expect(parsed_body["total_results"]).to eq(3)
+          expect(parsed_body['total_results']).to eq(3)
         end
       end
 
-      context "as an auditor" do
+      context 'as an auditor' do
         before do
           @space_a.add_auditor(@user_a)
           @space_b.add_auditor(@user_b)
         end
 
-        it "includes only events from space visible to the user" do
-          get "/v2/events", {}, headers_for(@user_a)
+        it 'includes only events from space visible to the user' do
+          get '/v2/events', {}, headers_for(@user_a)
 
           parsed_body = MultiJson.load(last_response.body)
-          expect(parsed_body["total_results"]).to eq(1)
+          expect(parsed_body['total_results']).to eq(1)
         end
       end
 
-      context "as a developer" do
+      context 'as a developer' do
         before do
           @space_a.add_developer(@user_a)
           @space_b.add_developer(@user_b)
         end
 
-        it "includes only events from space visible to the user" do
-          get "/v2/events", {}, headers_for(@user_a)
+        it 'includes only events from space visible to the user' do
+          get '/v2/events', {}, headers_for(@user_a)
 
           parsed_body = MultiJson.load(last_response.body)
-          expect(parsed_body["total_results"]).to eq(1)
+          expect(parsed_body['total_results']).to eq(1)
         end
       end
     end

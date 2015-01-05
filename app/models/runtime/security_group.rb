@@ -46,14 +46,14 @@ module VCAP::CloudController
         protocol = rule['protocol']
 
         validation_errors = case protocol
-        when "tcp", "udp"
+        when 'tcp', 'udp'
           CloudController::TransportRuleValidator.validate(rule)
-        when "icmp"
+        when 'icmp'
           CloudController::ICMPRuleValidator.validate(rule)
-        when "all"
+        when 'all'
           CloudController::RuleValidator.validate(rule)
         else
-          ["contains an unsupported protocol"]
+          ['contains an unsupported protocol']
         end
 
         validation_errors.each do |error_text|

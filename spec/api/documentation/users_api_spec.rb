@@ -1,45 +1,45 @@
 require 'spec_helper'
 require 'rspec_api_documentation/dsl'
 
-resource "Users", type: [:api, :legacy_api] do
-  let(:admin_auth_header) { admin_headers["HTTP_AUTHORIZATION"] }
+resource 'Users', type: [:api, :legacy_api] do
+  let(:admin_auth_header) { admin_headers['HTTP_AUTHORIZATION'] }
   let!(:user) { VCAP::CloudController::User.make(default_space: space) }
   let(:guid) { user.guid }
   let(:space) { VCAP::CloudController::Space.make }
 
   authenticated_request
 
-  shared_context "guid_parameter" do
-    parameter :guid, "The guid of the User"
+  shared_context 'guid_parameter' do
+    parameter :guid, 'The guid of the User'
   end
 
-  shared_context "updatable_fields" do
-    field :default_space_guid, "The guid of the default space for apps created by this user."
-    field :admin, "Whether the user is an admin (Use UAA instead).", deprecated: true
+  shared_context 'updatable_fields' do
+    field :default_space_guid, 'The guid of the default space for apps created by this user.'
+    field :admin, 'Whether the user is an admin (Use UAA instead).', deprecated: true
   end
 
-  describe "Standard endpoints" do
+  describe 'Standard endpoints' do
     standard_model_list(:user, VCAP::CloudController::UsersController)
     standard_model_get(:user, nested_associations: [:default_space])
     standard_model_delete(:user)
 
-    post "/v2/users/" do
-      field :guid, "The UAA guid of the user to create.", required: true, example_values: [Sham.guid]
-      include_context "updatable_fields"
+    post '/v2/users/' do
+      field :guid, 'The UAA guid of the user to create.', required: true, example_values: [Sham.guid]
+      include_context 'updatable_fields'
 
-      example "Creating a User" do
-        client.post "/v2/users", fields_json, headers
+      example 'Creating a User' do
+        client.post '/v2/users', fields_json, headers
         expect(status).to eq(201)
 
         standard_entity_response parsed_response, :user
       end
     end
 
-    put "/v2/users/:guid" do
-      include_context "guid_parameter"
-      include_context "updatable_fields"
+    put '/v2/users/:guid' do
+      include_context 'guid_parameter'
+      include_context 'updatable_fields'
 
-      example "Updating a User" do
+      example 'Updating a User' do
         new_space = VCAP::CloudController::Space.make
         client.put "/v2/users/#{guid}", MultiJson.dump({ default_space_guid: new_space.guid }, pretty: true), headers
 
@@ -49,10 +49,10 @@ resource "Users", type: [:api, :legacy_api] do
     end
   end
 
-  describe "Nested endpoints" do
-    include_context "guid_parameter"
+  describe 'Nested endpoints' do
+    include_context 'guid_parameter'
 
-    describe "Developer Spaces" do
+    describe 'Developer Spaces' do
       before do
         associated_space.organization.add_user(user)
         associated_space.add_developer(user)
@@ -70,7 +70,7 @@ resource "Users", type: [:api, :legacy_api] do
       nested_model_remove :space, :user
     end
 
-    describe "Managed Spaces" do
+    describe 'Managed Spaces' do
       before do
         associated_managed_space.organization.add_user(user)
         associated_managed_space.add_manager(user)
@@ -89,7 +89,7 @@ resource "Users", type: [:api, :legacy_api] do
       nested_model_remove :managed_space, :user
     end
 
-    describe "Audited Spaces" do
+    describe 'Audited Spaces' do
       before do
         associated_audited_space.organization.add_user(user)
         associated_audited_space.add_auditor(user)
@@ -107,7 +107,7 @@ resource "Users", type: [:api, :legacy_api] do
       nested_model_remove :audited_space, :user
     end
 
-    describe "Organizations" do
+    describe 'Organizations' do
       before do
         associated_organization.add_user(user)
       end
@@ -122,7 +122,7 @@ resource "Users", type: [:api, :legacy_api] do
       nested_model_remove :organization, :user
     end
 
-    describe "Managed Organizations" do
+    describe 'Managed Organizations' do
       before do
         managed_organization.add_user(user)
 
@@ -140,7 +140,7 @@ resource "Users", type: [:api, :legacy_api] do
       nested_model_remove :managed_organization, :user
     end
 
-    describe "Billing Managed Organizations" do
+    describe 'Billing Managed Organizations' do
       before do
         billing_managed_organization.add_user(user)
 
@@ -157,7 +157,7 @@ resource "Users", type: [:api, :legacy_api] do
       nested_model_remove :billing_managed_organization, :user
     end
 
-    describe "Audited Organizations" do
+    describe 'Audited Organizations' do
       before do
         audited_organization.add_user(user)
 

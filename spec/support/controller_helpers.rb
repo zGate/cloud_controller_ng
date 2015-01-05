@@ -2,37 +2,37 @@ module ControllerHelpers
   include VCAP::CloudController
 
   HTTPS_ENFORCEMENT_SCENARIOS = [
-    {:protocol => "http",  :config_setting => nil, :user => "user",  :success => true},
-    {:protocol => "http",  :config_setting => nil, :user => "admin", :success => true},
-    {:protocol => "https", :config_setting => nil, :user => "user",  :success => true},
-    {:protocol => "https", :config_setting => nil, :user => "admin", :success => true},
+    {:protocol => 'http',  :config_setting => nil, :user => 'user',  :success => true},
+    {:protocol => 'http',  :config_setting => nil, :user => 'admin', :success => true},
+    {:protocol => 'https', :config_setting => nil, :user => 'user',  :success => true},
+    {:protocol => 'https', :config_setting => nil, :user => 'admin', :success => true},
 
     # Next with https_required
-    {:protocol => "http",  :config_setting => :https_required, :user => "user",  :success => false},
-    {:protocol => "http",  :config_setting => :https_required, :user => "admin", :success => false},
-    {:protocol => "https", :config_setting => :https_required, :user => "user",  :success => true},
-    {:protocol => "https", :config_setting => :https_required, :user => "admin", :success => true},
+    {:protocol => 'http',  :config_setting => :https_required, :user => 'user',  :success => false},
+    {:protocol => 'http',  :config_setting => :https_required, :user => 'admin', :success => false},
+    {:protocol => 'https', :config_setting => :https_required, :user => 'user',  :success => true},
+    {:protocol => 'https', :config_setting => :https_required, :user => 'admin', :success => true},
 
     # Finally with https_required_for_admins
-    {:protocol => "http",  :config_setting => :https_required_for_admins, :user => "user",  :success => true},
-    {:protocol => "http",  :config_setting => :https_required_for_admins, :user => "admin", :success => false},
-    {:protocol => "https", :config_setting => :https_required_for_admins, :user => "user",  :success => true},
-    {:protocol => "https", :config_setting => :https_required_for_admins, :user => "admin", :success => true}
+    {:protocol => 'http',  :config_setting => :https_required_for_admins, :user => 'user',  :success => true},
+    {:protocol => 'http',  :config_setting => :https_required_for_admins, :user => 'admin', :success => false},
+    {:protocol => 'https', :config_setting => :https_required_for_admins, :user => 'user',  :success => true},
+    {:protocol => 'https', :config_setting => :https_required_for_admins, :user => 'admin', :success => true}
   ]
 
   def self.description_for_inline_depth(depth, pagination = 50)
     if depth
       "?inline-relations-depth=#{depth}&results-per-page=#{pagination}"
     else
-      ""
+      ''
     end
   end
 
   def query_params_for_inline_depth(depth, pagination = 50)
     if depth
-      {"inline-relations-depth" => depth, "results-per-page" => pagination}
+      {'inline-relations-depth' => depth, 'results-per-page' => pagination}
     else
-      {"results-per-page" => pagination}
+      {'results-per-page' => pagination}
     end
   end
 
@@ -82,15 +82,15 @@ module ControllerHelpers
         :scope => scopes
       )
 
-      headers["HTTP_AUTHORIZATION"] = "bearer #{user_token}"
+      headers['HTTP_AUTHORIZATION'] = "bearer #{user_token}"
     end
 
-    headers["HTTP_X_FORWARDED_PROTO"] = "https" if opts[:https]
+    headers['HTTP_X_FORWARDED_PROTO'] = 'https' if opts[:https]
     headers
   end
 
   def json_headers(headers)
-    headers.merge({ "CONTENT_TYPE" => "application/json"})
+    headers.merge({ 'CONTENT_TYPE' => 'application/json'})
   end
 
   def decoded_response(options={})
@@ -102,11 +102,11 @@ module ControllerHelpers
   end
 
   def metadata
-    decoded_response["metadata"]
+    decoded_response['metadata']
   end
 
   def entity
-    decoded_response["entity"]
+    decoded_response['entity']
   end
 
   def admin_user

@@ -85,7 +85,7 @@ module VCAP::CloudController
       it_behaves_like :no_access
     end
 
-    describe "finding permissions when the related space is deleted" do
+    describe 'finding permissions when the related space is deleted' do
       context 'admin' do
         before do
           space.destroy

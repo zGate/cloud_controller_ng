@@ -48,7 +48,7 @@ describe 'Sinatra::VCAP', type: :controller do
     end
 
     get '/vcap_error' do
-      e = VCAP::Errors::ApiError.new_from_details("MessageParseError", 'some message')
+      e = VCAP::Errors::ApiError.new_from_details('MessageParseError', 'some message')
       e.set_backtrace(['/vcap:1', '/error:2'])
       raise e
     end
@@ -129,8 +129,8 @@ describe 'Sinatra::VCAP', type: :controller do
 
     it 'should return a 404' do
       expect(last_response.status).to eq(404)
-      expect(decoded_response["code"]).to eq(10000)
-      expect(decoded_response["description"]).to match(/Unknown request/)
+      expect(decoded_response['code']).to eq(10000)
+      expect(decoded_response['description']).to match(/Unknown request/)
     end
 
     include_examples 'vcap sinatra varz stats', 404

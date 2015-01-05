@@ -11,7 +11,7 @@ module VCAP::CloudController
       return false unless create?(app, params)
       return true if params.nil?
       if %w(instances memory disk_quota).any? {|k| params.has_key?(k) && params[k] != app.send(k.to_sym)}
-        FeatureFlag.raise_unless_enabled!("app_scaling")
+        FeatureFlag.raise_unless_enabled!('app_scaling')
       end
       true
     end

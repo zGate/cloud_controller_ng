@@ -4,7 +4,7 @@ module VCAP::CloudController
       [ :instances_reporters ]
     end
 
-    path_base "spaces"
+    path_base 'spaces'
 
     model_class_name :Space
 
@@ -48,7 +48,7 @@ module VCAP::CloudController
         }.merge(app.to_hash)
       end
     rescue Errors::InstancesUnavailable => e
-      raise VCAP::Errors::ApiError.new_from_details("InstancesUnavailable", e.to_s)
+      raise VCAP::Errors::ApiError.new_from_details('InstancesUnavailable', e.to_s)
     end
 
     def services_summary(space)

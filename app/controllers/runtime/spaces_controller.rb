@@ -28,9 +28,9 @@ module VCAP::CloudController
     def self.translate_validation_exception(e, attributes)
       name_errors = e.errors.on([:organization_id, :name])
       if name_errors && name_errors.include?(:unique)
-        Errors::ApiError.new_from_details("SpaceNameTaken", attributes["name"])
+        Errors::ApiError.new_from_details('SpaceNameTaken', attributes['name'])
       else
-        Errors::ApiError.new_from_details("SpaceInvalid", e.errors.full_messages)
+        Errors::ApiError.new_from_details('SpaceInvalid', e.errors.full_messages)
       end
     end
 
@@ -39,9 +39,9 @@ module VCAP::CloudController
       @space_event_repository = dependencies.fetch(:space_event_repository)
     end
 
-    get "/v2/spaces/:guid/services", :enumerate_services
+    get '/v2/spaces/:guid/services', :enumerate_services
     def enumerate_services(guid)
-      logger.debug "cc.enumerate.related", guid: guid, association: "services"
+      logger.debug 'cc.enumerate.related', guid: guid, association: 'services'
 
       space = find_guid_and_validate_access(:read, guid)
 
@@ -71,7 +71,7 @@ module VCAP::CloudController
       )
     end
 
-    get "/v2/spaces/:guid/service_instances", :enumerate_service_instances
+    get '/v2/spaces/:guid/service_instances', :enumerate_service_instances
     def enumerate_service_instances(guid)
       space = find_guid_and_validate_access(:read, guid)
 

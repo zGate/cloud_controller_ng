@@ -1,5 +1,5 @@
-require "cloud_controller/blobstore/cdn"
-require "cloud_controller/dependency_locator"
+require 'cloud_controller/blobstore/cdn'
+require 'cloud_controller/dependency_locator'
 
 module VCAP::CloudController
   module Jobs
@@ -7,7 +7,7 @@ module VCAP::CloudController
       class AppBitsPacker < Struct.new(:app_guid, :uploaded_compressed_path, :fingerprints)
 
         def perform
-          logger = Steno.logger("cc.background")
+          logger = Steno.logger('cc.background')
           logger.info("Packing the app bits for app '#{app_guid}'")
 
           app = VCAP::CloudController::App.find(guid: app_guid)

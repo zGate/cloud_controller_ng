@@ -150,11 +150,11 @@ module VCAP::CloudController
         end
       end
 
-      context "when resultqueue and/or threadqueue is not a queue" do
+      context 'when resultqueue and/or threadqueue is not a queue' do
         let(:resultqueue) { [] }
         let(:threadqueue) { nil }
 
-        it "does not blow up" do
+        it 'does not blow up' do
           VCAP::Component.varz.synchronize do
             expect(VCAP::Component.varz[:thread_info][:event_machine][:resultqueue][:size]).to eq(0)
             expect(VCAP::Component.varz[:thread_info][:event_machine][:resultqueue][:num_waiting]).to eq(0)

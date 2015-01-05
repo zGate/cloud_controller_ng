@@ -1,4 +1,4 @@
-require "cloud_controller/buildpack_positioner"
+require 'cloud_controller/buildpack_positioner'
 
 module VCAP::CloudController
   class BuildpackPositioner

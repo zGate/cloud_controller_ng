@@ -4,7 +4,7 @@ module VCAP::CloudController
   describe ServiceUsageEventsController do
     let(:event_guid1) { SecureRandom.uuid }
 
-    describe "Query Parameters" do
+    describe 'Query Parameters' do
       it { expect(described_class).to be_queryable_by(:service_instance_type) }
     end
 
@@ -106,21 +106,21 @@ module VCAP::CloudController
           end
 
           it 'maintains the service_instance_type in the next_url' do
-            get "/v2/service_usage_events?service_instance_type=managed_service_instance&results-per-page=1", {}, admin_headers
+            get '/v2/service_usage_events?service_instance_type=managed_service_instance&results-per-page=1', {}, admin_headers
             expect(last_response).to be_successful
-            expect(decoded_response.fetch('next_url')).to include("/v2/service_usage_events")
-            expect(decoded_response.fetch('next_url')).to include("service_instance_type=managed_service_instance")
-            expect(decoded_response.fetch('next_url')).to include("order-direction=asc")
-            expect(decoded_response.fetch('next_url')).to include("results-per-page=1")
+            expect(decoded_response.fetch('next_url')).to include('/v2/service_usage_events')
+            expect(decoded_response.fetch('next_url')).to include('service_instance_type=managed_service_instance')
+            expect(decoded_response.fetch('next_url')).to include('order-direction=asc')
+            expect(decoded_response.fetch('next_url')).to include('results-per-page=1')
           end
 
           it 'maintains the service_instance_type in the prev_url' do
-            get "/v2/service_usage_events?service_instance_type=managed_service_instance&results-per-page=1&page=2", {}, admin_headers
+            get '/v2/service_usage_events?service_instance_type=managed_service_instance&results-per-page=1&page=2', {}, admin_headers
             expect(last_response).to be_successful
-            expect(decoded_response.fetch('prev_url')).to include("/v2/service_usage_events")
-            expect(decoded_response.fetch('prev_url')).to include("service_instance_type=managed_service_instance")
-            expect(decoded_response.fetch('prev_url')).to include("order-direction=asc")
-            expect(decoded_response.fetch('prev_url')).to include("results-per-page=1")
+            expect(decoded_response.fetch('prev_url')).to include('/v2/service_usage_events')
+            expect(decoded_response.fetch('prev_url')).to include('service_instance_type=managed_service_instance')
+            expect(decoded_response.fetch('prev_url')).to include('order-direction=asc')
+            expect(decoded_response.fetch('prev_url')).to include('results-per-page=1')
           end
         end
       end

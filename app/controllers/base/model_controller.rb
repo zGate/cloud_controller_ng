@@ -1,4 +1,4 @@
-require "presenters/api/job_presenter"
+require 'presenters/api/job_presenter'
 
 module VCAP::CloudController::RestController
 
@@ -18,7 +18,7 @@ module VCAP::CloudController::RestController
 
       @request_attrs = json_msg.extract(stringify_keys: true)
 
-      logger.debug "cc.create", model: self.class.model_class_name, attributes: request_attrs
+      logger.debug 'cc.create', model: self.class.model_class_name, attributes: request_attrs
 
       before_create
 
@@ -32,7 +32,7 @@ module VCAP::CloudController::RestController
 
       [
         HTTP::CREATED,
-        {"Location" => "#{self.class.path}/#{obj.guid}"},
+        {'Location' => "#{self.class.path}/#{obj.guid}"},
         object_renderer.render_json(self.class, obj, @opts)
       ]
     end
@@ -41,7 +41,7 @@ module VCAP::CloudController::RestController
     #
     # @param [String] guid The GUID of the object to read.
     def read(guid)
-      logger.debug "cc.read", model: self.class.model_class_name, guid: guid
+      logger.debug 'cc.read', model: self.class.model_class_name, guid: guid
       obj = find_guid(guid)
       validate_access(:read, obj)
       object_renderer.render_json(self.class, obj, @opts)
@@ -53,7 +53,7 @@ module VCAP::CloudController::RestController
     def update(guid)
       json_msg = self.class::UpdateMessage.decode(body)
       @request_attrs = json_msg.extract(stringify_keys: true)
-      logger.debug "cc.update", guid: guid, attributes: request_attrs
+      logger.debug 'cc.update', guid: guid, attributes: request_attrs
       raise InvalidRequest unless request_attrs
 
       obj = find_guid(guid)
@@ -76,7 +76,7 @@ module VCAP::CloudController::RestController
       raise_if_has_associations!(obj) if v2_api? && !recursive?
       model_deletion_job = Jobs::Runtime::ModelDeletion.new(obj.class, obj.guid)
       if async?
-        job = Jobs::Enqueuer.new(model_deletion_job, queue: "cc-generic").enqueue()
+        job = Jobs::Enqueuer.new(model_deletion_job, queue: 'cc-generic').enqueue()
         [HTTP::ACCEPTED, JobPresenter.new(job).to_json]
       else
         model_deletion_job.perform
@@ -108,7 +108,7 @@ module VCAP::CloudController::RestController
     #
     # @param [Symbol] name The name of the relation to enumerate.
     def enumerate_related(guid, name)
-      logger.debug "cc.enumerate.related", guid: guid, association: name
+      logger.debug 'cc.enumerate.related', guid: guid, association: name
 
       obj = find_guid(guid)
       validate_access(:read, obj)
@@ -149,7 +149,7 @@ module VCAP::CloudController::RestController
     #
     # @param [String] other_guid The GUID of the object to add to the relation
     def add_related(guid, name, other_guid)
-      do_related("add", guid, name, other_guid)
+      do_related('add', guid, name, other_guid)
     end
 
     # Remove a related object.
@@ -162,7 +162,7 @@ module VCAP::CloudController::RestController
     # @param [String] other_guid The GUID of the object to delete from the
     # relation.
     def remove_related(guid, name, other_guid)
-      do_related("remove", guid, name, other_guid)
+      do_related('remove', guid, name, other_guid)
     end
 
     # Add or Remove a related object.
@@ -212,12 +212,12 @@ module VCAP::CloudController::RestController
     # @param [Roles] The roles for the current user or client.
     def validate_access(op, obj, *args)
       if @access_context.cannot?("#{op}_with_token".to_sym, obj)
-        logger.info("allowy.access-denied.insufficient-scope", op: "#{op}_with_token", obj: obj, user: user, roles: roles)
+        logger.info('allowy.access-denied.insufficient-scope', op: "#{op}_with_token", obj: obj, user: user, roles: roles)
         raise VCAP::Errors::ApiError.new_from_details('InsufficientScope')
       end
 
       if @access_context.cannot?(op, obj, *args)
-        logger.info("allowy.access-denied.not-authorized", op: op, obj: obj, user: user, roles: roles)
+        logger.info('allowy.access-denied.not-authorized', op: op, obj: obj, user: user, roles: roles)
         raise VCAP::Errors::ApiError.new_from_details('NotAuthorized')
       end
     end
@@ -255,7 +255,7 @@ module VCAP::CloudController::RestController
       end
 
       if associations.any?
-        raise VCAP::Errors::ApiError.new_from_details("AssociationNotEmpty", associations.join(", "), obj.class.table_name)
+        raise VCAP::Errors::ApiError.new_from_details('AssociationNotEmpty', associations.join(', '), obj.class.table_name)
       end
     end
 

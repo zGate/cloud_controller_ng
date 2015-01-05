@@ -2,7 +2,7 @@ module VCAP::CloudController::RestController
   class OrderApplicator
     def initialize(opts)
       @order_by = Array(opts[:order_by] || :id).map(&:to_sym) # symbols
-      @order_direction = opts[:order_direction] || "asc"
+      @order_direction = opts[:order_direction] || 'asc'
     end
 
     def apply(dataset)
@@ -20,13 +20,13 @@ module VCAP::CloudController::RestController
     def validate!
       unless %w(asc desc).include?(@order_direction)
         raise VCAP::Errors::ApiError.new_from_details(
-                "BadQueryParameter",
+                'BadQueryParameter',
                 "order_direction must be 'asc' or 'desc' but was '#{@order_direction}'")
       end
     end
 
     def descending?
-      @order_direction.downcase == "desc"
+      @order_direction.downcase == 'desc'
     end
   end
 end

@@ -4,7 +4,7 @@ module VCAP::CloudController
       class ModelDeletion < Struct.new(:model_class, :guid)
 
         def perform
-          logger = Steno.logger("cc.background")
+          logger = Steno.logger('cc.background')
           logger.info("Deleting model class '#{model_class}' with guid '#{guid}'")
 
           model = model_class.find(guid: guid)

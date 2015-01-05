@@ -1,4 +1,4 @@
-require "cloud_controller/db_migrator"
+require 'cloud_controller/db_migrator'
 
 module VCAP::CloudController
   class DB
@@ -23,8 +23,8 @@ module VCAP::CloudController
         connection_options[key] = opts[key] if opts[key]
       end
 
-      if opts[:database].index("mysql") == 0
-        connection_options[:charset] = "utf8"
+      if opts[:database].index('mysql') == 0
+        connection_options[:charset] = 'utf8'
       end
 
       db = Sequel.connect(opts[:database], connection_options)
@@ -32,7 +32,7 @@ module VCAP::CloudController
       db.sql_log_level = opts[:log_level] || :debug2
 
       if db.database_type == :mysql
-        Sequel::MySQL.default_collate = "utf8_bin"
+        Sequel::MySQL.default_collate = 'utf8_bin'
       end
 
       db
@@ -42,8 +42,8 @@ module VCAP::CloudController
       db = connect(db_config, logger)
       DBMigrator.new(db).check_migrations!
 
-      require "models"
-      require "delayed_job_sequel"
+      require 'models'
+      require 'delayed_job_sequel'
     end
   end
 end
@@ -58,7 +58,7 @@ Sequel::Model.plugin :validation_helpers
 
 Sequel::Database.extension(:current_datetime_timestamp)
 
-require "cloud_controller/encryptor"
+require 'cloud_controller/encryptor'
 Sequel::Model.include VCAP::CloudController::Encryptor::FieldEncryptor
 
 

@@ -71,7 +71,7 @@ module VCAP::CloudController
                       :auditor_guids, :quota_definition_guid, :status
 
     def remove_user(user)
-      raise VCAP::Errors::ApiError.new_from_details("AssociationNotEmpty", "user", "spaces in the org") unless ([user.spaces, user.audited_spaces, user.managed_spaces].flatten & spaces).empty?
+      raise VCAP::Errors::ApiError.new_from_details('AssociationNotEmpty', 'user', 'spaces in the org') unless ([user.spaces, user.audited_spaces, user.managed_spaces].flatten & spaces).empty?
       super(user)
     end
 
@@ -143,16 +143,16 @@ module VCAP::CloudController
       return if quota_definition
 
       if QuotaDefinition.default.nil?
-        err_msg = Errors::ApiError.new_from_details("QuotaDefinitionNotFound", QuotaDefinition.default_quota_name).message
-        raise Errors::ApiError.new_from_details("OrganizationInvalid", err_msg)
+        err_msg = Errors::ApiError.new_from_details('QuotaDefinitionNotFound', QuotaDefinition.default_quota_name).message
+        raise Errors::ApiError.new_from_details('OrganizationInvalid', err_msg)
       end
       self.quota_definition_id = QuotaDefinition.default.id
     end
 
     def validate_quota_on_update
       if column_changed?(:quota_definition_id) && quota_definition.nil?
-        err_msg = Errors::ApiError.new_from_details("QuotaDefinitionNotFound", "null").message
-        raise Errors::ApiError.new_from_details("OrganizationInvalid", err_msg)
+        err_msg = Errors::ApiError.new_from_details('QuotaDefinitionNotFound', 'null').message
+        raise Errors::ApiError.new_from_details('OrganizationInvalid', err_msg)
       end
     end
 

@@ -34,8 +34,8 @@ module VCAP::CloudController
     def validate_logging_service_binding
       return if syslog_drain_url.blank?
 
-      service_advertised_as_logging_service = service_instance.service_plan.service.requires.include?("syslog_drain")
-      raise VCAP::Errors::ApiError.new_from_details("InvalidLoggingServiceBinding") unless service_advertised_as_logging_service
+      service_advertised_as_logging_service = service_instance.service_plan.service.requires.include?('syslog_drain')
+      raise VCAP::Errors::ApiError.new_from_details('InvalidLoggingServiceBinding') unless service_advertised_as_logging_service
     end
 
     def validate_app_and_service_instance(app, service_instance)
@@ -101,14 +101,14 @@ module VCAP::CloudController
     def credentials_with_serialization=(val)
       self.credentials_without_serialization = MultiJson.dump(val)
     end
-    alias_method_chain :credentials=, "serialization"
+    alias_method_chain :credentials=, 'serialization'
 
     def credentials_with_serialization
       string = credentials_without_serialization
       return if string.blank?
       MultiJson.load string
     end
-    alias_method_chain :credentials, "serialization"
+    alias_method_chain :credentials, 'serialization'
 
     def gateway_data=(val)
       val = MultiJson.dump(val)
@@ -122,7 +122,7 @@ module VCAP::CloudController
     end
 
     def logger
-      @logger ||= Steno.logger("cc.models.service_binding")
+      @logger ||= Steno.logger('cc.models.service_binding')
     end
 
     DEFAULT_BINDING_OPTIONS = '{}'

@@ -23,7 +23,7 @@ module VCAP::Services::ServiceBrokers::V2
   class ServiceBrokerResponseMalformed < HttpResponseError
     def initialize(uri, method, response)
       super(
-        "The service broker response was not understood",
+        'The service broker response was not understood',
         uri,
         method,
         response
@@ -50,9 +50,9 @@ module VCAP::Services::ServiceBrokers::V2
     def initialize(uri, method, response)
       error_message = nil
       if parsed_json(response.body).has_key?('message')
-        error_message = parsed_json(response.body)["message"]
+        error_message = parsed_json(response.body)['message']
       else
-        error_message = parsed_json(response.body)["description"]
+        error_message = parsed_json(response.body)['description']
       end
 
       super(
@@ -154,7 +154,7 @@ module VCAP::Services::ServiceBrokers::V2
       parse_response(:delete, path, response)
 
     rescue VCAP::Services::ServiceBrokers::V2::ServiceBrokerConflict => e
-      raise VCAP::Errors::ApiError.new_from_details("ServiceInstanceDeprovisionFailed", e.message)
+      raise VCAP::Errors::ApiError.new_from_details('ServiceInstanceDeprovisionFailed', e.message)
     end
 
     def update_service_plan(instance, plan)

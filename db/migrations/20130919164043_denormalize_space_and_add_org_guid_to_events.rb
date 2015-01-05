@@ -19,8 +19,8 @@ Sequel.migration do
 
       # Store these columns in denormalized form so they survive deletions of
       # the respective relations.
-      add_column :organization_guid, String, :null => false, :default => ""
-      add_column :space_guid, String, :null => false, :default => ""
+      add_column :organization_guid, String, :null => false, :default => ''
+      add_column :space_guid, String, :null => false, :default => ''
     end
   end
 

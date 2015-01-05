@@ -4,7 +4,7 @@ module VCAP::CloudController
       [ :instances_reporters ]
     end
 
-    path_base "apps"
+    path_base 'apps'
     model_class_name :App
 
     get  "#{path_guid}/crashes", :crashes

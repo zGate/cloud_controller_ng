@@ -20,7 +20,7 @@ module VCAP::CloudController
 
     def before_destroy
       if apps.present?
-        raise VCAP::Errors::ApiError.new_from_details("AssociationNotEmpty", "app", "stack")
+        raise VCAP::Errors::ApiError.new_from_details('AssociationNotEmpty', 'app', 'stack')
       end
     end
 
@@ -58,14 +58,14 @@ module VCAP::CloudController
     private
 
     def self.populate_from_hash(hash)
-      stack = find(name: hash["name"])
+      stack = find(name: hash['name'])
       if stack
         stack.set(hash)
         if stack.modified?
-          Steno.logger("cc.stack").warn("stack.populate.collision", hash)
+          Steno.logger('cc.stack').warn('stack.populate.collision', hash)
         end
       else
-        create(hash.slice("name", "description"))
+        create(hash.slice('name', 'description'))
       end
     end
 
@@ -76,16 +76,16 @@ module VCAP::CloudController
         end
       end
 
-      def stacks; @hash["stacks"]; end
-      def default; @hash["default"]; end
+      def stacks; @hash['stacks']; end
+      def default; @hash['default']; end
 
       private
 
       Schema = Membrane::SchemaParser.parse {{
-        "default" => String,
-        "stacks" => [{
-          "name" => String,
-          "description" => String,
+        'default' => String,
+        'stacks' => [{
+          'name' => String,
+          'description' => String,
         }]
       }}
     end

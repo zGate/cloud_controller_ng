@@ -1,4 +1,4 @@
-require "jobs/timeout_job"
+require 'jobs/timeout_job'
 
 module VCAP::CloudController
   module Jobs

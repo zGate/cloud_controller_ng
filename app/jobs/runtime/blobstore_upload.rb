@@ -13,7 +13,7 @@ module VCAP::CloudController
         end
 
         def perform
-          logger = Steno.logger("cc.background")
+          logger = Steno.logger('cc.background')
           logger.info("Uploading '#{blobstore_key}' to blobstore '#{blobstore_name}'")
           blobstore = CloudController::DependencyLocator.instance.public_send(blobstore_name)
           blobstore.cp_to_blobstore(local_path, blobstore_key)

@@ -4,7 +4,7 @@ module VCAP::CloudController
       [ :blob_sender, :package_blobstore, :missing_blob_handler ]
     end
 
-    path_base "apps"
+    path_base 'apps'
     model_class_name :App
 
     get "#{path_guid}/download", :download
@@ -16,13 +16,13 @@ module VCAP::CloudController
       if blob.nil?
         Loggregator.emit_error(guid, "Could not find package for #{guid}")
         logger.error "could not find package for #{guid}"
-        raise Errors::ApiError.new_from_details("AppPackageNotFound", guid)
+        raise Errors::ApiError.new_from_details('AppPackageNotFound', guid)
       end
 
       if @blobstore.local?
-        @blob_sender.send_blob(guid, "AppPackage", blob, self)
+        @blob_sender.send_blob(guid, 'AppPackage', blob, self)
       else
-        return [HTTP::FOUND, {"Location" => blob.download_url}, nil]
+        return [HTTP::FOUND, {'Location' => blob.download_url}, nil]
       end
     end
 

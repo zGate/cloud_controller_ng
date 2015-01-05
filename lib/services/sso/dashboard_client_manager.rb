@@ -88,7 +88,7 @@ module VCAP::Services::SSO
     def fetch_clients_from_uaa(requested_client_ids)
       client_manager.get_clients(requested_client_ids)
     rescue VCAP::Services::SSO::UAA::UaaError => e
-      raise VCAP::Errors::ApiError.new_from_details("ServiceBrokerDashboardClientFailure", e.message)
+      raise VCAP::Errors::ApiError.new_from_details('ServiceBrokerDashboardClientFailure', e.message)
     end
 
     def client_claimable_by_broker?(existing_client_in_ccdb)
@@ -107,7 +107,7 @@ module VCAP::Services::SSO
           client_manager.modify_transaction(uaa_changeset)
         end
       rescue VCAP::Services::SSO::UAA::UaaError => e
-        raise VCAP::Errors::ApiError.new_from_details("ServiceBrokerDashboardClientFailure", e.message)
+        raise VCAP::Errors::ApiError.new_from_details('ServiceBrokerDashboardClientFailure', e.message)
       end
 
       uaa_changeset.each do |uaa_cmd|

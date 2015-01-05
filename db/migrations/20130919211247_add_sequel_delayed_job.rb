@@ -19,6 +19,6 @@ Sequel.migration do
   end
 
   down do
-    raise "This is a forward-only migration"
+    raise 'This is a forward-only migration'
   end
 end

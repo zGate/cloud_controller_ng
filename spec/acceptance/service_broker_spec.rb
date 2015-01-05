@@ -6,9 +6,9 @@ describe 'Service Broker' do
   let(:catalog_with_no_plans) {{
     services:
       [{
-         id:          "service-guid-here",
+         id:          'service-guid-here',
          name:        service_name,
-         description: "A MySQL-compatible relational database",
+         description: 'A MySQL-compatible relational database',
          bindable:    true,
          plans:       [{}]
        }]
@@ -17,14 +17,14 @@ describe 'Service Broker' do
   let(:catalog_with_small_plan) {{
     services:
       [{
-         id:          "service-guid-here",
+         id:          'service-guid-here',
          name:        service_name,
-         description: "A MySQL-compatible relational database",
+         description: 'A MySQL-compatible relational database',
          bindable:    true,
          plans:       [{
-                         id:          "plan1-guid-here",
-                         name:        "small",
-                         description: "A small shared database with 100mb storage quota and 10 connections"
+                         id:          'plan1-guid-here',
+                         name:        'small',
+                         description: 'A small shared database with 100mb storage quota and 10 connections'
                        }]
        }]
   }}
@@ -32,14 +32,14 @@ describe 'Service Broker' do
   let(:catalog_with_large_plan) {{
     services:
       [{
-         id:          "service-guid-here",
+         id:          'service-guid-here',
          name:        service_name,
-         description: "A MySQL-compatible relational database",
+         description: 'A MySQL-compatible relational database',
          bindable:    true,
          plans:       [{
-                         id:          "plan2-guid-here",
-                         name:        "large",
-                         description: "A large dedicated database with 10GB storage quota, 512MB of RAM, and 100 connections"
+                         id:          'plan2-guid-here',
+                         name:        'large',
+                         description: 'A large dedicated database with 10GB storage quota, 512MB of RAM, and 100 connections'
                        }]
        }]
   }}
@@ -47,19 +47,19 @@ describe 'Service Broker' do
   let(:catalog_with_two_plans)  {{
     services:
       [{
-          id:          "service-guid-here",
+          id:          'service-guid-here',
           name:        service_name,
-          description: "A MySQL-compatible relational database",
+          description: 'A MySQL-compatible relational database',
           bindable:    true,
           plans:
             [{
-               id:          "plan1-guid-here",
-               name:        "small",
-               description: "A small shared database with 100mb storage quota and 10 connections"
+               id:          'plan1-guid-here',
+               name:        'small',
+               description: 'A small shared database with 100mb storage quota and 10 connections'
              }, {
-               id:          "plan2-guid-here",
-               name:        "large",
-               description: "A large dedicated database with 10GB storage quota, 512MB of RAM, and 100 connections"
+               id:          'plan2-guid-here',
+               name:        'large',
+               description: 'A large dedicated database with 10GB storage quota, 512MB of RAM, and 100 connections'
              }]
       }]
   }}
@@ -72,12 +72,12 @@ describe 'Service Broker' do
     {
       id: SecureRandom.uuid,
       name: "service-#{@index}",
-      description: "A service, duh!",
+      description: 'A service, duh!',
       bindable: true,
       plans: [{
                 id: "plan-#{@index}",
                 name: "plan-#{@index}",
-                description: "A plan, duh!"
+                description: 'A plan, duh!'
               }]
     }.merge(attrs)
   end
@@ -115,56 +115,56 @@ describe 'Service Broker' do
         stub_catalog_fetch(200, {
           services: [{
             id: 12345,
-            name: "service-1",
-            description: "A service, duh!",
+            name: 'service-1',
+            description: 'A service, duh!',
             bindable: true,
             plans: [{
-              id: "plan-1",
-              name: "small",
-              description: "A small shared database with 100mb storage quota and 10 connections"
+              id: 'plan-1',
+              name: 'small',
+              description: 'A small shared database with 100mb storage quota and 10 connections'
             }, {
-              id: "plan-2",
-              name: "large",
-              description: "A large dedicated database with 10GB storage quota, 512MB of RAM, and 100 connections"
+              id: 'plan-2',
+              name: 'large',
+              description: 'A large dedicated database with 10GB storage quota, 512MB of RAM, and 100 connections'
             }]
           },
             {
               id: '67890',
-              name: "service-2",
-              description: "Another service, duh!",
+              name: 'service-2',
+              description: 'Another service, duh!',
               bindable: true,
               plans: [{
-                id: "plan-b",
-                name: "small",
-                description: "A small shared database with 100mb storage quota and 10 connections"
+                id: 'plan-b',
+                name: 'small',
+                description: 'A small shared database with 100mb storage quota and 10 connections'
               }, {
-                id: "plan-b",
-                name: "large",
-                description: ""
+                id: 'plan-b',
+                name: 'large',
+                description: ''
               }]
             },
             {
               id: '67890',
-              name: "service-3",
-              description: "Yet another service, duh!",
+              name: 'service-3',
+              description: 'Yet another service, duh!',
               bindable: true,
               dashboard_client: {
                 id: 'client-1'
               },
               plans: [{
                 id: 123,
-                name: "tiny",
-                description: "A small shared database with 100mb storage quota and 10 connections"
+                name: 'tiny',
+                description: 'A small shared database with 100mb storage quota and 10 connections'
               }, {
                 id: '456',
-                name: "tiny",
-                description: "A large dedicated database with 10GB storage quota, 512MB of RAM, and 100 connections"
+                name: 'tiny',
+                description: 'A large dedicated database with 10GB storage quota, 512MB of RAM, and 100 connections'
               }]
             },
             {
               id: '987654',
-              name: "service-4",
-              description: "Yet another service, duh!",
+              name: 'service-4',
+              description: 'Yet another service, duh!',
               bindable: true,
               dashboard_client: {
                 id: 'client-1',
@@ -358,7 +358,7 @@ describe 'Service Broker' do
           to_return(
           status: 200,
           headers: {'content-type' => 'application/json'},
-          body: ""
+          body: ''
         )
       end
 
@@ -440,7 +440,7 @@ describe 'Service Broker' do
         expect(last_response).to have_status_code(200)
 
         parsed_body = JSON.parse(last_response.body)
-        expect(parsed_body['entity']['name']).to eq("new_broker_name")
+        expect(parsed_body['entity']['name']).to eq('new_broker_name')
       end
     end
 
@@ -617,7 +617,7 @@ HEREDOC
           to_return(
           status: 200,
           headers: {'content-type' => 'application/json'},
-          body: ""
+          body: ''
         )
       end
 

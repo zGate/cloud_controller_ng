@@ -1,4 +1,4 @@
-require "multi_json"
+require 'multi_json'
 
 module Sequel::Plugins::VcapSerialization
   # This plugin implements serialization and deserialization of
