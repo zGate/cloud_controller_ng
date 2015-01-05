@@ -267,7 +267,7 @@ module VCAP::CloudController
 
           resp = MultiJson.load(last_response.body)
           expect(resp['label']).to eq('foobar')
-          expect(resp['url']).to   eq('http://www.google.com')
+          expect(resp['url']).to eq('http://www.google.com')
           expect(resp['plans'].sort).to eq(%w[free nonfree])
           expect(resp['provider']).to eq('core')
         end
@@ -278,7 +278,7 @@ module VCAP::CloudController
 
           resp = MultiJson.load(last_response.body)
           expect(resp['label']).to eq('foobar')
-          expect(resp['url']).to   eq('http://www.google.com')
+          expect(resp['url']).to eq('http://www.google.com')
           expect(resp['plans'].sort).to eq(%w[free nonfree])
           expect(resp['provider']).to eq('test')
         end

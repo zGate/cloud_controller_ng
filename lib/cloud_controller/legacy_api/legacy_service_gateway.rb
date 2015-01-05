@@ -261,15 +261,15 @@ module VCAP::CloudController
     end
 
     def self.setup_routes
-      get    '/services/v1/offerings/:label_and_version/handles',               :list_handles
-      get    '/services/v1/offerings/:label_and_version/:provider/handles',     :list_handles
-      get    '/services/v1/offerings/:label_and_version/:provider',             :get
-      get    '/services/v1/offerings/:label_and_version',                       :get
+      get '/services/v1/offerings/:label_and_version/handles',               :list_handles
+      get '/services/v1/offerings/:label_and_version/:provider/handles',     :list_handles
+      get '/services/v1/offerings/:label_and_version/:provider',             :get
+      get '/services/v1/offerings/:label_and_version',                       :get
       delete '/services/v1/offerings/:label_and_version',                       :delete
       delete '/services/v1/offerings/:label_and_version/:provider',             :delete
-      post   '/services/v1/offerings',                                          :create_offering
-      post   '/services/v1/offerings/:label_and_version/handles/:id',           :update_handle
-      post   '/services/v1/offerings/:label_and_version/:provider/handles/:id', :update_handle
+      post '/services/v1/offerings',                                          :create_offering
+      post '/services/v1/offerings/:label_and_version/handles/:id',           :update_handle
+      post '/services/v1/offerings/:label_and_version/:provider/handles/:id', :update_handle
     end
 
     def self.translate_validation_exception(e, attributes)

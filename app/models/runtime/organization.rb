@@ -63,7 +63,7 @@ module VCAP::CloudController
     define_user_group :billing_managers, reciprocal: :billing_managed_organizations
     define_user_group :auditors, reciprocal: :audited_organizations
 
-    strip_attributes  :name
+    strip_attributes :name
 
     export_attributes :name, :billing_enabled, :quota_definition_guid, :status
     import_attributes :name, :billing_enabled,
@@ -116,7 +116,7 @@ module VCAP::CloudController
 
     def validate
       validates_presence :name
-      validates_unique   :name
+      validates_unique :name
       validates_format ORG_NAME_REGEX, :name
       validates_includes ORG_STATUS_VALUES, :status, allow_missing: true
     end

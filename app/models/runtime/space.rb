@@ -13,13 +13,13 @@ module VCAP::CloudController
     define_user_group :managers, reciprocal: :managed_spaces, before_add: :validate_manager
     define_user_group :auditors, reciprocal: :audited_spaces, before_add: :validate_auditor
 
-    many_to_one  :organization, before_set: :validate_change_organization
-    one_to_many  :apps
-    one_to_many  :app_models, primary_key: :guid, key: :space_guid
-    one_to_many  :events
-    one_to_many  :service_instances
-    one_to_many  :managed_service_instances
-    one_to_many  :routes
+    many_to_one :organization, before_set: :validate_change_organization
+    one_to_many :apps
+    one_to_many :app_models, primary_key: :guid, key: :space_guid
+    one_to_many :events
+    one_to_many :service_instances
+    one_to_many :managed_service_instances
+    one_to_many :routes
     many_to_many :security_groups,
     dataset: -> {
       SecurityGroup.left_join(:security_groups_spaces, security_group_id: :id).
@@ -84,7 +84,7 @@ module VCAP::CloudController
     import_attributes :name, :organization_guid, :developer_guids,
       :manager_guids, :auditor_guids, :security_group_guids, :space_quota_definition_guid
 
-    strip_attributes  :name
+    strip_attributes :name
 
     dataset_module do
       def having_developers(*users)
@@ -100,7 +100,7 @@ module VCAP::CloudController
     def validate
       validates_presence :name
       validates_presence :organization
-      validates_unique   [:organization_id, :name]
+      validates_unique [:organization_id, :name]
       validates_format SPACE_NAME_REGEX, :name
 
       if space_quota_definition && space_quota_definition.organization.guid != organization.guid

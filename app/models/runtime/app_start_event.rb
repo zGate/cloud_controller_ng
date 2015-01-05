@@ -25,7 +25,7 @@ module VCAP::CloudController
       validates_presence :app_plan_name
       validates_presence :app_memory
       validates_presence :app_instance_count
-      validates_unique   :app_run_id
+      validates_unique :app_run_id
     end
 
     def event_type

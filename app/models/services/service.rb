@@ -4,7 +4,7 @@ module VCAP::CloudController
 
     many_to_one :service_broker
     one_to_many :service_plans
-    one_to_one  :service_auth_token, key: [:label, :provider], primary_key: [:label, :provider]
+    one_to_one :service_auth_token, key: [:label, :provider], primary_key: [:label, :provider]
 
     add_association_dependencies service_plans: :destroy
 
@@ -16,15 +16,15 @@ module VCAP::CloudController
                       :version, :info_url, :active, :bindable,
                       :unique_id, :extra, :tags, :requires, :documentation_url, :plan_updateable
 
-    strip_attributes  :label, :provider
+    strip_attributes :label, :provider
 
     def validate
       validates_presence :label,              message:  Sequel.lit('Service name is required')
       validates_presence :description,        message: 'is required'
       validates_presence :bindable,           message: 'is required'
-      validates_url      :url,                message: 'must be a valid url'
-      validates_url      :info_url,           message: 'must be a valid url'
-      validates_unique   :unique_id,          message: Sequel.lit('Service ids must be unique')
+      validates_url :url,                message: 'must be a valid url'
+      validates_url :info_url,           message: 'must be a valid url'
+      validates_unique :unique_id,          message: Sequel.lit('Service ids must be unique')
 
       if v2?
         validates_unique :label, message: Sequel.lit('Service name must be unique') do |ds|

@@ -55,7 +55,7 @@ module VCAP::CloudController
     import_attributes :name, :service_plan_guid,
       :space_guid, :gateway_data
 
-    strip_attributes  :name
+    strip_attributes :name
 
     plugin :after_initialize
 

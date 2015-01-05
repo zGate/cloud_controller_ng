@@ -132,12 +132,12 @@ module VCAP::CloudController
     end
 
     def self.setup_routes
-      get    '/services',       :enumerate
-      post   '/services',       :create
-      get    '/services/:name', :read
+      get '/services',       :enumerate
+      post '/services',       :create
+      get '/services/:name', :read
       delete '/services/:name', :delete
 
-      get    '/services/v1/offerings', :enumerate_offerings
+      get '/services/v1/offerings', :enumerate_offerings
     end
 
     setup_routes

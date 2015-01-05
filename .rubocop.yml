@@ -1,9 +1,9 @@
 AllCops:
-  Includes:
+  Include:
     - Gemfile
     - Rakefile
-  Excludes:
-    - vendor/**
+  Exclude:
+    - vendor/**/*
 
 RegexpLiteral:
   MaxSlashes: 1
@@ -52,3 +52,6 @@ Style/IndentHash:
 
 Style/DotPosition:
   EnforcedStyle: trailing
+
+Style/AlignParameters:
+  Enabled: false

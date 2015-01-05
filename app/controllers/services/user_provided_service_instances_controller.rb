@@ -55,7 +55,7 @@ module VCAP::CloudController
       request_attrs = json_msg.extract(stringify_keys: true)
 
       logger.debug 'cc.update', guid: guid, attributes: request_attrs
-      raise  Errors::ApiError.new_from_details('InvalidRequest') unless request_attrs
+      raise Errors::ApiError.new_from_details('InvalidRequest') unless request_attrs
 
       service_instance = find_guid(guid)
       validate_access(:read_for_update, service_instance)

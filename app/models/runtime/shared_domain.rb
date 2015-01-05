@@ -8,7 +8,7 @@ module VCAP::CloudController
 
     export_attributes :name
     import_attributes :name
-    strip_attributes  :name
+    strip_attributes :name
 
     def as_summary_json
       {

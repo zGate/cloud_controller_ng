@@ -8,7 +8,7 @@ module VCAP::CloudController
 
     export_attributes :name, :owning_organization_guid
     import_attributes :name, :owning_organization_guid
-    strip_attributes  :name
+    strip_attributes :name
 
     one_to_many :spaces,
                 dataset: -> { owning_organization.spaces_dataset },

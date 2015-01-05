@@ -5,28 +5,28 @@ module VCAP::CloudController
     end
 
     define_attributes do
-      attribute  :buildpack,              String,           default: nil
-      attribute  :command,                String,           default: nil
-      attribute  :console,                Message::Boolean, default: false
-      attribute  :docker_image,           String,           default: nil
-      attribute  :debug,                  String,           default: nil
-      attribute  :disk_quota,             Integer,          default: nil
-      attribute  :environment_json,       Hash,             default: {}
-      attribute  :health_check_type,      String,           default: 'port'
-      attribute  :health_check_timeout,   Integer,          default: nil
-      attribute  :instances,              Integer,          default: 1
-      attribute  :memory,                 Integer,          default: nil
-      attribute  :name,                   String
-      attribute  :production,             Message::Boolean, default: false
-      attribute  :state,                  String,           default: 'STOPPED'
-      attribute  :detected_start_command, String,           exclude_in: [:create, :update]
+      attribute :buildpack,              String,           default: nil
+      attribute :command,                String,           default: nil
+      attribute :console,                Message::Boolean, default: false
+      attribute :docker_image,           String,           default: nil
+      attribute :debug,                  String,           default: nil
+      attribute :disk_quota,             Integer,          default: nil
+      attribute :environment_json,       Hash,             default: {}
+      attribute :health_check_type,      String,           default: 'port'
+      attribute :health_check_timeout,   Integer,          default: nil
+      attribute :instances,              Integer,          default: 1
+      attribute :memory,                 Integer,          default: nil
+      attribute :name,                   String
+      attribute :production,             Message::Boolean, default: false
+      attribute :state,                  String,           default: 'STOPPED'
+      attribute :detected_start_command, String,           exclude_in: [:create, :update]
 
-      to_one     :space
-      to_one     :stack,               optional_in: :create
+      to_one :space
+      to_one :stack,               optional_in: :create
 
-      to_many    :events,              link_only: true
-      to_many    :service_bindings,    exclude_in: :create
-      to_many    :routes
+      to_many :events,              link_only: true
+      to_many :service_bindings,    exclude_in: :create
+      to_many :routes
     end
 
     query_parameters :name, :space_guid, :organization_guid

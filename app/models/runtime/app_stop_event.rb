@@ -22,7 +22,7 @@ module VCAP::CloudController
       validates_presence :space_name
       validates_presence :app_guid
       validates_presence :app_name
-      validates_unique   :app_run_id
+      validates_unique :app_run_id
     end
 
     def event_type

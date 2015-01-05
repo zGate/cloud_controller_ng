@@ -3,8 +3,8 @@ module VCAP::CloudController
     define_attributes do
       attribute :name, String
       attribute :wildcard, Message::Boolean, default: true
-      to_one    :owning_organization, optional_in: :create
-      to_many   :spaces
+      to_one :owning_organization, optional_in: :create
+      to_many :spaces
     end
 
     query_parameters :name, :owning_organization_guid, :space_guid

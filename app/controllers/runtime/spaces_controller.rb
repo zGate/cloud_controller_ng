@@ -5,20 +5,20 @@ module VCAP::CloudController
     end
 
     define_attributes do
-      attribute  :name, String
+      attribute :name, String
 
-      to_one     :organization
-      to_many    :developers
-      to_many    :managers
-      to_many    :auditors
-      to_many    :apps,                    exclude_in: [:create, :update], route_for: :get
-      to_many    :routes,                  exclude_in: [:create, :update], route_for: :get
-      to_many    :domains
-      to_many    :service_instances,       route_for: :get
-      to_many    :app_events,              link_only: true, exclude_in: [:create, :update], route_for: :get
-      to_many    :events,                  link_only: true, exclude_in: [:create, :update], route_for: :get
-      to_many    :security_groups
-      to_one     :space_quota_definition,  optional_in: [:create], exclude_in: [:update]
+      to_one :organization
+      to_many :developers
+      to_many :managers
+      to_many :auditors
+      to_many :apps,                    exclude_in: [:create, :update], route_for: :get
+      to_many :routes,                  exclude_in: [:create, :update], route_for: :get
+      to_many :domains
+      to_many :service_instances,       route_for: :get
+      to_many :app_events,              link_only: true, exclude_in: [:create, :update], route_for: :get
+      to_many :events,                  link_only: true, exclude_in: [:create, :update], route_for: :get
+      to_many :security_groups
+      to_one :space_quota_definition,  optional_in: [:create], exclude_in: [:update]
     end
 
     query_parameters :name, :organization_guid, :developer_guid, :app_guid

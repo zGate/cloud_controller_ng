@@ -55,11 +55,11 @@ module VCAP::CloudController
 
     export_attributes :name, :owning_organization_guid
     import_attributes :name, :owning_organization_guid
-    strip_attributes  :name
+    strip_attributes :name
 
     def validate
       validates_presence :name
-      validates_unique   :name
+      validates_unique :name
 
       validates_format DOMAIN_REGEX, :name
       validates_length_range 3..255, :name

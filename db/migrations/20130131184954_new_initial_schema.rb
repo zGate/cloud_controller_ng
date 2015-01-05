@@ -85,8 +85,8 @@ Sequel.migration do
       String :description, null: false
       String :version,     null: false
 
-      String  :info_url
-      String  :acls
+      String :info_url
+      String :acls
       Integer :timeout
       Boolean :active, default: false
 

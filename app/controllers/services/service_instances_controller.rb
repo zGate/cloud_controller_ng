@@ -6,9 +6,9 @@ module VCAP::CloudController
     model_class_name :ManagedServiceInstance # Must do this to be backwards compatible with actions other than enumerate
     define_attributes do
       attribute :name,  String
-      to_one    :space
-      to_one    :service_plan
-      to_many   :service_bindings
+      to_one :space
+      to_one :service_plan
+      to_many :service_bindings
     end
 
     query_parameters :name, :space_guid, :service_plan_guid, :service_binding_guid, :gateway_name, :organization_guid

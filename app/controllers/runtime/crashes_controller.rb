@@ -7,7 +7,7 @@ module VCAP::CloudController
     path_base 'apps'
     model_class_name :App
 
-    get  "#{path_guid}/crashes", :crashes
+    get "#{path_guid}/crashes", :crashes
     def crashes(guid)
       app = find_guid_and_validate_access(:read, guid)
       crashed_instances = instances_reporters.crashed_instances_for_app(app)

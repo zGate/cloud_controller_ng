@@ -30,7 +30,7 @@ module VCAP::CloudController
       attribute :version,           String
       attribute :url,               Message::URL
 
-      to_many   :service_plans
+      to_many :service_plans
     end
 
     query_parameters :active, :label, :provider, :service_broker_guid

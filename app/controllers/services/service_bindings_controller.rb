@@ -3,8 +3,8 @@ require 'services/api'
 module VCAP::CloudController
   class ServiceBindingsController < RestController::ModelController
     define_attributes do
-      to_one    :app
-      to_one    :service_instance
+      to_one :app
+      to_one :service_instance
       attribute :binding_options, Hash, default: {}
     end
 

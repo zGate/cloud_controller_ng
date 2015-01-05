@@ -6,8 +6,8 @@ module VCAP::CloudController
       attribute :description,       String
       attribute :extra,             String,           default: nil
       attribute :unique_id,         String,           default: nil
-      to_one    :service
-      to_many   :service_instances
+      to_one :service
+      to_many :service_instances
       attribute :public, Message::Boolean, default: true
     end
 

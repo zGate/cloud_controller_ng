@@ -1,15 +1,15 @@
 module VCAP::CloudController
   class SpaceQuotaDefinitionsController < RestController::ModelController
     define_attributes do
-      attribute  :name,                       String
-      attribute  :non_basic_services_allowed, Message::Boolean
-      attribute  :total_services,             Integer
-      attribute  :total_routes,               Integer
-      attribute  :memory_limit,               Integer
-      attribute  :instance_memory_limit,      Integer, default: nil
+      attribute :name,                       String
+      attribute :non_basic_services_allowed, Message::Boolean
+      attribute :total_services,             Integer
+      attribute :total_routes,               Integer
+      attribute :memory_limit,               Integer
+      attribute :instance_memory_limit,      Integer, default: nil
 
-      to_one     :organization
-      to_many    :spaces, exclude_in: [:create, :update]
+      to_one :organization
+      to_many :spaces, exclude_in: [:create, :update]
     end
 
     def self.translate_validation_exception(e, attributes)

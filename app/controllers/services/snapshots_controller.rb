@@ -30,7 +30,7 @@ module VCAP::CloudController
       ]
     end
 
-    get  '/v2/service_instances/:service_guid/snapshots', :index
+    get '/v2/service_instances/:service_guid/snapshots', :index
     def index(service_guid)
       instance = VCAP::CloudController::ManagedServiceInstance.find(guid: service_guid)
       validate_access(:read, instance)

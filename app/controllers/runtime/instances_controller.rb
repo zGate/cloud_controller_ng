@@ -7,7 +7,7 @@ module VCAP::CloudController
     path_base 'apps'
     model_class_name :App
 
-    get  "#{path_guid}/instances", :instances
+    get "#{path_guid}/instances", :instances
     def instances(guid)
       app = find_guid_and_validate_access(:read, guid)
 

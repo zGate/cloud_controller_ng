@@ -1,12 +1,12 @@
 module VCAP::CloudController
   class QuotaDefinitionsController < RestController::ModelController
     define_attributes do
-      attribute  :name,                       String
-      attribute  :non_basic_services_allowed, Message::Boolean
-      attribute  :total_services,             Integer
-      attribute  :total_routes,               Integer
-      attribute  :memory_limit,               Integer
-      attribute  :instance_memory_limit,      Integer, optional_in: :create, default: -1
+      attribute :name,                       String
+      attribute :non_basic_services_allowed, Message::Boolean
+      attribute :total_services,             Integer
+      attribute :total_routes,               Integer
+      attribute :memory_limit,               Integer
+      attribute :instance_memory_limit,      Integer, optional_in: :create, default: -1
     end
 
     query_parameters :name
