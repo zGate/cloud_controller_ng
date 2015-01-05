@@ -118,7 +118,7 @@ module VCAP::CloudController
       validates_presence :name
       validates_unique   :name
       validates_format ORG_NAME_REGEX, :name
-      validates_includes ORG_STATUS_VALUES, :status, :allow_missing => true
+      validates_includes ORG_STATUS_VALUES, :status, allow_missing: true
     end
 
     def has_remaining_memory(mem)

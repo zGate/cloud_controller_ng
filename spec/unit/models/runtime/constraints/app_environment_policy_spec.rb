@@ -17,7 +17,7 @@ describe AppEnvironmentPolicy do
     end
 
     it 'allows multiple variables' do
-      app.environment_json = { :abc => 123, :def => 'hi' }
+      app.environment_json = { abc: 123, def: 'hi' }
       expect(validator).to validate_without_error(app)
     end
 

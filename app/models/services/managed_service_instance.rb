@@ -17,7 +17,7 @@ module VCAP::CloudController
       end
 
       def create_snapshot(name)
-        payload = VCAP::Services::Api::CreateSnapshotV2Request.new(:name => name).encode
+        payload = VCAP::Services::Api::CreateSnapshotV2Request.new(name: name).encode
         response = do_request(:post, payload)
         VCAP::Services::Api::SnapshotV2.decode(response)
       end
@@ -35,10 +35,10 @@ module VCAP::CloudController
         u.path = "/gateway/v2/configurations/#{service_id}/snapshots"
 
         response = client.public_send(method, u,
-          :header => { VCAP::Services::Api::GATEWAY_TOKEN_HEADER => token.token,
+          header: { VCAP::Services::Api::GATEWAY_TOKEN_HEADER => token.token,
             'Content-Type' => 'application/json'
           },
-          :body   => payload)
+          body: payload)
         if response.ok?
           response.body
         else
@@ -64,7 +64,7 @@ module VCAP::CloudController
 
     delegate :client, to: :service_plan
 
-    add_association_dependencies :service_bindings => :destroy
+    add_association_dependencies service_bindings: :destroy
 
     def validation_policies
       if space

@@ -160,7 +160,7 @@ module VCAP::CloudController
       end
 
       let(:buildpack_array) { double(:generated_buildpack_arrray) }
-      let(:buildpacks_presenter) { double(:buildpacks_presenter, :to_staging_message_array => buildpack_array) }
+      let(:buildpacks_presenter) { double(:buildpacks_presenter, to_staging_message_array: buildpack_array) }
 
       before do
         subject.process_advertise_message(stager_advertise_msg)

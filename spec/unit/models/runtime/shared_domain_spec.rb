@@ -66,7 +66,7 @@ module VCAP::CloudController
 
         expect do
           subject.destroy
-        end.to change { Route.where(:id => route.id).count }.by(-1)
+        end.to change { Route.where(id: route.id).count }.by(-1)
       end
     end
 

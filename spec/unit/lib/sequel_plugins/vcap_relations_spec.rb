@@ -348,8 +348,8 @@ describe 'Sequel::Plugins::VcapRelations' do
       bottom = bottom_klass
 
       top_klass.one_to_many :middles
-      top_klass.one_to_many :bottoms, :dataset => lambda {
-        bottom.filter(:middle => middles)
+      top_klass.one_to_many :bottoms, dataset: lambda {
+        bottom.filter(middle: middles)
       }
 
       middle_klass.one_to_one :top
@@ -398,12 +398,12 @@ describe 'Sequel::Plugins::VcapRelations' do
   describe '.many_to_one' do
     before { initialize_relations }
 
-    let!(:middle) { middle_klass.create(:guid => 'middle-guid') }
-    let!(:other_middle) { middle_klass.create(:guid => 'other_middle_guid') }
+    let!(:middle) { middle_klass.create(guid: 'middle-guid') }
+    let!(:other_middle) { middle_klass.create(guid: 'other_middle_guid') }
 
     let!(:bottoms) do
       10.times.collect do
-        bottom_klass.create(:middle => middle)
+        bottom_klass.create(middle: middle)
       end
     end
 
@@ -423,7 +423,7 @@ describe 'Sequel::Plugins::VcapRelations' do
 
     context 'with the :without_guid_generation flag' do
       def initialize_relations
-        bottom_klass.many_to_one :middle, :without_guid_generation => true
+        bottom_klass.many_to_one :middle, without_guid_generation: true
       end
 
       it 'does not add a middle_guid accessor to bottom' do

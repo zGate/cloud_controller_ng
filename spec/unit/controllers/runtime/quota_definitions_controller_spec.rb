@@ -59,7 +59,7 @@ module VCAP::CloudController
         end
 
         it 'does allow update of a quota def' do
-          put "/v2/quota_definitions/#{existing_quota.guid}", MultiJson.dump({:total_services => 2}), json_headers(headers)
+          put "/v2/quota_definitions/#{existing_quota.guid}", MultiJson.dump({total_services: 2}), json_headers(headers)
           expect(last_response.status).to eq(201)
         end
 
@@ -70,7 +70,7 @@ module VCAP::CloudController
       end
 
       context 'when the user is not a cf admin' do
-        let(:headers) { headers_for(VCAP::CloudController::User.make(:admin => false)) }
+        let(:headers) { headers_for(VCAP::CloudController::User.make(admin: false)) }
         let(:quota_name) { 'quota 2' }
 
         it 'does not allow creation of a quota def' do

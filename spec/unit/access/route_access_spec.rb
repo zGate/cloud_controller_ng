@@ -7,10 +7,10 @@ module VCAP::CloudController
 
     let(:user) { VCAP::CloudController::User.make }
     let(:org) { VCAP::CloudController::Organization.make }
-    let(:space) { VCAP::CloudController::Space.make(:organization => org) }
-    let(:domain) { VCAP::CloudController::PrivateDomain.make(:owning_organization => org) }
+    let(:space) { VCAP::CloudController::Space.make(organization: org) }
+    let(:domain) { VCAP::CloudController::PrivateDomain.make(owning_organization: org) }
     let(:app) { VCAP::CloudController::AppFactory.make(space: space) }
-    let(:object) { VCAP::CloudController::Route.make(:domain => domain, :space => space) }
+    let(:object) { VCAP::CloudController::Route.make(domain: domain, space: space) }
 
     before do
       SecurityContext.set(user, token)

@@ -112,18 +112,18 @@ module VCAP::CloudController
 
         it 'should allow an empty host' do
           Route.make(
-            :space  => space,
-            :domain => domain,
-            :host   => ''
+            space: space,
+            domain: domain,
+            host: ''
           )
         end
 
         it 'should not allow a blank host' do
           expect {
             Route.make(
-              :space  => space,
-              :domain => domain,
-              :host   => ' '
+              space: space,
+              domain: domain,
+              host: ' '
             )
           }.to raise_error(Sequel::ValidationFailed)
         end
@@ -132,9 +132,9 @@ module VCAP::CloudController
           SharedDomain.make name: 'bar.foo.com'
           expect {
             Route.make(
-              :space  => space,
-              :domain => SharedDomain.make(name: 'foo.com'),
-              :host   => 'bar'
+              space: space,
+              domain: SharedDomain.make(name: 'foo.com'),
+              host: 'bar'
             )
           }.to raise_error(Sequel::ValidationFailed, /domain_conflict/)
         end
@@ -261,7 +261,7 @@ module VCAP::CloudController
 
       let(:domain) do
         PrivateDomain.make(
-          :owning_organization => space.organization
+          owning_organization: space.organization
         )
       end
 
@@ -269,9 +269,9 @@ module VCAP::CloudController
         context 'for a non-nil host' do
           it 'should return the fqdn for the route' do
             r = Route.make(
-              :host   => 'www',
-              :domain => domain,
-              :space  => space,
+              host: 'www',
+              domain: domain,
+              space: space,
             )
             expect(r.fqdn).to eq("www.#{domain.name}")
           end
@@ -280,9 +280,9 @@ module VCAP::CloudController
         context 'for a nil host' do
           it 'should return the fqdn for the route' do
             r = Route.make(
-              :host   => '',
-              :domain => domain,
-              :space  => space,
+              host: '',
+              domain: domain,
+              space: space,
             )
             expect(r.fqdn).to eq(domain.name)
           end
@@ -292,17 +292,17 @@ module VCAP::CloudController
       describe '#as_summary_json' do
         it 'returns a hash containing the route id, host, and domain details' do
           r = Route.make(
-            :host   => 'www',
-            :domain => domain,
-            :space  => space,
+            host: 'www',
+            domain: domain,
+            space: space,
           )
           expect(r.as_summary_json).to eq(
             {
-              :guid   => r.guid,
-              :host   => r.host,
-              :domain => {
-                :guid => r.domain.guid,
-                :name => r.domain.name
+              guid: r.guid,
+              host: r.host,
+              domain: {
+                guid: r.domain.guid,
+                name: r.domain.name
               }
           })
         end
@@ -330,11 +330,11 @@ module VCAP::CloudController
 
     describe 'relations' do
       let(:org) { Organization.make }
-      let(:space_a) { Space.make(:organization => org) }
-      let(:domain_a) { PrivateDomain.make(:owning_organization => org) }
+      let(:space_a) { Space.make(organization: org) }
+      let(:domain_a) { PrivateDomain.make(owning_organization: org) }
 
-      let(:space_b) { Space.make(:organization => org) }
-      let(:domain_b) { PrivateDomain.make(:owning_organization => org) }
+      let(:space_b) { Space.make(organization: org) }
+      let(:domain_b) { PrivateDomain.make(owning_organization: org) }
 
       it 'should not associate with apps from a different space' do
         route = Route.make(space: space_b, domain: domain_a)
@@ -371,7 +371,7 @@ module VCAP::CloudController
     describe 'apps association' do
       let(:route) { Route.make }
       let!(:app) do
-        AppFactory.make({ :space => route.space })
+        AppFactory.make({ space: route.space })
       end
 
       describe 'when adding an app' do

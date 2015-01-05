@@ -17,7 +17,7 @@ module VCAP::CloudController
 
       context 'when billing event writing is enabled' do
         before do
-          TestConfig.override({ :billing_event_writing_enabled => true })
+          TestConfig.override({ billing_event_writing_enabled: true })
         end
 
         it 'adds a new row to the database table' do
@@ -27,7 +27,7 @@ module VCAP::CloudController
 
       context 'when billing event writing is disabled' do
         before do
-          TestConfig.override({ :billing_event_writing_enabled => false })
+          TestConfig.override({ billing_event_writing_enabled: false })
         end
 
         it 'does not add a new row to the database table' do

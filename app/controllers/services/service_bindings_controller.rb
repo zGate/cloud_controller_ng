@@ -5,7 +5,7 @@ module VCAP::CloudController
     define_attributes do
       to_one    :app
       to_one    :service_instance
-      attribute :binding_options, Hash, :default => {}
+      attribute :binding_options, Hash, default: {}
     end
 
     get path,      :enumerate
@@ -26,10 +26,10 @@ module VCAP::CloudController
     def create
       json_msg = self.class::CreateMessage.decode(body)
 
-      @request_attrs = json_msg.extract(:stringify_keys => true)
+      @request_attrs = json_msg.extract(stringify_keys: true)
 
-      logger.debug 'cc.create', :model => self.class.model_class_name,
-        :attributes => request_attrs
+      logger.debug 'cc.create', model: self.class.model_class_name,
+        attributes: request_attrs
 
       raise InvalidRequest unless request_attrs
 

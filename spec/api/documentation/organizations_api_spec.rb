@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'rspec_api_documentation/dsl'
 
-resource 'Organizations', :type => [:api, :legacy_api] do
+resource 'Organizations', type: [:api, :legacy_api] do
   let(:admin_auth_header) { admin_headers['HTTP_AUTHORIZATION'] }
   let(:organization) { VCAP::CloudController::Organization.make }
   let(:quota_definition) { VCAP::CloudController::QuotaDefinition.make }
@@ -143,8 +143,8 @@ resource 'Organizations', :type => [:api, :legacy_api] do
 
     describe 'Services' do
       before do
-        some_service = VCAP::CloudController::Service.make(:active => true)
-        service_plan = VCAP::CloudController::ServicePlan.make(:service => some_service, public: false)
+        some_service = VCAP::CloudController::Service.make(active: true)
+        service_plan = VCAP::CloudController::ServicePlan.make(service: some_service, public: false)
         space = VCAP::CloudController::Space.make(organization: organization)
         VCAP::CloudController::ServicePlanVisibility.make(service_plan: some_service.service_plans.first, organization: space.organization)
       end

@@ -9,7 +9,7 @@ module VCAP::CloudController
     end
 
     def resource_match_request(verb, path, matches, non_matches)
-      user = User.make(:admin => false, :active => true)
+      user = User.make(admin: false, active: true)
       req = MultiJson.dump(matches + non_matches)
       send(verb, path, req, json_headers(headers_for(user)))
       expect(last_response.status).to eq(200)
@@ -48,7 +48,7 @@ module VCAP::CloudController
       end
 
       it 'returns FeatureDisabled unless the user is an admin' do
-        user = User.make(:admin => false, :active => true)
+        user = User.make(admin: false, active: true)
         send(:put, '/v2/resource_match', '[]', json_headers(headers_for(user)))
         expect(last_response.status).to eq(403)
         expect(decoded_response['error_code']).to match(/FeatureDisabled/)

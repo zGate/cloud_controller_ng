@@ -32,8 +32,8 @@ describe MultiResponseMessageBusRequest do
         last_error = error
       end
 
-      multi_response_message_bus_request.request(:request => 'request-value')
-      message_bus.respond_to_request('fake nats subject', :response => 'response-value')
+      multi_response_message_bus_request.request(request: 'request-value')
+      message_bus.respond_to_request('fake nats subject', response: 'response-value')
 
       expect(responses_count).to eq(1)
       expect(last_error).to be_nil
@@ -52,9 +52,9 @@ describe MultiResponseMessageBusRequest do
       end
 
       timer_stub.and_yield
-      multi_response_message_bus_request.request(:request => 'request-value')
+      multi_response_message_bus_request.request(request: 'request-value')
 
-      message_bus.respond_to_request('fake nats subject', :response => 'response-value')
+      message_bus.respond_to_request('fake nats subject', response: 'response-value')
 
       expect(responses_count).to eq(1)
       expect(last_response).to be_nil
@@ -74,7 +74,7 @@ describe MultiResponseMessageBusRequest do
         response2_count += 1
       end
 
-      multi_response_message_bus_request.request(:request => 'request-value')
+      multi_response_message_bus_request.request(request: 'request-value')
 
       # send response within first response timeout
       message_bus.respond_to_request('fake nats subject', 'response1' => 'response-value')
@@ -110,7 +110,7 @@ describe MultiResponseMessageBusRequest do
         last2_error = error
       end
 
-      multi_response_message_bus_request.request(:request => 'request-value')
+      multi_response_message_bus_request.request(request: 'request-value')
       message_bus.respond_to_request('fake nats subject', 'response1' => 'response-value')
       message_bus.respond_to_request('fake nats subject', 'response2' => 'response-value')
 
@@ -126,14 +126,14 @@ describe MultiResponseMessageBusRequest do
     it 'does nothing when callbacks were not provided' do
       multi_response_message_bus_request.on_response(0) { |*_| }
 
-      multi_response_message_bus_request.request(:request => 'request-value')
-      message_bus.respond_to_request('fake nats subject', :response => 'response-value')
-      message_bus.respond_to_request('fake nats subject', :response => 'response-value')
+      multi_response_message_bus_request.request(request: 'request-value')
+      message_bus.respond_to_request('fake nats subject', response: 'response-value')
+      message_bus.respond_to_request('fake nats subject', response: 'response-value')
     end
 
     it 'raises error when no callbacks are specified' do
       expect {
-        multi_response_message_bus_request.request(:request => 'request-value')
+        multi_response_message_bus_request.request(request: 'request-value')
       }.to raise_error(ArgumentError, /at least one callback must be provided/)
     end
 
@@ -141,8 +141,8 @@ describe MultiResponseMessageBusRequest do
       multi_response_message_bus_request.on_response(0) { |*args| }
 
       expect {
-        multi_response_message_bus_request.request(:request => 'request-value')
-        multi_response_message_bus_request.request(:request => 'request-value')
+        multi_response_message_bus_request.request(request: 'request-value')
+        multi_response_message_bus_request.request(request: 'request-value')
       }.to raise_error(ArgumentError, /request was already made/)
     end
 
@@ -154,8 +154,8 @@ describe MultiResponseMessageBusRequest do
       expect(logger).not_to receive(:info).with(/sensitive data/)
 
       multi_response_message_bus_request.on_response(0) { |_| }
-      multi_response_message_bus_request.request(:request => 'sensitive data')
-      message_bus.respond_to_request('fake nats subject', :response => 'sensitive data')
+      multi_response_message_bus_request.request(request: 'sensitive data')
+      message_bus.respond_to_request('fake nats subject', response: 'sensitive data')
     end
   end
 
@@ -167,7 +167,7 @@ describe MultiResponseMessageBusRequest do
       end
       multi_response_message_bus_request.request({})
       multi_response_message_bus_request.ignore_subsequent_responses
-      message_bus.respond_to_request('fake nats subject', :response => 'response-value')
+      message_bus.respond_to_request('fake nats subject', response: 'response-value')
       expect(responses_count).to eq(0)
     end
 
@@ -199,8 +199,8 @@ describe MultiResponseMessageBusRequest do
         responses_count += 1 # Should not get here
       end
       multi_response_message_bus_request.request({})
-      message_bus.respond_to_request('fake nats subject', :response => 'response-value')
-      message_bus.respond_to_request('fake nats subject', :response => 'response-value')
+      message_bus.respond_to_request('fake nats subject', response: 'response-value')
+      message_bus.respond_to_request('fake nats subject', response: 'response-value')
       expect(responses_count).to eq(1)
     end
   end

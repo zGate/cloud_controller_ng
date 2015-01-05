@@ -5,17 +5,17 @@ module VCAP::CloudController
     define_attributes do
       attribute :label,             String
       attribute :description,       String
-      attribute :long_description,  String, :default => nil
-      attribute :info_url,          Message::URL, :default => nil
-      attribute :documentation_url, Message::URL, :default => nil
-      attribute :acls,              {'users' => [String], 'wildcards' => [String]}, :default => nil
-      attribute :timeout,           Integer, :default => nil
-      attribute :active,            Message::Boolean, :default => false
-      attribute :bindable,          Message::Boolean, :default => true
-      attribute :extra,             String, :default => nil
-      attribute :unique_id,         String, :default => nil
-      attribute :tags,              [String], :default => []
-      attribute :requires,          [String], :default => []
+      attribute :long_description,  String, default: nil
+      attribute :info_url,          Message::URL, default: nil
+      attribute :documentation_url, Message::URL, default: nil
+      attribute :acls,              {'users' => [String], 'wildcards' => [String]}, default: nil
+      attribute :timeout,           Integer, default: nil
+      attribute :active,            Message::Boolean, default: false
+      attribute :bindable,          Message::Boolean, default: true
+      attribute :extra,             String, default: nil
+      attribute :unique_id,         String, default: nil
+      attribute :tags,              [String], default: []
+      attribute :requires,          [String], default: []
 
       # NOTE: DEPRECATED
       #

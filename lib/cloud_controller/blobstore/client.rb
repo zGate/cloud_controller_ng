@@ -60,9 +60,9 @@ module CloudController
 
           begin
             files.create(
-              :key => partitioned_key(destination_key),
-              :body => file,
-              :public => local?,
+              key: partitioned_key(destination_key),
+              body: file,
+              public: local?,
             )
           rescue SystemCallError => e # work around https://github.com/fog/fog/issues/3137
             logger.debug('blobstore.cp-retry',
@@ -152,7 +152,7 @@ module CloudController
 
       def connection
         options = @connection_config
-        options = options.merge(:endpoint => '') if local?
+        options = options.merge(endpoint: '') if local?
         Fog::Storage.new(options)
       end
 

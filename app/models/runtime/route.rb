@@ -86,7 +86,7 @@ module VCAP::CloudController
         organization: orgs,
       ))
 
-      { :space => spaces }
+      { space: spaces }
     end
 
     def in_suspended_org?

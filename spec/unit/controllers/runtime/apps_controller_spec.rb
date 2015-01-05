@@ -128,7 +128,7 @@ module VCAP::CloudController
     describe 'update app' do
       let(:update_hash) { {} }
 
-      let(:app_obj) { AppFactory.make(:instances => 1) }
+      let(:app_obj) { AppFactory.make(instances: 1) }
 
       def update_app
         put "/v2/apps/#{app_obj.guid}", MultiJson.dump(update_hash), json_headers(admin_headers)
@@ -210,8 +210,8 @@ module VCAP::CloudController
 
       context 'non recursive deletion' do
         context 'with NON-empty service_binding association' do
-          let!(:svc_instance) { ManagedServiceInstance.make(:space => app_obj.space) }
-          let!(:service_binding) { ServiceBinding.make(:app => app_obj, :service_instance => svc_instance) }
+          let!(:svc_instance) { ManagedServiceInstance.make(space: app_obj.space) }
+          let!(:service_binding) { ServiceBinding.make(app: app_obj, service_instance: svc_instance) }
 
           it 'should raise an error' do
             delete_app
@@ -410,9 +410,9 @@ module VCAP::CloudController
 
       context 'when app will be staged', isolation: :truncation do
         let(:app_obj) do
-          AppFactory.make(:package_hash => 'abc', :state => 'STOPPED',
-                          :droplet_hash => nil, :package_state => 'PENDING',
-                          :instances => 1)
+          AppFactory.make(package_hash: 'abc', state: 'STOPPED',
+                          droplet_hash: nil, package_state: 'PENDING',
+                          instances: 1)
         end
 
         let(:stager_response) do
@@ -428,14 +428,14 @@ module VCAP::CloudController
         end
 
         it 'returns X-App-Staging-Log header with staging log url' do
-          put "/v2/apps/#{app_obj.guid}", MultiJson.dump(:state => 'STARTED'), json_headers(admin_headers)
+          put "/v2/apps/#{app_obj.guid}", MultiJson.dump(state: 'STARTED'), json_headers(admin_headers)
           expect(last_response.status).to eq(201)
           expect(last_response.headers['X-App-Staging-Log']).to eq('streaming-log-url')
         end
       end
 
       context 'when app will not be staged' do
-        let(:app_obj) { AppFactory.make(:state => 'STOPPED') }
+        let(:app_obj) { AppFactory.make(state: 'STOPPED') }
 
         it 'does not add X-App-Staging-Log' do
           put "/v2/apps/#{app_obj.guid}", MultiJson.dump({}), json_headers(admin_headers)
@@ -456,19 +456,19 @@ module VCAP::CloudController
         # keeping the headers here so that it doesn't reset the global config...
         @headers_for_user = headers_for(user)
         @app = AppFactory.make(
-          :space => space,
-          :state => 'STARTED',
-          :package_hash => 'abc',
-          :droplet_hash => 'def',
-          :package_state => 'STAGED',
+          space: space,
+          state: 'STARTED',
+          package_hash: 'abc',
+          droplet_hash: 'def',
+          package_state: 'STAGED',
         )
         @app_url = "/v2/apps/#{@app.guid}"
       end
 
       it 'tells the dea client to update when we add one url through PUT /v2/apps/:guid' do
         route = domain.add_route(
-          :host => 'app',
-          :space => space,
+          host: 'app',
+          space: space,
         )
 
         expect(Dea::Client).to receive(:update_uris).with(an_instance_of(VCAP::CloudController::App)) do |app|
@@ -481,14 +481,14 @@ module VCAP::CloudController
 
       it 'tells the dea client to update when we remove a url through PUT /v2/apps/:guid' do
         bar_route = @app.add_route(
-          :host => 'bar',
-          :space => space,
-          :domain => domain,
+          host: 'bar',
+          space: space,
+          domain: domain,
         )
         route = @app.add_route(
-          :host => 'foo',
-          :space => space,
-          :domain => domain,
+          host: 'foo',
+          space: space,
+          domain: domain,
         )
         get "#{@app_url}/routes", {}, @headers_for_user
         expect(decoded_response['resources'].map { |r|
@@ -509,8 +509,8 @@ module VCAP::CloudController
       include_context 'permissions'
 
       before do
-        @obj_a = AppFactory.make(:space => @space_a)
-        @obj_b = AppFactory.make(:space => @space_b)
+        @obj_a = AppFactory.make(space: @space_a)
+        @obj_b = AppFactory.make(space: @space_b)
       end
 
       describe 'Org Level Permissions' do
@@ -519,9 +519,9 @@ module VCAP::CloudController
           let(:member_b) { @org_b_manager }
 
           include_examples 'permission enumeration', 'OrgManager',
-            :name => 'app',
-            :path => '/v2/apps',
-            :enumerate => 1
+            name: 'app',
+            path: '/v2/apps',
+            enumerate: 1
         end
 
         describe 'OrgUser' do
@@ -529,9 +529,9 @@ module VCAP::CloudController
           let(:member_b) { @org_b_member }
 
           include_examples 'permission enumeration', 'OrgUser',
-            :name => 'app',
-            :path => '/v2/apps',
-            :enumerate => 0
+            name: 'app',
+            path: '/v2/apps',
+            enumerate: 0
         end
 
         describe 'BillingManager' do
@@ -539,9 +539,9 @@ module VCAP::CloudController
           let(:member_b) { @org_b_billing_manager }
 
           include_examples 'permission enumeration', 'BillingManager',
-            :name => 'app',
-            :path => '/v2/apps',
-            :enumerate => 0
+            name: 'app',
+            path: '/v2/apps',
+            enumerate: 0
         end
 
         describe 'Auditor' do
@@ -549,9 +549,9 @@ module VCAP::CloudController
           let(:member_b) { @org_b_auditor }
 
           include_examples 'permission enumeration', 'Auditor',
-            :name => 'app',
-            :path => '/v2/apps',
-            :enumerate => 0
+            name: 'app',
+            path: '/v2/apps',
+            enumerate: 0
         end
       end
 
@@ -561,9 +561,9 @@ module VCAP::CloudController
           let(:member_b) { @space_b_manager }
 
           include_examples 'permission enumeration', 'SpaceManager',
-            :name => 'app',
-            :path => '/v2/apps',
-            :enumerate => 1
+            name: 'app',
+            path: '/v2/apps',
+            enumerate: 1
         end
 
         describe 'Developer' do
@@ -571,9 +571,9 @@ module VCAP::CloudController
           let(:member_b) { @space_b_developer }
 
           include_examples 'permission enumeration', 'Developer',
-            :name => 'app',
-            :path => '/v2/apps',
-            :enumerate => 1
+            name: 'app',
+            path: '/v2/apps',
+            enumerate: 1
         end
 
         describe 'SpaceAuditor' do
@@ -581,9 +581,9 @@ module VCAP::CloudController
           let(:member_b) { @space_b_auditor }
 
           include_examples 'permission enumeration', 'SpaceAuditor',
-            :name => 'app',
-            :path => '/v2/apps',
-            :enumerate => 1
+            name: 'app',
+            path: '/v2/apps',
+            enumerate: 1
         end
       end
     end
@@ -601,7 +601,7 @@ module VCAP::CloudController
       end
 
       it 'returns organization quota memory exceeded message correctly' do
-        space.organization.quota_definition = QuotaDefinition.make(:memory_limit => 0)
+        space.organization.quota_definition = QuotaDefinition.make(memory_limit: 0)
         space.organization.save(validate: false)
 
         put "/v2/apps/#{app_obj.guid}", MultiJson.dump(memory: 128), json_headers(admin_headers)
@@ -611,7 +611,7 @@ module VCAP::CloudController
       end
 
       it 'returns space quota memory exceeded message correctly' do
-        space.space_quota_definition = SpaceQuotaDefinition.make(:memory_limit => 0)
+        space.space_quota_definition = SpaceQuotaDefinition.make(memory_limit: 0)
         space.save(validate: false)
 
         put "/v2/apps/#{app_obj.guid}", MultiJson.dump(memory: 128), json_headers(admin_headers)
@@ -621,9 +621,9 @@ module VCAP::CloudController
       end
 
       it 'validates space quota memory limit before organization quotas' do
-        space.organization.quota_definition = QuotaDefinition.make(:memory_limit => 0)
+        space.organization.quota_definition = QuotaDefinition.make(memory_limit: 0)
         space.organization.save(validate: false)
-        space.space_quota_definition = SpaceQuotaDefinition.make(:memory_limit => 0)
+        space.space_quota_definition = SpaceQuotaDefinition.make(memory_limit: 0)
         space.save(validate: false)
 
         put "/v2/apps/#{app_obj.guid}", MultiJson.dump(memory: 128), json_headers(admin_headers)
@@ -660,9 +660,9 @@ module VCAP::CloudController
       end
 
       it 'validates space quota instance memory limit before organization quotas' do
-        space.organization.quota_definition = QuotaDefinition.make(:instance_memory_limit => 100)
+        space.organization.quota_definition = QuotaDefinition.make(instance_memory_limit: 100)
         space.organization.save(validate: false)
-        space.space_quota_definition = SpaceQuotaDefinition.make(:instance_memory_limit => 100)
+        space.space_quota_definition = SpaceQuotaDefinition.make(instance_memory_limit: 100)
         space.save(validate: false)
 
         put "/v2/apps/#{app_obj.guid}", MultiJson.dump(memory: 128), json_headers(admin_headers)

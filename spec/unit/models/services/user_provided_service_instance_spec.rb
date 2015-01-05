@@ -7,9 +7,9 @@ module VCAP::CloudController
     it_behaves_like 'a model with an encrypted attribute' do
       def new_model
         described_class.create(
-          :name => Sham.name,
-          :space => VCAP::CloudController::Space.make,
-          :credentials => value_to_encrypt,
+          name: Sham.name,
+          space: VCAP::CloudController::Space.make,
+          credentials: value_to_encrypt,
         )
       end
 
@@ -23,8 +23,8 @@ module VCAP::CloudController
       it { is_expected.to have_associated :space }
       it do
         is_expected.to have_associated :service_bindings, associated_instance: ->(service_instance) {
-          app = VCAP::CloudController::App.make(:space => service_instance.space)
-          ServiceBinding.make(:app => app, :service_instance => service_instance, :credentials => Sham.service_credentials)
+          app = VCAP::CloudController::App.make(space: service_instance.space)
+          ServiceBinding.make(app: app, service_instance: service_instance, credentials: Sham.service_credentials)
         }
       end
     end
@@ -37,7 +37,7 @@ module VCAP::CloudController
 
       it 'should not bind an app and a service instance from different app spaces' do
         service_instance = described_class.make
-        VCAP::CloudController::AppFactory.make(:space => service_instance.space)
+        VCAP::CloudController::AppFactory.make(space: service_instance.space)
         service_binding = VCAP::CloudController::ServiceBinding.make
         expect {
           service_instance.add_service_binding(service_binding)

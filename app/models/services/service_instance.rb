@@ -16,8 +16,8 @@ module VCAP::CloudController
              klazz == VCAP::CloudController::ManagedServiceInstance
            }
 
-    one_to_many :service_bindings, :before_add => :validate_service_binding
-    many_to_one :space, :after_set => :validate_space
+    one_to_many :service_bindings, before_add: :validate_service_binding
+    many_to_one :space, after_set: :validate_space
 
     many_to_one :service_plan_sti_eager_load,
                 class: 'VCAP::CloudController::ServicePlan',
@@ -42,7 +42,7 @@ module VCAP::CloudController
 
     delegate :organization, to: :space
 
-    add_association_dependencies :service_bindings => :destroy
+    add_association_dependencies service_bindings: :destroy
 
     encrypt :credentials, salt: :salt
 

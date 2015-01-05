@@ -6,8 +6,8 @@ module VCAP::CloudController
     let(:token) {{ 'scope' => ['cloud_controller.read', 'cloud_controller.write'] }}
     let(:user) { VCAP::CloudController::User.make }
     let(:org) { VCAP::CloudController::Organization.make }
-    let(:space) { VCAP::CloudController::Space.make(:organization => org) }
-    let(:object) { VCAP::CloudController::AppFactory.make(:space => space) }
+    let(:space) { VCAP::CloudController::Space.make(organization: org) }
+    let(:object) { VCAP::CloudController::AppFactory.make(space: space) }
 
     before do
       SecurityContext.set(user, token)

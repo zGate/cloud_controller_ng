@@ -32,9 +32,9 @@ module VCAP::CloudController
           let(:member_b) { instance_variable_get(member_b_ivar) }
 
           include_examples 'permission enumeration', user_role,
-                           :name => 'service plan visibility',
-                           :path => '/v2/service_plan_visibilities',
-                           :enumerate => 0
+                           name: 'service plan visibility',
+                           path: '/v2/service_plan_visibilities',
+                           enumerate: 0
         end
       end
 
@@ -101,7 +101,7 @@ module VCAP::CloudController
         put "/v2/service_plan_visibilities/#{visibility.guid}", MultiJson.dump({organization_guid: new_organization.guid}), headers
 
         expect(last_response.status).to eq(201)
-        service_plan_visibility = ServicePlanVisibility.find(:guid => visibility.guid)
+        service_plan_visibility = ServicePlanVisibility.find(guid: visibility.guid)
         expect(service_plan_visibility.organization_guid).to eq new_organization.guid
       end
 
@@ -134,7 +134,7 @@ module VCAP::CloudController
         delete "/v2/service_plan_visibilities/#{visibility.guid}", {}, headers
 
         expect(last_response.status).to eq(204)
-        expect(ServicePlanVisibility.find(:guid => visibility.guid)).to be_nil
+        expect(ServicePlanVisibility.find(guid: visibility.guid)).to be_nil
       end
 
       it 'creates a service plan visibility delete event' do
@@ -167,7 +167,7 @@ module VCAP::CloudController
 
           event = Event.first(type: 'audit.service_plan_visibility.delete')
           expect(event).to be
-          expect(ServicePlanVisibility.find(:guid => visibility.guid)).to be_nil
+          expect(ServicePlanVisibility.find(guid: visibility.guid)).to be_nil
         end
       end
     end

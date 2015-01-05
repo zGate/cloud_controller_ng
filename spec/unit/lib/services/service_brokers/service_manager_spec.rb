@@ -317,7 +317,7 @@ module VCAP::Services::ServiceBrokers
 
           it 'deletes the plan from the db' do
             service_manager.sync_services_and_plans(catalog)
-            expect(VCAP::CloudController::ServicePlan.find(:id => missing_plan.id)).to be_nil
+            expect(VCAP::CloudController::ServicePlan.find(id: missing_plan.id)).to be_nil
           end
 
           it 'creates service audit events for each service plan deleted' do
@@ -420,7 +420,7 @@ HEREDOC
 
         it 'should delete the service' do
           service_manager.sync_services_and_plans(catalog)
-          expect(VCAP::CloudController::Service.find(:id => service.id)).to be_nil
+          expect(VCAP::CloudController::Service.find(id: service.id)).to be_nil
         end
 
         it 'creates service audit events for each service deleted' do
@@ -442,7 +442,7 @@ HEREDOC
 
         it 'should not delete services owned by other brokers' do
           service_manager.sync_services_and_plans(catalog)
-          expect(VCAP::CloudController::Service.find(:id => service_owned_by_other_broker.id)).not_to be_nil
+          expect(VCAP::CloudController::Service.find(id: service_owned_by_other_broker.id)).not_to be_nil
         end
 
         context 'but it has an active plan' do

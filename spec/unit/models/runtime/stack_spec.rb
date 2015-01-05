@@ -32,8 +32,8 @@ module VCAP::CloudController
       context 'with invalid config' do
         let(:file) { File.join(Paths::FIXTURES, 'config/invalid_stacks.yml') }
 
-        {:default => 'default => Missing key',
-         :stacks => 'name => Missing key'
+        {default: 'default => Missing key',
+         stacks: 'name => Missing key'
         }.each do |key, expected_error|
           it "requires #{key} (validates via '#{expected_error}')" do
             expect {
@@ -64,10 +64,10 @@ module VCAP::CloudController
           it 'creates them all' do
             Stack.populate
 
-            cider = Stack.find(:name => 'cider')
+            cider = Stack.find(name: 'cider')
             expect(cider.description).to eq('cider-description')
 
-            default_stack = Stack.find(:name => 'default-stack-name')
+            default_stack = Stack.find(name: 'default-stack-name')
             expect(default_stack.description).to eq('default-stack-description')
           end
 
@@ -118,7 +118,7 @@ module VCAP::CloudController
         before { Stack.dataset.destroy }
 
         context 'when stack is found with default name' do
-          before { Stack.make(:name => 'default-stack-name') }
+          before { Stack.make(name: 'default-stack-name') }
 
           it 'returns found stack' do
             expect(Stack.default.name).to eq('default-stack-name')
@@ -143,7 +143,7 @@ module VCAP::CloudController
       end
 
       it 'fails if there are apps' do
-        AppFactory.make(:stack => stack)
+        AppFactory.make(stack: stack)
         expect { stack.destroy }.to raise_error VCAP::Errors::ApiError, /Please delete the app associations for your stack/
       end
     end

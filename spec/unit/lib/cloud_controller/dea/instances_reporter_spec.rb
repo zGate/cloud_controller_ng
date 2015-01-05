@@ -3,15 +3,15 @@ require 'spec_helper'
 module VCAP::CloudController
   describe Dea::InstancesReporter do
     subject { described_class.new(health_manager_client) }
-    let(:app) { AppFactory.make(:package_hash => 'abc', :package_state => 'STAGED') }
+    let(:app) { AppFactory.make(package_hash: 'abc', package_state: 'STAGED') }
     let(:health_manager_client) { double(:health_manager_client) }
 
     describe '#all_instances_for_app' do
       let(:instances) do
         {
           0 => {
-            :state => 'RUNNING',
-            :since => 1,
+            state: 'RUNNING',
+            since: 1,
           },
         }
       end
@@ -59,13 +59,13 @@ module VCAP::CloudController
     describe '#number_of_starting_and_running_instances_for_apps' do
       let(:running_apps) do
         3.times.map do
-          AppFactory.make(:state => 'STARTED', :package_state => 'STAGED', :package_hash => 'abc')
+          AppFactory.make(state: 'STARTED', package_state: 'STAGED', package_hash: 'abc')
         end
       end
 
       let(:stopped_apps) do
         3.times.map do
-          AppFactory.make(:state => 'STOPPED', :package_state => 'STAGED', :package_hash => 'xyz')
+          AppFactory.make(state: 'STOPPED', package_state: 'STAGED', package_hash: 'xyz')
         end
       end
 

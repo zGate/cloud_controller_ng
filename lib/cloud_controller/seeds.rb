@@ -12,7 +12,7 @@ module VCAP::CloudController
 
       def create_seed_quota_definitions(config)
         config[:quota_definitions].each do |name, values|
-          quota = QuotaDefinition.find(:name => name.to_s)
+          quota = QuotaDefinition.find(name: name.to_s)
 
           if quota
             quota.set(values)
@@ -20,7 +20,7 @@ module VCAP::CloudController
               Steno.logger('cc.seeds').warn('seeds.quota-collision', name: name, values: values)
             end
           else
-            QuotaDefinition.create(values.merge(:name => name.to_s))
+            QuotaDefinition.create(values.merge(name: name.to_s))
           end
         end
       end
@@ -39,7 +39,7 @@ module VCAP::CloudController
           raise ArgumentError, 'Missing default quota definition in config file'
         end
 
-        org = Organization.find(:name => config[:system_domain_organization])
+        org = Organization.find(name: config[:system_domain_organization])
         if org
           org.set(quota_definition: quota_definition)
           if org.modified?
@@ -47,7 +47,7 @@ module VCAP::CloudController
           end
           org
         else
-          Organization.create(:name => config[:system_domain_organization], quota_definition: quota_definition)
+          Organization.create(name: config[:system_domain_organization], quota_definition: quota_definition)
         end
       end
 

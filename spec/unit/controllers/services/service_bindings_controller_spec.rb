@@ -50,15 +50,15 @@ module VCAP::CloudController
       include_context 'permissions'
 
       before do
-        @app_a = AppFactory.make(:space => @space_a)
-        @service_instance_a = ManagedServiceInstance.make(:space => @space_a)
-        @obj_a = ServiceBinding.make(:app => @app_a,
-                                             :service_instance => @service_instance_a)
+        @app_a = AppFactory.make(space: @space_a)
+        @service_instance_a = ManagedServiceInstance.make(space: @space_a)
+        @obj_a = ServiceBinding.make(app: @app_a,
+                                             service_instance: @service_instance_a)
 
-        @app_b = AppFactory.make(:space => @space_b)
-        @service_instance_b = ManagedServiceInstance.make(:space => @space_b)
-        @obj_b = ServiceBinding.make(:app => @app_b,
-                                             :service_instance => @service_instance_b)
+        @app_b = AppFactory.make(space: @space_b)
+        @service_instance_b = ManagedServiceInstance.make(space: @space_b)
+        @obj_b = ServiceBinding.make(app: @app_b,
+                                             service_instance: @service_instance_b)
       end
 
       describe 'Org Level Permissions' do
@@ -67,9 +67,9 @@ module VCAP::CloudController
           let(:member_b) { @org_b_manager }
 
           include_examples 'permission enumeration', 'OrgManager',
-            :name => 'service binding',
-            :path => '/v2/service_bindings',
-            :enumerate => 0
+            name: 'service binding',
+            path: '/v2/service_bindings',
+            enumerate: 0
         end
 
         describe 'OrgUser' do
@@ -77,9 +77,9 @@ module VCAP::CloudController
           let(:member_b) { @org_b_member }
 
           include_examples 'permission enumeration', 'OrgUser',
-            :name => 'service binding',
-            :path => '/v2/service_bindings',
-            :enumerate => 0
+            name: 'service binding',
+            path: '/v2/service_bindings',
+            enumerate: 0
         end
 
         describe 'BillingManager' do
@@ -87,9 +87,9 @@ module VCAP::CloudController
           let(:member_b) { @org_b_billing_manager }
 
           include_examples 'permission enumeration', 'BillingManager',
-            :name => 'service binding',
-            :path => '/v2/service_bindings',
-            :enumerate => 0
+            name: 'service binding',
+            path: '/v2/service_bindings',
+            enumerate: 0
         end
 
         describe 'Auditor' do
@@ -97,9 +97,9 @@ module VCAP::CloudController
           let(:member_b) { @org_b_auditor }
 
           include_examples 'permission enumeration', 'Auditor',
-            :name => 'service binding',
-            :path => '/v2/service_bindings',
-            :enumerate => 0
+            name: 'service binding',
+            path: '/v2/service_bindings',
+            enumerate: 0
         end
       end
 
@@ -109,9 +109,9 @@ module VCAP::CloudController
           let(:member_b) { @space_b_manager }
 
           include_examples 'permission enumeration', 'SpaceManager',
-            :name => 'service binding',
-            :path => '/v2/service_bindings',
-            :enumerate => 0
+            name: 'service binding',
+            path: '/v2/service_bindings',
+            enumerate: 0
         end
 
         describe 'Developer' do
@@ -119,9 +119,9 @@ module VCAP::CloudController
           let(:member_b) { @space_b_developer }
 
           include_examples 'permission enumeration', 'Developer',
-            :name => 'service binding',
-            :path => '/v2/service_bindings',
-            :enumerate => 1
+            name: 'service binding',
+            path: '/v2/service_bindings',
+            enumerate: 1
         end
 
         describe 'SpaceAuditor' do
@@ -129,9 +129,9 @@ module VCAP::CloudController
           let(:member_b) { @space_b_auditor }
 
           include_examples 'permission enumeration', 'SpaceAuditor',
-            :name => 'service binding',
-            :path => '/v2/service_bindings',
-            :enumerate => 1
+            name: 'service binding',
+            path: '/v2/service_bindings',
+            enumerate: 1
         end
       end
     end
@@ -140,8 +140,8 @@ module VCAP::CloudController
       context 'for user provided instances' do
         let(:space) { Space.make }
         let(:developer) { make_developer_for_space(space) }
-        let(:application) { AppFactory.make(:space => space) }
-        let(:service_instance) { UserProvidedServiceInstance.make(:space => space) }
+        let(:application) { AppFactory.make(space: space) }
+        let(:service_instance) { UserProvidedServiceInstance.make(space: space) }
         let(:params) do
           {
             'app_guid' => application.guid,
@@ -169,8 +169,8 @@ module VCAP::CloudController
 
         it 'binds a service instance to an app' do
           req = {
-            :app_guid => app_obj.guid,
-            :service_instance_guid => instance.guid
+            app_guid: app_obj.guid,
+            service_instance_guid: instance.guid
           }.to_json
 
           post '/v2/service_bindings', req, json_headers(headers_for(developer))
@@ -184,8 +184,8 @@ module VCAP::CloudController
 
         it 'creates an audit event upon binding' do
           req = {
-            :app_guid => app_obj.guid,
-            :service_instance_guid => instance.guid
+            app_guid: app_obj.guid,
+            service_instance_guid: instance.guid
           }
 
           email = 'email@example.com'
@@ -216,8 +216,8 @@ module VCAP::CloudController
 
         it 'unbinds the service instance when an exception is raised' do
           req = MultiJson.dump(
-            :app_guid => app_obj.guid,
-            :service_instance_guid => instance.guid
+            app_guid: app_obj.guid,
+            service_instance_guid: instance.guid
           )
 
           allow_any_instance_of(ServiceBinding).to receive(:save).and_raise
@@ -233,8 +233,8 @@ module VCAP::CloudController
             service.save
 
             req = {
-              :app_guid => app_obj.guid,
-              :service_instance_guid => instance.guid
+              app_guid: app_obj.guid,
+              service_instance_guid: instance.guid
             }.to_json
 
             post '/v2/service_bindings', req, json_headers(headers_for(developer))
@@ -326,7 +326,7 @@ module VCAP::CloudController
 
           context 'when attempting to bind and the service binding already exists' do
             before do
-              ServiceBinding.make(:app => app_obj, :service_instance => instance)
+              ServiceBinding.make(app: app_obj, service_instance: instance)
             end
 
             it 'returns a ServiceBindingAppServiceTaken error' do

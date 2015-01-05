@@ -2,7 +2,7 @@ module VCAP::CloudController
   class UsersController < RestController::ModelController
     define_attributes do
       attribute :guid, String, exclude_in: :update
-      attribute :admin, Message::Boolean, :default => false
+      attribute :admin, Message::Boolean, default: false
       to_many   :spaces
       to_many   :organizations
       to_many   :managed_organizations
@@ -10,7 +10,7 @@ module VCAP::CloudController
       to_many   :audited_organizations
       to_many   :managed_spaces
       to_many   :audited_spaces
-      to_one    :default_space, :optional_in => [:create]
+      to_one    :default_space, optional_in: [:create]
     end
 
     query_parameters :space_guid, :organization_guid,

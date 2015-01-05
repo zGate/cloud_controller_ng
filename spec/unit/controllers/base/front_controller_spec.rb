@@ -36,7 +36,7 @@ module VCAP::CloudController
 
     describe 'using a cross-origin request' do
       before do
-        decoder = double(:decoder, :configure => nil)
+        decoder = double(:decoder, configure: nil)
         allow(::VCAP::CloudController::Security::SecurityContextConfigurer).to receive(:new).and_return(decoder)
         allow(::VCAP::CloudController::SecurityContext).to receive(:current_user).and_return(User.make)
       end
@@ -56,7 +56,7 @@ module VCAP::CloudController
       context 'when the Origin header is present' do
         let(:config) do
           {
-            :allowed_cors_domains => [ 'https://talkoncorners.com', 'http://*.inblue.net', 'http://borrowedheaven.org' ]
+            allowed_cors_domains: [ 'https://talkoncorners.com', 'http://*.inblue.net', 'http://borrowedheaven.org' ]
           }
         end
 
@@ -226,13 +226,13 @@ module VCAP::CloudController
 
       let(:config) do
         {
-          :quota_definitions => [],
-          :uaa => {:resource_id => 'cloud_controller'}
+          quota_definitions: [],
+          uaa: {resource_id: 'cloud_controller'}
         }
       end
       let(:token_decoder) do
         token_decoder = VCAP::UaaTokenDecoder.new(config[:uaa])
-        allow(token_decoder).to receive_messages(:decode_token => token_info)
+        allow(token_decoder).to receive_messages(decode_token: token_info)
         token_decoder
       end
 

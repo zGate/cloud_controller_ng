@@ -69,29 +69,29 @@ module VCAP::CloudController
       let(:service_broker) { ServiceBroker.make }
 
       it 'destroys all services associated with the broker' do
-        service = Service.make(:service_broker => service_broker)
+        service = Service.make(service_broker: service_broker)
         expect {
           begin
             service_broker.destroy
           rescue Sequel::ForeignKeyConstraintViolation
           end
         }.to change {
-          Service.where(:id => service.id).any?
+          Service.where(id: service.id).any?
         }.to(false)
       end
 
       context 'when a service instance exists' do
         it 'does not allow the broker to be destroyed' do
-          service = Service.make(:service_broker => service_broker)
-          service_plan = ServicePlan.make(:service => service)
-          ManagedServiceInstance.make(:service_plan => service_plan)
+          service = Service.make(service_broker: service_broker)
+          service_plan = ServicePlan.make(service: service)
+          ManagedServiceInstance.make(service_plan: service_plan)
           expect {
             begin
               service_broker.destroy
             rescue Sequel::ForeignKeyConstraintViolation
             end
           }.to_not change {
-            Service.where(:id => service.id).count
+            Service.where(id: service.id).count
           }
         end
       end

@@ -19,7 +19,7 @@ module VCAP::CloudController
     describe '#staging' do
       context 'when the corresponding db object does not exist' do
         it 'creates a new database object with the right name' do
-          expect(EnvironmentVariableGroup).to receive(:create).with(:name => 'staging')
+          expect(EnvironmentVariableGroup).to receive(:create).with(name: 'staging')
           EnvironmentVariableGroup.staging
         end
 
@@ -47,7 +47,7 @@ module VCAP::CloudController
     describe '#running' do
       context 'when the corresponding db object does not exist' do
         it 'creates a new database object with the right name' do
-          expect(EnvironmentVariableGroup).to receive(:create).with(:name => 'running')
+          expect(EnvironmentVariableGroup).to receive(:create).with(name: 'running')
           EnvironmentVariableGroup.running
         end
 

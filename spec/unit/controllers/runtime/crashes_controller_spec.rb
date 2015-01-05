@@ -13,8 +13,8 @@ module VCAP::CloudController
         let(:instances_reporters) { double(:instances_reporters) }
         let(:crashed_instances) do
           [
-            {:instance => 'instance_1', :since => 1},
-            {:instance => 'instance_2', :since => 1},
+            {instance: 'instance_1', since: 1},
+            {instance: 'instance_2', since: 1},
           ]
         end
 

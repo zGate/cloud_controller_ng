@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'rspec_api_documentation/dsl'
 
-resource 'Service Brokers', :type => [:api, :legacy_api] do
+resource 'Service Brokers', type: [:api, :legacy_api] do
   let(:admin_auth_header) { admin_headers['HTTP_AUTHORIZATION'] }
   let!(:service_brokers) { 3.times { VCAP::CloudController::ServiceBroker.make } }
   let(:service_broker) { VCAP::CloudController::ServiceBroker.first }
@@ -55,7 +55,7 @@ resource 'Service Brokers', :type => [:api, :legacy_api] do
       include_context 'fields_for_creation'
       before do
         stub_request(:get, 'https://admin:secretpassw0rd@broker.example.com:443/v2/catalog').
-          with(:headers => {'Accept' => 'application/json'}).
+          with(headers: {'Accept' => 'application/json'}).
           to_return(status: 200, body: broker_catalog, headers: {})
       end
 
@@ -91,7 +91,7 @@ resource 'Service Brokers', :type => [:api, :legacy_api] do
 
       before do
         stub_request(:get, "https://#{auth_username}:#{auth_password}@#{broker_url}:443/v2/catalog").
-          with(:headers => {'Accept' => 'application/json'}).
+          with(headers: {'Accept' => 'application/json'}).
           to_return(status: 200, body: broker_catalog, headers: {})
       end
 

@@ -62,12 +62,12 @@ module VCAP::CloudController
     def create
       json_msg = self.class::CreateMessage.decode(body)
 
-      @request_attrs = json_msg.extract(:stringify_keys => true)
+      @request_attrs = json_msg.extract(stringify_keys: true)
 
       service_plan_guid = request_attrs['service_plan_guid']
 
-      logger.debug 'cc.create', :model => self.class.model_class_name,
-        :attributes => request_attrs
+      logger.debug 'cc.create', model: self.class.model_class_name,
+        attributes: request_attrs
 
       raise Errors::ApiError.new_from_details('InvalidRequest') unless request_attrs
 
@@ -80,7 +80,7 @@ module VCAP::CloudController
 
       organization = requested_space.organization
 
-      unless ServicePlan.organization_visible(organization).filter(:guid => request_attrs['service_plan_guid']).count > 0
+      unless ServicePlan.organization_visible(organization).filter(guid: request_attrs['service_plan_guid']).count > 0
         raise Errors::ApiError.new_from_details('ServiceInstanceOrganizationNotAuthorized')
       end
 
@@ -150,13 +150,13 @@ module VCAP::CloudController
     def bulk_update(existing_service_plan_guid)
       raise Errors::ApiError.new_from_details('NotAuthorized') unless SecurityContext.admin?
 
-      @request_attrs = self.class::BulkUpdateMessage.decode(body).extract(:stringify_keys => true)
+      @request_attrs = self.class::BulkUpdateMessage.decode(body).extract(stringify_keys: true)
 
-      existing_plan = ServicePlan.filter(:guid => existing_service_plan_guid).first
-      new_plan = ServicePlan.filter(:guid => request_attrs['service_plan_guid']).first
+      existing_plan = ServicePlan.filter(guid: existing_service_plan_guid).first
+      new_plan = ServicePlan.filter(guid: request_attrs['service_plan_guid']).first
 
       if existing_plan && new_plan
-        changed_count = existing_plan.service_instances_dataset.update(:service_plan_id => new_plan.id)
+        changed_count = existing_plan.service_instances_dataset.update(service_plan_id: new_plan.id)
         [HTTP::OK, {}, { changed_count: changed_count }.to_json]
       else
         [HTTP::BAD_REQUEST, {}, '']
@@ -221,7 +221,7 @@ module VCAP::CloudController
           select_all(:service_instances).
           left_join(:spaces, id: :service_instances__space_id).
           left_join(:organizations, id: :spaces__organization_id).
-          where(:organizations__guid => org_guid)
+          where(organizations__guid: org_guid)
       else
         super(model, ds, qp, opts)
       end
@@ -233,13 +233,13 @@ module VCAP::CloudController
     private
 
     def requested_space
-      space = Space.filter(:guid => request_attrs['space_guid']).first
+      space = Space.filter(guid: request_attrs['space_guid']).first
       raise Errors::ApiError.new_from_details('ServiceInstanceInvalid', 'not a valid space') unless space
       space
     end
 
     def current_user_can_manage_plan(plan_guid)
-      ServicePlan.user_visible(SecurityContext.current_user, SecurityContext.admin?).filter(:guid => plan_guid).count > 0
+      ServicePlan.user_visible(SecurityContext.current_user, SecurityContext.admin?).filter(guid: plan_guid).count > 0
     end
 
     def safe_deprovision_instance(service_instance)

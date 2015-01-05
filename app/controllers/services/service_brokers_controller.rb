@@ -73,7 +73,7 @@ module VCAP::CloudController
 
     def delete(guid)
       validate_access(:delete, ServiceBroker)
-      broker = ServiceBroker.find(:guid => guid)
+      broker = ServiceBroker.find(guid: guid)
       return HTTP::NOT_FOUND unless broker
 
       VCAP::Services::ServiceBrokers::ServiceBrokerRemover.new(broker, @services_event_repository).execute!

@@ -29,7 +29,7 @@ module VCAP::CloudController
       set_v2_security_context
       Sequel::Model.db.transaction do
         service = Service.update_or_create(
-          :label => label, :provider => provider
+          label: label, provider: provider
         ) do |svc|
           if svc.new?
             logger.debug2('Creating service')
@@ -37,15 +37,15 @@ module VCAP::CloudController
             logger.debug2("Updating service #{svc.guid}")
           end
           svc.set(
-            :url         => req.url,
-            :description => req.description,
-            :version     => version,
-            :acls        => req.acls,
-            :timeout     => req.timeout,
-            :info_url    => req.info_url,
-            :active      => req.active,
-            :extra       => req.extra,
-            :bindable    => true,
+            url: req.url,
+            description: req.description,
+            version: version,
+            acls: req.acls,
+            timeout: req.timeout,
+            info_url: req.info_url,
+            active: req.active,
+            extra: req.extra,
+            bindable: true,
           )
         end
 
@@ -70,8 +70,8 @@ module VCAP::CloudController
       new_plan_attrs.each {|attrs| attrs['description'] ||= 'dummy description' }
 
       old_plan_names = ServicePlan.dataset.
-        join(:services, :id => :service_id).
-        filter(:label => label, :provider => DEFAULT_PROVIDER).
+        join(:services, id: :service_id).
+        filter(label: label, provider: DEFAULT_PROVIDER).
         select_map(Sequel.qualify(:service_plans, :name))
 
 
@@ -87,7 +87,7 @@ module VCAP::CloudController
       missing = old_plan_names - new_plan_attrs.map {|attrs| attrs['name']}
       if missing.any?
         logger.info("Attempting to remove old plans: #{missing.inspect}")
-        service.service_plans_dataset.filter(:name => missing).each do |plan|
+        service.service_plans_dataset.filter(name: missing).each do |plan|
           begin
             plan.destroy
           rescue Sequel::DatabaseError
@@ -100,33 +100,33 @@ module VCAP::CloudController
     def list_handles(label_and_version, provider = DEFAULT_PROVIDER)
       (label, version) = label_and_version.split('-')
 
-      service = Service[:label => label, :provider => provider]
+      service = Service[label: label, provider: provider]
       raise ApiError.new_from_details('ServiceNotFound', "label=#{label} provider=#{provider}") unless service
       validate_access(label, provider)
       logger.debug("Listing handles for service: #{service.inspect}")
 
       handles = []
       plans_ds = service.service_plans_dataset
-      instances_ds = ManagedServiceInstance.filter(:service_plan => plans_ds)
+      instances_ds = ManagedServiceInstance.filter(service_plan: plans_ds)
       handles += instances_ds.map do |si|
         {
-          :service_id => si.gateway_name,
-          :credentials => si.credentials,
-          :configuration => si.gateway_data,
+          service_id: si.gateway_name,
+          credentials: si.credentials,
+          configuration: si.gateway_data,
         }
       end
 
       service_bindings_ds = ServiceBinding.filter(
-        :service_instance => instances_ds)
+        service_instance: instances_ds)
 
       handles += service_bindings_ds.map do |sb|
         {
-          :service_id => sb.gateway_name,
-          :credentials => sb.credentials,
-          :configuration => sb.gateway_data,
+          service_id: sb.gateway_name,
+          credentials: sb.credentials,
+          configuration: sb.gateway_data,
         }
       end
-      MultiJson.dump({:handles => handles})
+      MultiJson.dump({handles: handles})
     end
 
     def delete(label_and_version, provider = DEFAULT_PROVIDER)
@@ -135,7 +135,7 @@ module VCAP::CloudController
       validate_access(label, provider)
 
       set_v2_security_context
-      svc_guid = Service[:label => label, :provider => provider].guid
+      svc_guid = Service[label: label, provider: provider].guid
 
       controller_factory = CloudController::ControllerFactory.new(config, logger, env, params, body)
       svc_api = controller_factory.create_controller(VCAP::CloudController::ServicesController)
@@ -149,7 +149,7 @@ module VCAP::CloudController
       raise Errors::ApiError.new_from_details('NotAuthorized') unless auth_token
 
       svc_auth_token = ServiceAuthToken[
-        :label => label, :provider => provider,
+        label: label, provider: provider,
       ]
 
       unless (svc_auth_token && svc_auth_token.token_matches?(auth_token))
@@ -163,11 +163,11 @@ module VCAP::CloudController
 
       validate_access(label, provider)
 
-      service = Service[:label => label, :provider => provider]
+      service = Service[label: label, provider: provider]
       offering = {
-        :label => label,
-        :provider => provider,
-        :url => service.url,
+        label: label,
+        provider: provider,
+        url: service.url,
       }
 
       [
@@ -206,27 +206,27 @@ module VCAP::CloudController
 
       req = VCAP::Services::Api::HandleUpdateRequest.decode(body)
 
-      service = Service[:label => label, :provider => provider]
+      service = Service[label: label, provider: provider]
       raise ApiError.new_from_details('ServiceNotFound', "label=#{label} provider=#{provider}") unless service
 
 
       plans_ds = service.service_plans_dataset
-      instances_ds = ManagedServiceInstance.filter(:service_plan => plans_ds)
-      bindings_ds = ServiceBinding.filter(:service_instance => instances_ds)
+      instances_ds = ManagedServiceInstance.filter(service_plan: plans_ds)
+      bindings_ds = ServiceBinding.filter(service_instance: instances_ds)
 
-      instance = instances_ds[:gateway_name => id]
-      binding = bindings_ds[:gateway_name => id]
+      instance = instances_ds[gateway_name: id]
+      binding = bindings_ds[gateway_name: id]
 
       if instance
         instance.set(
-          :gateway_data => req.configuration,
-          :credentials => req.credentials,
+          gateway_data: req.configuration,
+          credentials: req.credentials,
         )
         instance.save_changes
       elsif binding
         binding.set(
-          :configuration => req.configuration.to_s,
-          :credentials => req.credentials.to_s,
+          configuration: req.configuration.to_s,
+          credentials: req.credentials.to_s,
         )
         binding.save_changes
       else
@@ -241,12 +241,12 @@ module VCAP::CloudController
     end
 
     def legacy_api_user
-      user = User.find(:guid => LEGACY_API_USER_GUID)
+      user = User.find(guid: LEGACY_API_USER_GUID)
       if user.nil?
         user = User.create(
-          :guid => LEGACY_API_USER_GUID,
-          :admin => true,
-          :active => true,
+          guid: LEGACY_API_USER_GUID,
+          admin: true,
+          active: true,
         )
       end
       user

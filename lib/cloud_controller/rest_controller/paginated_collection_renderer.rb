@@ -72,18 +72,18 @@ module VCAP::CloudController::RestController
       resources = dataset.all.map { |obj| @serializer.serialize(controller, obj, opts, orphans) }
  
       result = {
-         :total_results => paginated_dataset.pagination_record_count,
-         :total_pages => paginated_dataset.page_count,
-         :prev_url => prev_url,
-         :next_url => next_url,
-         :resources => resources,
+         total_results: paginated_dataset.pagination_record_count,
+         total_pages: paginated_dataset.page_count,
+         prev_url: prev_url,
+         next_url: next_url,
+         resources: resources,
       }
 
       if orphans
         result[:orphans] = orphans
       end
 
-      MultiJson.dump(result, :pretty => true)
+      MultiJson.dump(result, pretty: true)
     end
 
     private

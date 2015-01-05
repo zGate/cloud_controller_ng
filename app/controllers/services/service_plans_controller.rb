@@ -70,7 +70,7 @@ module VCAP::CloudController
           select_all(:service_plans).
           left_join(:services, id: :service_plans__service_id).
           left_join(:service_brokers, id: :services__service_broker_id).
-          where(:service_brokers__guid => service_broker_guid)
+          where(service_brokers__guid: service_broker_guid)
       else
         super(model, ds, qp, opts)
       end

@@ -28,7 +28,7 @@ module VCAP::CloudController
               end
             end
 
-            app.save_changes(:raise_on_save_failure => true)
+            app.save_changes(raise_on_save_failure: true)
           end
         end
       end

@@ -3,7 +3,7 @@ require 'spec_helper'
 module VCAP::CloudController
   describe VCAP::CloudController::OrganizationStartEvent, type: :model do
     before do
-      TestConfig.override({ :billing_event_writing_enabled => true })
+      TestConfig.override({ billing_event_writing_enabled: true })
     end
 
     it { is_expected.to have_timestamp_columns }
@@ -25,7 +25,7 @@ module VCAP::CloudController
           expect(OrganizationStartEvent).not_to receive(:create)
           org = Organization.make
           org.billing_enabled = false
-          org.save(:validate => false)
+          org.save(validate: false)
           expect {
             OrganizationStartEvent.create_from_org(org)
           }.to raise_error(OrganizationStartEvent::BillingNotEnabled)

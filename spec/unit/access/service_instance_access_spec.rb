@@ -7,10 +7,10 @@ module VCAP::CloudController
     let(:user) { VCAP::CloudController::User.make }
 
     let(:org) { VCAP::CloudController::Organization.make }
-    let(:space) { VCAP::CloudController::Space.make(:organization => org) }
+    let(:space) { VCAP::CloudController::Space.make(organization: org) }
     let(:service) { VCAP::CloudController::Service.make }
-    let(:service_plan) { VCAP::CloudController::ServicePlan.make(:service => service) }
-    let(:object) { VCAP::CloudController::ManagedServiceInstance.make(:service_plan => service_plan, :space => space) }
+    let(:service_plan) { VCAP::CloudController::ServicePlan.make(service: service) }
+    let(:object) { VCAP::CloudController::ManagedServiceInstance.make(service_plan: service_plan, space: space) }
 
     before do
       SecurityContext.set(user, token)
@@ -218,7 +218,7 @@ module VCAP::CloudController
       end
 
       context 'user provided service instance' do
-        let(:object) {VCAP::CloudController::UserProvidedServiceInstance.make(:space => space) }
+        let(:object) {VCAP::CloudController::UserProvidedServiceInstance.make(space: space) }
 
         it 'delegates to the UserProvidedServiceInstanceAccess' do
           expect_any_instance_of(UserProvidedServiceInstanceAccess).to receive(:allowed?).with(object)

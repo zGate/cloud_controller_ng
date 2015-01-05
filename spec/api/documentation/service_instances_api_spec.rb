@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'rspec_api_documentation/dsl'
 require 'uri'
 
-resource 'Service Instances', :type => [:api, :legacy_api] do
+resource 'Service Instances', type: [:api, :legacy_api] do
   let(:admin_auth_header) { admin_headers['HTTP_AUTHORIZATION'] }
   let!(:service_instance) { VCAP::CloudController::ManagedServiceInstance.make }
   let(:guid) { service_instance.guid }
@@ -45,7 +45,7 @@ resource 'Service Instances', :type => [:api, :legacy_api] do
         uri.user = service_broker.auth_username
         uri.password = service_broker.auth_password
         uri.path += "/v2/service_instances/#{service_instance.guid}/"
-        stub_request(:patch, uri.to_s).to_return(:status => 200, :body => '{}', :headers => {})
+        stub_request(:patch, uri.to_s).to_return(status: 200, body: '{}', headers: {})
       end
 
       example 'Updating a service instance' do

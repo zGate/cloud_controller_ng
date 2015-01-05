@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'rspec_api_documentation/dsl'
 
-resource 'Spaces', :type => [:api, :legacy_api] do
+resource 'Spaces', type: [:api, :legacy_api] do
   let(:admin_auth_header) { admin_headers['HTTP_AUTHORIZATION'] }
   let!(:space) { VCAP::CloudController::Space.make }
   let(:guid) { space.guid }
@@ -81,8 +81,8 @@ resource 'Spaces', :type => [:api, :legacy_api] do
 
     describe 'Routes' do
       before do
-        domain = VCAP::CloudController::PrivateDomain.make(:owning_organization => space.organization)
-        VCAP::CloudController::Route.make(domain: domain, :space => space)
+        domain = VCAP::CloudController::PrivateDomain.make(owning_organization: space.organization)
+        VCAP::CloudController::Route.make(domain: domain, space: space)
       end
 
       standard_model_list :route, VCAP::CloudController::RoutesController, outer_model: :space
@@ -163,8 +163,8 @@ resource 'Spaces', :type => [:api, :legacy_api] do
 
     describe 'Services' do
       before do
-        some_service = VCAP::CloudController::Service.make(:active => true)
-        service_plan = VCAP::CloudController::ServicePlan.make(:service => some_service, public: false)
+        some_service = VCAP::CloudController::Service.make(active: true)
+        service_plan = VCAP::CloudController::ServicePlan.make(service: some_service, public: false)
         VCAP::CloudController::ServicePlanVisibility.make(service_plan: some_service.service_plans.first, organization: space.organization)
       end
 

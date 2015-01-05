@@ -42,13 +42,13 @@ module VCAP::CloudController
 
     post "#{DROPLET_PATH}/:guid/upload", :upload_droplet
     def upload_droplet(guid)
-      app = App.find(:guid => guid)
+      app = App.find(guid: guid)
 
       check_app_exists(app, guid)
       check_file_was_uploaded(app)
       check_file_md5
 
-      logger.info 'droplet.begin-upload', :app_guid => app.guid
+      logger.info 'droplet.begin-upload', app_guid: app.guid
 
       droplet_upload_job = Jobs::Runtime::DropletUpload.new(upload_path, app.id)
 
@@ -63,13 +63,13 @@ module VCAP::CloudController
 
     get "#{STAGING_PATH}/jobs/:guid", :find_job
     def find_job(guid)
-      job = Delayed::Job[:guid => guid]
+      job = Delayed::Job[guid: guid]
       StagingJobPresenter.new(job).to_json
     end
 
     get "#{DROPLET_PATH}/:guid/download", :download_droplet
     def download_droplet(guid)
-      app = App.find(:guid => guid)
+      app = App.find(guid: guid)
       check_app_exists(app, guid)
       blob_name = 'droplet'
 
@@ -86,7 +86,7 @@ module VCAP::CloudController
 
     post "#{BUILDPACK_CACHE_PATH}/:guid/upload", :upload_buildpack_cache
     def upload_buildpack_cache(guid)
-      app = App.find(:guid => guid)
+      app = App.find(guid: guid)
 
       check_app_exists(app, guid)
       check_file_was_uploaded(app)
@@ -99,7 +99,7 @@ module VCAP::CloudController
 
     get "#{BUILDPACK_CACHE_PATH}/:guid/download", :download_buildpack_cache
     def download_buildpack_cache(guid)
-      app = App.find(:guid => guid)
+      app = App.find(guid: guid)
       check_app_exists(app, guid)
 
       blob = buildpack_cache_blobstore.blob(app.guid)

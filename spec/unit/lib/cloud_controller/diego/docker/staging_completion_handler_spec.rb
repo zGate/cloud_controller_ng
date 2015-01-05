@@ -79,7 +79,7 @@ module VCAP::CloudController
 
               expect(logger).to have_received(:error).with(
                 'diego.docker.staging.unknown-app',
-                :response => payload
+                response: payload
               )
             end
           end
@@ -104,8 +104,8 @@ module VCAP::CloudController
 
               expect(logger).to have_received(:warn).with(
                 'diego.docker.staging.not-current',
-                :response => payload,
-                :current => app.staging_task_id
+                response: payload,
+                current: app.staging_task_id
               )
             end
           end

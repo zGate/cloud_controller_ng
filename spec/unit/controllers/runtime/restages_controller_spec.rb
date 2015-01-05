@@ -7,7 +7,7 @@ module VCAP::CloudController
 
     describe 'POST /v2/apps/:id/restage' do
       let(:package_state) { 'STAGED' }
-      let!(:application) { AppFactory.make(:package_hash => 'abc', :package_state => package_state) }
+      let!(:application) { AppFactory.make(package_hash: 'abc', package_state: package_state) }
 
       subject(:restage_request) { post("/v2/apps/#{application.guid}/restage", {}, headers_for(account)) }
 

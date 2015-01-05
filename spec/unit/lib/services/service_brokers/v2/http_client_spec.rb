@@ -78,24 +78,24 @@ module VCAP::Services::ServiceBrokers::V2
       it 'sets X-Broker-Api-Version header correctly' do
         make_request
         expect(a_request(http_method, full_url).
-          with(:query => hash_including({})).
-          with(:headers => {'X-Broker-Api-Version' => '2.4'})).
+          with(query: hash_including({})).
+          with(headers: {'X-Broker-Api-Version' => '2.4'})).
           to have_been_made
       end
 
       it 'sets the X-Vcap-Request-Id header to the current request id' do
         make_request
         expect(a_request(http_method, full_url).
-          with(:query => hash_including({})).
-          with(:headers => { 'X-Vcap-Request-Id' => request_id })).
+          with(query: hash_including({})).
+          with(headers: { 'X-Vcap-Request-Id' => request_id })).
           to have_been_made
       end
 
       it 'sets the Accept header to application/json' do
         make_request
         expect(a_request(http_method, full_url).
-          with(:query => hash_including({})).
-          with(:headers => { 'Accept' => 'application/json' })).
+          with(query: hash_including({})).
+          with(headers: { 'Accept' => 'application/json' })).
           to have_been_made
       end
 
@@ -268,8 +268,8 @@ module VCAP::Services::ServiceBrokers::V2
       let(:http_method) { :put }
       let(:message) do
         {
-          :key1 => 'value1',
-          :key2 => 'value2'
+          key1: 'value1',
+          key2: 'value2'
         }
       end
 
@@ -320,8 +320,8 @@ module VCAP::Services::ServiceBrokers::V2
       let(:http_method) { :patch }
       let(:message) do
         {
-          :key1 => 'value1',
-          :key2 => 'value2'
+          key1: 'value1',
+          key2: 'value2'
         }
       end
 
@@ -372,8 +372,8 @@ module VCAP::Services::ServiceBrokers::V2
       let(:http_method) { :delete }
       let(:message) do
         {
-          :key1 => 'value1',
-          :key2 => 'value2'
+          key1: 'value1',
+          key2: 'value2'
         }
       end
 

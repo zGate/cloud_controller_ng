@@ -3,7 +3,7 @@ require 'spec_helper'
 module VCAP::CloudController
   describe VCAP::CloudController::AppStartEvent, type: :model do
     before do
-      TestConfig.override({ :billing_event_writing_enabled => true })
+      TestConfig.override({ billing_event_writing_enabled: true })
     end
 
     it { is_expected.to have_timestamp_columns }
@@ -35,7 +35,7 @@ module VCAP::CloudController
           expect(AppStartEvent).not_to receive(:create)
           app = AppFactory.make
           app.space.organization.billing_enabled = false
-          app.space.organization.save(:validate => false)
+          app.space.organization.save(validate: false)
           AppStartEvent.create_from_app(app)
         end
       end
@@ -45,7 +45,7 @@ module VCAP::CloudController
           expect(AppStartEvent).to receive(:create)
           app = AppFactory.make
           app.space.organization.billing_enabled = true
-          app.space.organization.save(:validate => false)
+          app.space.organization.save(validate: false)
           AppStartEvent.create_from_app(app)
         end
       end

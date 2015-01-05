@@ -44,13 +44,13 @@ module VCAP::Services
           plan.unique_id,
           instance.name,
           {
-            :label => "#{service.label}-#{service.version}",
-            :email => current_user_email,
-            :plan  => plan.name,
-            :version => service.version,
-            :provider => service.provider,
-            :space_guid => space.guid,
-            :organization_guid => space.organization_guid
+            label: "#{service.label}-#{service.version}",
+            email: current_user_email,
+            plan: plan.name,
+            version: service.version,
+            provider: service.provider,
+            space_guid: space.guid,
+            organization_guid: space.organization_guid
           }
         ).and_return(response)
       end

@@ -8,11 +8,11 @@ module VCAP::CloudController
     let(:user) { VCAP::CloudController::User.make }
     let(:service) { VCAP::CloudController::Service.make }
     let(:org) { VCAP::CloudController::Organization.make }
-    let(:space) { VCAP::CloudController::Space.make(:organization => org) }
-    let(:app) { VCAP::CloudController::AppFactory.make(:space => space) }
-    let(:service_instance) { VCAP::CloudController::ManagedServiceInstance.make(:space => space) }
+    let(:space) { VCAP::CloudController::Space.make(organization: org) }
+    let(:app) { VCAP::CloudController::AppFactory.make(space: space) }
+    let(:service_instance) { VCAP::CloudController::ManagedServiceInstance.make(space: space) }
 
-    let(:object) { VCAP::CloudController::ServiceBinding.make(:app => app, :service_instance => service_instance) }
+    let(:object) { VCAP::CloudController::ServiceBinding.make(app: app, service_instance: service_instance) }
 
     before do
       SecurityContext.set(user, token)

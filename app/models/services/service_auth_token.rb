@@ -5,7 +5,7 @@ module VCAP::CloudController
 
     strip_attributes  :label, :provider
 
-    many_to_one   :service, :key => [:label, :provider], :primary_key => [:label, :provider]
+    many_to_one   :service, key: [:label, :provider], primary_key: [:label, :provider]
 
     encrypt :token, salt: :salt
 

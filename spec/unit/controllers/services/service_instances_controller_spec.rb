@@ -35,8 +35,8 @@ module VCAP::CloudController
       include_context 'permissions'
 
       before do
-        @obj_a = ManagedServiceInstance.make(:space => @space_a)
-        @obj_b = ManagedServiceInstance.make(:space => @space_b)
+        @obj_a = ManagedServiceInstance.make(space: @space_a)
+        @obj_b = ManagedServiceInstance.make(space: @space_b)
       end
 
       def self.user_sees_empty_enumerate(user_role, member_a_ivar, member_b_ivar)
@@ -45,9 +45,9 @@ module VCAP::CloudController
           let(:member_b) { instance_variable_get(member_b_ivar) }
 
           include_examples 'permission enumeration', user_role,
-                           :name => 'managed service instance',
-                           :path => '/v2/service_instances',
-                           :enumerate => 0
+                           name: 'managed service instance',
+                           path: '/v2/service_instances',
+                           enumerate: 0
         end
       end
 
@@ -66,17 +66,17 @@ module VCAP::CloudController
           let(:member_b) { @space_b_developer }
 
           include_examples 'permission enumeration', 'Developer',
-                           :name => 'managed service instance',
-                           :path => '/v2/service_instances',
-                           :enumerate => 1
+                           name: 'managed service instance',
+                           path: '/v2/service_instances',
+                           enumerate: 1
 
           it 'prevents a developer from creating a service instance in an unauthorized space' do
             plan = ServicePlan.make
 
             req = MultiJson.dump(
-              :name => 'foo',
-              :space_guid => @space_b.guid,
-              :service_plan_guid => plan.guid
+              name: 'foo',
+              space_guid: @space_b.guid,
+              service_plan_guid: plan.guid
             )
 
             post '/v2/service_instances', req, json_headers(headers_for(member_a))
@@ -154,9 +154,9 @@ module VCAP::CloudController
           let(:member_b) { @space_b_auditor }
 
           include_examples 'permission enumeration', 'SpaceAuditor',
-                           :name => 'managed service instance',
-                           :path => '/v2/service_instances',
-                           :enumerate => 1
+                           name: 'managed service instance',
+                           path: '/v2/service_instances',
+                           enumerate: 1
         end
       end
     end
@@ -230,9 +230,9 @@ module VCAP::CloudController
         context 'when name is blank' do
           let(:body) do
             MultiJson.dump(
-              :name => '',
-              :space_guid => space.guid,
-              :service_plan_guid => plan.guid
+              name: '',
+              space_guid: space.guid,
+              service_plan_guid: plan.guid
             )
           end
           let(:headers) { json_headers(headers_for(developer)) }
@@ -260,9 +260,9 @@ module VCAP::CloudController
 
         it 'deprovisions the service instance when an exception is raised' do
           req = MultiJson.dump(
-            :name => 'foo',
-            :space_guid => space.guid,
-            :service_plan_guid => plan.guid
+            name: 'foo',
+            space_guid: space.guid,
+            service_plan_guid: plan.guid
           )
 
           allow_any_instance_of(ManagedServiceInstance).to receive(:save).and_raise
@@ -284,9 +284,9 @@ module VCAP::CloudController
 
           it 'raises the save error' do
             req = MultiJson.dump(
-              :name => 'foo',
-              :space_guid => space.guid,
-              :service_plan_guid => plan.guid
+              name: 'foo',
+              space_guid: space.guid,
+              service_plan_guid: plan.guid
             )
 
             post '/v2/service_instances', req, json_headers(headers_for(developer))
@@ -357,9 +357,9 @@ module VCAP::CloudController
         context 'when the service_plan does not exist' do
           before do
             req = MultiJson.dump(
-              :name => 'foo',
-              :space_guid => space.guid,
-              :service_plan_guid => 'bad-guid'
+              name: 'foo',
+              space_guid: space.guid,
+              service_plan_guid: 'bad-guid'
             )
             headers = json_headers(headers_for(developer))
 
@@ -377,8 +377,8 @@ module VCAP::CloudController
       context 'with a v1 service' do
         let(:space) { Space.make }
         let(:developer) { make_developer_for_space(space) }
-        let(:plan) { ServicePlan.make(:service => service) }
-        let(:service) { Service.make(:description => 'blah blah foobar') }
+        let(:plan) { ServicePlan.make(service: service) }
+        let(:service) { Service.make(description: 'blah blah foobar') }
 
         before do
           allow(service).to receive(:v2?) { false }
@@ -387,9 +387,9 @@ module VCAP::CloudController
         context 'when provisioning without a service-auth-token' do
           it 'should throw a 500 and give you an error message' do
             req = MultiJson.dump(
-              :name => 'foo',
-              :space_guid => space.guid,
-              :service_plan_guid => plan.guid
+              name: 'foo',
+              space_guid: space.guid,
+              service_plan_guid: plan.guid
             )
             headers = json_headers(headers_for(developer))
 
@@ -465,7 +465,7 @@ module VCAP::CloudController
 
       let(:body) do
         MultiJson.dump(
-          :service_plan_guid => new_service_plan.guid
+          service_plan_guid: new_service_plan.guid
         )
       end
 
@@ -545,7 +545,7 @@ module VCAP::CloudController
       context 'when the requested plan does not exist' do
         let(:body) do
           MultiJson.dump(
-            :service_plan_guid => 'some-non-existing-plan'
+            service_plan_guid: 'some-non-existing-plan'
           )
         end
 
@@ -585,7 +585,7 @@ module VCAP::CloudController
           space2.add_developer(user)
 
           move_req = MultiJson.dump(
-            :space_guid => space2.guid,
+            space_guid: space2.guid,
           )
 
           put "/v2/service_instances/#{instance.guid}", move_req, json_headers(headers_for(user))
@@ -616,7 +616,7 @@ module VCAP::CloudController
       let(:new_plan_guid)       { third_service_plan.guid }
       let(:body) do
         MultiJson.dump(
-          :service_plan_guid => new_plan_guid
+          service_plan_guid: new_plan_guid
         )
       end
 
@@ -700,7 +700,7 @@ module VCAP::CloudController
             delete "/v2/service_instances/#{service_instance.guid}", {}, admin_headers
           }.to change(ServiceInstance, :count).by(-1)
           expect(last_response.status).to eq(204)
-          expect(ServiceInstance.find(:guid => service_instance.guid)).to be_nil
+          expect(ServiceInstance.find(guid: service_instance.guid)).to be_nil
         end
 
         context 'it is a managed service instance' do
@@ -755,7 +755,7 @@ module VCAP::CloudController
             successes, failures = Delayed::Worker.new.work_off
             expect(successes).to eq 1
             expect(failures).to eq 0
-            expect(ServiceInstance.find(:guid => service_instance.guid)).to be_nil
+            expect(ServiceInstance.find(guid: service_instance.guid)).to be_nil
           end
         end
 
@@ -814,7 +814,7 @@ module VCAP::CloudController
             delete "/v2/service_instances/#{service_instance.guid}", {}, admin_headers
           }.to change(ServiceInstance, :count).by(-1)
           expect(last_response.status).to eq(204)
-          expect(ServiceInstance.find(:guid => service_instance.guid)).to be_nil
+          expect(ServiceInstance.find(guid: service_instance.guid)).to be_nil
         end
       end
     end
@@ -880,19 +880,19 @@ module VCAP::CloudController
     end
 
     describe 'Validation messages' do
-      let(:paid_quota) { QuotaDefinition.make(:total_services => 1) }
+      let(:paid_quota) { QuotaDefinition.make(total_services: 1) }
       let(:free_quota_with_no_services) do
-        QuotaDefinition.make(:total_services => 0,
-                                     :non_basic_services_allowed => false)
+        QuotaDefinition.make(total_services: 0,
+                                     non_basic_services_allowed: false)
       end
       let(:free_quota_with_one_service) do
-        QuotaDefinition.make(:total_services => 1,
-                                     :non_basic_services_allowed => false)
+        QuotaDefinition.make(total_services: 1,
+                                     non_basic_services_allowed: false)
       end
       let(:paid_plan) { ServicePlan.make }
-      let(:free_plan) { ServicePlan.make(:free => true) }
-      let(:org) { Organization.make(:quota_definition => paid_quota) }
-      let(:space) { Space.make(:organization => org) }
+      let(:free_plan) { ServicePlan.make(free: true) }
+      let(:org) { Organization.make(quota_definition: paid_quota) }
+      let(:space) { Space.make(organization: org) }
 
       it 'returns duplicate name message correctly' do
         existing_service_instance = ManagedServiceInstance.make(space: space)
@@ -978,7 +978,7 @@ module VCAP::CloudController
       context 'invalid space guid' do
         it 'returns a user friendly error' do
           org = Organization.make()
-          space = Space.make(:organization => org)
+          space = Space.make(organization: org)
           plan = ServicePlan.make(free: true)
 
           body = {
@@ -996,9 +996,9 @@ module VCAP::CloudController
 
     def create_managed_service_instance(user_opts={})
       req = MultiJson.dump(
-        :name => 'foo',
-        :space_guid => space.guid,
-        :service_plan_guid => plan.guid
+        name: 'foo',
+        space_guid: space.guid,
+        service_plan_guid: plan.guid
       )
       headers = json_headers(headers_for(developer, user_opts))
 
@@ -1009,8 +1009,8 @@ module VCAP::CloudController
 
     def create_user_provided_service_instance
       req = MultiJson.dump(
-        :name => 'foo',
-        :space_guid => space.guid
+        name: 'foo',
+        space_guid: space.guid
       )
       headers = json_headers(headers_for(developer))
 

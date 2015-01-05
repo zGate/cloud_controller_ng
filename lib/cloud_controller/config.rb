@@ -16,27 +16,27 @@ module VCAP::CloudController
         :external_port => Integer,
         :external_protocol => String,
         :info => {
-          :name            => String,
-          :build           => String,
-          :version         => Fixnum,
-          :support_address => String,
-          :description     => String,
+          name: String,
+          build: String,
+          version: Fixnum,
+          support_address: String,
+          description: String,
         },
 
         :system_domain => String,
         :system_domain_organization => enum(String, NilClass),
         :app_domains => [ String ],
         :app_events => {
-          :cutoff_age_in_days => Fixnum
+          cutoff_age_in_days: Fixnum
         },
         :app_usage_events => {
-          :cutoff_age_in_days => Fixnum
+          cutoff_age_in_days: Fixnum
         },
         :audit_events => {
-          :cutoff_age_in_days => Fixnum
+          cutoff_age_in_days: Fixnum
         },
         :failed_jobs => {
-          :cutoff_age_in_days => Fixnum
+          cutoff_age_in_days: Fixnum
         },
         optional(:billing_event_writing_enabled) => bool,
         :default_app_memory => Fixnum,
@@ -47,11 +47,11 @@ module VCAP::CloudController
         optional(:allow_debug) => bool,
 
         optional(:login) => {
-          :url      => String
+          url: String
         },
 
         :hm9000 => {
-          :url                => String
+          url: String
         },
 
         :uaa => {
@@ -85,13 +85,13 @@ module VCAP::CloudController
         },
 
         :bulk_api => {
-          :auth_user  => String,
-          :auth_password => String,
+          auth_user: String,
+          auth_password: String,
         },
 
         :internal_api => {
-          :auth_user  => String,
-          :auth_password => String,
+          auth_user: String,
+          auth_password: String,
         },
 
         :staging => {
@@ -99,25 +99,25 @@ module VCAP::CloudController
           optional(:minimum_staging_memory_mb) => Fixnum,
           optional(:minimum_staging_disk_mb) => Fixnum,
           :auth => {
-            :user => String,
-            :password => String,
+            user: String,
+            password: String,
           }
         },
 
         :cc_partition => String,
 
         optional(:default_account_capacity) => {
-          :memory   => Fixnum,   #:default => 2048,
-          :app_uris => Fixnum, #:default => 4,
-          :services => Fixnum, #:default => 16,
-          :apps     => Fixnum, #:default => 20
+          memory: Fixnum,   #:default => 2048,
+          app_uris: Fixnum, #:default => 4,
+          services: Fixnum, #:default => 16,
+          apps: Fixnum, #:default => 20
         },
 
         optional(:admin_account_capacity) => {
-          :memory   => Fixnum,   #:default => 2048,
-          :app_uris => Fixnum, #:default => 4,
-          :services => Fixnum, #:default => 16,
-          :apps     => Fixnum, #:default => 20
+          memory: Fixnum,   #:default => 2048,
+          app_uris: Fixnum, #:default => 4,
+          services: Fixnum, #:default => 16,
+          apps: Fixnum, #:default => 20
         },
 
         optional(:index)       => Integer,    # Component index (cc-0, cc-1, etc)
@@ -125,8 +125,8 @@ module VCAP::CloudController
         optional(:local_route) => String,     # If set, use this to determine the IP address that is returned in discovery messages
 
         :nginx => {
-          :use_nginx  => bool,
-          :instance_socket => String,
+          use_nginx: bool,
+          instance_socket: String,
         },
 
         :quota_definitions => Hash,
@@ -163,8 +163,8 @@ module VCAP::CloudController
         },
 
         :droplets => {
-          :droplet_directory_key => String,
-          :fog_connection => Hash
+          droplet_directory_key: String,
+          fog_connection: Hash
         },
 
         :db_encryption_key => String,
@@ -181,8 +181,8 @@ module VCAP::CloudController
         optional(:uaa_client_scope) => String,
 
         :renderer => {
-          :max_results_per_page => Integer,
-          :default_results_per_page => Integer,
+          max_results_per_page: Integer,
+          default_results_per_page: Integer,
         },
 
         optional(:loggregator) => {

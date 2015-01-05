@@ -70,35 +70,35 @@ module VCAP::CloudController
       end
 
       let(:dea_in_default_zone_with_1_instance_and_128m_memory) do
-        dea_advertisement :dea => 'dea-id1', :memory => 128, :instance_count => 1
+        dea_advertisement dea: 'dea-id1', memory: 128, instance_count: 1
       end
 
       let(:dea_in_default_zone_with_2_instances_and_128m_memory) do
-        dea_advertisement :dea => 'dea-id2', :memory => 128, :instance_count => 2
+        dea_advertisement dea: 'dea-id2', memory: 128, instance_count: 2
       end
 
       let(:dea_in_default_zone_with_1_instance_and_512m_memory) do
-        dea_advertisement :dea => 'dea-id3', :memory => 512, :instance_count => 1
+        dea_advertisement dea: 'dea-id3', memory: 512, instance_count: 1
       end
 
       let(:dea_in_default_zone_with_2_instances_and_512m_memory) do
-        dea_advertisement :dea => 'dea-id4', :memory => 512, :instance_count => 2
+        dea_advertisement dea: 'dea-id4', memory: 512, instance_count: 2
       end
 
       let(:dea_in_user_defined_zone_with_3_instances_and_1024m_memory) do
-        dea_advertisement :dea => 'dea-id5', :memory => 1024, :instance_count => 3, :zone => 'zone1'
+        dea_advertisement dea: 'dea-id5', memory: 1024, instance_count: 3, zone: 'zone1'
       end
 
       let(:dea_in_user_defined_zone_with_2_instances_and_1024m_memory) do
-        dea_advertisement :dea => 'dea-id6', :memory => 1024, :instance_count => 2, :zone => 'zone1'
+        dea_advertisement dea: 'dea-id6', memory: 1024, instance_count: 2, zone: 'zone1'
       end
 
       let(:dea_in_user_defined_zone_with_1_instance_and_512m_memory) do
-        dea_advertisement :dea => 'dea-id7', :memory => 512, :instance_count => 2, :zone => 'zone1'
+        dea_advertisement dea: 'dea-id7', memory: 512, instance_count: 2, zone: 'zone1'
       end
 
       let(:dea_in_user_defined_zone_with_1_instance_and_256m_memory) do
-        dea_advertisement :dea => 'dea-id8', :memory => 256, :instance_count => 1, :zone => 'zone1'
+        dea_advertisement dea: 'dea-id8', memory: 256, instance_count: 1, zone: 'zone1'
       end
 
       let(:available_disk) { 100 }

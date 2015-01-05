@@ -8,7 +8,7 @@ module VCAP::CloudController
         subject(:protocol) { described_class.new }
 
         describe '#stop_index_request' do
-          let(:app) { double(:app, :versioned_guid => 'versioned-guid') }
+          let(:app) { double(:app, versioned_guid: 'versioned-guid') }
 
           it 'includes a subject and message for CfMessageBus::MessageBus#publish' do
             request = protocol.stop_index_request(app, 33)

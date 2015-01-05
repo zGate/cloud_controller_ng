@@ -38,9 +38,9 @@ module VCAP::CloudController
       it 'adds the X-Cf-Warning with the right message to the response' do
 
         req = {
-          :label    => 'some-label',
-          :provider => 'some-provider',
-          :token    => 'some-token'
+          label: 'some-label',
+          provider: 'some-provider',
+          token: 'some-token'
         }.to_json
 
         post '/v2/service_auth_tokens', req, admin_headers
@@ -54,9 +54,9 @@ module VCAP::CloudController
 
       it 'adds the X-Cf-Warning with the right message to the response' do
         req = {
-          :label    => 'some-label',
-          :provider => 'some-provider',
-          :token    => 'some-token'
+          label: 'some-label',
+          provider: 'some-provider',
+          token: 'some-token'
         }.to_json
 
         put "/v2/service_auth_tokens/#{token.guid}", req, admin_headers

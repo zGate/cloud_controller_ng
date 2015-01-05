@@ -38,7 +38,7 @@ describe MetadataPolicy do
   end
 
   context 'when metadata is a hash with multiple variables' do
-    let(:metadata) { { :abc => 123, :def => 'hi' } }
+    let(:metadata) { { abc: 123, def: 'hi' } }
 
     it 'does not register error' do
       expect(validator).to validate_without_error(app)

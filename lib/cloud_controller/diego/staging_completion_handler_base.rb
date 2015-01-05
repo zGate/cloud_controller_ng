@@ -8,7 +8,7 @@ module VCAP::CloudController
       end
 
       def staging_complete(payload)
-        logger.info(@logger_prefix + 'finished', :response => payload)
+        logger.info(@logger_prefix + 'finished', response: payload)
 
         if payload['error']
           handle_failure(payload)
@@ -36,14 +36,14 @@ module VCAP::CloudController
           save_staging_result(app, payload)
           @runners.runner_for_app(app).start
         rescue => e
-          logger.error(@logger_prefix + 'saving-staging-result-failed', :response => payload, :error => e.message)
+          logger.error(@logger_prefix + 'saving-staging-result-failed', response: payload, error: e.message)
         end
       end
 
       def get_app(payload)
         app = App.find(guid: payload['app_id'])
         if app == nil
-          logger.error(@logger_prefix + 'unknown-app', :response => payload)
+          logger.error(@logger_prefix + 'unknown-app', response: payload)
           return
         end
 
@@ -55,8 +55,8 @@ module VCAP::CloudController
         if payload['task_id'] != app.staging_task_id
           logger.warn(
             @logger_prefix + 'not-current',
-            :response => payload,
-            :current => app.staging_task_id)
+            response: payload,
+            current: app.staging_task_id)
           return false
         end
 

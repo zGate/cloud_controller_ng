@@ -7,8 +7,8 @@ module VCAP::CloudController
 
     let(:user) { VCAP::CloudController::User.make }
     let(:org) { VCAP::CloudController::Organization.make }
-    let(:space) { VCAP::CloudController::Space.make(:organization => org) }
-    let!(:object) { VCAP::CloudController::Event.make(:space => space) }
+    let(:space) { VCAP::CloudController::Space.make(organization: org) }
+    let!(:object) { VCAP::CloudController::Event.make(space: space) }
 
     before do
       SecurityContext.set(user, token)

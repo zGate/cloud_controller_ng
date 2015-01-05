@@ -17,14 +17,14 @@ module VCAP::CloudController
       allow(EM).to receive(:add_timer).and_yield
       allow(VCAP::CloudController::Varz).to receive(:setup_updates)
       allow(VCAP::PidFile).to receive(:new) { double(:pidfile, unlink_at_exit: nil) }
-      allow(registrar).to receive_messages(:message_bus => message_bus)
+      allow(registrar).to receive_messages(message_bus: message_bus)
       allow(registrar).to receive(:register_with_router)
     end
 
     subject do
       Runner.new(argv + ['-c', config_file.path]).tap do |r|
         allow(r).to receive(:start_thin_server)
-        allow(r).to receive_messages(:router_registrar => registrar)
+        allow(r).to receive_messages(router_registrar: registrar)
       end
     end
 
@@ -43,7 +43,7 @@ module VCAP::CloudController
             expect(steno_config.sinks).to include log_counter
           end
 
-          expect(VCAP::Component).to receive(:register).with(hash_including(:log_counter => log_counter))
+          expect(VCAP::Component).to receive(:register).with(hash_including(log_counter: log_counter))
           subject.run!
         end
 
@@ -133,14 +133,14 @@ module VCAP::CloudController
             before { subject.run! }
 
             it 'creates stacks from the config file' do
-              cider = Stack.find(:name => 'cider')
+              cider = Stack.find(name: 'cider')
               expect(cider.description).to eq('cider-description')
               expect(cider).to be_valid
             end
 
             it 'should load quota definitions' do
               expect(QuotaDefinition.count).to eq(2)
-              default = QuotaDefinition[:name => 'default']
+              default = QuotaDefinition[name: 'default']
               expect(default.non_basic_services_allowed).to eq(true)
               expect(default.total_services).to eq(100)
               expect(default.memory_limit).to eq(10240)
@@ -152,14 +152,14 @@ module VCAP::CloudController
             end
 
             it 'creates the system domain, owned by the system domain org' do
-              domain = Domain.find(:name => 'the-system-domain.com')
+              domain = Domain.find(name: 'the-system-domain.com')
               expect(domain.owning_organization.name).to eq('the-system-domain-org-name')
             end
 
             it 'creates the application serving domains' do
               ['customer-app-domain1.com', 'customer-app-domain2.com'].each do |domain|
-                expect(Domain.find(:name => domain)).not_to be_nil
-                expect(Domain.find(:name => domain).owning_organization).to be_nil
+                expect(Domain.find(name: domain)).not_to be_nil
+                expect(Domain.find(name: domain).owning_organization).to be_nil
               end
             end
 
@@ -202,7 +202,7 @@ module VCAP::CloudController
 
             it 'creates the system domain as a private domain' do
               subject.run!
-              domain = Domain.find(:name => 'the-system-domain.com')
+              domain = Domain.find(name: 'the-system-domain.com')
               expect(domain.owning_organization).to be_nil
             end
           end

@@ -17,7 +17,7 @@ module VCAP::CloudController
       end
 
       it 'should return the default provided' do
-        attr = NamedAttribute.new('some_attr', :default => 'some default')
+        attr = NamedAttribute.new('some_attr', default: 'some default')
         expect(attr.default).to eq('some default')
       end
     end

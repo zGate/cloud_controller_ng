@@ -4,10 +4,10 @@ module VCAP::CloudController
   describe ServicePlansController, :services do
     shared_examples 'enumerate and read plan only' do |perm_name|
       include_examples 'permission enumeration', perm_name,
-        :name => 'service plan',
-        :path => '/v2/service_plans',
-        :permissions_overlap => true,
-        :enumerate => 7
+        name: 'service plan',
+        path: '/v2/service_plans',
+        permissions_overlap: true,
+        enumerate: 7
     end
 
     describe 'Query Parameters' do
@@ -149,12 +149,12 @@ module VCAP::CloudController
     describe 'GET', '/v2/service_plans' do
       before do
         @services = {
-          :public => [
+          public: [
             ServicePlan.make(:v2, active: true, public: true),
             ServicePlan.make(:v2, active: true, public: true),
             ServicePlan.make(:v2, active: false, public: true)
           ],
-          :private => [
+          private: [
             ServicePlan.make(:v2, active: true, public: false),
             ServicePlan.make(:v2, active: false, public: false)
           ]
@@ -286,7 +286,7 @@ module VCAP::CloudController
       let(:service_plan) { ServicePlan.make }
 
       it 'should prevent recursive deletions if there are any instances' do
-        ManagedServiceInstance.make(:service_plan => service_plan)
+        ManagedServiceInstance.make(service_plan: service_plan)
         delete "/v2/service_plans/#{service_plan.guid}?recursive=true", {}, admin_headers
         expect(last_response.status).to eq(400)
 

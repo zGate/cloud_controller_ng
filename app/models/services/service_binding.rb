@@ -95,7 +95,7 @@ module VCAP::CloudController
     end
 
     def self.user_visibility_filter(user)
-      {:service_instance => ServiceInstance.user_visible(user)}
+      {service_instance: ServiceInstance.user_visible(user)}
     end
 
     def credentials_with_serialization=(val)

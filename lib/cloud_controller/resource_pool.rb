@@ -58,9 +58,9 @@ class VCAP::CloudController::ResourcePool
 
     File.open(path) do |file|
       blobstore.files.create(
-        :key    => key,
-        :body   => file,
-        :public => false,
+        key: key,
+        body: file,
+        public: false,
       )
     end
   end
@@ -80,10 +80,10 @@ class VCAP::CloudController::ResourcePool
 
   def copy(descriptor, destination)
     if resource_known?(descriptor)
-      logger.debug 'resource_pool.sync.start', :resource => descriptor, :destination => destination
+      logger.debug 'resource_pool.sync.start', resource: descriptor, destination: destination
       overwrite_destination_with!(descriptor, destination)
     else
-      logger.warn 'resource_pool.sync.failed', :unknown_resource => descriptor, :destination => destination
+      logger.warn 'resource_pool.sync.failed', unknown_resource: descriptor, destination: destination
       raise ArgumentError, "Can not copy bits we do not have #{descriptor}"
     end
   end
@@ -123,7 +123,7 @@ class VCAP::CloudController::ResourcePool
     s3_key = key_from_sha1(descriptor['sha1'])
 
     logger.debug 'resource_pool.download.starting',
-      :destination => destination
+      destination: destination
 
     start = Time.now
 
@@ -148,8 +148,8 @@ class VCAP::CloudController::ResourcePool
 
     took = Time.now - start
 
-    logger.debug 'resource_pool.download.complete', :took => took,
-      :destination => destination
+    logger.debug 'resource_pool.download.complete', took: took,
+      destination: destination
   end
 
   def key_from_sha1(sha1)

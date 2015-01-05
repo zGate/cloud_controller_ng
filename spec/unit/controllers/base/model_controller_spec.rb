@@ -225,7 +225,7 @@ module VCAP::CloudController
       end
 
       it 'prevents other processes from updating the same row until the transaction finishes' do
-        allow(TestModel).to receive(:find).with(:guid => model.guid).and_return(model)
+        allow(TestModel).to receive(:find).with(guid: model.guid).and_return(model)
         expect(model).to receive(:lock!).ordered
         expect(model).to receive(:update_from_hash).ordered.and_call_original
 

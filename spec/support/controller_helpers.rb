@@ -2,22 +2,22 @@ module ControllerHelpers
   include VCAP::CloudController
 
   HTTPS_ENFORCEMENT_SCENARIOS = [
-    {:protocol => 'http',  :config_setting => nil, :user => 'user',  :success => true},
-    {:protocol => 'http',  :config_setting => nil, :user => 'admin', :success => true},
-    {:protocol => 'https', :config_setting => nil, :user => 'user',  :success => true},
-    {:protocol => 'https', :config_setting => nil, :user => 'admin', :success => true},
+    {protocol: 'http',  config_setting: nil, user: 'user',  success: true},
+    {protocol: 'http',  config_setting: nil, user: 'admin', success: true},
+    {protocol: 'https', config_setting: nil, user: 'user',  success: true},
+    {protocol: 'https', config_setting: nil, user: 'admin', success: true},
 
     # Next with https_required
-    {:protocol => 'http',  :config_setting => :https_required, :user => 'user',  :success => false},
-    {:protocol => 'http',  :config_setting => :https_required, :user => 'admin', :success => false},
-    {:protocol => 'https', :config_setting => :https_required, :user => 'user',  :success => true},
-    {:protocol => 'https', :config_setting => :https_required, :user => 'admin', :success => true},
+    {protocol: 'http',  config_setting: :https_required, user: 'user',  success: false},
+    {protocol: 'http',  config_setting: :https_required, user: 'admin', success: false},
+    {protocol: 'https', config_setting: :https_required, user: 'user',  success: true},
+    {protocol: 'https', config_setting: :https_required, user: 'admin', success: true},
 
     # Finally with https_required_for_admins
-    {:protocol => 'http',  :config_setting => :https_required_for_admins, :user => 'user',  :success => true},
-    {:protocol => 'http',  :config_setting => :https_required_for_admins, :user => 'admin', :success => false},
-    {:protocol => 'https', :config_setting => :https_required_for_admins, :user => 'user',  :success => true},
-    {:protocol => 'https', :config_setting => :https_required_for_admins, :user => 'admin', :success => true}
+    {protocol: 'http',  config_setting: :https_required_for_admins, user: 'user',  success: true},
+    {protocol: 'http',  config_setting: :https_required_for_admins, user: 'admin', success: false},
+    {protocol: 'https', config_setting: :https_required_for_admins, user: 'user',  success: true},
+    {protocol: 'https', config_setting: :https_required_for_admins, user: 'admin', success: true}
   ]
 
   def self.description_for_inline_depth(depth, pagination = 50)
@@ -62,13 +62,13 @@ module ControllerHelpers
   end
 
   def headers_for(user, opts = {})
-    opts = { :email => Sham.email,
-             :https => false}.merge(opts)
+    opts = { email: Sham.email,
+             https: false}.merge(opts)
 
     headers = {}
-    token_coder = CF::UAA::TokenCoder.new(:audience_ids => TestConfig.config[:uaa][:resource_id],
-                                          :skey => TestConfig.config[:uaa][:symmetric_secret],
-                                          :pkey => nil)
+    token_coder = CF::UAA::TokenCoder.new(audience_ids: TestConfig.config[:uaa][:resource_id],
+                                          skey: TestConfig.config[:uaa][:symmetric_secret],
+                                          pkey: nil)
 
     scopes = opts[:scopes]
     if scopes.nil? && user
@@ -77,9 +77,9 @@ module ControllerHelpers
 
     if user
       user_token = token_coder.encode(
-        :user_id => user ? user.guid : (rand * 1_000_000_000).ceil,
-        :email => opts[:email],
-        :scope => scopes
+        user_id: user ? user.guid : (rand * 1_000_000_000).ceil,
+        email: opts[:email],
+        scope: scopes
       )
 
       headers['HTTP_AUTHORIZATION'] = "bearer #{user_token}"
@@ -110,7 +110,7 @@ module ControllerHelpers
   end
 
   def admin_user
-    @admin_user ||= VCAP::CloudController::User.make(:admin => true)
+    @admin_user ||= VCAP::CloudController::User.make(admin: true)
   end
 
   def admin_headers

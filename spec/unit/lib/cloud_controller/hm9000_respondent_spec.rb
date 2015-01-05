@@ -4,7 +4,7 @@ require 'cloud_controller/dea/hm9000/respondent'
 module VCAP::CloudController
   describe Dea::HM9000::Respondent do
     let(:message_bus) { CfMessageBus::MockMessageBus.new }
-    let(:dea_client) { double('dea client', :message_bus => message_bus) }
+    let(:dea_client) { double('dea client', message_bus: message_bus) }
 
     subject { Dea::HM9000::Respondent.new(dea_client, message_bus) }
 
@@ -17,7 +17,7 @@ module VCAP::CloudController
       before { allow(message_bus).to receive(:subscribe) }
 
       it 'subscribes hm9000.stop and sets up callback to process_hm9000_stop' do
-        expect(message_bus).to receive(:subscribe).with('hm9000.stop', :queue => 'cc') do |&callback|
+        expect(message_bus).to receive(:subscribe).with('hm9000.stop', queue: 'cc') do |&callback|
           callback.call('some payload')
         end
 
@@ -27,7 +27,7 @@ module VCAP::CloudController
       end
 
       it 'subscribes hm9000.start and sets up callback to process_hm9000_start' do
-        expect(message_bus).to receive(:subscribe).with('hm9000.start', :queue => 'cc') do |&callback|
+        expect(message_bus).to receive(:subscribe).with('hm9000.start', queue: 'cc') do |&callback|
           callback.call('some payload')
         end
 
@@ -39,9 +39,9 @@ module VCAP::CloudController
     end
 
     let(:app) do
-      AppFactory.make :instances => 2, :state => app_state, :droplet_hash => droplet_hash,
-        :package_hash => 'abcd', :package_state => package_state,
-        :environment_json => environment
+      AppFactory.make instances: 2, state: app_state, droplet_hash: droplet_hash,
+        package_hash: 'abcd', package_state: package_state,
+        environment_json: environment
     end
 
     let(:environment) { {} }

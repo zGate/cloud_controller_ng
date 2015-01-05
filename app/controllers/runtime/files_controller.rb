@@ -27,7 +27,7 @@ module VCAP::CloudController
     def http_get(uri, headers, username, password)
       client = HTTPClient.new
       client.set_auth(nil, username, password) if username && password
-      client.get(uri, :header => headers)
+      client.get(uri, header: headers)
     end
 
     private

@@ -14,7 +14,7 @@ describe 'Sinatra::VCAP', type: :controller do
   class TestApp < Sinatra::Base
     register Sinatra::VCAP
 
-    vcap_configure :logger_name => 'vcap_spec'
+    vcap_configure logger_name: 'vcap_spec'
 
     def in_test_mode?
       false

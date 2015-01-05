@@ -290,7 +290,7 @@ module VCAP::CloudController
       end
 
       it 'destroys all service instances' do
-        service_instance = ManagedServiceInstance.make(:space => space)
+        service_instance = ManagedServiceInstance.make(space: space)
 
         expect {
           subject.destroy

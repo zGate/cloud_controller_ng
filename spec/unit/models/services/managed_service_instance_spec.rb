@@ -22,8 +22,8 @@ module VCAP::CloudController
       it { is_expected.to have_associated :space }
       it do
         is_expected.to have_associated :service_bindings, associated_instance: ->(service_instance) {
-          app = VCAP::CloudController::App.make(:space => service_instance.space)
-          ServiceBinding.make(:app => app, :service_instance => service_instance, :credentials => Sham.service_credentials)
+          app = VCAP::CloudController::App.make(space: service_instance.space)
+          ServiceBinding.make(app: app, service_instance: service_instance, credentials: Sham.service_credentials)
         }
       end
     end
@@ -36,7 +36,7 @@ module VCAP::CloudController
       it { is_expected.to strip_whitespace :name }
 
       it 'should not bind an app and a service instance from different app spaces' do
-        AppFactory.make(:space => service_instance.space)
+        AppFactory.make(space: service_instance.space)
         service_binding = ServiceBinding.make
         expect {
           service_instance.add_service_binding(service_binding)
@@ -167,79 +167,79 @@ module VCAP::CloudController
     end
 
     context 'quota' do
-      let(:free_plan) { ServicePlan.make(:free => true) }
-      let(:paid_plan) { ServicePlan.make(:free => false) }
+      let(:free_plan) { ServicePlan.make(free: true) }
+      let(:paid_plan) { ServicePlan.make(free: false) }
 
       let(:free_quota) do
-        QuotaDefinition.make(:total_services => 1,
-                                     :non_basic_services_allowed => false)
+        QuotaDefinition.make(total_services: 1,
+                                     non_basic_services_allowed: false)
       end
       let(:paid_quota) do
-        QuotaDefinition.make(:total_services => 1,
-                                     :non_basic_services_allowed => true)
+        QuotaDefinition.make(total_services: 1,
+                                     non_basic_services_allowed: true)
       end
 
       context 'exceed quota' do
         it 'should raise quota error when quota is exceeded' do
-          org = Organization.make(:quota_definition => free_quota)
-          space = Space.make(:organization => org)
-          ManagedServiceInstance.make(:space => space,
-                                              :service_plan => free_plan).
-            save(:validate => false)
+          org = Organization.make(quota_definition: free_quota)
+          space = Space.make(organization: org)
+          ManagedServiceInstance.make(space: space,
+                                              service_plan: free_plan).
+            save(validate: false)
           space.refresh
           expect do
-            ManagedServiceInstance.make(:space => space,
-                                                :service_plan => free_plan)
+            ManagedServiceInstance.make(space: space,
+                                                service_plan: free_plan)
           end.to raise_error(Sequel::ValidationFailed, /quota service_instance_quota_exceeded/)
         end
 
         it 'should not raise error when quota is not exceeded' do
-          org = Organization.make(:quota_definition => paid_quota)
-          space = Space.make(:organization => org)
+          org = Organization.make(quota_definition: paid_quota)
+          space = Space.make(organization: org)
           expect do
-            ManagedServiceInstance.make(:space => space,
-                                                :service_plan => free_plan)
+            ManagedServiceInstance.make(space: space,
+                                                service_plan: free_plan)
           end.to_not raise_error
         end
       end
 
       context 'create free services' do
         it 'should not raise error when created in free quota' do
-          org = Organization.make(:quota_definition => free_quota)
-          space = Space.make(:organization => org)
+          org = Organization.make(quota_definition: free_quota)
+          space = Space.make(organization: org)
           expect do
-            ManagedServiceInstance.make(:space => space,
-                                                :service_plan => free_plan)
+            ManagedServiceInstance.make(space: space,
+                                                service_plan: free_plan)
           end.to_not raise_error
         end
 
         it 'should not raise error when created in paid quota' do
-          org = Organization.make(:quota_definition => paid_quota)
-          space = Space.make(:organization => org)
+          org = Organization.make(quota_definition: paid_quota)
+          space = Space.make(organization: org)
           expect do
-            ManagedServiceInstance.make(:space => space,
-                                                :service_plan => free_plan)
+            ManagedServiceInstance.make(space: space,
+                                                service_plan: free_plan)
           end.to_not raise_error
         end
       end
 
       context 'create paid services' do
         it 'should raise error when created in free quota' do
-          org = Organization.make(:quota_definition => free_quota)
-          space = Space.make(:organization => org)
+          org = Organization.make(quota_definition: free_quota)
+          space = Space.make(organization: org)
           expect do
-            ManagedServiceInstance.make(:space => space,
-                                                :service_plan => paid_plan)
+            ManagedServiceInstance.make(space: space,
+                                                service_plan: paid_plan)
           end.to raise_error(Sequel::ValidationFailed,
                              /service_plan paid_services_not_allowed_by_quota/)
         end
 
         it 'should not raise error when created in paid quota' do
-          org = Organization.make(:quota_definition => paid_quota)
-          space = Space.make(:organization => org)
+          org = Organization.make(quota_definition: paid_quota)
+          space = Space.make(organization: org)
           expect do
-            ManagedServiceInstance.make(:space => space,
-                                                :service_plan => paid_plan)
+            ManagedServiceInstance.make(space: space,
+                                                service_plan: paid_plan)
           end.to_not raise_error
         end
       end
@@ -250,10 +250,10 @@ module VCAP::CloudController
 
       it 'destroys the service bindings' do
         service_binding = ServiceBinding.make(
-          :app => AppFactory.make(:space => service_instance.space),
-          :service_instance => service_instance
+          app: AppFactory.make(space: service_instance.space),
+          service_instance: service_instance
         )
-        expect { subject }.to change { ServiceBinding.where(:id => service_binding.id).count }.by(-1)
+        expect { subject }.to change { ServiceBinding.where(id: service_binding.id).count }.by(-1)
       end
     end
 
@@ -262,8 +262,8 @@ module VCAP::CloudController
       let(:enum_snapshots_url_matcher) { "gw.example.com:12345/gateway/v2/configurations/#{subject.gateway_name}/snapshots" }
       let(:service_auth_token) { 'tokenvalue' }
       before do
-        subject.service_plan.service.update(:url => 'http://gw.example.com:12345/')
-        subject.service_plan.service.service_auth_token.update(:token => service_auth_token)
+        subject.service_plan.service.update(url: 'http://gw.example.com:12345/')
+        subject.service_plan.service.service_auth_token.update(token: service_auth_token)
       end
 
       context "when there isn't a service auth token" do
@@ -280,7 +280,7 @@ module VCAP::CloudController
         let(:success_response) { MultiJson.dump({snapshots: [{snapshot_id: '1', name: 'foo', state: 'ok', size: 0},
                                                                    {snapshot_id: '2', name: 'bar', state: 'bad', size: 0}]}) }
         before do
-          stub_request(:get, enum_snapshots_url_matcher).to_return(:body => success_response)
+          stub_request(:get, enum_snapshots_url_matcher).to_return(body: success_response)
         end
 
         it 'return a list of snapshot from the gateway' do
@@ -290,7 +290,7 @@ module VCAP::CloudController
           expect(snapshots.first.state).to eq('ok')
           expect(snapshots.last.snapshot_id).to eq('2')
           expect(snapshots.last.state).to eq('bad')
-          expect(a_request(:get, enum_snapshots_url_matcher).with(:headers => {
+          expect(a_request(:get, enum_snapshots_url_matcher).with(headers: {
             'Content-Type' => 'application/json',
             'X-Vcap-Service-Token' => 'tokenvalue'
           })).to have_been_made
@@ -303,8 +303,8 @@ module VCAP::CloudController
       subject { ManagedServiceInstance.make() }
       let(:create_snapshot_url_matcher) { "gw.example.com:12345/gateway/v2/configurations/#{subject.gateway_name}/snapshots" }
       before do
-        subject.service_plan.service.update(:url => 'http://gw.example.com:12345/')
-        subject.service_plan.service.service_auth_token.update(:token => 'tokenvalue')
+        subject.service_plan.service.update(url: 'http://gw.example.com:12345/')
+        subject.service_plan.service.service_auth_token.update(token: 'tokenvalue')
       end
 
       context "when there isn't a service auth token" do
@@ -326,7 +326,7 @@ module VCAP::CloudController
       context 'when the request succeeds' do
         let(:success_response) { %Q({"snapshot_id": "1", "state": "empty", "name": "foo", "size": 0}) }
         before do
-          stub_request(:post, create_snapshot_url_matcher).to_return(:body => success_response)
+          stub_request(:post, create_snapshot_url_matcher).to_return(body: success_response)
         end
 
         it 'makes an HTTP call to the corresponding service gateway and returns the decoded response' do
@@ -347,13 +347,13 @@ module VCAP::CloudController
           payload = MultiJson.dump({name: name})
           subject.create_snapshot(name)
 
-          expect(a_request(:post, create_snapshot_url_matcher).with(:body => payload)).to have_been_made
+          expect(a_request(:post, create_snapshot_url_matcher).with(body: payload)).to have_been_made
         end
       end
 
       context 'when the request fails' do
         it 'should raise an error' do
-          stub_request(:post, create_snapshot_url_matcher).to_return(:body => 'Something went wrong', :status => 500)
+          stub_request(:post, create_snapshot_url_matcher).to_return(body: 'Something went wrong', status: 500)
           expect { subject.create_snapshot(name) }.to raise_error(ManagedServiceInstance::ServiceGatewayError, /upstream failure/)
         end
       end

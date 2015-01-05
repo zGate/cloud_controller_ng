@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'rspec_api_documentation/dsl'
 
-resource 'Apps', :type => [:api, :legacy_api] do
+resource 'Apps', type: [:api, :legacy_api] do
   let(:admin_auth_header) { admin_headers['HTTP_AUTHORIZATION'] }
   let(:tmpdir) { Dir.mktmpdir }
   let(:valid_zip) {
@@ -13,13 +13,13 @@ resource 'Apps', :type => [:api, :legacy_api] do
 
   let(:req_body) do
     {
-      :resources => '[]',
-      :application => valid_zip
+      resources: '[]',
+      application: valid_zip
     }
   end
 
   let(:space) { VCAP::CloudController::Space.make }
-  let(:app_obj) { VCAP::CloudController::AppFactory.make(:space => space, :droplet_hash => nil, :package_state => 'PENDING') }
+  let(:app_obj) { VCAP::CloudController::AppFactory.make(space: space, droplet_hash: nil, package_state: 'PENDING') }
 
   authenticated_request
 
@@ -118,7 +118,7 @@ resource 'Apps', :type => [:api, :legacy_api] do
   post '/v2/apps/:guid/copy_bits' do
     let(:src_app) { VCAP::CloudController::AppFactory.make }
     let(:dest_app) { VCAP::CloudController::AppFactory.make }
-    let(:json_payload) { { :source_app_guid => src_app.guid }.to_json }
+    let(:json_payload) { { source_app_guid: src_app.guid }.to_json }
 
     field :source_app_guid, 'The guid for the source app', required: true
 

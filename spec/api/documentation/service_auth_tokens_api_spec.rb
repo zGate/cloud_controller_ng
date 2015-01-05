@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'rspec_api_documentation/dsl'
 
-resource 'ServiceAuthTokens (deprecated)', :type => [:api, :legacy_api] do
+resource 'ServiceAuthTokens (deprecated)', type: [:api, :legacy_api] do
   let(:admin_auth_header) { admin_headers['HTTP_AUTHORIZATION'] }
   let(:guid) { VCAP::CloudController::ServiceAuthToken.first.guid }
   let!(:service_auth_tokens) { 3.times { VCAP::CloudController::ServiceAuthToken.make } }
@@ -24,7 +24,7 @@ resource 'ServiceAuthTokens (deprecated)', :type => [:api, :legacy_api] do
       let(:q) { 'label:Nic-Token'}
 
       before do
-        VCAP::CloudController::ServiceAuthToken.make :label => 'Nic-Token'
+        VCAP::CloudController::ServiceAuthToken.make label: 'Nic-Token'
       end
 
       example 'Filtering the result set by label' do
@@ -39,7 +39,7 @@ resource 'ServiceAuthTokens (deprecated)', :type => [:api, :legacy_api] do
         standard_entity_response(
           parsed_response['resources'].first,
           :service_auth_token,
-          :label => 'Nic-Token')
+          label: 'Nic-Token')
       end
     end
 
@@ -47,7 +47,7 @@ resource 'ServiceAuthTokens (deprecated)', :type => [:api, :legacy_api] do
       let(:q) { 'provider:Face-Offer'}
 
       before do
-        VCAP::CloudController::ServiceAuthToken.make :provider => 'Face-Offer'
+        VCAP::CloudController::ServiceAuthToken.make provider: 'Face-Offer'
       end
 
       example 'Filtering the result set by provider' do
@@ -62,7 +62,7 @@ resource 'ServiceAuthTokens (deprecated)', :type => [:api, :legacy_api] do
         standard_entity_response(
           parsed_response['resources'].first,
           :service_auth_token,
-          :provider => 'Face-Offer')
+          provider: 'Face-Offer')
       end
     end
   end

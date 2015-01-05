@@ -3,7 +3,7 @@ require 'spec_helper'
 module VCAP::CloudController
   describe VCAP::CloudController::LegacyService, :services do
     describe 'User facing apis' do
-      let(:user) { make_user_with_default_space(:admin => true) }
+      let(:user) { make_user_with_default_space(admin: true) }
 
       describe 'GET /services' do
         before do
@@ -47,19 +47,19 @@ module VCAP::CloudController
 
       describe 'GET /services/v1/offerings' do
         before do
-          svc = Service.make(:label => 'foo',
-                                     :provider => 'core',
-                                     :version => '1.0',
-                                     :url => 'http://localhost:56789')
+          svc = Service.make(label: 'foo',
+                                     provider: 'core',
+                                     version: '1.0',
+                                     url: 'http://localhost:56789')
 
-          svc_test = Service.make(:label => 'foo',
-                                          :provider => 'test',
-                                          :version => '1.0',
-                                          :url => 'http://localhost:56789')
+          svc_test = Service.make(label: 'foo',
+                                          provider: 'test',
+                                          version: '1.0',
+                                          url: 'http://localhost:56789')
 
           [svc, svc_test].each do |s|
-            ServicePlan.make(:service => s, :name => 'free')
-            ServicePlan.make(:service => s, :name => 'nonfree')
+            ServicePlan.make(service: s, name: 'free')
+            ServicePlan.make(service: s, name: 'nonfree')
           end
         end
 
@@ -79,19 +79,19 @@ module VCAP::CloudController
 
       describe 'POST /services' do
         before do
-          svc = Service.make(:label => 'postgres', :version => '9.0')
-          ServicePlan.make(:service => svc, :name => LegacyService::LEGACY_PLAN_OVERIDE)
-          ManagedServiceInstance.make(:space => user.default_space, :name => 'duplicate')
+          svc = Service.make(label: 'postgres', version: '9.0')
+          ServicePlan.make(service: svc, name: LegacyService::LEGACY_PLAN_OVERIDE)
+          ManagedServiceInstance.make(space: user.default_space, name: 'duplicate')
 
-          3.times { ManagedServiceInstance.make(:space => user.default_space) }
+          3.times { ManagedServiceInstance.make(space: user.default_space) }
           @num_instances_before = ManagedServiceInstance.count
           @req = {
-            :type => 'database',
-            :tier => 'free',
-            :vendor => 'postgres',
-            :version => '9.0',
-            :name => 'instance_name',
-            :credentials => { 'foo' => 'bar' }
+            type: 'database',
+            tier: 'free',
+            vendor: 'postgres',
+            version: '9.0',
+            name: 'instance_name',
+            credentials: { 'foo' => 'bar' }
           }
         end
 
@@ -102,7 +102,7 @@ module VCAP::CloudController
 
           it 'should add the servicew the default app space' do
             expect(last_response.status).to eq(200)
-            svc = user.default_space.service_instances.find(:name => 'instance_name')
+            svc = user.default_space.service_instances.find(name: 'instance_name')
             expect(svc).not_to be_nil
             expect(ManagedServiceInstance.count).to eq(@num_instances_before + 1)
           end
@@ -135,7 +135,7 @@ module VCAP::CloudController
 
       describe 'GET /services/:name' do
         before do
-          @svc = ManagedServiceInstance.make(:space => user.default_space)
+          @svc = ManagedServiceInstance.make(space: user.default_space)
         end
 
         describe 'with a valid name' do
@@ -167,8 +167,8 @@ module VCAP::CloudController
 
       describe 'DELETE /services/:name' do
         before do
-          3.times { ManagedServiceInstance.make(:space => user.default_space) }
-          @svc = ManagedServiceInstance.make(:space => user.default_space)
+          3.times { ManagedServiceInstance.make(space: user.default_space) }
+          @svc = ManagedServiceInstance.make(space: user.default_space)
           @num_instances_before = ManagedServiceInstance.count
         end
 

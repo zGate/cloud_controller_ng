@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module VCAP::CloudController::Jobs
   describe TimeoutJob do
-    let(:job) { double( :job_name_in_configuration => 'my-job', max_attempts: 2) }
+    let(:job) { double( job_name_in_configuration: 'my-job', max_attempts: 2) }
     let(:timeout_job) { TimeoutJob.new(job) }
 
     it 'runs the provided job' do

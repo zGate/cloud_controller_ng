@@ -109,7 +109,7 @@ module VCAP::CloudController
         expect {
           subject
         }.to_not change {
-          ServiceAuthToken.count(:label => service.label, :provider => service.provider)
+          ServiceAuthToken.count(label: service.label, provider: service.provider)
         }
       end
     end
@@ -118,12 +118,12 @@ module VCAP::CloudController
       let(:private_service) { Service.make }
       let(:public_service) { Service.make }
       let(:nonadmin_org) { Organization.make }
-      let(:admin_user) { User.make(:admin => true, :active => true) }
-      let(:nonadmin_user) { User.make(:admin => false, :active => true) }
-      let!(:private_plan) { ServicePlan.make :service => private_service, :public => false }
+      let(:admin_user) { User.make(admin: true, active: true) }
+      let(:nonadmin_user) { User.make(admin: false, active: true) }
+      let!(:private_plan) { ServicePlan.make service: private_service, public: false }
       before do
-        ServicePlan.make :service => public_service, :public => true
-        ServicePlan.make :service => public_service, :public => false
+        ServicePlan.make service: public_service, public: true
+        ServicePlan.make service: public_service, public: false
         VCAP::CloudController::SecurityContext.set(admin_user, {'scope' => [VCAP::CloudController::Roles::CLOUD_CONTROLLER_ADMIN_SCOPE]} )
         nonadmin_user.add_organization nonadmin_org
         VCAP::CloudController::SecurityContext.clear

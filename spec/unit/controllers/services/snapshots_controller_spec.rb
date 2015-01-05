@@ -21,10 +21,10 @@ module VCAP::CloudController
 
     let(:service_instance) do
       service = Service.make(
-        :url => 'http://horsemeat.com',
+        url: 'http://horsemeat.com',
       )
       ManagedServiceInstance.make(
-        :service_plan => ServicePlan.make(:service => service),
+        service_plan: ServicePlan.make(service: service),
       )
     end
 
@@ -33,13 +33,13 @@ module VCAP::CloudController
       let(:snapshot_created_at) { Time.now.to_s }
       let(:new_snapshot) { VCAP::Services::Api::SnapshotV2.new(snapshot_id: '1', name: 'foo', state: 'empty', size: 0, created_time: snapshot_created_at)}
       let(:payload) {
-        MultiJson.dump(:service_instance_guid => service_instance.guid,
-                             :name => new_name)
+        MultiJson.dump(service_instance_guid: service_instance.guid,
+                             name: new_name)
       }
 
       before do
         url = "http://horsemeat.com/gateway/v2/configurations/#{service_instance.gateway_name}/snapshots"
-        stub_request(:post, url).to_return(:status => 201, :body => new_snapshot.encode)
+        stub_request(:post, url).to_return(status: 201, body: new_snapshot.encode)
       end
 
       context 'for an unauthenticated user' do
@@ -105,7 +105,7 @@ module VCAP::CloudController
 
         it 'invokes create_snapshot on the corresponding service instance' do
           expect(ManagedServiceInstance).to receive(:find).
-            with(:guid => service_instance.guid).
+            with(guid: service_instance.guid).
             and_return(service_instance)
           expect(service_instance).to receive(:create_snapshot).
             with(new_name).
@@ -144,7 +144,7 @@ module VCAP::CloudController
         let(:developer) {make_developer_for_space(service_instance.space)}
         before do
           allow(ManagedServiceInstance).to receive(:find).
-            with(:guid => service_instance.guid).
+            with(guid: service_instance.guid).
             and_return(service_instance)
         end
 

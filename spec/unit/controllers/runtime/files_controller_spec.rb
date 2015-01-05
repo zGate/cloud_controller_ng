@@ -4,13 +4,13 @@ module VCAP::CloudController
   describe VCAP::CloudController::FilesController do
     describe 'GET /v2/apps/:id/instances/:instance/files/(:path)' do
       before :each do
-        @app = AppFactory.make(:package_hash => 'abc', :package_state => 'STAGED')
+        @app = AppFactory.make(package_hash: 'abc', package_state: 'STAGED')
         @user =  make_user_for_space(@app.space)
         @developer = make_developer_for_space(@app.space)
       end
 
-      before :each, :use_nginx => false do
-        TestConfig.override(:nginx => { :use_nginx => false })
+      before :each, use_nginx: false do
+        TestConfig.override(nginx: { use_nginx: false })
       end
 
       context 'as a developer' do
@@ -41,7 +41,7 @@ module VCAP::CloudController
           expect(last_response.status).to eq(400)
         end
 
-        it 'issues redirect', :use_nginx => false do
+        it 'issues redirect', use_nginx: false do
           instance = 5
           range = 'bytes=100-200'
 
@@ -51,9 +51,9 @@ module VCAP::CloudController
           @app.refresh
 
           to_return = Dea::FileUriResult.new(
-            :file_uri_v1 => 'file_uri/',
-            :credentials => [],
-            :file_uri_v2 => 'file_uri/',
+            file_uri_v1: 'file_uri/',
+            credentials: [],
+            file_uri_v2: 'file_uri/',
           )
           expect(Dea::Client).to receive(:get_file_uri_for_active_instance_by_index).
             with(@app, nil, 5).and_return(to_return)

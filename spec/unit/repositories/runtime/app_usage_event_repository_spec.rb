@@ -166,7 +166,7 @@ module VCAP::CloudController
             app.state = 'STARTED'
             repository.create_from_app(app)
 
-            started_app_count = App.where(:state => 'STARTED').count
+            started_app_count = App.where(state: 'STARTED').count
 
             expect(AppUsageEvent.count > 1).to be true
             expect {

@@ -43,19 +43,19 @@ shared_context 'resource pool' do
 
   let(:resource_pool_config) do
     {
-        :maximum_size => @max_file_size,
-        :resource_directory_key => 'spec-cc-resources',
-        :fog_connection => {
-            :provider => 'AWS',
-            :aws_access_key_id => 'fake_aws_key_id',
-            :aws_secret_access_key => 'fake_secret_access_key',
+        maximum_size: @max_file_size,
+        resource_directory_key: 'spec-cc-resources',
+        fog_connection: {
+            provider: 'AWS',
+            aws_access_key_id: 'fake_aws_key_id',
+            aws_secret_access_key: 'fake_secret_access_key',
         }
     }
   end
 
   before do
     @resource_pool = VCAP::CloudController::ResourcePool.new(
-        :resource_pool => resource_pool_config
+        resource_pool: resource_pool_config
     )
   end
 

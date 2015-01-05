@@ -67,8 +67,8 @@ module VCAP::CloudController
         before { new_space.destroy }
 
         it 'the event continues to exist' do
-          expect(Space.find(:id => new_space.id)).to be_nil
-          expect(Event.find(:id => new_event.id)).to_not be_nil
+          expect(Space.find(id: new_space.id)).to be_nil
+          expect(Event.find(id: new_event.id)).to_not be_nil
         end
 
         it 'returns nil' do

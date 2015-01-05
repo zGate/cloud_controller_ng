@@ -216,12 +216,12 @@ module ApiDsl
 
       parameter name, description, options
       metadata[:request_parameters] ||= []
-      metadata[:request_parameters].push(options.merge(:name => name.to_s, :description => description))
+      metadata[:request_parameters].push(options.merge(name: name.to_s, description: description))
     end
 
     def field(name, description = '', options = {})
       metadata[:fields] = metadata[:fields] ? metadata[:fields].dup : []
-      metadata[:fields].push(options.merge(:name => name.to_s, :description => description))
+      metadata[:fields].push(options.merge(name: name.to_s, description: description))
     end
 
     def modify_fields_for_update

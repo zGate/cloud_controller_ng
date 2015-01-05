@@ -32,7 +32,7 @@ module VCAP::CloudController
           message = {droplet: app.guid}
           message.merge!(options)
 
-          dea_request_find_droplet(message, :timeout => 2).first
+          dea_request_find_droplet(message, timeout: 2).first
         end
 
         def find_instances(app, message_options = {}, request_options = {})
@@ -192,7 +192,7 @@ module VCAP::CloudController
         end
 
         def get_file_uri_by_instance_guid(app, path, instance_id)
-          result = get_file_uri(app, path, :instance_ids => [instance_id])
+          result = get_file_uri(app, path, instance_ids: [instance_id])
           unless result
             msg = "Request failed for app: #{app.name}, instance_id: #{instance_id}"
             msg << " and path: #{path || '/'} as the instance_id is not found."

@@ -203,27 +203,27 @@ module VCAP::CloudController
 
       context 'enabling billing' do
         before do
-          TestConfig.override({ :billing_event_writing_enabled => true })
+          TestConfig.override({ billing_event_writing_enabled: true })
         end
 
         let (:org) do
           o = Organization.make
           2.times do
             space = Space.make(
-              :organization => o,
+              organization: o,
             )
             2.times do
               AppFactory.make(
-                :space => space,
-                :state => 'STARTED',
-                :package_hash => 'abc',
-                :package_state => 'STAGED',
+                space: space,
+                state: 'STARTED',
+                package_hash: 'abc',
+                package_state: 'STAGED',
               )
               AppFactory.make(
-                :space => space,
-                :state => 'STOPPED',
+                space: space,
+                state: 'STOPPED',
               )
-              ManagedServiceInstance.make(:space => space)
+              ManagedServiceInstance.make(space: space)
             end
           end
           o
@@ -232,24 +232,24 @@ module VCAP::CloudController
         it 'should call OrganizationStartEvent.create_from_org' do
           expect(OrganizationStartEvent).to receive(:create_from_org)
           org.billing_enabled = true
-          org.save(:validate => false)
+          org.save(validate: false)
         end
 
         it 'should emit start events for running apps' do
           ds = AppStartEvent.filter(
-            :organization_guid => org.guid,
+            organization_guid: org.guid,
           )
           org.billing_enabled = true
-          org.save(:validate => false)
+          org.save(validate: false)
           expect(ds.count).to eq(4)
         end
 
         it 'should emit create events for provisioned services' do
           ds = ServiceCreateEvent.filter(
-            :organization_guid => org.guid,
+            organization_guid: org.guid,
           )
           org.billing_enabled = true
-          org.save(:validate => false)
+          org.save(validate: false)
           expect(ds.count).to eq(4)
         end
       end
@@ -257,7 +257,7 @@ module VCAP::CloudController
 
     context 'memory quota' do
       let(:quota) do
-        QuotaDefinition.make(:memory_limit => 500)
+        QuotaDefinition.make(memory_limit: 500)
       end
 
       it 'should return the memory available when no apps are running' do
@@ -283,13 +283,13 @@ module VCAP::CloudController
 
     describe '#destroy' do
       subject(:org) { Organization.make }
-      let(:space) { Space.make(:organization => org) }
+      let(:space) { Space.make(organization: org) }
 
       before { org.reload }
 
       it 'destroys all apps' do
-        app = AppFactory.make(:space => space)
-        expect { org.destroy }.to change { App[:id => app.id] }.from(app).to(nil)
+        app = AppFactory.make(space: space)
+        expect { org.destroy }.to change { App[id: app.id] }.from(app).to(nil)
       end
 
       it 'creates an AppUsageEvent for each app in the STARTED state' do
@@ -307,35 +307,35 @@ module VCAP::CloudController
       end
 
       it 'destroys all spaces' do
-        expect { org.destroy }.to change { Space[:id => space.id] }.from(space).to(nil)
+        expect { org.destroy }.to change { Space[id: space.id] }.from(space).to(nil)
       end
 
       it 'destroys all space quota definitions' do
         sqd = SpaceQuotaDefinition.make(organization: org)
-        expect { org.destroy }.to change { SpaceQuotaDefinition[:id => sqd.id] }.from(sqd).to(nil)
+        expect { org.destroy }.to change { SpaceQuotaDefinition[id: sqd.id] }.from(sqd).to(nil)
       end
 
       it 'destroys all service instances' do
-        service_instance = ManagedServiceInstance.make(:space => space)
-        expect { org.destroy }.to change { ManagedServiceInstance[:id => service_instance.id] }.from(service_instance).to(nil)
+        service_instance = ManagedServiceInstance.make(space: space)
+        expect { org.destroy }.to change { ManagedServiceInstance[id: service_instance.id] }.from(service_instance).to(nil)
       end
 
       it 'destroys all service plan visibilities' do
-        service_plan_visibility = ServicePlanVisibility.make(:organization => org)
+        service_plan_visibility = ServicePlanVisibility.make(organization: org)
         expect {
           org.destroy
         }.to change {
-          ServicePlanVisibility.where(:id => service_plan_visibility.id).any?
+          ServicePlanVisibility.where(id: service_plan_visibility.id).any?
         }.to(false)
       end
 
       it 'destroys private domains' do
-        domain = PrivateDomain.make(:owning_organization => org)
+        domain = PrivateDomain.make(owning_organization: org)
 
         expect {
           org.destroy
         }.to change {
-          Domain[:id => domain.id]
+          Domain[id: domain.id]
         }.from(domain).to(nil)
       end
     end

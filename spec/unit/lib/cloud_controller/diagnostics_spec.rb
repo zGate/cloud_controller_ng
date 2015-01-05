@@ -10,9 +10,9 @@ module VCAP::CloudController
 
     let(:request) do
       double('Request', {
-        :request_method => request_method,
-        :path => path,
-        :query_string => query_string,
+        request_method: request_method,
+        path: path,
+        query_string: query_string,
       })
     end
 

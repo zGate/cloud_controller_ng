@@ -9,7 +9,7 @@ module IntegrationHttp
       'client_id' => Sham.guid,
       'scope' => ['cloud_controller.admin'],
     }
-    CF::UAA::TokenCoder.encode(token, :skey => 'tokensecret', :algorithm => 'HS256')
+    CF::UAA::TokenCoder.encode(token, skey: 'tokensecret', algorithm: 'HS256')
   end
 
   module JsonBody

@@ -9,7 +9,7 @@ module VCAP::CloudController
 
     let(:app) do
       AppFactory.make(
-        :instances => 2, :state => 'STARTED', :package_hash => 'SOME_HASH', :package_state => 'STAGED'
+        instances: 2, state: 'STARTED', package_hash: 'SOME_HASH', package_state: 'STAGED'
       ).save
     end
 
@@ -41,7 +41,7 @@ module VCAP::CloudController
     describe '#start' do
       it "subscribes to 'droplet.exited' with a queue" do
         expect(message_bus).to receive(:subscribe).with('droplet.exited',
-          :queue => VCAP::CloudController::Dea::Respondent::CRASH_EVENT_QUEUE)
+          queue: VCAP::CloudController::Dea::Respondent::CRASH_EVENT_QUEUE)
 
         respondent.start
       end
@@ -55,7 +55,7 @@ module VCAP::CloudController
             Timecop.freeze(time) do
               respondent.process_droplet_exited_message(payload)
 
-              app_event = Event.find(:actee => app.guid)
+              app_event = Event.find(actee: app.guid)
 
               expect(app_event).to be
               expect(app_event.space).to eq(app.space)

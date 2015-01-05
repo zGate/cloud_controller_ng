@@ -144,20 +144,20 @@ module VCAP::CloudController
 
     describe 'logging service bindings' do
       let(:service) { Service.make }
-      let(:service_plan) { ServicePlan.make(:service => service) }
+      let(:service_plan) { ServicePlan.make(service: service) }
       let(:service_instance) do
         ManagedServiceInstance.make(
-          :service_plan => service_plan,
-          :name => 'not a syslog drain instance'
+          service_plan: service_plan,
+          name: 'not a syslog drain instance'
         )
       end
 
       context 'service that does not require syslog_drain' do
-        let(:service) { Service.make(:requires => []) }
+        let(:service) { Service.make(requires: []) }
 
         it 'should not allow a non syslog_drain with a syslog drain url' do
           expect {
-            service_binding = ServiceBinding.make(:service_instance => service_instance)
+            service_binding = ServiceBinding.make(service_instance: service_instance)
             service_binding.syslog_drain_url = 'http://this.is.a.mean.url.com'
             service_binding.save
           }.to raise_error { |error|
@@ -168,7 +168,7 @@ module VCAP::CloudController
 
         it 'should allow a non syslog_drain with a nil syslog drain url' do
           expect {
-            service_binding = ServiceBinding.make(:service_instance => service_instance)
+            service_binding = ServiceBinding.make(service_instance: service_instance)
             service_binding.syslog_drain_url = nil
             service_binding.save
           }.not_to raise_error
@@ -176,7 +176,7 @@ module VCAP::CloudController
 
         it 'should allow a non syslog_drain with an empty syslog drain url' do
           expect {
-            service_binding = ServiceBinding.make(:service_instance => service_instance)
+            service_binding = ServiceBinding.make(service_instance: service_instance)
             service_binding.syslog_drain_url = ''
             service_binding.save
           }.not_to raise_error
@@ -184,11 +184,11 @@ module VCAP::CloudController
       end
 
       context 'service that does require a syslog_drain' do
-        let(:service) { Service.make(:requires => ['syslog_drain']) }
+        let(:service) { Service.make(requires: ['syslog_drain']) }
 
         it 'should allow a syslog_drain with a syslog drain url' do
           expect {
-            service_binding = ServiceBinding.make(:service_instance => service_instance)
+            service_binding = ServiceBinding.make(service_instance: service_instance)
             service_binding.syslog_drain_url = 'http://syslogurl.com'
             service_binding.save
           }.not_to raise_error
@@ -213,16 +213,16 @@ module VCAP::CloudController
         app
       end
 
-      let(:service_instance) { ManagedServiceInstance.make(:space => app.space) }
+      let(:service_instance) { ManagedServiceInstance.make(space: app.space) }
 
       it 'should not trigger restaging when creating a binding' do
-        ServiceBinding.make(:app => app, :service_instance => service_instance)
+        ServiceBinding.make(app: app, service_instance: service_instance)
         app.refresh
         expect(app.needs_staging?).to be false
       end
 
       it 'should not trigger restaging when directly destroying a binding' do
-        binding = ServiceBinding.make(:app => app, :service_instance => service_instance)
+        binding = ServiceBinding.make(app: app, service_instance: service_instance)
         app.refresh
         fake_app_staging(app)
         expect(app.needs_staging?).to be false
@@ -233,7 +233,7 @@ module VCAP::CloudController
       end
 
       it 'should not trigger restaging when indirectly destroying a binding' do
-        binding = ServiceBinding.make(:app => app, :service_instance => service_instance)
+        binding = ServiceBinding.make(app: app, service_instance: service_instance)
         app.refresh
         fake_app_staging(app)
         expect(app.needs_staging?).to be false
@@ -318,22 +318,22 @@ module VCAP::CloudController
 
       it 'does not redact creds for an admin' do
         allow(VCAP::CloudController::SecurityContext).to receive(:admin?).and_return(true)
-        expect(binding.to_hash['credentials']).not_to eq({ :redacted_message => '[PRIVATE DATA HIDDEN]' })
+        expect(binding.to_hash['credentials']).not_to eq({ redacted_message: '[PRIVATE DATA HIDDEN]' })
       end
 
       it 'does not redact creds for a space developer' do
         allow(VCAP::CloudController::SecurityContext).to receive(:current_user).and_return(developer)
-        expect(binding.to_hash['credentials']).not_to eq({ :redacted_message => '[PRIVATE DATA HIDDEN]' })
+        expect(binding.to_hash['credentials']).not_to eq({ redacted_message: '[PRIVATE DATA HIDDEN]' })
       end
 
       it 'redacts creds for a space auditor' do
         allow(VCAP::CloudController::SecurityContext).to receive(:current_user).and_return(auditor)
-        expect(binding.to_hash['credentials']).to eq({ :redacted_message => '[PRIVATE DATA HIDDEN]' })
+        expect(binding.to_hash['credentials']).to eq({ redacted_message: '[PRIVATE DATA HIDDEN]' })
       end
 
       it 'redacts creds for a space user' do
         allow(VCAP::CloudController::SecurityContext).to receive(:current_user).and_return(user)
-        expect(binding.to_hash['credentials']).to eq({ :redacted_message => '[PRIVATE DATA HIDDEN]' })
+        expect(binding.to_hash['credentials']).to eq({ redacted_message: '[PRIVATE DATA HIDDEN]' })
       end
     end
   end

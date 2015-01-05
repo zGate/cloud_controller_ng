@@ -56,8 +56,8 @@ module VCAP::CloudController::RestController
     def relations_hash(controller, obj, opts, depth, parents, orphans=nil)
 
       opts = opts.merge({
-        :inline_relations_depth => opts[:inline_relations_depth] || INLINE_RELATIONS_DEFAULT,
-        :max_number_of_associated_objects_to_inline => opts[:max_inline] || MAX_INLINE_DEFAULT
+        inline_relations_depth: opts[:inline_relations_depth] || INLINE_RELATIONS_DEFAULT,
+        max_number_of_associated_objects_to_inline: opts[:max_inline] || MAX_INLINE_DEFAULT
       })
 
       {}.tap do |res|

@@ -4,9 +4,9 @@ module VCAP::CloudController
 
     many_to_one :service_broker
     one_to_many :service_plans
-    one_to_one  :service_auth_token, :key => [:label, :provider], :primary_key => [:label, :provider]
+    one_to_one  :service_auth_token, key: [:label, :provider], primary_key: [:label, :provider]
 
-    add_association_dependencies :service_plans => :destroy
+    add_association_dependencies service_plans: :destroy
 
     export_attributes :label, :provider, :url, :description, :long_description,
                       :version, :info_url, :active, :bindable,

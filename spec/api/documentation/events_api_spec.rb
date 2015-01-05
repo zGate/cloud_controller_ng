@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'rspec_api_documentation/dsl'
 require 'cgi'
 
-resource 'Events', :type => [:api, :legacy_api] do
+resource 'Events', type: [:api, :legacy_api] do
   DOCUMENTED_EVENT_TYPES = %w[
     app.crash
     audit.app.update
@@ -123,14 +123,14 @@ resource 'Events', :type => [:api, :legacy_api] do
       client.get '/v2/events?q=type:audit.app.create', {}, headers
       expect(status).to eq(200)
       standard_entity_response parsed_response['resources'][0], :event,
-                               :actor_type => 'user',
-                               :actor => test_user.guid,
-                               :actor_name => test_user_email,
-                               :actee_type => 'app',
-                               :actee => test_app.guid,
-                               :actee_name => test_app.name,
-                               :space_guid => test_app.space.guid,
-                               :metadata => { 'request' => expected_app_request }
+                               actor_type: 'user',
+                               actor: test_user.guid,
+                               actor_name: test_user_email,
+                               actee_type: 'app',
+                               actee: test_app.guid,
+                               actee_name: test_app.name,
+                               space_guid: test_app.space.guid,
+                               metadata: { 'request' => expected_app_request }
     end
 
     example 'List App Exited Events' do
@@ -139,14 +139,14 @@ resource 'Events', :type => [:api, :legacy_api] do
       client.get '/v2/events?q=type:app.crash', {}, headers
       expect(status).to eq(200)
       standard_entity_response parsed_response['resources'][0], :event,
-                               :actor_type => 'app',
-                               :actor => test_app.guid,
-                               :actor_name => test_app.name,
-                               :actee_type => 'app',
-                               :actee => test_app.guid,
-                               :actee_name => test_app.name,
-                               :space_guid => test_app.space.guid,
-                               :metadata => droplet_exited_payload
+                               actor_type: 'app',
+                               actor: test_app.guid,
+                               actor_name: test_app.name,
+                               actee_type: 'app',
+                               actee: test_app.guid,
+                               actee_name: test_app.name,
+                               space_guid: test_app.space.guid,
+                               metadata: droplet_exited_payload
     end
 
     example 'List App Update Events' do
@@ -155,14 +155,14 @@ resource 'Events', :type => [:api, :legacy_api] do
       client.get '/v2/events?q=type:audit.app.update', {}, headers
       expect(status).to eq(200)
       standard_entity_response parsed_response['resources'][0], :event,
-                               :actor_type => 'user',
-                               :actor => test_user.guid,
-                               :actor_name => test_user_email,
-                               :actee_type => 'app',
-                               :actee => test_app.guid,
-                               :actee_name => test_app.name,
-                               :space_guid => test_app.space.guid,
-                               :metadata => {
+                               actor_type: 'user',
+                               actor: test_user.guid,
+                               actor_name: test_user_email,
+                               actee_type: 'app',
+                               actee: test_app.guid,
+                               actee_name: test_app.name,
+                               space_guid: test_app.space.guid,
+                               metadata: {
                                  'request' => expected_app_request,
                                }
     end
@@ -173,14 +173,14 @@ resource 'Events', :type => [:api, :legacy_api] do
       client.get '/v2/events?q=type:audit.app.delete-request', {}, headers
       expect(status).to eq(200)
       standard_entity_response parsed_response['resources'][0], :event,
-                               :actor_type => 'user',
-                               :actor => test_user.guid,
-                               :actor_name => test_user_email,
-                               :actee_type => 'app',
-                               :actee => test_app.guid,
-                               :actee_name => test_app.name,
-                               :space_guid => test_app.space.guid,
-                               :metadata => { 'request' => { 'recursive' => false } }
+                               actor_type: 'user',
+                               actor: test_user.guid,
+                               actor_name: test_user_email,
+                               actee_type: 'app',
+                               actee: test_app.guid,
+                               actee_name: test_app.name,
+                               space_guid: test_app.space.guid,
+                               metadata: { 'request' => { 'recursive' => false } }
     end
 
     example 'List events associated with an App since January 1, 2014' do
@@ -191,14 +191,14 @@ resource 'Events', :type => [:api, :legacy_api] do
       client.get "/v2/events?q=actee:#{test_app.guid}&q=#{CGI.escape('timestamp>2014-01-01 00:00:00-04:00')}", {}, headers
       expect(status).to eq(200)
       standard_entity_response parsed_response['resources'][0], :event,
-                               :actor_type => 'user',
-                               :actor => test_user.guid,
-                               :actor_name => test_user_email,
-                               :actee_type => 'app',
-                               :actee => test_app.guid,
-                               :actee_name => test_app.name,
-                               :space_guid => test_app.space.guid,
-                               :metadata => { 'request' => expected_app_request }
+                               actor_type: 'user',
+                               actor: test_user.guid,
+                               actor_name: test_user_email,
+                               actee_type: 'app',
+                               actee: test_app.guid,
+                               actee_name: test_app.name,
+                               space_guid: test_app.space.guid,
+                               metadata: { 'request' => expected_app_request }
     end
 
     example 'List Space Create Events' do
@@ -207,14 +207,14 @@ resource 'Events', :type => [:api, :legacy_api] do
       client.get '/v2/events?q=type:audit.space.create', {}, headers
       expect(status).to eq(200)
       standard_entity_response parsed_response['resources'][0], :event,
-                               :actor_type => 'user',
-                               :actor => test_user.guid,
-                               :actor_name => test_user_email,
-                               :actee_type => 'space',
-                               :actee => test_space.guid,
-                               :actee_name => test_space.name,
-                               :space_guid => test_space.guid,
-                               :metadata => { 'request' => space_request }
+                               actor_type: 'user',
+                               actor: test_user.guid,
+                               actor_name: test_user_email,
+                               actee_type: 'space',
+                               actee: test_space.guid,
+                               actee_name: test_space.name,
+                               space_guid: test_space.guid,
+                               metadata: { 'request' => space_request }
 
     end
 
@@ -224,14 +224,14 @@ resource 'Events', :type => [:api, :legacy_api] do
       client.get '/v2/events?q=type:audit.space.update', {}, headers
       expect(status).to eq(200)
       standard_entity_response parsed_response['resources'][0], :event,
-                               :actor_type => 'user',
-                               :actor => test_user.guid,
-                               :actor_name => test_user_email,
-                               :actee => test_space.guid,
-                               :actee_type => 'space',
-                               :actee_name => test_space.name,
-                               :space_guid => test_space.guid,
-                               :metadata => { 'request' => space_request }
+                               actor_type: 'user',
+                               actor: test_user.guid,
+                               actor_name: test_user_email,
+                               actee: test_space.guid,
+                               actee_type: 'space',
+                               actee_name: test_space.name,
+                               space_guid: test_space.guid,
+                               metadata: { 'request' => space_request }
     end
 
     example 'List Space Delete Events' do
@@ -240,14 +240,14 @@ resource 'Events', :type => [:api, :legacy_api] do
       client.get '/v2/events?q=type:audit.space.delete-request', {}, headers
       expect(status).to eq(200)
       standard_entity_response parsed_response['resources'][0], :event,
-                               :actor_type => 'user',
-                               :actor => test_user.guid,
-                               :actor_name => test_user_email,
-                               :actee_type => 'space',
-                               :actee => test_space.guid,
-                               :actee_name => test_space.name,
-                               :space_guid => test_space.guid,
-                               :metadata => { 'request' => { 'recursive' => true } }
+                               actor_type: 'user',
+                               actor: test_user.guid,
+                               actor_name: test_user_email,
+                               actee_type: 'space',
+                               actee: test_space.guid,
+                               actee_name: test_space.name,
+                               space_guid: test_space.guid,
+                               metadata: { 'request' => { 'recursive' => true } }
     end
 
     example 'List Service Dashboard Client Create Events (experimental)' do
@@ -267,14 +267,14 @@ resource 'Events', :type => [:api, :legacy_api] do
       client.get '/v2/events?q=type:audit.service_dashboard_client.create', {}, headers
       expect(status).to eq(200)
       standard_entity_response parsed_response['resources'][0], :event,
-                               :actor_type => 'service_broker',
-                               :actor => test_broker.guid,
-                               :actor_name => test_broker.name,
-                               :actee_type => 'service_dashboard_client',
-                               :actee => client_attrs['id'],
-                               :actee_name => client_attrs['id'],
-                               :space_guid => '',
-                               :metadata => {
+                               actor_type: 'service_broker',
+                               actor: test_broker.guid,
+                               actor_name: test_broker.name,
+                               actee_type: 'service_dashboard_client',
+                               actee: client_attrs['id'],
+                               actee_name: client_attrs['id'],
+                               space_guid: '',
+                               metadata: {
                                     'secret' => '[REDACTED]',
                                     'redirect_uri' => client_attrs['redirect_uri']
                                }
@@ -295,14 +295,14 @@ resource 'Events', :type => [:api, :legacy_api] do
       client.get '/v2/events?q=type:audit.service_dashboard_client.delete', {}, headers
       expect(status).to eq(200)
       standard_entity_response parsed_response['resources'][0], :event,
-                               :actor_type => 'service_broker',
-                               :actor => test_broker.guid,
-                               :actor_name => test_broker.name,
-                               :actee_type => 'service_dashboard_client',
-                               :actee => client_attrs['id'],
-                               :actee_name => client_attrs['id'],
-                               :space_guid => '',
-                               :metadata => {}
+                               actor_type: 'service_broker',
+                               actor: test_broker.guid,
+                               actor_name: test_broker.name,
+                               actee_type: 'service_dashboard_client',
+                               actee: client_attrs['id'],
+                               actee_name: client_attrs['id'],
+                               space_guid: '',
+                               metadata: {}
     end
 
     example 'List Service Plan Create Events (experimental)' do
@@ -323,14 +323,14 @@ resource 'Events', :type => [:api, :legacy_api] do
       client.get '/v2/events?q=type:audit.service_plan.create', {}, headers
       expect(status).to eq(200)
       standard_entity_response parsed_response['resources'][0], :event,
-                               :actor_type => 'service_broker',
-                               :actor => test_broker.guid,
-                               :actor_name => test_broker.name,
-                               :actee_type => 'service_plan',
-                               :actee => new_plan.guid,
-                               :actee_name => new_plan.name,
-                               :space_guid => '',
-                               :metadata => {
+                               actor_type: 'service_broker',
+                               actor: test_broker.guid,
+                               actor_name: test_broker.name,
+                               actee_type: 'service_plan',
+                               actee: new_plan.guid,
+                               actee_name: new_plan.name,
+                               space_guid: '',
+                               metadata: {
                                  'name'=> new_plan.name,
                                  'free'=> new_plan.free,
                                  'description'=> new_plan.description,
@@ -351,14 +351,14 @@ resource 'Events', :type => [:api, :legacy_api] do
       client.get '/v2/events?q=type:audit.service_plan.update', {}, headers
       expect(status).to eq(200)
       standard_entity_response parsed_response['resources'][0], :event,
-                               :actor_type => 'service_broker',
-                               :actor => test_broker.guid,
-                               :actor_name => test_broker.name,
-                               :actee_type => 'service_plan',
-                               :actee => test_plan.guid,
-                               :actee_name => test_plan.name,
-                               :space_guid => '',
-                               :metadata => { 'name' => 'new name' }
+                               actor_type: 'service_broker',
+                               actor: test_broker.guid,
+                               actor_name: test_broker.name,
+                               actee_type: 'service_plan',
+                               actee: test_plan.guid,
+                               actee_name: test_plan.name,
+                               space_guid: '',
+                               metadata: { 'name' => 'new name' }
     end
 
     example 'List Service Plan Delete Events (experimental)' do
@@ -367,14 +367,14 @@ resource 'Events', :type => [:api, :legacy_api] do
       client.get '/v2/events?q=type:audit.service_plan.delete', {}, headers
       expect(status).to eq(200)
       standard_entity_response parsed_response['resources'][0], :event,
-                               :actor_type => 'service_broker',
-                               :actor => test_broker.guid,
-                               :actor_name => test_broker.name,
-                               :actee_type => 'service_plan',
-                               :actee => test_plan.guid,
-                               :actee_name => test_plan.name,
-                               :space_guid => '',
-                               :metadata => {}
+                               actor_type: 'service_broker',
+                               actor: test_broker.guid,
+                               actor_name: test_broker.name,
+                               actee_type: 'service_plan',
+                               actee: test_plan.guid,
+                               actee_name: test_plan.name,
+                               space_guid: '',
+                               metadata: {}
     end
 
     example 'List Service Plan Visibility Create Events (experimental)' do
@@ -387,15 +387,15 @@ resource 'Events', :type => [:api, :legacy_api] do
       client.get '/v2/events?q=type:audit.service_plan_visibility.create', {}, headers
       expect(status).to eq(200)
       standard_entity_response parsed_response['resources'][0], :event,
-                               :actor_type => 'user',
-                               :actor => test_user.guid,
-                               :actor_name => test_user_email,
-                               :actee_type => 'service_plan_visibility',
-                               :actee => test_plan_visibility.guid,
-                               :actee_name => '',
-                               :space_guid => '',
-                               :organization_guid => test_plan_visibility.organization_guid,
-                               :metadata => {
+                               actor_type: 'user',
+                               actor: test_user.guid,
+                               actor_name: test_user_email,
+                               actee_type: 'service_plan_visibility',
+                               actee: test_plan_visibility.guid,
+                               actee_name: '',
+                               space_guid: '',
+                               organization_guid: test_plan_visibility.organization_guid,
+                               metadata: {
                                  'request' => params
                                }
     end
@@ -410,15 +410,15 @@ resource 'Events', :type => [:api, :legacy_api] do
       client.get '/v2/events?q=type:audit.service_plan_visibility.update', {}, headers
       expect(status).to eq(200)
       standard_entity_response parsed_response['resources'][0], :event,
-                               :actor_type => 'user',
-                               :actor => test_user.guid,
-                               :actor_name => test_user_email,
-                               :actee_type => 'service_plan_visibility',
-                               :actee => test_plan_visibility.guid,
-                               :actee_name => '',
-                               :space_guid => '',
-                               :organization_guid => test_plan_visibility.organization_guid,
-                               :metadata => {
+                               actor_type: 'user',
+                               actor: test_user.guid,
+                               actor_name: test_user_email,
+                               actee_type: 'service_plan_visibility',
+                               actee: test_plan_visibility.guid,
+                               actee_name: '',
+                               space_guid: '',
+                               organization_guid: test_plan_visibility.organization_guid,
+                               metadata: {
                                  'request' => params
                                }
     end
@@ -429,15 +429,15 @@ resource 'Events', :type => [:api, :legacy_api] do
       client.get '/v2/events?q=type:audit.service_plan_visibility.delete', {}, headers
       expect(status).to eq(200)
       standard_entity_response parsed_response['resources'][0], :event,
-                               :actor_type => 'user',
-                               :actor => test_user.guid,
-                               :actor_name => test_user_email,
-                               :actee_type => 'service_plan_visibility',
-                               :actee => test_plan_visibility.guid,
-                               :actee_name => '',
-                               :space_guid => '',
-                               :organization_guid => test_plan_visibility.organization_guid,
-                               :metadata => { 'request' => {} }
+                               actor_type: 'user',
+                               actor: test_user.guid,
+                               actor_name: test_user_email,
+                               actee_type: 'service_plan_visibility',
+                               actee: test_plan_visibility.guid,
+                               actee_name: '',
+                               space_guid: '',
+                               organization_guid: test_plan_visibility.organization_guid,
+                               metadata: { 'request' => {} }
 
     end
 
@@ -458,14 +458,14 @@ resource 'Events', :type => [:api, :legacy_api] do
       client.get '/v2/events?q=type:audit.service.create', {}, headers
       expect(status).to eq(200)
       standard_entity_response parsed_response['resources'][0], :event,
-                               :actor_type => 'service_broker',
-                               :actor => test_broker.guid,
-                               :actor_name => test_broker.name,
-                               :actee_type => 'service',
-                               :actee => new_service.guid,
-                               :actee_name => new_service.label,
-                               :space_guid => '',
-                               :metadata => {
+                               actor_type: 'service_broker',
+                               actor: test_broker.guid,
+                               actor_name: test_broker.name,
+                               actee_type: 'service',
+                               actee: new_service.guid,
+                               actee_name: new_service.label,
+                               space_guid: '',
+                               metadata: {
                                  'service_broker_guid' => new_service.service_broker.guid,
                                  'unique_id' => new_service.broker_provided_id,
                                  'provider' => new_service.provider,
@@ -494,14 +494,14 @@ resource 'Events', :type => [:api, :legacy_api] do
       client.get '/v2/events?q=type:audit.service.update', {}, headers
       expect(status).to eq(200)
       standard_entity_response parsed_response['resources'][0], :event,
-                               :actor_type => 'service_broker',
-                               :actor => test_broker.guid,
-                               :actor_name => test_broker.name,
-                               :actee_type => 'service',
-                               :actee => test_service.guid,
-                               :actee_name => test_service.label,
-                               :space_guid => '',
-                               :metadata => { 'label' => 'new label' }
+                               actor_type: 'service_broker',
+                               actor: test_broker.guid,
+                               actor_name: test_broker.name,
+                               actee_type: 'service',
+                               actee: test_service.guid,
+                               actee_name: test_service.label,
+                               space_guid: '',
+                               metadata: { 'label' => 'new label' }
     end
 
     example 'List Service Delete Events (experimental)' do
@@ -510,14 +510,14 @@ resource 'Events', :type => [:api, :legacy_api] do
       client.get '/v2/events?q=type:audit.service.delete', {}, headers
       expect(status).to eq(200)
       standard_entity_response parsed_response['resources'][0], :event,
-                               :actor_type => 'service_broker',
-                               :actor => test_broker.guid,
-                               :actor_name => test_broker.name,
-                               :actee_type => 'service',
-                               :actee => test_service.guid,
-                               :actee_name => test_service.label,
-                               :space_guid => '',
-                               :metadata => {}
+                               actor_type: 'service_broker',
+                               actor: test_broker.guid,
+                               actor_name: test_broker.name,
+                               actee_type: 'service',
+                               actee: test_service.guid,
+                               actee_name: test_service.label,
+                               space_guid: '',
+                               metadata: {}
     end
 
     example 'List Service Broker Create Events (experimental)' do
@@ -533,14 +533,14 @@ resource 'Events', :type => [:api, :legacy_api] do
       client.get '/v2/events?q=type:audit.service_broker.create', {}, headers
       expect(status).to eq(200)
       standard_entity_response parsed_response['resources'][0], :event,
-                               :actor_type => 'user',
-                               :actor => test_user.guid,
-                               :actor_name => test_user_email,
-                               :actee_type => 'service_broker',
-                               :actee => broker.guid,
-                               :actee_name => 'pancake broker',
-                               :space_guid => '',
-                               :metadata => {
+                               actor_type: 'user',
+                               actor: test_user.guid,
+                               actor_name: test_user_email,
+                               actee_type: 'service_broker',
+                               actee: broker.guid,
+                               actee_name: 'pancake broker',
+                               space_guid: '',
+                               metadata: {
                                  'request' => {
                                    'name' => 'pancake broker',
                                    'broker_url' => 'http://www.pancakes.com',
@@ -561,14 +561,14 @@ resource 'Events', :type => [:api, :legacy_api] do
       client.get '/v2/events?q=type:audit.service_broker.update', {}, headers
       expect(status).to eq(200)
       standard_entity_response parsed_response['resources'][0], :event,
-                               :actor_type => 'user',
-                               :actor => test_user.guid,
-                               :actor_name => test_user_email,
-                               :actee_type => 'service_broker',
-                               :actee => broker.guid,
-                               :actee_name => broker.name,
-                               :space_guid => '',
-                               :metadata => {
+                               actor_type: 'user',
+                               actor: test_user.guid,
+                               actor_name: test_user_email,
+                               actee_type: 'service_broker',
+                               actee: broker.guid,
+                               actee_name: broker.name,
+                               space_guid: '',
+                               metadata: {
                                  'request' => {
                                    'broker_url' => 'http://www.pancakes.com',
                                    'auth_password' => '[REDACTED]'
@@ -583,14 +583,14 @@ resource 'Events', :type => [:api, :legacy_api] do
       client.get '/v2/events?q=type:audit.service_broker.delete', {}, headers
       expect(status).to eq(200)
       standard_entity_response parsed_response['resources'][0], :event,
-                               :actor_type => 'user',
-                               :actor => test_user.guid,
-                               :actor_name => test_user_email,
-                               :actee_type => 'service_broker',
-                               :actee => broker.guid,
-                               :actee_name => broker.name,
-                               :space_guid => '',
-                               :metadata => { 'request' => {} }
+                               actor_type: 'user',
+                               actor: test_user.guid,
+                               actor_name: test_user_email,
+                               actee_type: 'service_broker',
+                               actee: broker.guid,
+                               actee_name: broker.name,
+                               space_guid: '',
+                               metadata: { 'request' => {} }
     end
 
     example 'List Service Instance Create Events (experimental)' do
@@ -604,14 +604,14 @@ resource 'Events', :type => [:api, :legacy_api] do
       client.get '/v2/events?q=type:audit.service_instance.create', {}, headers
       expect(status).to eq(200)
       standard_entity_response parsed_response['resources'][0], :event,
-                               :actor_type => 'user',
-                               :actor => test_user.guid,
-                               :actor_name => test_user_email,
-                               :actee_type => 'service_instance',
-                               :actee => instance.guid,
-                               :actee_name => instance.name,
-                               :space_guid => instance.space_guid,
-                               :metadata => {
+                               actor_type: 'user',
+                               actor: test_user.guid,
+                               actor_name: test_user_email,
+                               actee_type: 'service_instance',
+                               actee: instance.guid,
+                               actee_name: instance.name,
+                               space_guid: instance.space_guid,
+                               metadata: {
                                  'request' => {
                                    'name' => instance.name,
                                    'service_plan_guid' => instance.service_plan.guid,
@@ -629,14 +629,14 @@ resource 'Events', :type => [:api, :legacy_api] do
       client.get '/v2/events?q=type:audit.service_instance.update', {}, headers
       expect(status).to eq(200)
       standard_entity_response parsed_response['resources'][0], :event,
-                               :actor_type => 'user',
-                               :actor => test_user.guid,
-                               :actor_name => test_user_email,
-                               :actee_type => 'service_instance',
-                               :actee => instance.guid,
-                               :actee_name => instance.name,
-                               :space_guid => instance.space_guid,
-                               :metadata => {
+                               actor_type: 'user',
+                               actor: test_user.guid,
+                               actor_name: test_user_email,
+                               actee_type: 'service_instance',
+                               actee: instance.guid,
+                               actee_name: instance.name,
+                               space_guid: instance.space_guid,
+                               metadata: {
                                  'request' => {
                                    'service_plan_guid' => instance.service_plan.guid,
                                  }
@@ -650,14 +650,14 @@ resource 'Events', :type => [:api, :legacy_api] do
       client.get '/v2/events?q=type:audit.service_instance.delete', {}, headers
       expect(status).to eq(200)
       standard_entity_response parsed_response['resources'][0], :event,
-                               :actor_type => 'user',
-                               :actor => test_user.guid,
-                               :actor_name => test_user_email,
-                               :actee_type => 'service_instance',
-                               :actee => instance.guid,
-                               :actee_name => instance.name,
-                               :space_guid => instance.space_guid,
-                               :metadata => {
+                               actor_type: 'user',
+                               actor: test_user.guid,
+                               actor_name: test_user_email,
+                               actee_type: 'service_instance',
+                               actee: instance.guid,
+                               actee_name: instance.name,
+                               space_guid: instance.space_guid,
+                               metadata: {
                                  'request' => {}
                                }
     end
@@ -672,14 +672,14 @@ resource 'Events', :type => [:api, :legacy_api] do
       client.get '/v2/events?q=type:audit.user_provided_service_instance.create', {}, headers
       expect(status).to eq(200)
       standard_entity_response parsed_response['resources'][0], :event,
-                               :actor_type => 'user',
-                               :actor => test_user.guid,
-                               :actor_name => test_user_email,
-                               :actee_type => 'user_provided_service_instance',
-                               :actee => instance.guid,
-                               :actee_name => instance.name,
-                               :space_guid => instance.space_guid,
-                               :metadata => {
+                               actor_type: 'user',
+                               actor: test_user.guid,
+                               actor_name: test_user_email,
+                               actee_type: 'user_provided_service_instance',
+                               actee: instance.guid,
+                               actee_name: instance.name,
+                               space_guid: instance.space_guid,
+                               metadata: {
                                  'request' => {
                                    'name' => instance.name,
                                    'space_guid' => instance.space_guid,
@@ -696,14 +696,14 @@ resource 'Events', :type => [:api, :legacy_api] do
       client.get '/v2/events?q=type:audit.user_provided_service_instance.update', {}, headers
       expect(status).to eq(200)
       standard_entity_response parsed_response['resources'][0], :event,
-                               :actor_type => 'user',
-                               :actor => test_user.guid,
-                               :actor_name => test_user_email,
-                               :actee_type => 'user_provided_service_instance',
-                               :actee => instance.guid,
-                               :actee_name => instance.name,
-                               :space_guid => instance.space_guid,
-                               :metadata => {
+                               actor_type: 'user',
+                               actor: test_user.guid,
+                               actor_name: test_user_email,
+                               actee_type: 'user_provided_service_instance',
+                               actee: instance.guid,
+                               actee_name: instance.name,
+                               space_guid: instance.space_guid,
+                               metadata: {
                                  'request' => {
                                    'credentials' => '[REDACTED]'
                                  }
@@ -717,14 +717,14 @@ resource 'Events', :type => [:api, :legacy_api] do
       client.get '/v2/events?q=type:audit.user_provided_service_instance.delete', {}, headers
       expect(status).to eq(200)
       standard_entity_response parsed_response['resources'][0], :event,
-                               :actor_type => 'user',
-                               :actor => test_user.guid,
-                               :actor_name => test_user_email,
-                               :actee_type => 'user_provided_service_instance',
-                               :actee => instance.guid,
-                               :actee_name => instance.name,
-                               :space_guid => instance.space_guid,
-                               :metadata => {
+                               actor_type: 'user',
+                               actor: test_user.guid,
+                               actor_name: test_user_email,
+                               actee_type: 'user_provided_service_instance',
+                               actee: instance.guid,
+                               actee_name: instance.name,
+                               space_guid: instance.space_guid,
+                               metadata: {
                                  'request' => {}
                                }
     end
@@ -740,14 +740,14 @@ resource 'Events', :type => [:api, :legacy_api] do
       client.get '/v2/events?q=type:audit.service_binding.create', {}, headers
       expect(status).to eq(200)
       standard_entity_response parsed_response['resources'][0], :event,
-                               :actor_type => 'user',
-                               :actor => test_user.guid,
-                               :actor_name => test_user_email,
-                               :actee_type => 'service_binding',
-                               :actee => service_binding.guid,
-                               :actee_name => '',
-                               :space_guid => instance.space_guid,
-                               :metadata => {
+                               actor_type: 'user',
+                               actor: test_user.guid,
+                               actor_name: test_user_email,
+                               actee_type: 'service_binding',
+                               actee: service_binding.guid,
+                               actee_name: '',
+                               space_guid: instance.space_guid,
+                               metadata: {
                                  'request' => {
                                    'service_instance_guid' => instance.guid,
                                    'app_guid' => app.guid,
@@ -766,14 +766,14 @@ resource 'Events', :type => [:api, :legacy_api] do
       client.get '/v2/events?q=type:audit.service_binding.delete', {}, headers
       expect(status).to eq(200)
       standard_entity_response parsed_response['resources'][0], :event,
-                               :actor_type => 'user',
-                               :actor => test_user.guid,
-                               :actor_name => test_user_email,
-                               :actee_type => 'service_binding',
-                               :actee => service_binding.guid,
-                               :actee_name => '',
-                               :space_guid => instance.space_guid,
-                               :metadata => {
+                               actor_type: 'user',
+                               actor: test_user.guid,
+                               actor_name: test_user_email,
+                               actee_type: 'service_binding',
+                               actee: service_binding.guid,
+                               actee_name: '',
+                               space_guid: instance.space_guid,
+                               metadata: {
                                  'request' => {}
                                }
     end

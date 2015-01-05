@@ -57,7 +57,7 @@ module VCAP::CloudController
     end
     let(:staging_config) { original_staging_config }
 
-    let(:app_obj) { AppFactory.make :droplet_hash => nil } # explicitly unstaged app
+    let(:app_obj) { AppFactory.make droplet_hash: nil } # explicitly unstaged app
 
     before do
       Fog.unmock!
@@ -113,7 +113,7 @@ module VCAP::CloudController
 
       context 'when not using with nginx' do
         before do
-          TestConfig.override(staging_config.merge(:nginx => {:use_nginx => false}))
+          TestConfig.override(staging_config.merge(nginx: {use_nginx: false}))
           authorize(staging_user, staging_password)
         end
 
@@ -128,7 +128,7 @@ module VCAP::CloudController
       let(:file_content) { 'droplet content' }
 
       let(:upload_req) do
-        {:upload => {:droplet => Rack::Test::UploadedFile.new(temp_file_with_content(file_content))}}
+        {upload: {droplet: Rack::Test::UploadedFile.new(temp_file_with_content(file_content))}}
       end
 
       before do
@@ -380,7 +380,7 @@ module VCAP::CloudController
       let(:file_content) { 'the-file-content' }
 
       let(:upload_req) do
-        { :upload => { :droplet => Rack::Test::UploadedFile.new(temp_file_with_content(file_content)) } }
+        { upload: { droplet: Rack::Test::UploadedFile.new(temp_file_with_content(file_content)) } }
       end
 
       before do
@@ -475,7 +475,7 @@ module VCAP::CloudController
 
         context 'when nginx is disabled' do
           let(:staging_config) do
-            original_staging_config.merge({:nginx => {:use_nginx => false}})
+            original_staging_config.merge({nginx: {use_nginx: false}})
           end
 
           it 'should return the buildpack cache' do
@@ -507,7 +507,7 @@ module VCAP::CloudController
     end
 
     describe 'GET /staging/jobs/:guid' do
-      let(:job) { Delayed::Job.enqueue double(:perform => nil) }
+      let(:job) { Delayed::Job.enqueue double(perform: nil) }
       let(:job_guid) { job.guid }
 
       context 'when authorized' do

@@ -28,7 +28,7 @@ module VCAP
         end
 
         begin
-          sprintf(I18n.translate(details.name, raise: true, :locale => I18n.locale), *formatted_args)
+          sprintf(I18n.translate(details.name, raise: true, locale: I18n.locale), *formatted_args)
         rescue I18n::MissingTranslationData => e
           sprintf(details.message_format, *formatted_args)
         end

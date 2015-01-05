@@ -24,7 +24,7 @@ module VCAP::Services::ServiceBrokers::V2
       @valid = errors.empty?
     end
 
-    delegate :cc_service, :to => :catalog_service
+    delegate :cc_service, to: :catalog_service
 
     private
 

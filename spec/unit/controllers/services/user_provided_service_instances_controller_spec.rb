@@ -28,8 +28,8 @@ module VCAP::CloudController
       include_context 'permissions'
 
       before do
-        @obj_a = UserProvidedServiceInstance.make(:space => @space_a)
-        @obj_b = UserProvidedServiceInstance.make(:space => @space_b)
+        @obj_a = UserProvidedServiceInstance.make(space: @space_a)
+        @obj_b = UserProvidedServiceInstance.make(space: @space_b)
       end
 
       def self.user_sees_empty_enumerate(user_role, member_a_ivar, member_b_ivar)
@@ -38,9 +38,9 @@ module VCAP::CloudController
           let(:member_b) { instance_variable_get(member_b_ivar) }
 
           include_examples 'permission enumeration', user_role,
-                           :name => 'user provided service instance',
-                           :path => '/v2/user_provided_service_instances',
-                           :enumerate => 0
+                           name: 'user provided service instance',
+                           path: '/v2/user_provided_service_instances',
+                           enumerate: 0
         end
       end
 
@@ -59,9 +59,9 @@ module VCAP::CloudController
           let(:member_b) { @space_b_developer }
 
           include_examples 'permission enumeration', 'Developer',
-                           :name => 'user provided service instance',
-                           :path => '/v2/user_provided_service_instances',
-                           :enumerate => 1
+                           name: 'user provided service instance',
+                           path: '/v2/user_provided_service_instances',
+                           enumerate: 1
         end
 
         describe 'SpaceAuditor' do
@@ -69,9 +69,9 @@ module VCAP::CloudController
           let(:member_b) { @space_b_auditor }
 
           include_examples 'permission enumeration', 'SpaceAuditor',
-                           :name => 'user provided service instance',
-                           :path => '/v2/user_provided_service_instances',
-                           :enumerate => 1
+                           name: 'user provided service instance',
+                           path: '/v2/user_provided_service_instances',
+                           enumerate: 1
         end
       end
     end
@@ -185,7 +185,7 @@ module VCAP::CloudController
           space2.add_developer(user)
 
           move_req = MultiJson.dump(
-            :space_guid => space2.guid,
+            space_guid: space2.guid,
           )
 
           put "/v2/user_provided_service_instances/#{instance.guid}", move_req, json_headers(headers_for(user))

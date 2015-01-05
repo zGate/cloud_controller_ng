@@ -64,7 +64,7 @@ module IntegrationSetup
   end
 
   def nats_up?(port)
-    NATS.start(:uri => "nats://127.0.0.1:#{port}") do
+    NATS.start(uri: "nats://127.0.0.1:#{port}") do
       NATS.stop
       return true
     end
@@ -78,9 +78,9 @@ module IntegrationSetupHelpers
     opts[:env] ||= {}
     project_path = File.join(File.dirname(__FILE__), '../../..')
     spawn_opts = {
-      :chdir => project_path,
-      :out => opts[:debug] ? :out : '/dev/null',
-      :err => opts[:debug] ? :out : '/dev/null',
+      chdir: project_path,
+      out: opts[:debug] ? :out : '/dev/null',
+      err: opts[:debug] ? :out : '/dev/null',
     }
 
     pid = Process.spawn(opts[:env], cmd, spawn_opts)

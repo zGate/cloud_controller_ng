@@ -5,7 +5,7 @@ module VCAP::CloudController
     subject(:access) { ServiceAccess.new(Security::AccessContext.new) }
     let(:token) {{ 'scope' => ['cloud_controller.read', 'cloud_controller.write'] }}
     let(:user) { VCAP::CloudController::User.make }
-    let!(:service_plan) { VCAP::CloudController::ServicePlan.make(:service => object) }
+    let!(:service_plan) { VCAP::CloudController::ServicePlan.make(service: object) }
     let(:object) { VCAP::CloudController::Service.make }
 
     before do

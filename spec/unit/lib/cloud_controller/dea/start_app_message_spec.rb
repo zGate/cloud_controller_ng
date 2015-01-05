@@ -7,10 +7,10 @@ module VCAP::CloudController
     let(:app) do
       app = AppFactory.make.tap do |app|
         num_service_instances.times do
-          instance = ManagedServiceInstance.make(:space => app.space)
+          instance = ManagedServiceInstance.make(space: app.space)
           binding = ServiceBinding.make(
-              :app => app,
-              :service_instance => instance
+              app: app,
+              service_instance: instance
           )
           app.add_service_binding(binding)
         end
@@ -18,7 +18,7 @@ module VCAP::CloudController
     end
 
     let(:blobstore_url_generator) do
-      double('blobstore_url_generator', :droplet_download_url => 'app_uri')
+      double('blobstore_url_generator', droplet_download_url: 'app_uri')
     end
 
     describe '.start_app_message' do
@@ -54,7 +54,7 @@ module VCAP::CloudController
 
       context 'when no executableUri is present' do
         let(:blobstore_url_generator) do
-          double('blobstore_url_generator', :droplet_download_url => nil)
+          double('blobstore_url_generator', droplet_download_url: nil)
         end
 
         it 'should have no app package' do
@@ -67,7 +67,7 @@ module VCAP::CloudController
 
       context 'with an app enabled for console support' do
         it 'should enable console in the start message' do
-          app.update(:console => true)
+          app.update(console: true)
           res = Dea::StartAppMessage.new(app, 1, TestConfig.config, blobstore_url_generator)
           expect(res[:console]).to eq(true)
         end
@@ -75,7 +75,7 @@ module VCAP::CloudController
 
       context 'with an app enabled for debug support' do
         it 'should pass debug mode in the start message' do
-          app.update(:debug => 'run')
+          app.update(debug: 'run')
           res = Dea::StartAppMessage.new(app, 1, TestConfig.config, blobstore_url_generator)
           expect(res[:debug]).to eq('run')
         end
@@ -83,7 +83,7 @@ module VCAP::CloudController
 
       context 'with an app with custom start command' do
         it 'should pass command in the start message' do
-          app.update(:command => 'custom start command')
+          app.update(command: 'custom start command')
           res = Dea::StartAppMessage.new(app, 1, TestConfig.config, blobstore_url_generator)
           expect(res[:start_command]).to eq('custom start command')
         end
@@ -91,7 +91,7 @@ module VCAP::CloudController
 
       context 'with an app enabled for custom health check timeout value' do
         it 'should enable health check timeout in the start message' do
-          app.update(:health_check_timeout => 82)
+          app.update(health_check_timeout: 82)
           res = Dea::StartAppMessage.new(app, 1, TestConfig.config, blobstore_url_generator)
           expect(res[:health_check_timeout]).to eq(82)
         end

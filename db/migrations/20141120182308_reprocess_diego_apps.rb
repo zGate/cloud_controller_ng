@@ -1,6 +1,6 @@
 Sequel.migration do
   up do
-    self[:apps].filter(:diego => true).each do |row|
+    self[:apps].filter(diego: true).each do |row|
       self[:apps].filter(id: row[:id]).update(diego: diego?(row))
     end
   end

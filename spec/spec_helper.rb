@@ -43,9 +43,9 @@ RSpec.configure do |rspec_config|
   rspec_config.include ModelCreation
 
   rspec_config.include ServiceBrokerHelpers
-  rspec_config.include ControllerHelpers, type: :controller, :file_path => EscapedPath.join(%w[spec unit controllers])
+  rspec_config.include ControllerHelpers, type: :controller, file_path: EscapedPath.join(%w[spec unit controllers])
   rspec_config.include ControllerHelpers, type: :api
-  rspec_config.include ControllerHelpers, :file_path => EscapedPath.join(%w[spec acceptance])
+  rspec_config.include ControllerHelpers, file_path: EscapedPath.join(%w[spec acceptance])
   rspec_config.include ApiDsl, type: :legacy_api
 
   rspec_config.include IntegrationHelpers, type: :integration
@@ -53,9 +53,9 @@ RSpec.configure do |rspec_config|
   rspec_config.include IntegrationSetupHelpers, type: :integration
   rspec_config.include IntegrationSetup, type: :integration
 
-  rspec_config.before(:all) { WebMock.disable_net_connect!(:allow => 'codeclimate.com') }
+  rspec_config.before(:all) { WebMock.disable_net_connect!(allow: 'codeclimate.com') }
   rspec_config.before(:all, type: :integration) { WebMock.allow_net_connect! }
-  rspec_config.after(:all, type: :integration) { WebMock.disable_net_connect!(:allow => 'codeclimate.com') }
+  rspec_config.after(:all, type: :integration) { WebMock.disable_net_connect!(allow: 'codeclimate.com') }
 
   rspec_config.expose_current_running_example_as :example # Can be removed when we upgrade to rspec 3
 

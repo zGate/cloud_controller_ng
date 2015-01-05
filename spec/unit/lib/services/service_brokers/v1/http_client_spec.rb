@@ -76,7 +76,7 @@ module VCAP::Services
         let(:url) { 'https://broker.example.com' }
         it 'uses SSL' do
           stub_request(:post, 'https://broker.example.com/gateway/v1/configurations').
-              to_return(:status => 200, :body => '', :headers => {})
+              to_return(status: 200, body: '', headers: {})
           client.provision('unique_id', 'name')
           expect(WebMock).to have_requested(:post, 'https://broker.example.com/gateway/v1/configurations')
         end

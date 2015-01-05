@@ -8,16 +8,16 @@ describe 'String :name' do
     before do
       @c = Class.new(Sequel::Model)
       @c.set_dataset(DbConfig.connection[table_name])
-      @c.create(:str => 'abc')
+      @c.create(str: 'abc')
     end
 
     it 'should allow create with different case' do
-      expect(@c.create(:str => 'ABC')).to be_valid
+      expect(@c.create(str: 'ABC')).to be_valid
     end
 
     it 'should perform case sensitive search' do
-      expect(@c.dataset[:str => 'abc']).not_to be_nil
-      expect(@c.dataset[:str => 'aBC']).to be_nil
+      expect(@c.dataset[str: 'abc']).not_to be_nil
+      expect(@c.dataset[str: 'aBC']).to be_nil
     end
   end
 
@@ -27,16 +27,16 @@ describe 'String :name' do
     before do
       @c = Class.new(Sequel::Model)
       @c.set_dataset(DbConfig.connection[table_name])
-      @c.create(:str => 'abc')
+      @c.create(str: 'abc')
     end
 
     it 'should allow create with different case' do
-      expect(@c.create(:str => 'ABC')).to be_valid
+      expect(@c.create(str: 'ABC')).to be_valid
     end
 
     it 'should perform case sensitive search' do
-      expect(@c.dataset[:str => 'abc']).not_to be_nil
-      expect(@c.dataset[:str => 'aBC']).to be_nil
+      expect(@c.dataset[str: 'abc']).not_to be_nil
+      expect(@c.dataset[str: 'aBC']).to be_nil
     end
   end
 
@@ -50,24 +50,24 @@ describe 'String :name' do
         end
       end
       @c.set_dataset(DbConfig.connection[table_name])
-      @c.create(:str => 'abc')
+      @c.create(str: 'abc')
     end
 
     it 'should not allow create with different case due to sequel validations' do
       expect {
-        @c.create(:str => 'ABC')
+        @c.create(str: 'ABC')
       }.to raise_error(Sequel::ValidationFailed)
     end
 
     it 'should not allow create with different case due to db constraints' do
       expect {
-        @c.new(:str => 'ABC').save(:validate => false)
+        @c.new(str: 'ABC').save(validate: false)
       }.to raise_error(Sequel::DatabaseError)
     end
 
     it 'should perform case sensitive search' do
-      expect(@c.dataset[:str => 'abc']).not_to be_nil
-      expect(@c.dataset[:str => 'aBC']).not_to be_nil
+      expect(@c.dataset[str: 'abc']).not_to be_nil
+      expect(@c.dataset[str: 'aBC']).not_to be_nil
     end
   end
 
@@ -78,9 +78,9 @@ describe 'String :name' do
       it 'should not result in a case sensitive column' do
         @c = Class.new(Sequel::Model)
         @c.set_dataset(DbConfig.connection[table_name])
-        @c.create(:altered_to_default => 'abc')
-        expect(@c.dataset[:altered_to_default => 'abc']).not_to be_nil
-        expect(@c.dataset[:altered_to_default => 'ABC']).to be_nil
+        @c.create(altered_to_default: 'abc')
+        expect(@c.dataset[altered_to_default: 'abc']).not_to be_nil
+        expect(@c.dataset[altered_to_default: 'ABC']).to be_nil
       end
     end
 
@@ -88,9 +88,9 @@ describe 'String :name' do
       it 'should not result in a case sensitive column' do
         @c = Class.new(Sequel::Model)
         @c.set_dataset(DbConfig.connection[table_name])
-        @c.create(:altered_to_case_sensitive => 'abc')
-        expect(@c.dataset[:altered_to_case_sensitive => 'abc']).not_to be_nil
-        expect(@c.dataset[:altered_to_case_sensitive => 'ABC']).to be_nil
+        @c.create(altered_to_case_sensitive: 'abc')
+        expect(@c.dataset[altered_to_case_sensitive: 'abc']).not_to be_nil
+        expect(@c.dataset[altered_to_case_sensitive: 'ABC']).to be_nil
       end
     end
 
@@ -98,9 +98,9 @@ describe 'String :name' do
       it 'should change the column' do
         @c = Class.new(Sequel::Model)
         @c.set_dataset(DbConfig.connection[table_name])
-        @c.create(:altered_to_case_insensitive => 'abc')
-        expect(@c.dataset[:altered_to_case_insensitive => 'abc']).not_to be_nil
-        expect(@c.dataset[:altered_to_case_insensitive => 'ABC']).not_to be_nil
+        @c.create(altered_to_case_insensitive: 'abc')
+        expect(@c.dataset[altered_to_case_insensitive: 'abc']).not_to be_nil
+        expect(@c.dataset[altered_to_case_insensitive: 'ABC']).not_to be_nil
       end
     end
   end

@@ -68,7 +68,7 @@ module VCAP::CloudController
 
     domain do
       PrivateDomain.make(
-        :owning_organization => space.organization,
+        owning_organization: space.organization,
       )
     end
 
@@ -156,7 +156,7 @@ module VCAP::CloudController
   ServiceBinding.blueprint do
     credentials       { Sham.service_credentials }
     service_instance  { ManagedServiceInstance.make }
-    app               { AppFactory.make(:space => service_instance.space) }
+    app               { AppFactory.make(space: service_instance.space) }
     syslog_drain_url  { nil }
   end
 

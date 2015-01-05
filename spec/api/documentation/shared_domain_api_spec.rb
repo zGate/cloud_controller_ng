@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'rspec_api_documentation/dsl'
 
-resource 'Shared Domains', :type => [:api, :legacy_api] do
+resource 'Shared Domains', type: [:api, :legacy_api] do
   let(:admin_auth_header) { admin_headers['HTTP_AUTHORIZATION'] }
   let(:guid) { VCAP::CloudController::SharedDomain.first.guid }
   let!(:domains) { 3.times { VCAP::CloudController::SharedDomain.make } }
@@ -31,7 +31,7 @@ resource 'Shared Domains', :type => [:api, :legacy_api] do
       let(:q) { 'name:shared-domain.com' }
 
       before do
-        VCAP::CloudController::SharedDomain.make :name => 'shared-domain.com'
+        VCAP::CloudController::SharedDomain.make name: 'shared-domain.com'
       end
 
       example 'Filtering Shared Domains by name' do
@@ -46,7 +46,7 @@ resource 'Shared Domains', :type => [:api, :legacy_api] do
         standard_entity_response(
           parsed_response['resources'].first,
           :shared_domain,
-          :name => 'shared-domain.com')
+          name: 'shared-domain.com')
       end
     end
   end

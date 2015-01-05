@@ -29,7 +29,7 @@ module VCAP::CloudController
               memory_limit: 1_024_000,
             },
           },
-          :default_quota_definition => 'default',
+          default_quota_definition: 'default',
         }
       end
 
@@ -159,12 +159,12 @@ module VCAP::CloudController
     describe '.create_seed_domains' do
       let(:config) do
         {
-          :app_domains => [
+          app_domains: [
             'app.example.com'
           ],
-          :system_domain => 'system.example.com',
-          :system_domain_organization => 'the-system-org',
-          :quota_definitions => {
+          system_domain: 'system.example.com',
+          system_domain_organization: 'the-system-org',
+          quota_definitions: {
             'default' => {
               non_basic_services_allowed: true,
               total_routes: 1000,
@@ -172,7 +172,7 @@ module VCAP::CloudController
               memory_limit: 1_024_000,
             },
           },
-          :default_quota_definition => 'default'
+          default_quota_definition: 'default'
         }
       end
 
@@ -180,7 +180,7 @@ module VCAP::CloudController
         Domain.dataset.destroy
         Organization.dataset.destroy
         QuotaDefinition.dataset.destroy
-        QuotaDefinition.make(:name => 'default')
+        QuotaDefinition.make(name: 'default')
         Seeds.create_seed_organizations(config)
       end
 
@@ -203,7 +203,7 @@ module VCAP::CloudController
         end
 
         it 'warns if the system domain exists but has different attributes from the seed' do
-          mock_logger = double(:info => nil)
+          mock_logger = double(info: nil)
           allow(Steno).to receive(:logger).and_return(mock_logger)
 
           expect(mock_logger).to receive(:warn).with('seeds.system-domain.collision', instance_of(Hash))
@@ -232,7 +232,7 @@ module VCAP::CloudController
     describe '.create_seed_security_groups' do
       let(:config) do
         {
-          :security_group_definitions => [
+          security_group_definitions: [
             {
               'name' => 'staging_default',
               'rules' => []
@@ -246,8 +246,8 @@ module VCAP::CloudController
               'rules' => []
             }
           ],
-          :default_staging_security_groups => ['staging_default'],
-          :default_running_security_groups => ['running_default']
+          default_staging_security_groups: ['staging_default'],
+          default_running_security_groups: ['running_default']
         }
       end
 

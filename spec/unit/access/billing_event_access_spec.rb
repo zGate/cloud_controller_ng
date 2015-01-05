@@ -6,13 +6,13 @@ module VCAP::CloudController
     let(:token) {{ 'scope' => ['cloud_controller.read', 'cloud_controller.write'] }}
 
     before do
-      TestConfig.override({ :billing_event_writing_enabled => true })
+      TestConfig.override({ billing_event_writing_enabled: true })
     end
 
     let(:user) { VCAP::CloudController::User.make }
     let(:org) { VCAP::CloudController::Organization.make(billing_enabled: true) }
-    let(:space) { VCAP::CloudController::Space.make(:organization => org) }
-    let(:app) { VCAP::CloudController::AppFactory.make(:space => space) }
+    let(:space) { VCAP::CloudController::Space.make(organization: org) }
+    let(:app) { VCAP::CloudController::AppFactory.make(space: space) }
     let(:object) { VCAP::CloudController::AppStartEvent.create_from_app(app) }
 
     it_should_behave_like :admin_full_access

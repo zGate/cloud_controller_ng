@@ -95,14 +95,14 @@ module VCAP::CloudController
     end
 
     describe '#destroy' do
-      let(:space) { Space.make(:organization => private_domain.owning_organization) }
+      let(:space) { Space.make(organization: private_domain.owning_organization) }
 
       it 'destroys the routes' do
         route = Route.make(domain: private_domain, space: space)
 
         expect do
           private_domain.destroy
-        end.to change { Route.where(:id => route.id).count }.by(-1)
+        end.to change { Route.where(id: route.id).count }.by(-1)
       end
     end
 

@@ -27,7 +27,7 @@ module VCAP::CloudController
       return [] if diego_running_disabled?
 
       App.
-        eager(:current_saved_droplet, :space, :stack, :service_bindings, {:routes => :domain}).
+        eager(:current_saved_droplet, :space, :stack, :service_bindings, {routes: :domain}).
         where('apps.id > ?', last_id).
         where('deleted_at IS NULL').
         where(state: 'STARTED').

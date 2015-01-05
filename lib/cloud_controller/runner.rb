@@ -221,22 +221,22 @@ module VCAP::CloudController
           host: @config[:external_host],
           port: @config[:external_port],
           uri: @config[:external_domain],
-          tags: {:component => 'CloudController'},
+          tags: {component: 'CloudController'},
           index: @config[:index],
       )
     end
 
     def register_with_collector(message_bus)
       VCAP::Component.register(
-          :type => 'CloudController',
-          :host => @config[:external_host],
-          :port => @config[:varz_port],
-          :user => @config[:varz_user],
-          :password => @config[:varz_password],
-          :index => @config[:index],
-          :nats => message_bus,
-          :logger => logger,
-          :log_counter => @log_counter
+          type: 'CloudController',
+          host: @config[:external_host],
+          port: @config[:varz_port],
+          user: @config[:varz_user],
+          password: @config[:varz_password],
+          index: @config[:index],
+          nats: message_bus,
+          logger: logger,
+          log_counter: @log_counter
       )
     end
 

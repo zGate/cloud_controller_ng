@@ -36,7 +36,7 @@ class TableRecreator
         db.execute('SET foreign_key_checks = 1')
 
       when :postgres
-        db.drop_table(table, :cascade => true)
+        db.drop_table(table, cascade: true)
     end
   end
 end

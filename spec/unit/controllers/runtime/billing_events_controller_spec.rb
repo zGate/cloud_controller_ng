@@ -21,23 +21,23 @@ module VCAP::CloudController
       @start_time = timestamp
 
       @org_event = OrganizationStartEvent.make(
-        :timestamp => timestamp
+        timestamp: timestamp
       )
 
       @app_start_event = AppStartEvent.make(
-        :timestamp => timestamp += 1
+        timestamp: timestamp += 1
       )
 
       @app_stop_event = AppStopEvent.make(
-        :timestamp => timestamp += 1
+        timestamp: timestamp += 1
       )
 
       @service_create_event = ServiceCreateEvent.make(
-        :timestamp => timestamp += 1
+        timestamp: timestamp += 1
       )
 
       @service_delete_event = ServiceDeleteEvent.make(
-        :timestamp => timestamp += 1
+        timestamp: timestamp += 1
       )
 
       @end_time = timestamp

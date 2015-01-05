@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'rspec_api_documentation/dsl'
 
-resource 'Private Domains', :type => [:api, :legacy_api] do
+resource 'Private Domains', type: [:api, :legacy_api] do
   let(:admin_auth_header) { admin_headers['HTTP_AUTHORIZATION'] }
   let(:guid) { VCAP::CloudController::PrivateDomain.first.guid }
   let!(:domains) { 3.times { VCAP::CloudController::PrivateDomain.make } }
@@ -41,7 +41,7 @@ resource 'Private Domains', :type => [:api, :legacy_api] do
       let(:q) { 'name:my-domain.com' }
 
       before do
-        VCAP::CloudController::PrivateDomain.make :name => 'my-domain.com'
+        VCAP::CloudController::PrivateDomain.make name: 'my-domain.com'
       end
 
       example 'Filtering Private Domains by name' do
@@ -56,7 +56,7 @@ resource 'Private Domains', :type => [:api, :legacy_api] do
         standard_entity_response(
           parsed_response['resources'].first,
           :private_domain,
-          :name => 'my-domain.com')
+          name: 'my-domain.com')
       end
     end
   end

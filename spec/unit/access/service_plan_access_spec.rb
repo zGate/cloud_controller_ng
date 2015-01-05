@@ -7,7 +7,7 @@ module VCAP::CloudController
 
     let(:user) { VCAP::CloudController::User.make }
     let(:service) { VCAP::CloudController::Service.make }
-    let(:object) { VCAP::CloudController::ServicePlan.make(:service => service) }
+    let(:object) { VCAP::CloudController::ServicePlan.make(service: service) }
 
     before do
       SecurityContext.set(user, token)

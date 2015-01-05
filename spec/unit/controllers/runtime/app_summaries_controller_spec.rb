@@ -10,24 +10,24 @@ module VCAP::CloudController
       @shared_domain.save
 
       @space = Space.make
-      @route1 = Route.make(:space => @space)
-      @route2 = Route.make(:space => @space)
+      @route1 = Route.make(space: @space)
+      @route2 = Route.make(space: @space)
       @services = []
 
       @app = AppFactory.make(
-        :space => @space,
-        :production => false,
-        :instances => 1,
-        :memory => @free_mem_size,
-        :state => 'STARTED',
-        :package_hash => 'abc',
-        :package_state => 'STAGED'
+        space: @space,
+        production: false,
+        instances: 1,
+        memory: @free_mem_size,
+        state: 'STARTED',
+        package_hash: 'abc',
+        package_state: 'STAGED'
       )
 
       @num_services.times do
-        instance = ManagedServiceInstance.make(:space => @space)
+        instance = ManagedServiceInstance.make(space: @space)
         @services << instance
-        ServiceBinding.make(:app => @app, :service_instance => instance)
+        ServiceBinding.make(app: @app, service_instance: instance)
       end
 
       @app.add_route(@route1)

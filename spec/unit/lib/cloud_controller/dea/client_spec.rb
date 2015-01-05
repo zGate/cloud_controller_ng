@@ -9,10 +9,10 @@ module VCAP::CloudController
     let(:app) do
       app = AppFactory.make.tap do |app|
         num_service_instances.times do
-          instance = ManagedServiceInstance.make(:space => app.space)
+          instance = ManagedServiceInstance.make(space: app.space)
           binding = ServiceBinding.make(
-            :app => app,
-            :service_instance => instance
+            app: app,
+            service_instance: instance
           )
           app.add_service_binding(binding)
         end
@@ -20,7 +20,7 @@ module VCAP::CloudController
     end
 
     let(:blobstore_url_generator) do
-      double('blobstore_url_generator', :droplet_download_url => 'app_uri')
+      double('blobstore_url_generator', droplet_download_url: 'app_uri')
     end
 
     before do
@@ -36,19 +36,19 @@ module VCAP::CloudController
 
     describe 'update_uris' do
       it "does not update deas if app isn't staged" do
-        app.update(:package_state => 'PENDING')
+        app.update(package_state: 'PENDING')
         expect(message_bus).not_to receive(:publish)
         Dea::Client.update_uris(app)
       end
 
       it 'sends a dea update message' do
-        app.update(:package_state => 'STAGED')
+        app.update(package_state: 'STAGED')
         expect(message_bus).to receive(:publish).with(
           'dea.update',
           hash_including(
             # XXX: change this to actual URLs from user once we do it
-            :uris => kind_of(Array),
-            :version => app.version
+            uris: kind_of(Array),
+            version: app.version
           )
         )
         Dea::Client.update_uris(app)
@@ -66,14 +66,14 @@ module VCAP::CloudController
         expect(message_bus).to receive(:publish).with(
           'dea.dea_123.start',
           hash_including(
-            :index => 1,
+            index: 1,
           )
         ).ordered
 
         expect(message_bus).to receive(:publish).with(
           'dea.dea_123.start',
           hash_including(
-            :index => 2,
+            index: 2,
           )
         ).ordered
 
@@ -91,7 +91,7 @@ module VCAP::CloudController
           expect(message_bus).to receive(:publish).once.with(
             'dea.dea_123.start',
             hash_including(
-              :index => 3,
+              index: 3,
             )
           )
 
@@ -113,7 +113,7 @@ module VCAP::CloudController
         expect(message_bus).to receive(:publish).with(
           'dea.dea_123.start',
           hash_including(
-            :index => 1,
+            index: 1,
           )
         )
 
@@ -122,7 +122,7 @@ module VCAP::CloudController
 
       context 'when droplet is missing' do
         let(:blobstore_url_generator) do
-          double('blobstore_url_generator', :droplet_download_url => nil)
+          double('blobstore_url_generator', droplet_download_url: nil)
         end
 
         it 'should raise an error if the droplet is missing' do
@@ -177,11 +177,11 @@ module VCAP::CloudController
         expect(stager_pool).to receive(:reserve_app_memory).with('abc', app.memory)
         expect(stager_pool).not_to receive(:reserve_app_memory).with('def', app.memory)
 
-        Dea::Client.start(app, :instances_to_start => 1)
+        Dea::Client.start(app, instances_to_start: 1)
       end
 
       it 'sends a dea start message that includes cc_partition' do
-        TestConfig.override(:cc_partition => 'ngFTW')
+        TestConfig.override(cc_partition: 'ngFTW')
         Dea::Client.configure(TestConfig.config, message_bus, dea_pool, stager_pool, blobstore_url_generator)
 
         app.instances = 1
@@ -189,7 +189,7 @@ module VCAP::CloudController
         expect(dea_pool).to receive(:mark_app_started).with(dea_id: 'abc', app_id: app.guid)
         expect(dea_pool).to receive(:reserve_app_memory).with('abc', app.memory)
         expect(stager_pool).to receive(:reserve_app_memory).with('abc', app.memory)
-        expect(message_bus).to receive(:publish).with('dea.abc.start', hash_including(:cc_partition => 'ngFTW'))
+        expect(message_bus).to receive(:publish).with('dea.abc.start', hash_including(cc_partition: 'ngFTW'))
 
         Dea::Client.start(app)
       end
@@ -221,8 +221,8 @@ module VCAP::CloudController
         expect(message_bus).to receive(:publish).with(
           'dea.stop',
           hash_including(
-            :droplet   => app.guid,
-            :indices   => [0, 2],
+            droplet: app.guid,
+            indices: [0, 2],
           )
         )
 
@@ -262,12 +262,12 @@ module VCAP::CloudController
       it 'should find a specific instance' do
         expect(app).to receive(:guid).and_return(1)
 
-        encoded = {:droplet => 1, :other_opt => 'value'}
+        encoded = {droplet: 1, other_opt: 'value'}
         expect(message_bus).to receive(:synchronous_request).
-          with('dea.find.droplet', encoded, {:timeout=>2}).
+          with('dea.find.droplet', encoded, {timeout: 2}).
           and_return(['instance'])
 
-        expect(Dea::Client.find_specific_instance(app, { :other_opt => 'value' })).to eq('instance')
+        expect(Dea::Client.find_specific_instance(app, { other_opt: 'value' })).to eq('instance')
       end
     end
 
@@ -283,12 +283,12 @@ module VCAP::CloudController
           other_opt_1: 'value_1',
         }
         expect(message_bus).to receive(:synchronous_request).
-          with('dea.find.droplet', encoded, { :result_count => 2, :timeout => 2 }).
+          with('dea.find.droplet', encoded, { result_count: 2, timeout: 2 }).
           and_return([instance_json, instance_json])
 
         message_options = {
-          :other_opt_0 => 'value_0',
-          :other_opt_1 => 'value_1',
+          other_opt_0: 'value_0',
+          other_opt_1: 'value_1',
         }
 
         expect(Dea::Client.find_instances(app, message_options)).to eq(['instance', 'instance'])
@@ -299,9 +299,9 @@ module VCAP::CloudController
         expect(app).to receive(:instances).and_return(2)
 
         instance_json = 'instance'
-        encoded = { :droplet => 1 }
+        encoded = { droplet: 1 }
         expect(message_bus).to receive(:synchronous_request).
-          with('dea.find.droplet', encoded, { :result_count => 2, :timeout => 2 }).
+          with('dea.find.droplet', encoded, { result_count: 2, timeout: 2 }).
           and_return([instance_json, instance_json])
 
         expect(Dea::Client.find_instances(app)).to eq(['instance', 'instance'])
@@ -311,13 +311,13 @@ module VCAP::CloudController
         expect(app).to receive(:guid).and_return(1)
 
         instance_json = 'instance'
-        encoded = { :droplet => 1, :other_opt => 'value' }
+        encoded = { droplet: 1, other_opt: 'value' }
         expect(message_bus).to receive(:synchronous_request).
-          with('dea.find.droplet', encoded, { :result_count => 5, :timeout => 10 }).
+          with('dea.find.droplet', encoded, { result_count: 5, timeout: 10 }).
           and_return([instance_json, instance_json])
 
-        expect(Dea::Client.find_instances(app, { :other_opt => 'value' },
-                                   { :result_count => 5, :timeout => 10 })).
+        expect(Dea::Client.find_instances(app, { other_opt: 'value' },
+                                   { result_count: 5, timeout: 10 })).
                                    to eq(['instance', 'instance'])
       end
     end
@@ -365,11 +365,11 @@ module VCAP::CloudController
         path = 'test'
 
         search_options = {
-          :indices => [instance],
-          :states => Dea::Client::ACTIVE_APP_STATES,
-          :version => app.version,
-          :path => 'test',
-          :droplet => app.guid
+          indices: [instance],
+          states: Dea::Client::ACTIVE_APP_STATES,
+          version: app.version,
+          path: 'test',
+          droplet: app.guid
         }
 
         instance_found = {
@@ -396,11 +396,11 @@ module VCAP::CloudController
         path = 'test'
 
         search_options = {
-          :indices => [instance],
-          :states => Dea::Client::ACTIVE_APP_STATES,
-          :version => app.version,
-          :path => 'test',
-          :droplet => app.guid
+          indices: [instance],
+          states: Dea::Client::ACTIVE_APP_STATES,
+          version: app.version,
+          path: 'test',
+          droplet: app.guid
         }
 
         instance_found = {
@@ -431,11 +431,11 @@ module VCAP::CloudController
         msg << ' not found.'
 
         search_options = {
-          :indices => [instance],
-          :states => Dea::Client::ACTIVE_APP_STATES,
-          :version => app.version,
-          :path => 'test',
-          :droplet => app.guid
+          indices: [instance],
+          states: Dea::Client::ACTIVE_APP_STATES,
+          version: app.version,
+          path: 'test',
+          droplet: app.guid
         }
 
         message_bus.respond_to_synchronous_request('dea.find.droplet', [])
@@ -533,9 +533,9 @@ module VCAP::CloudController
         path = 'test'
 
         search_options = {
-          :instance_ids => [instance_id],
-          :states => [:STARTING, :RUNNING, :CRASHED],
-          :path => 'test',
+          instance_ids: [instance_id],
+          states: [:STARTING, :RUNNING, :CRASHED],
+          path: 'test',
         }
 
         expect(Dea::Client).to receive(:find_specific_instance).
@@ -613,12 +613,12 @@ module VCAP::CloudController
 
         expect(app_stats).to eq(
           0 => {
-            :state => 'RUNNING',
-            :stats => stats,
+            state: 'RUNNING',
+            stats: stats,
           },
           1 => {
-            :state => 'DOWN',
-            :since => 1,
+            state: 'DOWN',
+            since: 1,
           }
         )
 
@@ -629,10 +629,10 @@ module VCAP::CloudController
         app.instances = 2
 
         search_options = {
-          :include_stats => true,
-          :states => [:RUNNING],
-          :version => app.version,
-          :droplet => app.guid
+          include_stats: true,
+          states: [:RUNNING],
+          version: app.version,
+          droplet: app.guid
         }
 
         stats = double('mock stats')
@@ -661,12 +661,12 @@ module VCAP::CloudController
         app_stats = Dea::Client.find_stats(app)
         expect(app_stats).to eq(
           0 => {
-            :state => 'RUNNING',
-            :stats => stats,
+            state: 'RUNNING',
+            stats: stats,
           },
           1 => {
-            :state => 'DOWN',
-            :since => 1,
+            state: 'DOWN',
+            since: 1,
           }
         )
 
@@ -694,8 +694,8 @@ module VCAP::CloudController
           with(app).and_return(flapping_instances)
 
         search_options = {
-          :states => [:STARTING, :RUNNING],
-          :version => app.version,
+          states: [:STARTING, :RUNNING],
+          version: app.version,
         }
 
         starting_instance  = {
@@ -719,30 +719,30 @@ module VCAP::CloudController
         }
 
         expect(Dea::Client).to receive(:find_instances).
-          with(app, search_options, {:expected => 2}).
+          with(app, search_options, {expected: 2}).
           and_return([starting_instance, running_instance])
 
         app_instances = Dea::Client.find_all_instances(app)
         expect(app_instances).to eq({
           0 => {
-            :state => 'FLAPPING',
-            :since => 1,
+            state: 'FLAPPING',
+            since: 1,
           },
           1 => {
-            :state => 'STARTING',
-            :since => 2,
-            :debug_ip => '1.2.3.4',
-            :debug_port => 1001,
-            :console_ip => '1.2.3.5',
-            :console_port => 1002,
+            state: 'STARTING',
+            since: 2,
+            debug_ip: '1.2.3.4',
+            debug_port: 1001,
+            console_ip: '1.2.3.5',
+            console_port: 1002,
           },
           2 => {
-            :state => 'RUNNING',
-            :since => 3,
-            :debug_ip => '2.3.4.5',
-            :debug_port => 2001,
-            :console_ip => '2.3.4.6',
-            :console_port => 2002,
+            state: 'RUNNING',
+            since: 3,
+            debug_ip: '2.3.4.5',
+            debug_port: 2001,
+            console_ip: '2.3.4.6',
+            console_port: 2002,
           },
         })
       end
@@ -754,8 +754,8 @@ module VCAP::CloudController
           with(app).and_return([])
 
         search_options = {
-          :states => [:STARTING, :RUNNING],
-          :version => app.version,
+          states: [:STARTING, :RUNNING],
+          version: app.version,
         }
 
         starting_instance  = {
@@ -778,7 +778,7 @@ module VCAP::CloudController
         }
 
         expect(Dea::Client).to receive(:find_instances).
-          with(app, search_options, { :expected => 2 }).
+          with(app, search_options, { expected: 2 }).
           and_return([starting_instance, running_instance])
 
         allow(Time).to receive(:now) { 1 }
@@ -786,12 +786,12 @@ module VCAP::CloudController
         app_instances = Dea::Client.find_all_instances(app)
         expect(app_instances).to eq({
           0 => {
-            :state => 'DOWN',
-            :since => 1,
+            state: 'DOWN',
+            since: 1,
           },
           1 => {
-            :state => 'DOWN',
-            :since => 1,
+            state: 'DOWN',
+            since: 1,
           },
         })
       end
@@ -803,12 +803,12 @@ module VCAP::CloudController
           with(app).and_return([])
 
         search_options = {
-          :states => [:STARTING, :RUNNING],
-          :version => app.version,
+          states: [:STARTING, :RUNNING],
+          version: app.version,
         }
 
         expect(Dea::Client).to receive(:find_instances).
-          with(app, search_options, {:expected => 2}).
+          with(app, search_options, {expected: 2}).
           and_return([])
 
         allow(Time).to receive(:now) { 1 }
@@ -816,12 +816,12 @@ module VCAP::CloudController
         app_instances = Dea::Client.find_all_instances(app)
         expect(app_instances).to eq({
           0 => {
-            :state => 'DOWN',
-            :since => 1,
+            state: 'DOWN',
+            since: 1,
           },
           1 => {
-            :state => 'DOWN',
-            :since => 1,
+            state: 'DOWN',
+            since: 1,
           },
         })
       end

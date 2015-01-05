@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module VCAP::CloudController
   describe EventsController do
-    let(:admin_user) { User.make :admin => true }
+    let(:admin_user) { User.make admin: true }
 
     describe 'Query Parameters' do
       it { expect(described_class).to be_queryable_by(:timestamp) }
@@ -18,14 +18,14 @@ module VCAP::CloudController
         @org_a = Organization.make
         @org_b = Organization.make
 
-        @space_a = Space.make :organization => @org_a
-        @space_b = Space.make :organization => @org_b
+        @space_a = Space.make organization: @org_a
+        @space_b = Space.make organization: @org_b
 
         @org_a.add_user(@user_a)
         @org_b.add_user(@user_b)
 
-        @event_a = Event.make :space => @space_a
-        @event_b = Event.make :space => @space_b
+        @event_a = Event.make space: @space_a
+        @event_b = Event.make space: @space_b
 
         @service_event = Event.make(space_guid: '', organization_guid: '', type: 'audit.service_broker.create')
       end
@@ -34,9 +34,9 @@ module VCAP::CloudController
       describe 'default order' do
         it 'sorts by timestamp' do
           type = SecureRandom.uuid
-          Event.make(:timestamp => Time.new(1990, 1, 1), :type => type, :actor => 'earlier')
-          Event.make(:timestamp => Time.new(2000, 1, 1), :type => type, :actor => 'later')
-          Event.make(:timestamp => Time.new(1995, 1, 1), :type => type, :actor => 'middle')
+          Event.make(timestamp: Time.new(1990, 1, 1), type: type, actor: 'earlier')
+          Event.make(timestamp: Time.new(2000, 1, 1), type: type, actor: 'later')
+          Event.make(timestamp: Time.new(1995, 1, 1), type: type, actor: 'middle')
 
           get '/v2/events', {}, admin_headers
           parsed_body = MultiJson.load(last_response.body)

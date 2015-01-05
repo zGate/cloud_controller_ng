@@ -29,9 +29,9 @@ module DbConfig
 
   def self.config
     {
-      :log_level => 'debug',
-      :database => DbConfig.connection_string,
-      :pool_timeout => 10
+      log_level: 'debug',
+      database: DbConfig.connection_string,
+      pool_timeout: 10
     }
   end
 

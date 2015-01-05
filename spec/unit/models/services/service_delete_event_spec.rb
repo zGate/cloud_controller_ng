@@ -3,7 +3,7 @@ require 'spec_helper'
 module VCAP::CloudController
   describe VCAP::CloudController::ServiceDeleteEvent, type: :model do
     before do
-      TestConfig.override({ :billing_event_writing_enabled => true })
+      TestConfig.override({ billing_event_writing_enabled: true })
     end
 
     it { is_expected.to have_timestamp_columns }
@@ -31,7 +31,7 @@ module VCAP::CloudController
           si = ManagedServiceInstance.make
           org = si.space.organization
           org.billing_enabled = false
-          org.save(:validate => false)
+          org.save(validate: false)
           ServiceDeleteEvent.create_from_service_instance(si)
         end
       end
@@ -42,7 +42,7 @@ module VCAP::CloudController
           si = ManagedServiceInstance.make
           org = si.space.organization
           org.billing_enabled = true
-          org.save(:validate => false)
+          org.save(validate: false)
           ServiceDeleteEvent.create_from_service_instance(si)
         end
       end

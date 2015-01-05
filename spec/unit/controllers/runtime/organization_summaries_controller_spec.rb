@@ -15,34 +15,34 @@ module VCAP::CloudController
     before do
       @spaces = []
       num_spaces.times do
-        @spaces << Space.make(:organization => org)
+        @spaces << Space.make(organization: org)
       end
 
       num_services.times do
-        ManagedServiceInstance.make(:space => @spaces.first)
+        ManagedServiceInstance.make(space: @spaces.first)
       end
 
       num_free_apps.times do
         AppFactory.make(
-          :space => @spaces.first,
-          :production => false,
-          :instances => 1,
-          :memory => free_mem_size,
-          :state => 'STARTED',
-          :package_hash => 'abc',
-          :package_state => 'STAGED',
+          space: @spaces.first,
+          production: false,
+          instances: 1,
+          memory: free_mem_size,
+          state: 'STARTED',
+          package_hash: 'abc',
+          package_state: 'STAGED',
         )
       end
 
       num_prod_apps.times do
         AppFactory.make(
-          :space => @spaces.first,
-          :production => true,
-          :instances => 1,
-          :memory => prod_mem_size,
-          :state => 'STARTED',
-          :package_hash => 'abc',
-          :package_state => 'STAGED',
+          space: @spaces.first,
+          production: true,
+          instances: 1,
+          memory: prod_mem_size,
+          state: 'STARTED',
+          package_hash: 'abc',
+          package_state: 'STAGED',
         )
       end
     end
@@ -78,7 +78,7 @@ module VCAP::CloudController
           org.add_user member
           org.add_user non_member
           num_visible_spaces.times do
-            Space.make(:organization => org).tap do |s|
+            Space.make(organization: org).tap do |s|
               s.add_developer member
             end
           end

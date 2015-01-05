@@ -4,8 +4,8 @@ module VCAP::CloudController
   class UserProvidedServiceInstancesController < RestController::ModelController
     define_attributes do
       attribute :name, String
-      attribute :credentials, Hash, :default => {}
-      attribute :syslog_drain_url, String, :default => ''
+      attribute :credentials, Hash, default: {}
+      attribute :syslog_drain_url, String, default: ''
 
       to_one :space
       to_many :service_bindings

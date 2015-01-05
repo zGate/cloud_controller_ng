@@ -16,7 +16,7 @@ module VCAP::CloudController
       end
 
       def start
-        message_bus.subscribe('droplet.exited', :queue => CRASH_EVENT_QUEUE) do |decoded_msg|
+        message_bus.subscribe('droplet.exited', queue: CRASH_EVENT_QUEUE) do |decoded_msg|
           process_droplet_exited_message(decoded_msg)
         end
       end
@@ -28,7 +28,7 @@ module VCAP::CloudController
       def process_droplet_exited_message(decoded_message)
         app_guid = decoded_message['droplet']
 
-        app = App[:guid => app_guid]
+        app = App[guid: app_guid]
 
         if app && crashed_app?(decoded_message)
           app_event_repository = Repositories::Runtime::AppEventRepository.new

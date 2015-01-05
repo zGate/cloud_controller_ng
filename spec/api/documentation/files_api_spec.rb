@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'rspec_api_documentation/dsl'
 
-resource 'Files', :type => [:api, :legacy_api] do
+resource 'Files', type: [:api, :legacy_api] do
   let(:admin_auth_header) { admin_headers['HTTP_AUTHORIZATION'] }
   authenticated_request
 
@@ -13,8 +13,8 @@ resource 'Files', :type => [:api, :legacy_api] do
   get '/v2/apps/:app_guid/instances/:instance_index/files/:file_path' do
     example 'Retrieve File' do
       deal_file_result = VCAP::CloudController::Dea::FileUriResult.new(
-        :credentials => [],
-        :file_uri_v2 => 'dea.example.com/encoded_path_to_file',
+        credentials: [],
+        file_uri_v2: 'dea.example.com/encoded_path_to_file',
       )
       expect(VCAP::CloudController::Dea::Client).to receive(:get_file_uri_for_active_instance_by_index).and_return(deal_file_result)
 

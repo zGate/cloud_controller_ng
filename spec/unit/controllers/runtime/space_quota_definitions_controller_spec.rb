@@ -48,9 +48,9 @@ module VCAP::CloudController
           let(:member_b) { @org_b_manager }
 
           include_examples 'permission enumeration', 'OrgManager',
-            :name      => 'space_quota_definition',
-            :path      => '/v2/space_quota_definitions',
-            :enumerate => 1
+            name: 'space_quota_definition',
+            path: '/v2/space_quota_definitions',
+            enumerate: 1
         end
 
         describe 'OrgManager of both' do
@@ -63,10 +63,10 @@ module VCAP::CloudController
           end
 
           include_examples 'permission enumeration', 'OrgManager',
-            :permissions_overlap => true,
-            :name      => 'space_quota_definition',
-            :path      => '/v2/space_quota_definitions',
-            :enumerate => 2
+            permissions_overlap: true,
+            name: 'space_quota_definition',
+            path: '/v2/space_quota_definitions',
+            enumerate: 2
         end
 
         describe 'OrgUser' do
@@ -74,9 +74,9 @@ module VCAP::CloudController
           let(:member_b) { @org_b_member }
 
           include_examples 'permission enumeration', 'OrgUser',
-            :name      => 'space_quota_definition',
-            :path      => '/v2/space_quota_definitions',
-            :enumerate => 0
+            name: 'space_quota_definition',
+            path: '/v2/space_quota_definitions',
+            enumerate: 0
         end
 
         describe 'BillingManager' do
@@ -84,9 +84,9 @@ module VCAP::CloudController
           let(:member_b) { @org_b_billing_manager }
 
           include_examples 'permission enumeration', 'BillingManager',
-            :name      => 'space_quota_definition',
-            :path      => '/v2/space_quota_definitions',
-            :enumerate => 0
+            name: 'space_quota_definition',
+            path: '/v2/space_quota_definitions',
+            enumerate: 0
         end
 
         describe 'Auditor' do
@@ -94,9 +94,9 @@ module VCAP::CloudController
           let(:member_b) { @org_b_auditor }
 
           include_examples 'permission enumeration', 'Auditor',
-            :name      => 'space_quota_definition',
-            :path      => '/v2/space_quota_definitions',
-            :enumerate => 0
+            name: 'space_quota_definition',
+            path: '/v2/space_quota_definitions',
+            enumerate: 0
         end
       end
 
@@ -106,9 +106,9 @@ module VCAP::CloudController
           let(:member_b) { @space_b_manager }
 
           include_examples 'permission enumeration', 'SpaceManager',
-            :name      => 'space_quota_definition',
-            :path      => '/v2/space_quota_definitions',
-            :enumerate => 1
+            name: 'space_quota_definition',
+            path: '/v2/space_quota_definitions',
+            enumerate: 1
         end
 
         describe 'Developer' do
@@ -116,9 +116,9 @@ module VCAP::CloudController
           let(:member_b) { @space_b_developer }
 
           include_examples 'permission enumeration', 'Developer',
-            :name      => 'space_quota_definition',
-            :path      => '/v2/space_quota_definitions',
-            :enumerate => 1
+            name: 'space_quota_definition',
+            path: '/v2/space_quota_definitions',
+            enumerate: 1
         end
 
         describe 'SpaceAuditor' do
@@ -126,9 +126,9 @@ module VCAP::CloudController
           let(:member_b) { @space_b_auditor }
 
           include_examples 'permission enumeration', 'SpaceAuditor',
-            :name      => 'space_quota_definition',
-            :path      => '/v2/space_quota_definitions',
-            :enumerate => 1
+            name: 'space_quota_definition',
+            path: '/v2/space_quota_definitions',
+            enumerate: 1
         end
       end
     end

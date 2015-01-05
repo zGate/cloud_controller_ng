@@ -6,8 +6,8 @@ module VCAP
     subject { described_class.new(config_hash) }
 
     let(:config_hash) do
-      {:resource_id => 'resource-id',
-       :symmetric_secret => nil}
+      {resource_id: 'resource-id',
+       symmetric_secret: nil}
     end
 
     let(:uaa_info) { double(CF::UAA::Info) }
@@ -54,7 +54,7 @@ module VCAP
 
         context 'when token is valid' do
           it 'uses UAA::TokenCoder to decode the token with skey' do
-            token = CF::UAA::TokenCoder.encode(token_content, {:skey => 'symmetric-key' })
+            token = CF::UAA::TokenCoder.encode(token_content, {skey: 'symmetric-key' })
 
             expect(subject.decode_token("bearer #{token}")).to eq(token_content)
           end
@@ -75,7 +75,7 @@ module VCAP
         before { config_hash[:symmetric_secret] = nil }
 
         let(:rsa_key) { OpenSSL::PKey::RSA.new(2048) }
-        before { allow(uaa_info).to receive_messages(:validation_key => {'value' => rsa_key.public_key.to_pem}) }
+        before { allow(uaa_info).to receive_messages(validation_key: {'value' => rsa_key.public_key.to_pem}) }
 
         context 'when token is valid' do
           let(:token_content) do
@@ -195,7 +195,7 @@ module VCAP
         end
 
         def generate_token(rsa_key, content)
-          CF::UAA::TokenCoder.encode(content, :pkey => rsa_key, :algorithm => 'RS256')
+          CF::UAA::TokenCoder.encode(content, pkey: rsa_key, algorithm: 'RS256')
         end
       end
     end

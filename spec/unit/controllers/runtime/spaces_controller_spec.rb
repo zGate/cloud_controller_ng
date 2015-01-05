@@ -55,9 +55,9 @@ module VCAP::CloudController
           let(:member_b) { @org_b_manager }
 
           include_examples 'permission enumeration', 'OrgManager',
-            :name => 'space',
-            :path => '/v2/spaces',
-            :enumerate => 1
+            name: 'space',
+            path: '/v2/spaces',
+            enumerate: 1
         end
 
         describe 'OrgUser' do
@@ -65,9 +65,9 @@ module VCAP::CloudController
           let(:member_b) { @org_b_member }
 
           include_examples 'permission enumeration', 'OrgUser',
-            :name => 'space',
-            :path => '/v2/spaces',
-            :enumerate => 0
+            name: 'space',
+            path: '/v2/spaces',
+            enumerate: 0
         end
 
         describe 'BillingManager' do
@@ -75,9 +75,9 @@ module VCAP::CloudController
           let(:member_b) { @org_b_billing_manager }
 
           include_examples 'permission enumeration', 'BillingManager',
-            :name => 'space',
-            :path => '/v2/spaces',
-            :enumerate => 0
+            name: 'space',
+            path: '/v2/spaces',
+            enumerate: 0
         end
 
         describe 'Auditor' do
@@ -85,9 +85,9 @@ module VCAP::CloudController
           let(:member_b) { @org_b_auditor }
 
           include_examples 'permission enumeration', 'Auditor',
-            :name => 'space',
-            :path => '/v2/spaces',
-            :enumerate => 0
+            name: 'space',
+            path: '/v2/spaces',
+            enumerate: 0
         end
       end
 
@@ -97,9 +97,9 @@ module VCAP::CloudController
           let(:member_b) { @space_b_manager }
 
           include_examples 'permission enumeration', 'SpaceManager',
-            :name => 'space',
-            :path => '/v2/spaces',
-            :enumerate => 1
+            name: 'space',
+            path: '/v2/spaces',
+            enumerate: 1
         end
 
         describe 'Developer' do
@@ -107,9 +107,9 @@ module VCAP::CloudController
           let(:member_b) { @space_b_developer }
 
           include_examples 'permission enumeration', 'Developer',
-            :name => 'space',
-            :path => '/v2/spaces',
-            :enumerate => 1
+            name: 'space',
+            path: '/v2/spaces',
+            enumerate: 1
         end
 
         describe 'SpaceAuditor' do
@@ -117,9 +117,9 @@ module VCAP::CloudController
           let(:member_b) { @space_b_auditor }
 
           include_examples 'permission enumeration', 'SpaceAuditor',
-            :name => 'space',
-            :path => '/v2/spaces',
-            :enumerate => 1
+            name: 'space',
+            path: '/v2/spaces',
+            enumerate: 1
         end
       end
     end
@@ -445,8 +445,8 @@ module VCAP::CloudController
 
       context 'with an offering that has private plans' do
         before(:each) do
-          @service = Service.make(:active => true)
-          @service_plan = ServicePlan.make(:service => @service, public: false)
+          @service = Service.make(active: true)
+          @service_plan = ServicePlan.make(service: @service, public: false)
           ServicePlanVisibility.make(service_plan: @service.service_plans.first, organization: organization_one)
         end
 
@@ -488,8 +488,8 @@ module VCAP::CloudController
 
       describe 'get /v2/spaces/:guid/services?q=active:<t|f>' do
         before(:each) do
-          @active = 3.times.map { Service.make(:active => true).tap{|svc| ServicePlan.make(:service => svc) } }
-          @inactive = 2.times.map { Service.make(:active => false).tap{|svc| ServicePlan.make(:service => svc) } }
+          @active = 3.times.map { Service.make(active: true).tap{|svc| ServicePlan.make(service: svc) } }
+          @inactive = 2.times.map { Service.make(active: false).tap{|svc| ServicePlan.make(service: svc) } }
         end
 
         it 'can remove inactive services' do
@@ -516,7 +516,7 @@ module VCAP::CloudController
         expect(last_response.status).to eq(201)
 
         new_space_guid = decoded_response['metadata']['guid']
-        event = Event.find(:type => 'audit.space.create', :actee => new_space_guid)
+        event = Event.find(type: 'audit.space.create', actee: new_space_guid)
         expect(event).not_to be_nil
         expect(event.actor_name).to eq(SecurityContext.current_user_email)
         expect(event.metadata['request']).to eq('organization_guid' => organization.guid, 'name' => 'space_name')
@@ -530,7 +530,7 @@ module VCAP::CloudController
         expect(last_response.status).to eq(201)
 
         space_guid = decoded_response['metadata']['guid']
-        event = Event.find(:type => 'audit.space.update', :actee => space_guid)
+        event = Event.find(type: 'audit.space.update', actee: space_guid)
         expect(event).not_to be_nil
         expect(event.actor_name).to eq(SecurityContext.current_user_email)
         expect(event.metadata['request']).to eq('name' => 'new_space_name')
@@ -544,7 +544,7 @@ module VCAP::CloudController
 
         expect(last_response.status).to eq(204)
 
-        event = Event.find(:type => 'audit.space.delete-request', :actee => space_guid)
+        event = Event.find(type: 'audit.space.delete-request', actee: space_guid)
         expect(event).not_to be_nil
         expect(event.metadata['request']).to eq('recursive' => true)
         expect(event.space_guid).to eq(space_guid)

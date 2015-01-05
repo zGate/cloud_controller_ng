@@ -23,18 +23,18 @@ module VCAP::CloudController
         let(:workspace) { Dir.mktmpdir }
         let(:blobstore_config) do
           {
-            :packages => {
-              :fog_connection => {
-                :provider => 'Local',
-                :local_root => Dir.mktmpdir('packages', workspace)
+            packages: {
+              fog_connection: {
+                provider: 'Local',
+                local_root: Dir.mktmpdir('packages', workspace)
               },
-              :app_package_directory_key => 'cc-packages',
+              app_package_directory_key: 'cc-packages',
             },
-            :resource_pool => {
-              :resource_directory_key => 'cc-resources',
-              :fog_connection => {
-                :provider => 'Local',
-                :local_root => Dir.mktmpdir('resourse_pool', workspace)
+            resource_pool: {
+              resource_directory_key: 'cc-resources',
+              fog_connection: {
+                provider: 'Local',
+                local_root: Dir.mktmpdir('resourse_pool', workspace)
               }
             },
           }

@@ -35,7 +35,7 @@ module VCAP::CloudController
     end
 
     it 'includes login url when configured' do
-      TestConfig.override(:login => {:url => 'login_url'})
+      TestConfig.override(login: {url: 'login_url'})
       get '/info', {}, {}
       hash = MultiJson.load(last_response.body)
       expect(hash['authorization_endpoint']).to eq('login_url')
@@ -45,7 +45,7 @@ module VCAP::CloudController
       let(:headers) { headers_for(current_user) }
 
       describe 'for an admin' do
-        let(:current_user) { make_user_with_default_space(:admin => true) }
+        let(:current_user) { make_user_with_default_space(admin: true) }
 
         it 'should return admin limits for an admin' do
           get '/info', {}, headers
@@ -106,18 +106,18 @@ module VCAP::CloudController
         context 'with 2 started apps with 2 instances, 5 stopped apps, and 3 service' do
           before do
             2.times do
-              AppFactory.make(:space => current_user.default_space,
-                               :state => 'STARTED', :instances => 2, :memory => 128,
-                               :package_hash => 'abc', :package_state => 'STAGED')
+              AppFactory.make(space: current_user.default_space,
+                               state: 'STARTED', instances: 2, memory: 128,
+                               package_hash: 'abc', package_state: 'STAGED')
             end
 
             5.times do
-              AppFactory.make(:space => current_user.default_space,
-                               :state => 'STOPPED', :instances => 2, :memory => 128)
+              AppFactory.make(space: current_user.default_space,
+                               state: 'STOPPED', instances: 2, memory: 128)
             end
 
             3.times do
-              ManagedServiceInstance.make(:space => current_user.default_space)
+              ManagedServiceInstance.make(space: current_user.default_space)
             end
           end
 
@@ -140,48 +140,48 @@ module VCAP::CloudController
     describe 'service info' do
       before do
         @mysql_svc = Service.make(
-          :label => 'mysql',
-          :provider => 'core',
+          label: 'mysql',
+          provider: 'core',
         )
 
-        ServicePlan.make(:service => @mysql_svc, :name => '100')
+        ServicePlan.make(service: @mysql_svc, name: '100')
 
         @pg_svc = Service.make(
-          :label => 'postgresql',
-          :provider => 'core',
+          label: 'postgresql',
+          provider: 'core',
         )
 
-        ServicePlan.make(:service => @pg_svc, :name => '100')
+        ServicePlan.make(service: @pg_svc, name: '100')
 
         @redis_svc = Service.make(
-          :label => 'redis',
-          :provider => 'core',
+          label: 'redis',
+          provider: 'core',
         )
 
-        ServicePlan.make(:service => @redis_svc, :name => '100')
+        ServicePlan.make(service: @redis_svc, name: '100')
 
         @mongo_svc = Service.make(
-          :label => 'mongodb',
-          :provider => 'core',
+          label: 'mongodb',
+          provider: 'core',
         )
 
-        ServicePlan.make(:service => @mongo_svc, :name => '100')
+        ServicePlan.make(service: @mongo_svc, name: '100')
 
         @random_svc = Service.make(
-          :label => 'random',
-          :provider => 'core',
+          label: 'random',
+          provider: 'core',
         )
 
-        ServicePlan.make(:service => @random_svc, :name => '100')
+        ServicePlan.make(service: @random_svc, name: '100')
 
         @random_other_svc = Service.make(
-          :label => 'random_other',
-          :provider => 'core',
+          label: 'random_other',
+          provider: 'core',
         )
 
         ServicePlan.make(
-          :service => @random_other_svc,
-          :name => 'other'
+          service: @random_other_svc,
+          name: 'other'
         )
 
         non_core = Service.make
@@ -312,54 +312,54 @@ module VCAP::CloudController
     describe 'GET /info/services unauthenticated' do
       before(:each) do
         # poor man's reset_db
-        Service.filter(:provider => 'core').each do |svc|
-          svc.service_plans_dataset.filter(:name => '100').destroy
+        Service.filter(provider: 'core').each do |svc|
+          svc.service_plans_dataset.filter(name: '100').destroy
           svc.destroy
         end
         @mysql_svc = Service.make(
-          :label => "mysql_#{Sham.name}",
-          :provider => 'core',
+          label: "mysql_#{Sham.name}",
+          provider: 'core',
         )
         ServicePlan.make(
-          :service => @mysql_svc,
-          :name => '100',
+          service: @mysql_svc,
+          name: '100',
         )
         @pg_svc = Service.make(
-          :label => "postgresql_#{Sham.name}",
-          :provider => 'core',
+          label: "postgresql_#{Sham.name}",
+          provider: 'core',
         )
         ServicePlan.make(
-          :service => @pg_svc,
-          :name => '100',
+          service: @pg_svc,
+          name: '100',
         )
         @redis_svc = Service.make(
-          :label => "redis_#{Sham.name}",
-          :provider => 'core',
+          label: "redis_#{Sham.name}",
+          provider: 'core',
         )
         ServicePlan.make(
-          :service => @redis_svc,
-          :name => '100',
+          service: @redis_svc,
+          name: '100',
         )
         @mongo_svc = Service.make(
-          :label => "mongodb_#{Sham.name}",
-          :provider => 'core',
+          label: "mongodb_#{Sham.name}",
+          provider: 'core',
         )
         ServicePlan.make(
-          :service => @mongo_svc,
-          :name => '100',
+          service: @mongo_svc,
+          name: '100',
         )
         @random_svc = Service.make(
-          :label => "random_#{Sham.name}",
-          :provider => 'core',
+          label: "random_#{Sham.name}",
+          provider: 'core',
         )
         ServicePlan.make(
-          :service => @random_svc,
-          :name => '100',
+          service: @random_svc,
+          name: '100',
         )
         non_core = Service.make
         ServicePlan.make(
-          :service => non_core,
-          :name => '100',
+          service: non_core,
+          name: '100',
         )
 
         get '/info/services', {}

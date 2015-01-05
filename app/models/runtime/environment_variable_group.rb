@@ -28,7 +28,7 @@ module VCAP::CloudController
     private
 
     def self.find_by_name(group)
-      EnvironmentVariableGroup.find_or_create(:name => group.to_s)
+      EnvironmentVariableGroup.find_or_create(name: group.to_s)
     end
   end
 end

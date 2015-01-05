@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'rspec_api_documentation/dsl'
 
-resource 'Apps', :type => [:api, :legacy_api] do
+resource 'Apps', type: [:api, :legacy_api] do
   let(:admin_auth_header) { admin_headers['HTTP_AUTHORIZATION'] }
   let(:admin_buildpack) { VCAP::CloudController::Buildpack.make }
   let!(:apps) { 3.times { VCAP::CloudController::AppFactory.make } }
@@ -50,7 +50,7 @@ resource 'Apps', :type => [:api, :legacy_api] do
     end
 
     def after_standard_model_delete(guid)
-      event = VCAP::CloudController::Event.find(:type => 'audit.app.delete-request', :actee => guid)
+      event = VCAP::CloudController::Event.find(type: 'audit.app.delete-request', actee: guid)
       audited_event event
     end
 
@@ -64,7 +64,7 @@ resource 'Apps', :type => [:api, :legacy_api] do
         standard_entity_response parsed_response, :app
 
         app_guid = parsed_response['metadata']['guid']
-        audited_event VCAP::CloudController::Event.find(:type => 'audit.app.create', :actee => app_guid)
+        audited_event VCAP::CloudController::Event.find(type: 'audit.app.create', actee: app_guid)
       end
 
       example 'Creating a Docker App (experimental)' do
@@ -81,7 +81,7 @@ resource 'Apps', :type => [:api, :legacy_api] do
         expect(parsed_response['entity']['environment_json']).to match(diego_environment)
 
         app_guid = parsed_response['metadata']['guid']
-        audited_event VCAP::CloudController::Event.find(:type => 'audit.app.create', :actee => app_guid)
+        audited_event VCAP::CloudController::Event.find(type: 'audit.app.create', actee: app_guid)
       end
     end
 

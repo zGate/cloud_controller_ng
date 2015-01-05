@@ -7,13 +7,13 @@ describe SpacePresenter do
 
     it 'creates a valid JSON' do
       expect(subject.to_hash).to eq({
-        :metadata => {
-          :guid => space.guid,
-          :created_at => space.created_at.iso8601,
-          :updated_at => nil,
+        metadata: {
+          guid: space.guid,
+          created_at: space.created_at.iso8601,
+          updated_at: nil,
         },
-        :entity => {
-          :name => space.name
+        entity: {
+          name: space.name
         }
       })
     end

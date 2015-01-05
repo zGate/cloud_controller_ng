@@ -81,7 +81,7 @@ module VCAP::CloudController
       model.db.transaction do
         if recursive? && name.to_s.eql?('users')
           org = find_guid_and_validate_access(:update, guid)
-          user = User.find(:guid => other_guid)
+          user = User.find(guid: other_guid)
 
           org.remove_user_recursive(user)
         end

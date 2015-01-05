@@ -15,15 +15,15 @@ def cleanup_permission_table(name, permission)
   fks = foreign_key_list(join_table).each do | fk |
     if(fk[:columns] == [fk_name])
       alter_table join_table do
-        drop_constraint fk[:name], :type => :foreign_key
+        drop_constraint fk[:name], type: :foreign_key
         drop_column fk_name
-        add_foreign_key [id_attr], table, :name => new_fk_name
+        add_foreign_key [id_attr], table, name: new_fk_name
       end
     elsif(fk[:columns] == [:user_fk])
       alter_table join_table do
-        drop_constraint fk[:name], :type => :foreign_key
+        drop_constraint fk[:name], type: :foreign_key
         drop_column :user_fk
-        add_foreign_key [:user_id], :users, :name => new_fk_user
+        add_foreign_key [:user_id], :users, name: new_fk_user
       end
     end
   end
@@ -42,9 +42,9 @@ Sequel.migration do
     foreign_key_list(:app_events).each do | fk |
       if(fk[:columns] == [:fk_app_events_app_id])
         alter_table :app_events do
-          drop_constraint fk[:name], :type => :foreign_key
+          drop_constraint fk[:name], type: :foreign_key
           drop_column :fk_app_events_app_id
-          add_foreign_key [:app_id], :apps, :name => :fk_app_events_app_id
+          add_foreign_key [:app_id], :apps, name: :fk_app_events_app_id
         end
       end
     end

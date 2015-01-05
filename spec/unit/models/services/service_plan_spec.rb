@@ -97,9 +97,9 @@ module VCAP::CloudController
       let(:service_plan) { ServicePlan.make }
 
       it 'destroys all service plan visibilities' do
-        service_plan_visibility = ServicePlanVisibility.make(:service_plan => service_plan)
+        service_plan_visibility = ServicePlanVisibility.make(service_plan: service_plan)
         expect { service_plan.destroy }.to change {
-          ServicePlanVisibility.where(:id => service_plan_visibility.id).any?
+          ServicePlanVisibility.where(id: service_plan_visibility.id).any?
         }.to(false)
       end
 

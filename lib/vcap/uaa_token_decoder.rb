@@ -43,14 +43,14 @@ module VCAP
     end
 
     def decode_token_with_symmetric_key(auth_token)
-      decode_token_with_key(auth_token, :skey => symmetric_key)
+      decode_token_with_key(auth_token, skey: symmetric_key)
     end
 
     def decode_token_with_asymmetric_key(auth_token)
       tries = 2
       begin
         tries -= 1
-        decode_token_with_key(auth_token, :pkey => asymmetric_key.value)
+        decode_token_with_key(auth_token, pkey: asymmetric_key.value)
       rescue CF::UAA::InvalidSignature => e
         asymmetric_key.refresh
         tries > 0 ? retry : raise
@@ -58,7 +58,7 @@ module VCAP
     end
 
     def decode_token_with_key(auth_token, options)
-      options = {:audience_ids => config[:resource_id]}.merge(options)
+      options = {audience_ids: config[:resource_id]}.merge(options)
       token = CF::UAA::TokenCoder.new(options).decode_at_reference_time(auth_token, Time.now.to_i - @grace_period_in_seconds)
       expiration_time = token['exp'] || token[:exp]
       if expiration_time && expiration_time < Time.now.to_i

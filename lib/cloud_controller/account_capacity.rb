@@ -14,19 +14,19 @@ module VCAP::CloudController
     class << self
       def default
         @default ||= {
-          :memory   => DEFAULT_MEM,
-          :app_uris => DEFAULT_URIS,
-          :services => DEFAULT_SERVICES,
-          :apps     => DEFAULT_APPS
+          memory: DEFAULT_MEM,
+          app_uris: DEFAULT_URIS,
+          services: DEFAULT_SERVICES,
+          apps: DEFAULT_APPS
         }
       end
 
       def admin
         @admin ||= {
-          :memory   => ADMIN_MEM,
-          :app_uris => ADMIN_URIS,
-          :services => ADMIN_SERVICES,
-          :apps     => ADMIN_APPS
+          memory: ADMIN_MEM,
+          app_uris: ADMIN_URIS,
+          services: ADMIN_SERVICES,
+          apps: ADMIN_APPS
         }
       end
 

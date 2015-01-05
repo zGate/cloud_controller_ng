@@ -30,18 +30,18 @@ module VCAP::CloudController
         @app.update(staging_task_id: task_id)
 
         # Attempt to stop any in-flight staging for this app
-        @message_bus.publish('staging.stop', :app_id => @app.guid)
+        @message_bus.publish('staging.stop', app_id: @app.guid)
 
         @completion_callback = completion_callback
 
         @dea_pool.reserve_app_memory(@stager_id, staging_task_memory_mb)
         @stager_pool.reserve_app_memory(@stager_id, staging_task_memory_mb)
 
-        logger.info('staging.begin', :app_guid => @app.guid)
+        logger.info('staging.begin', app_guid: @app.guid)
         staging_result = EM.schedule_sync do |promise|
           # First response is blocking stage_app.
           @multi_message_bus_request.on_response(staging_timeout) do |response, error|
-            logger.info('staging.first-response', :app_guid => @app.guid, :response => response, :error => error)
+            logger.info('staging.first-response', app_guid: @app.guid, response: response, error: error)
             handle_first_response(response, error, promise)
           end
 
@@ -49,7 +49,7 @@ module VCAP::CloudController
           # droplet was uploaded to the CC.
           # Second response does NOT block stage_app
           @multi_message_bus_request.on_response(staging_timeout) do |response, error|
-            logger.info('staging.second-response', :app_guid => @app.guid, :response => response, :error => error)
+            logger.info('staging.second-response', app_guid: @app.guid, response: response, error: error)
             handle_second_response(response, error)
           end
 
@@ -185,9 +185,9 @@ module VCAP::CloudController
           @app.current_droplet.update_detected_start_command(stager_response.detected_start_command) if @app.current_droplet
         end
 
-        @dea_pool.mark_app_started(:dea_id => @stager_id, :app_id => @app.guid) if instance_was_started_by_dea
+        @dea_pool.mark_app_started(dea_id: @stager_id, app_id: @app.guid) if instance_was_started_by_dea
 
-        @completion_callback.call(:started_instances => instance_was_started_by_dea ? 1 : 0) if @completion_callback
+        @completion_callback.call(started_instances: instance_was_started_by_dea ? 1 : 0) if @completion_callback
       end
 
       def staging_task_properties(app)
@@ -200,15 +200,15 @@ module VCAP::CloudController
         env         = staging_env.merge(app_env).map { |k, v| "#{k}=#{v}" }
 
         {
-            :services    => app.service_bindings.map { |sb| service_binding_to_staging_request(sb) },
-            :resources   => {
-                :memory => app.memory,
-                :disk   => app.disk_quota,
-                :fds    => app.file_descriptors
+            services: app.service_bindings.map { |sb| service_binding_to_staging_request(sb) },
+            resources: {
+                memory: app.memory,
+                disk: app.disk_quota,
+                fds: app.file_descriptors
             },
 
-            :environment => env,
-            :meta => app.metadata
+            environment: env,
+            meta: app.metadata
         }
       end
 

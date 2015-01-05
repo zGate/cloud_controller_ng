@@ -220,9 +220,9 @@ module VCAP::CloudController
 
       context 'when a service instance exists', isolation: :truncation do
         it 'returns a 400 and an appropriate error message' do
-          service = Service.make(:service_broker => broker)
-          service_plan = ServicePlan.make(:service => service)
-          ManagedServiceInstance.make(:service_plan => service_plan)
+          service = Service.make(service_broker: broker)
+          service_plan = ServicePlan.make(service: service)
+          ManagedServiceInstance.make(service_plan: service_plan)
 
           delete "/v2/service_brokers/#{broker.guid}", {}, headers
 

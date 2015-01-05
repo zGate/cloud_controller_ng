@@ -4,10 +4,10 @@ module VCAP::CloudController
   describe ServicesController, :services do
     shared_examples 'enumerate and read service only' do |perm_name|
       include_examples 'permission enumeration', perm_name,
-                       :name                => 'service',
-                       :path                => '/v2/services',
-                       :permissions_overlap => true,
-                       :enumerate           => 7
+                       name: 'service',
+                       path: '/v2/services',
+                       permissions_overlap: true,
+                       enumerate: 7
     end
 
     describe 'Query Parameters' do

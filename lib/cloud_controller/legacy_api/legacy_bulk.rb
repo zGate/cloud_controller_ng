@@ -36,7 +36,7 @@ module VCAP::CloudController
       attr_reader :config, :message_bus, :diego_enabled
 
       def configure(config, message_bus)
-        @config = config[:bulk_api].merge(:cc_partition => config.fetch(:cc_partition))
+        @config = config[:bulk_api].merge(cc_partition: config.fetch(:cc_partition))
         @diego_enabled = config[:diego][:running] != 'disabled'
         @message_bus = message_bus
       end
@@ -81,8 +81,8 @@ module VCAP::CloudController
       id_for_next_token = apps.empty? ? nil : apps.last.id
 
       BulkResponse.new(
-        :results => app_hashes,
-        :bulk_token => { 'id' => id_for_next_token }
+        results: app_hashes,
+        bulk_token: { 'id' => id_for_next_token }
       ).encode
     rescue IndexError => e
       raise ApiError.new_from_details('BadQueryParameter', e.message)
@@ -92,7 +92,7 @@ module VCAP::CloudController
       model = params.fetch('model', 'user')
       raise ApiError.new_from_details('BadQueryParameter', 'model') unless model == 'user'
       UserCountsResponse.new(
-        :counts => {
+        counts: {
           'user' => User.count,
         },
       ).encode

@@ -31,13 +31,13 @@ module VCAP::CloudController
 
       return unless org.billing_enabled?
       ServiceDeleteEvent.create(
-        :timestamp => Time.now,
-        :organization_guid => org.guid,
-        :organization_name => org.name,
-        :space_guid => space.guid,
-        :space_name => space.name,
-        :service_instance_guid => instance.guid,
-        :service_instance_name => instance.name,
+        timestamp: Time.now,
+        organization_guid: org.guid,
+        organization_name: org.name,
+        space_guid: space.guid,
+        space_name: space.name,
+        service_instance_guid: instance.guid,
+        service_instance_name: instance.name,
       )
     end
   end

@@ -88,7 +88,7 @@ module VCAP::CloudController
         end
 
         context 'and there are buildpacks with null keys' do
-          let!(:null_buildpack) { Buildpack.create(:name => 'nil_key_custom_buildpack', :position => 0) }
+          let!(:null_buildpack) { Buildpack.create(name: 'nil_key_custom_buildpack', position: 0) }
 
           it 'only returns buildpacks with non-null keys' do
             expect(Buildpack.all).to include(null_buildpack)
@@ -98,7 +98,7 @@ module VCAP::CloudController
         end
 
         context 'and there are buildpacks with empty keys' do
-          let!(:empty_buildpack) { Buildpack.create(:name => 'nil_key_custom_buildpack', :key => '', :position => 0) }
+          let!(:empty_buildpack) { Buildpack.create(name: 'nil_key_custom_buildpack', key: '', position: 0) }
 
           it 'only returns buildpacks with non-null keys' do
             expect(Buildpack.all).to include(empty_buildpack)
@@ -115,8 +115,8 @@ module VCAP::CloudController
       end
 
       context 'when there are disabled buildpacks' do
-        let!(:enabled_buildpack) { Buildpack.make(:key => 'enabled-buildpack', :enabled => true) }
-        let!(:disabled_buildpack) { Buildpack.make(:key => 'disabled-buildpack', :enabled => false) }
+        let!(:enabled_buildpack) { Buildpack.make(key: 'enabled-buildpack', enabled: true) }
+        let!(:disabled_buildpack) { Buildpack.make(key: 'disabled-buildpack', enabled: false) }
 
         it 'includes them in the list' do
           expect(all_buildpacks).to match_array([enabled_buildpack, disabled_buildpack])

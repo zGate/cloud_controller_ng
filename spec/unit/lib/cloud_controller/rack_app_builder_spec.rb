@@ -10,8 +10,8 @@ module VCAP::CloudController
 
     before do
       TestConfig.override({
-        :nginx => {
-          :use_nginx => use_nginx,
+        nginx: {
+          use_nginx: use_nginx,
         }
       })
 

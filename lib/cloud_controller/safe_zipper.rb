@@ -43,7 +43,7 @@ class SafeZipper
     @zip ||= begin
       output, error, status = Open3.capture3(
         %Q{zip -q -r --symlinks #{@zip_destination} .},
-        :chdir => @zip_path
+        chdir: @zip_path
       )
 
       unless status.success?

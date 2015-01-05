@@ -111,15 +111,15 @@ module VCAP::CloudController
       context 'when a cdn is configured' do
         let(:resource_pool_config) do
           {
-            :maximum_size => @max_file_size,
-            :resource_directory_key => 'spec-cc-resources',
-            :fog_connection => {
-              :provider => 'AWS',
-              :aws_access_key_id => 'fake_aws_key_id',
-              :aws_secret_access_key => 'fake_secret_access_key',
+            maximum_size: @max_file_size,
+            resource_directory_key: 'spec-cc-resources',
+            fog_connection: {
+              provider: 'AWS',
+              aws_access_key_id: 'fake_aws_key_id',
+              aws_secret_access_key: 'fake_secret_access_key',
             },
-            :cdn => {
-              :uri => 'http://example.com',
+            cdn: {
+              uri: 'http://example.com',
             }
           }
         end

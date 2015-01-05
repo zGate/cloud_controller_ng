@@ -62,9 +62,9 @@ module VCAP::CloudController
           let(:member_b) { @org_b_manager }
 
           include_examples 'permission enumeration', 'OrgManager',
-            :name => 'organization',
-            :path => '/v2/organizations',
-            :enumerate => 1
+            name: 'organization',
+            path: '/v2/organizations',
+            enumerate: 1
 
           it 'cannot update quota definition' do
             quota = QuotaDefinition.make
@@ -93,9 +93,9 @@ module VCAP::CloudController
           let(:member_b) { @org_b_member }
 
           include_examples 'permission enumeration', 'OrgUser',
-            :name => 'organization',
-            :path => '/v2/organizations',
-            :enumerate => 1
+            name: 'organization',
+            path: '/v2/organizations',
+            enumerate: 1
         end
 
         describe 'BillingManager' do
@@ -103,9 +103,9 @@ module VCAP::CloudController
           let(:member_b) { @org_b_billing_manager }
 
           include_examples 'permission enumeration', 'BillingManager',
-            :name => 'organization',
-            :path => '/v2/organizations',
-            :enumerate => 1
+            name: 'organization',
+            path: '/v2/organizations',
+            enumerate: 1
         end
 
         describe 'Auditor' do
@@ -113,9 +113,9 @@ module VCAP::CloudController
           let(:member_b) { @org_b_auditor }
 
           include_examples 'permission enumeration', 'Auditor',
-            :name => 'organization',
-            :path => '/v2/organizations',
-            :enumerate => 1
+            name: 'organization',
+            path: '/v2/organizations',
+            enumerate: 1
         end
       end
     end
@@ -205,8 +205,8 @@ module VCAP::CloudController
 
       context 'with an offering that has private plans' do
         before(:each) do
-          @service = Service.make(:active => true)
-          @service_plan = ServicePlan.make(:service => @service, public: false)
+          @service = Service.make(active: true)
+          @service_plan = ServicePlan.make(service: @service, public: false)
           ServicePlanVisibility.make(service_plan: @service.service_plans.first, organization: org)
         end
 
@@ -248,8 +248,8 @@ module VCAP::CloudController
 
       describe 'get /v2/organizations/:guid/services?q=active:<t|f>' do
         before(:each) do
-          @active = 3.times.map { Service.make(:active => true).tap{|svc| ServicePlan.make(:service => svc) } }
-          @inactive = 2.times.map { Service.make(:active => false).tap{|svc| ServicePlan.make(:service => svc) } }
+          @active = 3.times.map { Service.make(active: true).tap{|svc| ServicePlan.make(service: svc) } }
+          @inactive = 2.times.map { Service.make(active: false).tap{|svc| ServicePlan.make(service: svc) } }
         end
 
         it 'can remove inactive services' do
@@ -341,7 +341,7 @@ module VCAP::CloudController
       let(:user) { User.make }
       let(:org) { Organization.make(manager_guids: [mgr.guid], user_guids: [user.guid]) }
       let(:org_space_empty) { Space.make(organization: org) }
-      let(:org_space_full)  { Space.make(organization: org, :manager_guids => [user.guid], :developer_guids => [user.guid], :auditor_guids => [user.guid]) }
+      let(:org_space_full)  { Space.make(organization: org, manager_guids: [user.guid], developer_guids: [user.guid], auditor_guids: [user.guid]) }
 
       context 'DELETE /v2/organizations/org_guid/users/user_guid' do
         context 'without the recursive flag' do
@@ -391,8 +391,8 @@ module VCAP::CloudController
           end
 
           context 'multiple organizations' do
-            let(:org_2) { Organization.make(:user_guids => [user.guid]) }
-            let(:org2_space) { Space.make(organization: org_2, :developer_guids => [user.guid]) }
+            let(:org_2) { Organization.make(user_guids: [user.guid]) }
+            let(:org2_space) { Space.make(organization: org_2, developer_guids: [user.guid]) }
 
             it 'should remove a user from one organization, but no the other' do
               org.add_space(org_space_full)

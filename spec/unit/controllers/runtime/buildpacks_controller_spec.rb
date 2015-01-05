@@ -27,7 +27,7 @@ module VCAP::CloudController
     end
 
     let(:user) { make_user }
-    let(:req_body) { MultiJson.dump({:name => 'dynamic_test_buildpack'}) }
+    let(:req_body) { MultiJson.dump({name: 'dynamic_test_buildpack'}) }
 
     describe 'create' do
       it 'returns 403 for non admins' do

@@ -3,17 +3,17 @@ require 'spec_helper'
 module VCAP::CloudController
   describe Dea::AppStagerTask do
     let(:message_bus) { CfMessageBus::MockMessageBus.new }
-    let(:stager_pool) { double(:stager_pool, :reserve_app_memory => nil) }
-    let(:dea_pool) { double(:stager_pool, :reserve_app_memory => nil) }
+    let(:stager_pool) { double(:stager_pool, reserve_app_memory: nil) }
+    let(:dea_pool) { double(:stager_pool, reserve_app_memory: nil) }
     let(:config_hash) { { staging: { timeout_in_seconds: 360 } } }
     let(:app) do
       AppFactory.make(
-        :package_hash => 'abc',
-        :droplet_hash => nil,
-        :package_state => 'PENDING',
-        :state => 'STARTED',
-        :instances => 1,
-        :disk_quota => 1024
+        package_hash: 'abc',
+        droplet_hash: nil,
+        package_state: 'PENDING',
+        state: 'STARTED',
+        instances: 1,
+        disk_quota: 1024
       )
     end
     let(:stager_id) { 'my_stager' }
@@ -81,7 +81,7 @@ module VCAP::CloudController
 
     context 'when a stager can be found' do
       it 'should stop other staging tasks' do
-        expect(message_bus).to receive(:publish).with('staging.stop', hash_including({ :app_id => app.guid }))
+        expect(message_bus).to receive(:publish).with('staging.stop', hash_including({ app_id: app.guid }))
         staging_task.stage
       end
     end
@@ -379,7 +379,7 @@ module VCAP::CloudController
             end
 
             it 'marks app started in dea pool' do
-              expect(dea_pool).to receive(:mark_app_started).with({:dea_id => stager_id, :app_id => app.guid})
+              expect(dea_pool).to receive(:mark_app_started).with({dea_id: stager_id, app_id: app.guid})
               stage
             end
 
@@ -465,13 +465,13 @@ module VCAP::CloudController
 
         context 'when app staging fails without a reason' do
           let(:reply_json) { nil }
-          let(:options) { { :invalid_json => true } }
+          let(:options) { { invalid_json: true } }
 
           it 'logs StagingError instead of raising to avoid stopping main runloop' do
             logger = double(:logger).as_null_object
             expect(logger).to receive(:error).with(/Encountered error on stager with id #{stager_id}/)
 
-            allow(Steno).to receive_messages(:logger => logger)
+            allow(Steno).to receive_messages(logger: logger)
             stage
           end
 
@@ -516,7 +516,7 @@ module VCAP::CloudController
               expect(msg).to match(/Encountered error on stager with id #{stager_id}/)
             end
 
-            allow(Steno).to receive_messages(:logger => logger)
+            allow(Steno).to receive_messages(logger: logger)
             stage
           end
 
@@ -600,12 +600,12 @@ module VCAP::CloudController
     end
 
     describe '.staging_request' do
-      let(:app) { AppFactory.make :droplet_hash => nil, :package_state => 'PENDING' }
+      let(:app) { AppFactory.make droplet_hash: nil, package_state: 'PENDING' }
 
       before do
         3.times do
-          instance = ManagedServiceInstance.make(:space => app.space)
-          binding = ServiceBinding.make(:app => app, :service_instance => instance)
+          instance = ManagedServiceInstance.make(space: app.space)
+          binding = ServiceBinding.make(app: app, service_instance: instance)
           app.add_service_binding(binding)
         end
 
@@ -673,17 +673,17 @@ module VCAP::CloudController
 
       it 'includes app index 0' do
         request = staging_task.staging_request
-        expect(request[:start_message]).to include ({ :index => 0 })
+        expect(request[:start_message]).to include ({ index: 0 })
       end
 
       it 'overwrites droplet sha' do
         request = staging_task.staging_request
-        expect(request[:start_message]).to include ({ :sha1 => nil })
+        expect(request[:start_message]).to include ({ sha1: nil })
       end
 
       it 'overwrites droplet download uri' do
         request = staging_task.staging_request
-        expect(request[:start_message]).to include ({ :executableUri => nil })
+        expect(request[:start_message]).to include ({ executableUri: nil })
       end
 
       describe 'the list of admin buildpacks' do

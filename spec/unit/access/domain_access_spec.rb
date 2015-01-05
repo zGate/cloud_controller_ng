@@ -7,7 +7,7 @@ module VCAP::CloudController
 
     let(:user) { User.make }
     let(:org) { Organization.make }
-    let(:space) { Space.make(:organization => org) }
+    let(:space) { Space.make(organization: org) }
 
     let(:object) { Domain.make }
 

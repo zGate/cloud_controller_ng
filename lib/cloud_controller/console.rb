@@ -36,5 +36,5 @@ if ENV['RACK_ENV'] == 'development'
 end
 
 module VCAP::CloudController
-  binding.pry :quiet => true
+  binding.pry quiet: true
 end

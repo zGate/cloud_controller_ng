@@ -12,7 +12,7 @@ module VCAP::CloudController
 
     describe 'GET /v2/apps/:id/instances' do
       before :each do
-        @app = AppFactory.make(:package_hash => 'abc', :package_state => 'STAGED')
+        @app = AppFactory.make(package_hash: 'abc', package_state: 'STAGED')
         @user =  make_user_for_space(@app.space)
         @developer = make_developer_for_space(@app.space)
       end
@@ -95,8 +95,8 @@ module VCAP::CloudController
           it 'returns the instances' do
             instances = {
               0 => {
-                :state => 'FLAPPING',
-                :since => 1,
+                state: 'FLAPPING',
+                since: 1,
               },
             }
 

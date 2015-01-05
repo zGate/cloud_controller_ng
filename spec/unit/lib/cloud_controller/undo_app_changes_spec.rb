@@ -5,14 +5,14 @@ module VCAP::CloudController
     let(:state) {'STARTED'}
     let(:instances) {2}
     let(:app) do
-      AppFactory.make(:package_hash  => 'abc',
-                      :name => 'app-name',
-                      :droplet_hash  => 'I DO NOTHING',
-                      :state         => state,
-                      :instances     => instances,
+      AppFactory.make(package_hash: 'abc',
+                      name: 'app-name',
+                      droplet_hash: 'I DO NOTHING',
+                      state: state,
+                      instances: instances,
                       )
     end
-    let(:changes) { {:updated_at => [1, app.updated_at]} }
+    let(:changes) { {updated_at: [1, app.updated_at]} }
     let(:undo_changes) {UndoAppChanges.new(app)}
 
     describe '#undo' do

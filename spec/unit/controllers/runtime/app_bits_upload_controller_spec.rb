@@ -108,7 +108,7 @@ module VCAP::CloudController
           end
 
           context 'with no resources and application' do
-            let(:req_body) { {:application => valid_zip} }
+            let(:req_body) { {application: valid_zip} }
 
             it 'fails to upload' do
               make_request
@@ -223,21 +223,21 @@ module VCAP::CloudController
             Delayed::Job.count
           }.by(1)
 
-          response_body = JSON.parse(last_response.body, :symbolize_names => true)
+          response_body = JSON.parse(last_response.body, symbolize_names: true)
           job = Delayed::Job.last
           expect(job.handler).to include(app_obj.guid)
           expect(job.queue).to eq('cc-api_z1-99')
           expect(job.guid).not_to be_nil
           expect(last_response.status).to eq 201
           expect(response_body).to eq({
-                                          :metadata => {
-                                              :guid => job.guid,
-                                              :created_at => job.created_at.iso8601,
-                                              :url => "/v2/jobs/#{job.guid}"
+                                          metadata: {
+                                              guid: job.guid,
+                                              created_at: job.created_at.iso8601,
+                                              url: "/v2/jobs/#{job.guid}"
                                           },
-                                          :entity => {
-                                              :guid => job.guid,
-                                              :status => 'queued'
+                                          entity: {
+                                              guid: job.guid,
+                                              status: 'queued'
                                           }
                                       })
         end
