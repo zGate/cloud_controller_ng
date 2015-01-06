@@ -44,7 +44,7 @@ module VCAP::CloudController
       context 'when the Origin header is not present' do
         it 'does not return any Access-Control headers (the request is not a CORS request)' do
           get '/test_front_endpoint', '', {}
-          expect(last_response.headers.keep_if { |k,_| k.start_with? 'Access-Control' }).to be_empty
+          expect(last_response.headers.keep_if { |k, _| k.start_with? 'Access-Control' }).to be_empty
         end
 
         it 'delegates to the initial request' do
@@ -75,14 +75,14 @@ module VCAP::CloudController
           context 'and the origin is not in the whitelist' do
             it 'does not return any Access-Control headers' do
               make_request_with_origin 'http://corblimey.com', 'PUT'
-              expect(last_response.headers.keep_if { |k,_| k.start_with? 'Access-Control' }).to be_empty
+              expect(last_response.headers.keep_if { |k, _| k.start_with? 'Access-Control' }).to be_empty
             end
           end
 
           context 'and the origin is a subset of a domain in the whitelist, but does not match' do
             it 'does not return any Access-Control headers' do
               make_request_with_origin 'http://talkoncorners.com.extra'
-              expect(last_response.headers.keep_if { |k,_| k.start_with? 'Access-Control' }).to be_empty
+              expect(last_response.headers.keep_if { |k, _| k.start_with? 'Access-Control' }).to be_empty
             end
 
             it 'delegates to the initial request' do
@@ -95,7 +95,7 @@ module VCAP::CloudController
             context 'but no Access-Control-Request-Method header is present' do
               it 'does not return any Access-Control headers' do
                 make_request_with_origin 'http://wildcarded.inblue.net'
-                expect(last_response.headers.keep_if { |k,_| k.start_with? 'Access-Control' }).to be_empty
+                expect(last_response.headers.keep_if { |k, _| k.start_with? 'Access-Control' }).to be_empty
               end
 
               it 'delegates to the original request' do
@@ -174,7 +174,7 @@ module VCAP::CloudController
           context 'and the origin is not in the whitelist' do
             it 'does not return any Access-Control headers' do
               make_request_with_origin 'http://corblimey.com'
-              expect(last_response.headers.keep_if { |k,_| k.start_with? 'Access-Control' }).to be_empty
+              expect(last_response.headers.keep_if { |k, _| k.start_with? 'Access-Control' }).to be_empty
             end
 
             it 'delegates to the initial request' do
@@ -186,7 +186,7 @@ module VCAP::CloudController
           context 'and the origin is a subset of a domain in the whitelist, but does not match' do
             it 'does not return any Access-Control headers' do
               make_request_with_origin 'http://talkoncorners.com.extra'
-              expect(last_response.headers.keep_if { |k,_| k.start_with? 'Access-Control' }).to be_empty
+              expect(last_response.headers.keep_if { |k, _| k.start_with? 'Access-Control' }).to be_empty
             end
 
             it 'delegates to the initial request' do

@@ -30,7 +30,7 @@ module VCAP::CloudController
 
     it 'does nothing if the key is nil' do
       expect(Delayed::Job).not_to receive(:enqueue)
-      BuildpackBitsDelete.delete_when_safe(nil,staging_timeout)
+      BuildpackBitsDelete.delete_when_safe(nil, staging_timeout)
     end
 
     context 'when the blob exists' do

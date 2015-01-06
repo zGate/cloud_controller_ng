@@ -20,7 +20,7 @@ describe 'DB Schema' do
         end unless fk[:name].nil?
       end if DbConfig.connection.supports_foreign_key_parsing?
 
-      DbConfig.connection.indexes(table).each do |name,index|
+      DbConfig.connection.indexes(table).each do |name, index|
         it "the index #{table}.#{name}'s name should not be longer than 30 characters" do
           expect(name.length).to be <= 30
         end

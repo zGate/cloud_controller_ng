@@ -152,7 +152,7 @@ module VCAP::CloudController
             subject.process_advertise_message(dea_in_default_zone_with_2_instances_and_512m_memory)
             subject.process_advertise_message(dea_in_user_defined_zone_with_2_instances_and_1024m_memory)
             subject.process_advertise_message(dea_in_user_defined_zone_with_1_instance_and_512m_memory)
-            expect(['dea-id1','dea-id7']).to include(subject.find_dea(mem: 1, stack: 'stack', app_id: 'app-id'))
+            expect(['dea-id1', 'dea-id7']).to include(subject.find_dea(mem: 1, stack: 'stack', app_id: 'app-id'))
           end
         end
 
@@ -171,7 +171,7 @@ module VCAP::CloudController
             subject.process_advertise_message(dea_in_user_defined_zone_with_1_instance_and_512m_memory)
             subject.process_advertise_message(dea_in_user_defined_zone_with_1_instance_and_256m_memory)
 
-            expect(['dea-id7','dea-id8']).to include(subject.find_dea(mem: 1, stack: 'stack', app_id: 'app-id'))
+            expect(['dea-id7', 'dea-id8']).to include(subject.find_dea(mem: 1, stack: 'stack', app_id: 'app-id'))
           end
 
           it 'picks the only DEA with enough resource even it has more instances' do

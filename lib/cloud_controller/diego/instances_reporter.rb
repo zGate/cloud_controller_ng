@@ -90,9 +90,9 @@ module VCAP::CloudController
 
       private
 
-      def for_each_desired_instance(instances,app,&blk)
+      def for_each_desired_instance(instances, app, &blk)
         instances.each do |instance|
-          next unless instance_is_desired(instance,app)
+          next unless instance_is_desired(instance, app)
           blk.call(instance)
         end
       end

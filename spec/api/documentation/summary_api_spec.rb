@@ -38,10 +38,10 @@ resource 'Apps', type: [:api, :legacy_api] do
     field :package_updated_at, 'Time when the package was last updated'
 
     field :system_env_json, 'environment_json for system variables, contains vcap_services by default, a hash containing key/value pairs of the names and information of the services associated with your app.'
-    field :staging_task_id, 'Staging task id',required: false
+    field :staging_task_id, 'Staging task id', required: false
     field :running_instances, 'The number of instances of the app that are currently running.'
     field :available_domain, 'List of available domains configured for the app'
-    field :routes, 'List of routes configured for the app',required: false
+    field :routes, 'List of routes configured for the app', required: false
     field :version, 'Version guid of the app'
     field :services, 'List of services that are bound to the app'
 
@@ -189,10 +189,10 @@ resource 'Apps', type: [:api, :legacy_api] do
     field :package_updated_at, 'Time when the package was last updated'
 
     field :system_env_json, 'environment_json for system variables, contains vcap_services by default, a hash containing key/value pairs of the names and information of the services associated with your app.'
-    field :staging_task_id, 'Staging task id',required: false
+    field :staging_task_id, 'Staging task id', required: false
     field :running_instances, 'The number of instances of the app that are currently running.'
     field :available_domain, 'List of available domains configured for the app'
-    field :routes, 'List of routes configured for the app',required: false
+    field :routes, 'List of routes configured for the app', required: false
     field :version, 'Version guid of the app'
     field :services, 'List of services that are bound to the app'
 

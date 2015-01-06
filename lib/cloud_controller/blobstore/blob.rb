@@ -25,7 +25,7 @@ module CloudController
 
       def attributes(*keys)
         return file.attributes if keys.empty?
-        file.attributes.select { |key,_| keys.include? key }
+        file.attributes.select { |key, _| keys.include? key }
       end
 
       private

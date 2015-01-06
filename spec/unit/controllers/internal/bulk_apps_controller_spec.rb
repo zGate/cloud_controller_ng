@@ -175,7 +175,7 @@ module VCAP::CloudController
           end
 
           it 'respects the batch_size parameter' do
-            [3,5].each { |size|
+            [3, 5].each { |size|
               get '/internal/bulk/apps', {
                   'batch_size' => size,
                   'token' => "{\"id\":0}",

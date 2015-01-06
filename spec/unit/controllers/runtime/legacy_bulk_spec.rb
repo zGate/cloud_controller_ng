@@ -81,7 +81,7 @@ module VCAP::CloudController
             'bulk_token' => "{\"id\":0}",
           }
           expect(last_response.status).to eq(200)
-          decoded_response['results'].each { |key,value|
+          decoded_response['results'].each { |key, value|
             expect(value).to be_kind_of Hash
             expect(value['id']).not_to be_nil
             expect(value['version']).not_to be_nil
@@ -89,7 +89,7 @@ module VCAP::CloudController
         end
 
         it 'respects the batch_size parameter' do
-          [3,5].each { |size|
+          [3, 5].each { |size|
             get '/bulk/apps', {
               'batch_size' => size,
               'bulk_token' => "{\"id\":0}",

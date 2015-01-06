@@ -169,7 +169,7 @@ module VCAP::CloudController
 
       context 'when the broker registration has warnings' do
         before do
-          allow(registration).to receive(:warnings).and_return(['warning1','warning2'])
+          allow(registration).to receive(:warnings).and_return(['warning1', 'warning2'])
         end
 
         it 'adds the warnings' do
@@ -391,7 +391,7 @@ module VCAP::CloudController
 
       context 'when the broker registration has warnings' do
         before do
-          allow(registration).to receive(:warnings).and_return(['warning1','warning2'])
+          allow(registration).to receive(:warnings).and_return(['warning1', 'warning2'])
         end
 
         it 'adds the warnings' do

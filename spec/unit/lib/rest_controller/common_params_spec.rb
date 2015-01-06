@@ -24,7 +24,7 @@ module VCAP::CloudController::RestController
       end
 
       it 'treats include-relations as a String Array and symbolizes the key' do
-        expect(common_params.parse({ 'include-relations' => 'name1,name2' })).to eq({ include_relations: ['name1','name2'] })
+        expect(common_params.parse({ 'include-relations' => 'name1,name2' })).to eq({ include_relations: ['name1', 'name2'] })
       end
 
       it 'treats page as an Integer and symbolizes the key' do

@@ -89,7 +89,7 @@ module VCAP::CloudController
           end
 
           it 'respects the batch_size parameter' do
-            [1,3].each do |size|
+            [1, 3].each do |size|
               get '/v2/syslog_drain_urls', { 'batch_size' => size }
               expect(last_response).to be_successful
               expect(decoded_results.size).to eq(size)

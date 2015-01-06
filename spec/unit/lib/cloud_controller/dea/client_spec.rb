@@ -226,7 +226,7 @@ module VCAP::CloudController
           )
         )
 
-        Dea::Client.stop_indices(app, [0,2])
+        Dea::Client.stop_indices(app, [0, 2])
       end
     end
 
