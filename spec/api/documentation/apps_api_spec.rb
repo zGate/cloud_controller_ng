@@ -259,4 +259,3 @@ resource 'Apps', type: [:api, :legacy_api] do
     end
   end
 end
-

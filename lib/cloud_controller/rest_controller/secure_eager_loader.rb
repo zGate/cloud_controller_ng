@@ -79,4 +79,3 @@ module VCAP::CloudController::RestController
     end
   end
 end
-

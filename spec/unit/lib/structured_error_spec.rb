@@ -70,4 +70,3 @@ describe StructuredError do
     end
   end
 end
-

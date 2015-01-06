@@ -14,5 +14,3 @@ class ServiceBindingPresenter
     }.merge(ServiceInstancePresenter.new(@service_binding.service_instance).to_hash)
   end
 end
-
-

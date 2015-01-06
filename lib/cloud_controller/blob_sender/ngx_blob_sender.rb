@@ -18,4 +18,3 @@ module CloudController
     end
   end
 end
-

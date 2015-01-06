@@ -16,4 +16,3 @@ module Sequel::Plugins::VcapValidations
     end
   end
 end
-

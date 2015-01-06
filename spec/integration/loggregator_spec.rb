@@ -58,4 +58,3 @@ describe 'Cloud controller Loggregator Integration', type: :integration do
     expect(message.message_type).to eq LogMessage::MessageType::OUT
   end
 end
-

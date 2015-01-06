@@ -54,4 +54,3 @@ describe 'User Provided Service Instance' do
     expect(json_body.fetch('entity').fetch('syslog_drain_url')).to eq(syslog_drain_url2)
   end
 end
-
