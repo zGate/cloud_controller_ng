@@ -30,13 +30,13 @@ class TableRecreator
 
   def drop_table_unsafely(table)
     case db.database_type
-      when :mysql
-        db.execute('SET foreign_key_checks = 0')
-        db.drop_table(table)
-        db.execute('SET foreign_key_checks = 1')
+    when :mysql
+      db.execute('SET foreign_key_checks = 0')
+      db.drop_table(table)
+      db.execute('SET foreign_key_checks = 1')
 
-      when :postgres
-        db.drop_table(table, cascade: true)
+    when :postgres
+      db.drop_table(table, cascade: true)
     end
   end
 end

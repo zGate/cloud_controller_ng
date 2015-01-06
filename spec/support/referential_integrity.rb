@@ -5,10 +5,10 @@ class ReferentialIntegrity
 
   def without(&block)
     case db.database_type
-      when :postgres
-        without_referential_integrity_postgres(&block)
-      when :mysql
-        without_referential_integrity_mysql(&block)
+    when :postgres
+      without_referential_integrity_postgres(&block)
+    when :mysql
+      without_referential_integrity_mysql(&block)
     end
   end
 

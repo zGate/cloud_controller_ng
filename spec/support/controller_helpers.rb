@@ -38,22 +38,22 @@ module ControllerHelpers
 
   def normalize_attributes(value)
     case value
-      when Hash
-        stringified = {}
+    when Hash
+      stringified = {}
 
-        value.each do |k, v|
-          stringified[k] = normalize_attributes(v)
-        end
+      value.each do |k, v|
+        stringified[k] = normalize_attributes(v)
+      end
 
-        stringified
-      when Array
-        value.collect { |x| normalize_attributes(x) }
-      when Numeric, nil, true, false
-        value
-      when Time
-        value.iso8601
-      else
-        value.to_s
+      stringified
+    when Array
+      value.collect { |x| normalize_attributes(x) }
+    when Numeric, nil, true, false
+      value
+    when Time
+      value.iso8601
+    else
+      value.to_s
     end
   end
 

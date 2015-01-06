@@ -42,24 +42,24 @@ module VCAP::Services::SSO::UAA
       response = http.request(request)
 
       case response.code.to_i
-        when 200..299
-          return
-        when 400
-          log_bad_uaa_response(response)
-          raise UaaResourceInvalid.new
-        when 404
-          log_bad_uaa_response(response)
-          if response[ROUTER_404_KEY] == ROUTER_404_VALUE
-            raise UaaUnavailable.new
-          else
-            raise UaaResourceNotFound.new
-          end
-        when 409
-          log_bad_uaa_response(response)
-          raise UaaResourceAlreadyExists.new
+      when 200..299
+        return
+      when 400
+        log_bad_uaa_response(response)
+        raise UaaResourceInvalid.new
+      when 404
+        log_bad_uaa_response(response)
+        if response[ROUTER_404_KEY] == ROUTER_404_VALUE
+          raise UaaUnavailable.new
         else
-          log_bad_uaa_response(response)
-          raise UaaUnexpectedResponse.new
+          raise UaaResourceNotFound.new
+        end
+      when 409
+        log_bad_uaa_response(response)
+        raise UaaResourceAlreadyExists.new
+      else
+        log_bad_uaa_response(response)
+        raise UaaUnexpectedResponse.new
       end
     end
 
