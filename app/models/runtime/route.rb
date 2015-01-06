@@ -43,7 +43,7 @@ module VCAP::CloudController
 
       errors.add(:host, :presence) if host.nil?
 
-      validates_format /^([\w\-]+)$/, :host if (host && !host.empty?)
+      validates_format /^([\w\-]+)$/, :host if host && !host.empty?
       validates_unique [:host, :domain_id]
 
       validate_domain
@@ -57,7 +57,7 @@ module VCAP::CloudController
     end
 
     def validate_app(app)
-      return unless (space && app && domain)
+      return unless space && app && domain
 
       unless app.space == space
         raise InvalidAppRelation.new(app.guid)

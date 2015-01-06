@@ -36,7 +36,7 @@ module VCAP::CloudController
         running_indices = Set.new
 
         for_each_desired_instance(instances, app) do |instance|
-          next unless (instance[:state] == 'RUNNING' || instance[:state] == 'STARTING')
+          next unless instance[:state] == 'RUNNING' || instance[:state] == 'STARTING'
           running_indices.add(instance[:index])
         end
 

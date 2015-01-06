@@ -23,7 +23,7 @@ module VCAP::CloudController
       service_guid = single_filter.split(':')[1] if single_filter && single_filter.start_with?('service_guid')
 
       plans = ServicePlan.where(active: true, public: true)
-      if (service_guid.present?)
+      if service_guid.present?
         services = Service.where(guid: service_guid)
         plans = plans.where(service_id: services.select(:id))
       end

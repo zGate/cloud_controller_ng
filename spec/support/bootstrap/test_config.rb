@@ -26,7 +26,7 @@ module TestConfig
     # Always enable Fog mocking (except when using a local provider, which Fog can't mock).
     res_pool_connection_provider = config[:resource_pool][:fog_connection][:provider].downcase
     packages_connection_provider = config[:packages][:fog_connection][:provider].downcase
-    Fog.mock! unless (res_pool_connection_provider == 'local' || packages_connection_provider == 'local')
+    Fog.mock! unless res_pool_connection_provider == 'local' || packages_connection_provider == 'local'
 
     # DO NOT override the message bus, use the same mock that's set the first time
     message_bus = VCAP::CloudController::Config.message_bus || CfMessageBus::MockMessageBus.new

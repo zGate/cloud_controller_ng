@@ -28,9 +28,9 @@ end
 def rename_index_internal(db, alter_table, table, columns, opts={})
   columns = [columns] unless columns.is_a?(Array)
   db.indexes(table).each do | name, index |
-    if ((index[:columns] - columns).empty? &&
+    if (index[:columns] - columns).empty? &&
         (columns - index[:columns]).empty? &&
-        name != opts[:name])
+        name != opts[:name]
       alter_table.drop_index columns
       alter_table.add_index columns, opts
       break

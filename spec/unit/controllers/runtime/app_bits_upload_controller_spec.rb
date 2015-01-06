@@ -258,6 +258,7 @@ module VCAP::CloudController
           @email          = email
           @@copies        = []
         end
+
         def perform
           FakeCopier.copies << [@src_app, @dest_app, @app_event_repo, @user, @email]
         end

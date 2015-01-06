@@ -18,6 +18,7 @@ module VCAP::CloudController
         app.save
       end
     end
+
     def make_dea_app
       AppFactory.make.tap do |app|
         app.package_state = 'PENDING'

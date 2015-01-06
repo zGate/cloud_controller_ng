@@ -4,12 +4,15 @@ module VCAP::CloudController
   module Jobs::Runtime
     class FailingJob
       def perform; raise 'Hell'; end
+
       def failure; end
+
       def max_attempts; 1; end
     end
 
     class SuccessJob
       def perform; end
+
       def max_attempts; 1; end
     end
 

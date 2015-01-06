@@ -151,7 +151,7 @@ module VCAP::CloudController
         label: label, provider: provider,
       ]
 
-      unless (svc_auth_token && svc_auth_token.token_matches?(auth_token))
+      unless svc_auth_token && svc_auth_token.token_matches?(auth_token)
         logger.warn('unauthorized service offering')
         raise Errors::ApiError.new_from_details('NotAuthorized')
       end

@@ -126,6 +126,7 @@ module VCAP::CloudController
           def underlying_sekret=(value)
             @sekret = value
           end
+
           def underlying_sekret
             @sekret
           end
