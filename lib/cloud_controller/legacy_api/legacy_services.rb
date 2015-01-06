@@ -23,7 +23,7 @@ module VCAP::CloudController
 
       svc = Service.find(label: legacy_attrs['vendor'], version: legacy_attrs['version'])
       unless svc
-        msg = "#{legacy_attrs["vendor"]}-#{legacy_attrs["version"]}"
+        msg = "#{legacy_attrs['vendor']}-#{legacy_attrs['version']}"
         raise ApiError.new_from_details('ServiceInvalid', msg)
       end
 

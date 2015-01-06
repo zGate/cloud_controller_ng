@@ -54,8 +54,8 @@ describe 'Staging an app', type: :integration do
       )
 
       @expected_buildpack_shas = [
-        "#{@buildpack_response_2.json_body["metadata"]["guid"]}_#{valid_zip.hexdigest}",
-        "#{@buildpack_response_1.json_body["metadata"]["guid"]}_#{valid_zip(4).hexdigest}",
+        "#{@buildpack_response_2.json_body['metadata']['guid']}_#{valid_zip.hexdigest}",
+        "#{@buildpack_response_1.json_body['metadata']['guid']}_#{valid_zip(4).hexdigest}",
       ]
 
       org = make_post_request(
@@ -85,7 +85,7 @@ describe 'Staging an app', type: :integration do
       )
 
       @app_bits_response = make_put_request(
-        "/v2/apps/#{@app_response.json_body["metadata"]["guid"]}/bits?application[tempfile]=#{valid_zip(2).path}&resources=[]",
+        "/v2/apps/#{@app_response.json_body['metadata']['guid']}/bits?application[tempfile]=#{valid_zip(2).path}&resources=[]",
         '{}',
         authed_headers
       )
@@ -104,7 +104,7 @@ describe 'Staging an app', type: :integration do
               expect(JSON.parse(msg)['admin_buildpacks']).to be_empty
 
               app_stop_response = make_put_request(
-                "/v2/apps/#{@app_response.json_body["metadata"]["guid"]}",
+                "/v2/apps/#{@app_response.json_body['metadata']['guid']}",
                 { state: 'STOPPED' }.to_json,
                 authed_headers
               )
@@ -118,7 +118,7 @@ describe 'Staging an app', type: :integration do
               NATS.publish('staging.advertise', advertisment) do
                 Thread.new do
                   app_start_response = make_put_request(
-                    "/v2/apps/#{@app_response.json_body["metadata"]["guid"]}",
+                    "/v2/apps/#{@app_response.json_body['metadata']['guid']}",
                     { state: 'STARTED' }.to_json,
                     authed_headers
                   )
@@ -135,13 +135,13 @@ describe 'Staging an app', type: :integration do
     context 'and the admin has uploaded the buildpacks' do
       before do
         @buildpack_bits_response_1 = make_put_request(
-          "/v2/buildpacks/#{@buildpack_response_1.json_body["metadata"]["guid"]}/bits?buildpack[tempfile]=#{valid_zip(4).path}&buildpack_name=foo.zip",
+          "/v2/buildpacks/#{@buildpack_response_1.json_body['metadata']['guid']}/bits?buildpack[tempfile]=#{valid_zip(4).path}&buildpack_name=foo.zip",
           '{}',
           authed_headers
         )
 
         @buildpack_bits_response_2 = make_put_request(
-          "/v2/buildpacks/#{@buildpack_response_2.json_body["metadata"]["guid"]}/bits?buildpack[tempfile]=#{valid_zip.path}&buildpack_name=bar.zip",
+          "/v2/buildpacks/#{@buildpack_response_2.json_body['metadata']['guid']}/bits?buildpack[tempfile]=#{valid_zip.path}&buildpack_name=bar.zip",
           '{}',
           authed_headers
         )
@@ -167,7 +167,7 @@ describe 'Staging an app', type: :integration do
               NATS.publish('staging.advertise', advertisment) do
                 Thread.new do
                   app_start_response = make_put_request(
-                    "/v2/apps/#{@app_response.json_body["metadata"]["guid"]}",
+                    "/v2/apps/#{@app_response.json_body['metadata']['guid']}",
                     { state: 'STARTED' }.to_json,
                     authed_headers
                   )
@@ -183,7 +183,7 @@ describe 'Staging an app', type: :integration do
           before do
             @enabled_buildpack_shas = @expected_buildpack_shas[1..1]
             @buildpack_response_2_disable = make_put_request(
-              "/v2/buildpacks/#{@buildpack_response_2.json_body["metadata"]["guid"]}",
+              "/v2/buildpacks/#{@buildpack_response_2.json_body['metadata']['guid']}",
               { 'enabled' => false }.to_json,
               authed_headers
             )
@@ -209,7 +209,7 @@ describe 'Staging an app', type: :integration do
                 NATS.publish('staging.advertise', advertisment) do
                   Thread.new do
                     app_start_response = make_put_request(
-                      "/v2/apps/#{@app_response.json_body["metadata"]["guid"]}",
+                      "/v2/apps/#{@app_response.json_body['metadata']['guid']}",
                       { state: 'STARTED' }.to_json,
                       authed_headers
                     )

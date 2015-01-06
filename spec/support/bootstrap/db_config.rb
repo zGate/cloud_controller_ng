@@ -3,7 +3,7 @@ module DbConfig
     if ENV['DB_CONNECTION_STRING']
       ENV['DB_CONNECTION_STRING'].split('/').last
     elsif ENV['TEST_ENV_NUMBER']
-      "cc_test_#{ENV["TEST_ENV_NUMBER"]}"
+      "cc_test_#{ENV['TEST_ENV_NUMBER']}"
     else
       'cc_test'
     end

@@ -38,7 +38,7 @@ RSpec::Matchers.define :validate_uniqueness do |*attributes|
   options = attributes.extract_options!
   attributes.flatten!
   description do
-    "validate uniqueness of #{Array.wrap(attributes).join(" and ")}"
+    "validate uniqueness of #{Array.wrap(attributes).join(' and ')}"
   end
   match do |_|
     source_obj = described_class.make

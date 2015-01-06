@@ -10,7 +10,7 @@ end
 
 RSpec::Matchers.define :export_attributes do |*attributes|
   description do
-    "exports #{attributes.join(", ")}"
+    "exports #{attributes.join(', ')}"
   end
 
   match do |_|
@@ -22,7 +22,7 @@ end
 
 RSpec::Matchers.define :import_attributes do |*attributes|
   description do
-    "imports #{attributes.join(", ")}"
+    "imports #{attributes.join(', ')}"
   end
 
   match do |_|

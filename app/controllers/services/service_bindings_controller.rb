@@ -89,7 +89,7 @@ module VCAP::CloudController
     def self.translate_validation_exception(e, attributes)
       unique_errors = e.errors.on([:app_id, :service_instance_id])
       if unique_errors && unique_errors.include?(:unique)
-        Errors::ApiError.new_from_details('ServiceBindingAppServiceTaken', "#{attributes["app_guid"]} #{attributes["service_instance_guid"]}")
+        Errors::ApiError.new_from_details('ServiceBindingAppServiceTaken', "#{attributes['app_guid']} #{attributes['service_instance_guid']}")
       elsif e.errors.on(:app) && e.errors.on(:app).include?(:presence)
         Errors::ApiError.new_from_details('AppNotFound', attributes['app_guid'])
       elsif e.errors.on(:service_instance) && e.errors.on(:service_instance).include?(:presence)

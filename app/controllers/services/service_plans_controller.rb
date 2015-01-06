@@ -53,7 +53,7 @@ module VCAP::CloudController
     def self.translate_validation_exception(e, attributes)
       name_errors = e.errors.on([:service_id, :name])
       if name_errors && name_errors.include?(:unique)
-        Errors::ApiError.new_from_details('ServicePlanNameTaken', "#{attributes["service_id"]}-#{attributes["name"]}")
+        Errors::ApiError.new_from_details('ServicePlanNameTaken', "#{attributes['service_id']}-#{attributes['name']}")
       else
         Errors::ApiError.new_from_details('ServicePlanInvalid', e.errors.full_messages)
       end

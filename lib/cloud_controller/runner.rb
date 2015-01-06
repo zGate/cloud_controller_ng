@@ -144,7 +144,7 @@ module VCAP::CloudController
       services = JSON.parse(ENV['VCAP_SERVICES'])
       pg_key = services.keys.select { |svc| svc =~ /postgres/i }.first
       c = services[pg_key].first['credentials']
-      @config[:db][:database] = "postgres://#{c["user"]}:#{c["password"]}@#{c["hostname"]}:#{c["port"]}/#{c["name"]}"
+      @config[:db][:database] = "postgres://#{c['user']}:#{c['password']}@#{c['hostname']}:#{c['port']}/#{c['name']}"
       @config[:external_port] = ENV['VCAP_APP_PORT'].to_i
     end
 

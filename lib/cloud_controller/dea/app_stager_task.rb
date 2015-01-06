@@ -144,7 +144,7 @@ module VCAP::CloudController
         elsif response['error_info']
           response['error_info']['message']
         elsif response['error']
-          "failed to stage application:\n#{response["error"]}\n#{response["task_log"]}"
+          "failed to stage application:\n#{response['error']}\n#{response['task_log']}"
         end
       end
 
