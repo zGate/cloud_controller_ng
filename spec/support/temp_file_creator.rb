@@ -15,6 +15,6 @@ module TempFileCreator
   end
 
   def delete_created_temp_files
-    @created_temp_files && @created_temp_files.each { |file| file.unlink }
+    @created_temp_files && @created_temp_files.each(&:unlink)
   end
 end

@@ -207,7 +207,7 @@ module VCAP::CloudController::RestController
       # of query parameters.
       def query_parameters(*args)
         @query_parameters ||= Set.new
-        @query_parameters |= Set.new(args.map { |a| a.to_s }) unless args.empty?
+        @query_parameters |= Set.new(args.map(&:to_s)) unless args.empty?
         @query_parameters
       end
 
@@ -220,7 +220,7 @@ module VCAP::CloudController::RestController
       # of preserve query parameters.
       def preserve_query_parameters(*args)
         @perserved_query_params ||= Set.new
-        @perserved_query_params |= args.map { |a| a.to_s } unless args.empty?
+        @perserved_query_params |= args.map(&:to_s) unless args.empty?
         @perserved_query_params
       end
 

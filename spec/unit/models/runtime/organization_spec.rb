@@ -488,7 +488,7 @@ module VCAP::CloudController
           [space_1, space_2].each { |space| space.add_developer(user) }
           [space_1, space_2].each { |space| space.add_manager(user) }
           [space_1, space_2].each { |space| space.add_auditor(user) }
-          [space_1, space_2].each { |space| space.refresh }
+          [space_1, space_2].each(&:refresh)
         end
 
         it 'should remove the space developer roles from the user' do
@@ -506,21 +506,21 @@ module VCAP::CloudController
         it 'should remove the user from each spaces developer role' do
           [space_1, space_2].each { |space| expect(space.developers).to include(user) }
           org.remove_user_recursive(user)
-          [space_1, space_2].each { |space| space.refresh }
+          [space_1, space_2].each(&:refresh)
           [space_1, space_2].each { |space| expect(space.developers).not_to include(user) }
         end
 
         it 'should remove the user from each spaces manager role' do
           [space_1, space_2].each { |space| expect(space.managers).to include(user) }
           org.remove_user_recursive(user)
-          [space_1, space_2].each { |space| space.refresh }
+          [space_1, space_2].each(&:refresh)
           [space_1, space_2].each { |space| expect(space.managers).not_to include(user) }
         end
 
         it 'should remove the user from each spaces auditor role' do
           [space_1, space_2].each { |space| expect(space.auditors).to include(user) }
           org.remove_user_recursive(user)
-          [space_1, space_2].each { |space| space.refresh }
+          [space_1, space_2].each(&:refresh)
           [space_1, space_2].each { |space| expect(space.auditors).not_to include(user) }
         end
       end

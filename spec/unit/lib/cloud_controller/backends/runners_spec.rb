@@ -270,7 +270,7 @@ module VCAP::CloudController
             app.stack
             app.routes
             app.service_bindings
-            app.routes.map { |route| route.domain }
+            app.routes.map(&:domain)
           end
         }.to have_queried_db_times(/SELECT/, [
           :apps,

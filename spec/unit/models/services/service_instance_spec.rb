@@ -25,7 +25,7 @@ module VCAP::CloudController
           }.to have_queried_db_times(/service_plans/i, 1)
 
           expect {
-            eager_loaded_instances.each { |instance| instance.service_plan }
+            eager_loaded_instances.each(&:service_plan)
           }.to have_queried_db_times(//i, 0)
 
           found_instance1 = eager_loaded_instances.detect { |instance| instance.id == instance1.id }

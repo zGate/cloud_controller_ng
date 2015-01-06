@@ -9,7 +9,7 @@ module VCAP
       end
 
       def log_invocation(args)
-        log_info("Drain invoked with #{args.map { |x| x.inspect }.join(' ')}")
+        log_info("Drain invoked with #{args.map(&:inspect).join(' ')}")
       end
 
       def unregister_cc(pid_path)

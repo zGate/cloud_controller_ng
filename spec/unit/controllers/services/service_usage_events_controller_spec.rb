@@ -16,7 +16,7 @@ module VCAP::CloudController
     end
 
     after do
-      ServiceUsageEvent.each { |event| event.delete }
+      ServiceUsageEvent.each(&:delete)
     end
 
     describe 'GET /v2/service_usage_events' do

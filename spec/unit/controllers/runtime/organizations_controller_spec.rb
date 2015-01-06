@@ -401,7 +401,7 @@ module VCAP::CloudController
               delete "/v2/organizations/#{org.guid}/users/#{user.guid}?recursive=true", {}, admin_headers
               expect(last_response.status).to eql(201)
 
-              [org, org_2].each { |organization| organization.refresh }
+              [org, org_2].each(&:refresh)
               expect(org.users).not_to include(user)
               expect(org_2.users).to include(user)
             end
@@ -414,7 +414,7 @@ module VCAP::CloudController
               delete "/v2/organizations/#{org.guid}/users/#{user.guid}?recursive=true", {}, admin_headers
               expect(last_response.status).to eql(201)
 
-              [org_space_full, org2_space].each { |space| space.refresh }
+              [org_space_full, org2_space].each(&:refresh)
               ['developers', 'auditors', 'managers'].each { |type| expect(org_space_full.send(type)).not_to include(user) }
               expect(org2_space.developers).to include(user)
             end

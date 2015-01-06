@@ -88,7 +88,7 @@ module VCAP::CloudController
         end
 
         it 'will purge all existing events' do
-          ServiceInstance.each { |instance| instance.destroy }
+          ServiceInstance.each(&:destroy)
 
           expect {
             repository.purge_and_reseed_service_instances!

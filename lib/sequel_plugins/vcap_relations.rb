@@ -131,7 +131,7 @@ module Sequel::Plugins::VcapRelations
       end
 
       define_method(ids_attr) do
-        send(name).collect { |o| o.id }
+        send(name).collect(&:id)
       end
 
       # greppable: add_domain_by_guid
@@ -154,12 +154,12 @@ module Sequel::Plugins::VcapRelations
       end
 
       define_method("#{guids_attr}") do
-        send(name).collect { |o| o.guid }
+        send(name).collect(&:guid)
       end
 
       define_method("#{guids_attr}=") do |guids|
         return unless guids
-        current_guids = send(name).map { |o| o.guid }
+        current_guids = send(name).map(&:guid)
         (added, removed) = diff_collections.call(current_guids, guids)
         added.each { |g| send("add_#{singular_name}_by_guid", g) }
         removed.each { |g| send("remove_#{singular_name}_by_guid", g) }
