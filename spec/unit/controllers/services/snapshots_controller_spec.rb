@@ -151,7 +151,7 @@ module VCAP::CloudController
 
         it 'returns an empty list' do
           allow(service_instance).to receive(:enum_snapshots).and_return []
-          get snapshots_url, {} , headers_for(developer)
+          get snapshots_url, {}, headers_for(developer)
           expect(last_response.status).to eq(200)
           expect(decoded_response['resources']).to eq([])
         end
@@ -167,7 +167,7 @@ module VCAP::CloudController
               'created_time' => created_time)
             ]
           end
-          get snapshots_url, {} , headers_for(developer)
+          get snapshots_url, {}, headers_for(developer)
           expect(decoded_response).to eq({
             'total_results' => 1,
             'total_pages' => 1,
@@ -192,7 +192,7 @@ module VCAP::CloudController
 
         it 'checks for permission to read the service' do
           another_developer   =  make_developer_for_space(Space.make)
-          get snapshots_url, {} , headers_for(another_developer)
+          get snapshots_url, {}, headers_for(another_developer)
           expect(last_response.status).to eq(403)
         end
       end

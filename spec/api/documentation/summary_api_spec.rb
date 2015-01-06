@@ -83,7 +83,7 @@ resource 'Spaces', type: [:api, :legacy_api] do
     example 'Get Space summary' do
       app_obj.add_route(route1)
       service_binding.save
-      client.get "/v2/spaces/#{space.guid}/summary", {} , headers
+      client.get "/v2/spaces/#{space.guid}/summary", {}, headers
 
       expect(status).to eq 200
       expect(parsed_response['guid']).to eq(space.guid)
@@ -109,7 +109,7 @@ resource 'Organizations', type: [:api, :legacy_api] do
     field :status, 'Status of the organization'
 
     example 'Get Organization summary' do
-      client.get "/v2/organizations/#{organization.guid}/summary", {} , headers
+      client.get "/v2/organizations/#{organization.guid}/summary", {}, headers
 
       expect(status).to eq 200
       expect(parsed_response['guid']).to eq(organization.guid)
@@ -146,7 +146,7 @@ resource 'Users', type: [:api, :legacy_api] do
       space.add_developer user
       space.add_auditor user
 
-      client.get "/v2/users/#{user.guid}/summary", {} , headers
+      client.get "/v2/users/#{user.guid}/summary", {}, headers
 
       expect(status).to eq 200
       expect(parsed_response['metadata']['guid']).to eq(user.guid)
@@ -234,7 +234,7 @@ resource 'Spaces', type: [:api, :legacy_api] do
     example 'Get Space summary' do
       app_obj.add_route(route1)
       service_binding.save
-      client.get "/v2/spaces/#{space.guid}/summary", {} , headers
+      client.get "/v2/spaces/#{space.guid}/summary", {}, headers
 
       expect(status).to eq 200
       expect(parsed_response['guid']).to eq(space.guid)
@@ -260,7 +260,7 @@ resource 'Organizations', type: [:api, :legacy_api] do
     field :status, 'Status of the organization'
 
     example 'Get Organization summary' do
-      client.get "/v2/organizations/#{organization.guid}/summary", {} , headers
+      client.get "/v2/organizations/#{organization.guid}/summary", {}, headers
 
       expect(status).to eq 200
       expect(parsed_response['guid']).to eq(organization.guid)
@@ -297,7 +297,7 @@ resource 'Users', type: [:api, :legacy_api] do
       space.add_developer user
       space.add_auditor user
 
-      client.get "/v2/users/#{user.guid}/summary", {} , headers
+      client.get "/v2/users/#{user.guid}/summary", {}, headers
 
       expect(status).to eq 200
       expect(parsed_response['metadata']['guid']).to eq(user.guid)
