@@ -61,7 +61,7 @@ module VCAP::CloudController
 
         def record_service_dashboard_client_event(type, client_attrs, broker)
           metadata = {}
-          if client_attrs.has_key?('redirect_uri')
+          if client_attrs.key?('redirect_uri')
             metadata = {
               secret: '[REDACTED]',
               redirect_uri: client_attrs['redirect_uri']
@@ -94,7 +94,7 @@ module VCAP::CloudController
           }
 
           metadata = { request: params.dup }
-          if params.has_key?('credentials')
+          if params.key?('credentials')
             metadata[:request]['credentials'] = '[REDACTED]'
           end
 
@@ -166,7 +166,7 @@ module VCAP::CloudController
           [:name, :broker_url, :auth_username].each do |key|
             request_hash[key] = params[key] unless params[key].nil?
           end
-          request_hash[:auth_password] = '[REDACTED]' if params.has_key? :auth_password
+          request_hash[:auth_password] = '[REDACTED]' if params.key? :auth_password
 
           metadata = { request: {} }
           if request_hash.length > 0

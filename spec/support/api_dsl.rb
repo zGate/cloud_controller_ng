@@ -13,7 +13,7 @@ module ApiDsl
       next if field_is_url_and_relationship_not_present?(json, expected_attribute)
 
       expect(json).to have_key expected_attribute.to_s
-      if expected_values.has_key? expected_attribute.to_sym
+      if expected_values.key? expected_attribute.to_sym
         expect(json[expected_attribute.to_s]).to eq(expected_values[expected_attribute.to_sym])
       end
     end

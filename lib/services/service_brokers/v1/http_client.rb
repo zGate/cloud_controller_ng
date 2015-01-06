@@ -86,7 +86,7 @@ module VCAP::Services
           rescue MultiJson::ParseError
           end
 
-          if hash.is_a?(Hash) && hash.has_key?('description')
+          if hash.is_a?(Hash) && hash.key?('description')
             message = "Service broker error: #{hash['description']}"
           else
             message = "The service broker API returned an error from #{endpoint}: #{response.code} #{response.message}"

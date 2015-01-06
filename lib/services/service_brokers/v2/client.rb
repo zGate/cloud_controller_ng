@@ -6,7 +6,7 @@ module VCAP::Services::ServiceBrokers::V2
       rescue MultiJson::ParseError
       end
 
-      if hash.is_a?(Hash) && hash.has_key?('description')
+      if hash.is_a?(Hash) && hash.key?('description')
         message = "Service broker error: #{hash['description']}"
       else
         message = "The service broker API returned an error from #{uri}: #{response.code} #{response.message}"
@@ -49,7 +49,7 @@ module VCAP::Services::ServiceBrokers::V2
   class ServiceBrokerConflict < HttpResponseError
     def initialize(uri, method, response)
       error_message = nil
-      if parsed_json(response.body).has_key?('message')
+      if parsed_json(response.body).key?('message')
         error_message = parsed_json(response.body)['message']
       else
         error_message = parsed_json(response.body)['description']
@@ -122,7 +122,7 @@ module VCAP::Services::ServiceBrokers::V2
       parsed_response = parse_response(:put, path, response)
 
       binding.credentials = parsed_response['credentials']
-      if parsed_response.has_key?('syslog_drain_url')
+      if parsed_response.key?('syslog_drain_url')
         binding.syslog_drain_url = parsed_response['syslog_drain_url']
       end
 

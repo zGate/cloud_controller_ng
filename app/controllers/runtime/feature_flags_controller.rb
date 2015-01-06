@@ -33,7 +33,7 @@ module VCAP::CloudController
     def read(name)
       validate_access(:read, model)
 
-      raise self.class.not_found_exception(name) unless FeatureFlag::DEFAULT_FLAGS.has_key?(name.to_sym)
+      raise self.class.not_found_exception(name) unless FeatureFlag::DEFAULT_FLAGS.key?(name.to_sym)
 
       feature_flag = FeatureFlag.find(name: name)
 
@@ -47,7 +47,7 @@ module VCAP::CloudController
     def update_feature_flag(name)
       validate_access(:update, model)
 
-      raise self.class.not_found_exception(name) unless FeatureFlag::DEFAULT_FLAGS.has_key?(name.to_sym)
+      raise self.class.not_found_exception(name) unless FeatureFlag::DEFAULT_FLAGS.key?(name.to_sym)
 
       feature_flag_attributes = MultiJson.load(body)
 

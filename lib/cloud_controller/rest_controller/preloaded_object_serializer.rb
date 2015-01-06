@@ -141,7 +141,7 @@ module VCAP::CloudController::RestController
     end
 
     def get_preloaded_association_contents!(obj, association)
-      unless obj.associations.has_key?(association.association_name.to_sym)
+      unless obj.associations.key?(association.association_name.to_sym)
         raise NotLoadedAssociationError.new("Association #{association.association_name} on #{obj.inspect} must be preloaded")
       end
       obj.associations[association.association_name]

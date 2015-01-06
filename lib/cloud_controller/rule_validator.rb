@@ -14,7 +14,7 @@ module CloudController
         errs << 'contains invalid destination'
       end
 
-      if rule.has_key?('log') && !validate_boolean(rule['log'])
+      if rule.key?('log') && !validate_boolean(rule['log'])
         errs << 'contains invalid log value'
       end
 

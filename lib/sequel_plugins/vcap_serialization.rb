@@ -117,9 +117,9 @@ module Sequel::Plugins::VcapSerialization
       attrs = attrs - opts[:only] unless opts[:only].nil?
       attrs.each do |attr|
         key = nil
-        if hash.has_key?(attr)
+        if hash.key?(attr)
           key = attr
-        elsif hash.has_key?(attr.to_s)
+        elsif hash.key?(attr.to_s)
           key = attr.to_s
         end
         results[attr] = hash[key] unless key.nil?

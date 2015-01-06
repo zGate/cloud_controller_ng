@@ -78,13 +78,13 @@ module ModelCreation
   end
 
   def make_user_with_default_space(opts={})
-    user = VCAP::CloudController::User.make(admin: opts.has_key?(:admin), active: true)
+    user = VCAP::CloudController::User.make(admin: opts.key?(:admin), active: true)
     space = make_space_for_user(user)
     user.default_space = space
     user
   end
 
   def make_user(opts={})
-    VCAP::CloudController::User.make(admin: opts.has_key?(:admin), active: true)
+    VCAP::CloudController::User.make(admin: opts.key?(:admin), active: true)
   end
 end

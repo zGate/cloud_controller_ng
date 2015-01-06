@@ -87,7 +87,7 @@ module VCAP::CloudController
         def app_audit_hash(request_attrs)
           request_attrs.dup.tap do |changes|
             CENSORED_FIELDS.map(&:to_s).each do |censored|
-              changes[censored] = CENSORED_MESSAGE if changes.has_key?(censored)
+              changes[censored] = CENSORED_MESSAGE if changes.key?(censored)
             end
           end
         end
