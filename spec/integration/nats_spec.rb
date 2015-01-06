@@ -38,18 +38,18 @@ describe 'NATS', type: :integration do
       end
 
       it 'creates org, space and app in database' do
-        data = %Q({"name":"nats-spec-org"})
+        data = %({"name":"nats-spec-org"})
         response = make_post_request('/v2/organizations', data, authorized_token)
         expect(response.code).to eql('201'), "Status is [#{response.code}], Body is [#{response.body}]"
 
         @org_guid = response.json_body['metadata']['guid']
 
-        data = %Q({"organization_guid":"#{@org_guid}","name":"nats-spec-space"})
+        data = %({"organization_guid":"#{@org_guid}","name":"nats-spec-space"})
         response = make_post_request('/v2/spaces', data, authorized_token)
         expect(response.code).to eq('201')
         @space_guid = response.json_body['metadata']['guid']
 
-        data = %Q({
+        data = %({
           "space_guid" : "#{@space_guid}",
           "name" : "nats-spec-app",
           "instances" : 1,

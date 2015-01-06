@@ -342,7 +342,7 @@ module VCAP::CloudController
       end
 
       context 'when the request succeeds' do
-        let(:success_response) { %Q({"snapshot_id": "1", "state": "empty", "name": "foo", "size": 0}) }
+        let(:success_response) { %({"snapshot_id": "1", "state": "empty", "name": "foo", "size": 0}) }
         before do
           stub_request(:post, create_snapshot_url_matcher).to_return(body: success_response)
         end

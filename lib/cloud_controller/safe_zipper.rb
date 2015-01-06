@@ -42,7 +42,7 @@ class SafeZipper
   def zip
     @zip ||= begin
       output, error, status = Open3.capture3(
-        %Q(zip -q -r --symlinks #{@zip_destination} .),
+        %(zip -q -r --symlinks #{@zip_destination} .),
         chdir: @zip_path
       )
 
@@ -57,7 +57,7 @@ class SafeZipper
 
   def zip_info
     @zip_info ||= begin
-      output, error, status = Open3.capture3(%Q(unzip -l #{@zip_path}))
+      output, error, status = Open3.capture3(%(unzip -l #{@zip_path}))
 
       unless status.success?
         raise VCAP::Errors::ApiError.new_from_details('AppBitsUploadInvalid',

@@ -25,7 +25,7 @@ module VCAP::CloudController
     end
 
     def to_json
-      %Q(null)
+      %(null)
     end
 
     def nil_object?
