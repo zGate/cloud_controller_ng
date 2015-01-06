@@ -168,7 +168,7 @@ module VCAP::CloudController
 
           it 'prevents the request from setting the plan guid' do
             offer = build_offering(
-              plan_details:[{ 'name' => 'plan name', 'free' => true, 'guid' => 'myguid' }]
+              plan_details: [{ 'name' => 'plan name', 'free' => true, 'guid' => 'myguid' }]
             )
             post path, offer.encode, json_headers(auth_header)
             expect(last_response.status).to eq(200)

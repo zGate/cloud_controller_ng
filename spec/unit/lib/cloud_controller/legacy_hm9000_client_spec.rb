@@ -270,7 +270,7 @@ module VCAP::CloudController
 
     describe 'find_flapping_indices' do
       let(:app_0_api_response) do
-        generate_hm_api_response(app0, [], [{ instance_index:0, crash_count:3 }, { instance_index:1, crash_count:1 }, { instance_index:2, crash_count:10 }])
+        generate_hm_api_response(app0, [], [{ instance_index: 0, crash_count: 3 }, { instance_index: 1, crash_count: 1 }, { instance_index: 2, crash_count: 10 }])
       end
 
       context 'when the request fails' do

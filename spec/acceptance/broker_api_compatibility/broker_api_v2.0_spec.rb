@@ -234,7 +234,7 @@ describe 'Service Broker API integration' do
       let(:request_from_cc_to_broker) do
         {
           plan_id: 'plan1-guid-here',
-          service_id:'service-guid-here'
+          service_id: 'service-guid-here'
         }
       end
 

@@ -162,7 +162,7 @@ module VCAP::CloudController
           app.add_route(Route.make(space: app.space))
         end
 
-        make_dea_app(id:99, state: 'STARTED')
+        make_dea_app(id: 99, state: 'STARTED')
       end
 
       it 'returns apps that have the desired data' do
