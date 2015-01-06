@@ -64,7 +64,7 @@ module VCAP::CloudController
 
         describe 'the metadata field' do
           it 'only includes param keys that have values' do
-            repository.record_broker_event(:create, service_broker, { name: 'new-name' } )
+            repository.record_broker_event(:create, service_broker, { name: 'new-name' })
             metadata = Event.first.metadata
             expect(metadata['request']).to include('name' => 'new-name')
             expect(metadata['request']).not_to have_key('broker_url')
@@ -73,7 +73,7 @@ module VCAP::CloudController
           end
 
           it 'redacts the auth_password field' do
-            repository.record_broker_event(:create, service_broker, { auth_password: 'new-passord' } )
+            repository.record_broker_event(:create, service_broker, { auth_password: 'new-passord' })
 
             metadata = Event.first.metadata
             expect(metadata['request']).to include('auth_password' => '[REDACTED]')

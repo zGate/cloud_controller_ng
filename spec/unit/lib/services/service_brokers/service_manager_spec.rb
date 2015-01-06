@@ -92,7 +92,7 @@ module VCAP::Services::ServiceBrokers
         expect(service.description).to eq(service_description)
         expect(service.bindable).to be true
         expect(service.tags).to match_array(['mysql', 'relational'])
-        expect(JSON.parse(service.extra)).to eq( { 'foo' => 'bar' } )
+        expect(JSON.parse(service.extra)).to eq({ 'foo' => 'bar' })
         expect(service.requires).to eq(['ultimate', 'power'])
         expect(service.plan_updateable).to eq true
       end

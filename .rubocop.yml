@@ -113,3 +113,6 @@ Style/NegatedIf:
 
 Style/Next:
   Enabled: false
+
+Metrics/ParameterLists:
+  Enabled: false

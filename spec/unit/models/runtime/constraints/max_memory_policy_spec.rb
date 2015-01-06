@@ -14,7 +14,7 @@ describe MaxMemoryPolicy do
 
     it 'registers error when quota is exceeded' do
       allow(org_or_space).to receive(:has_remaining_memory).with(50).and_return(false)
-      expect(validator).to validate_with_error(app, :memory, error_name )
+      expect(validator).to validate_with_error(app, :memory, error_name)
     end
 
     it 'does not register error when quota is not exceeded' do

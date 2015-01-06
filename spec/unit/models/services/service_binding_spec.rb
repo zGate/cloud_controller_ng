@@ -31,7 +31,7 @@ module VCAP::CloudController
           end
 
           it 'does not allow changing app after it has been set' do
-            binding.app = App.make( space: binding.app.space )
+            binding.app = App.make(space: binding.app.space)
             expect { binding.save }.to raise_error Sequel::ValidationFailed, /app/
           end
         end
@@ -43,7 +43,7 @@ module VCAP::CloudController
           end
 
           it 'does not allow changing service_instance after it has been set' do
-            binding.service_instance = ServiceInstance.make( space: binding.app.space )
+            binding.service_instance = ServiceInstance.make(space: binding.app.space)
             expect { binding.save }.to raise_error Sequel::ValidationFailed, /service_instance/
           end
         end

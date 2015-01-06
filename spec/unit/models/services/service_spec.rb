@@ -126,7 +126,7 @@ module VCAP::CloudController
       before do
         ServicePlan.make service: public_service, public: true
         ServicePlan.make service: public_service, public: false
-        VCAP::CloudController::SecurityContext.set(admin_user, { 'scope' => [VCAP::CloudController::Roles::CLOUD_CONTROLLER_ADMIN_SCOPE] } )
+        VCAP::CloudController::SecurityContext.set(admin_user, { 'scope' => [VCAP::CloudController::Roles::CLOUD_CONTROLLER_ADMIN_SCOPE] })
         nonadmin_user.add_organization nonadmin_org
         VCAP::CloudController::SecurityContext.clear
       end
