@@ -37,7 +37,7 @@ class VCAP::CloudController::ResourcePool
 
   # Adds everything under source directory +dir+ to the resource pool.
   def add_directory(dir)
-    unless File.exists?(dir) && File.directory?(dir)
+    unless File.exist?(dir) && File.directory?(dir)
       raise ArgumentError.new("Source directory #{dir} is not valid")
     end
 

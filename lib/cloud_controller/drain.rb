@@ -60,7 +60,7 @@ module VCAP
       end
 
       def alive?(pidfile, program)
-        if !File.exists?(pidfile)
+        if !File.exist?(pidfile)
           log_info("#{program} not running")
           return false
         end

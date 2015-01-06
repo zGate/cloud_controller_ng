@@ -55,7 +55,7 @@ module CloudController
           destination = File.join(local_dir, 'some_directory_to_place_file', 'downloaded_file')
 
           expect { client.download_from_blobstore(key, destination) }.to change {
-            File.exists?(destination)
+            File.exist?(destination)
           }.from(false).to(true)
 
           expect(File.read(destination)).to eq('foobar barbaz')
@@ -218,7 +218,7 @@ module CloudController
               destination = File.join(local_dir, 'some_directory_to_place_file', 'downloaded_file')
 
               expect { client.download_from_blobstore(sha_of_content, destination) }.to change {
-                File.exists?(destination)
+                File.exist?(destination)
               }.from(false).to(true)
 
               expect(File.read(destination)).to eq(content)

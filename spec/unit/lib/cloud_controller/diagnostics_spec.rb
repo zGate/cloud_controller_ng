@@ -84,15 +84,15 @@ module VCAP::CloudController
       end
 
       it 'creates the destination directory if needed' do
-        expect(File.exists?(output_dir)).to be false
+        expect(File.exist?(output_dir)).to be false
         Diagnostics.collect(output_dir)
-        expect(File.exists?(output_dir)).to be true
+        expect(File.exist?(output_dir)).to be true
       end
 
       it 'returns the name of the output file' do
         filename = Diagnostics.collect(output_dir)
         expect(filename).to_not be_nil
-        expect(File.exists?(filename)).to be true
+        expect(File.exist?(filename)).to be true
       end
 
       describe 'file name' do

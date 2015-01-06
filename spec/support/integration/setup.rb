@@ -25,7 +25,7 @@ module IntegrationSetup
     config_file = opts[:config] || 'config/cloud_controller.yml'
     config = YAML.load_file(config_file)
 
-    FileUtils.rm(config['pid_filename']) if File.exists?(config['pid_filename'])
+    FileUtils.rm(config['pid_filename']) if File.exist?(config['pid_filename'])
 
     db_connection_string = "#{TestConfig.config[:db][:database]}_integration_cc"
     if !opts[:preserve_database]

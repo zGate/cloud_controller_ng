@@ -27,8 +27,8 @@ class SafeZipper
   end
 
   def zip!
-    raise VCAP::Errors::ApiError.new_from_details('AppPackageInvalid', 'Path does not exist') unless File.exists?(@zip_path)
-    raise VCAP::Errors::ApiError.new_from_details('AppPackageInvalid', 'Path does not exist') unless File.exists?(File.dirname(@zip_destination))
+    raise VCAP::Errors::ApiError.new_from_details('AppPackageInvalid', 'Path does not exist') unless File.exist?(@zip_path)
+    raise VCAP::Errors::ApiError.new_from_details('AppPackageInvalid', 'Path does not exist') unless File.exist?(File.dirname(@zip_destination))
 
     zip
   end

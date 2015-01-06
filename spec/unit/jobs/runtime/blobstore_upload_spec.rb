@@ -30,7 +30,7 @@ module VCAP::CloudController
 
         it 'cleans up the file at the end' do
           job.perform
-          expect(File.exists?(local_file.path)).to be false
+          expect(File.exist?(local_file.path)).to be false
         end
       end
 
@@ -59,7 +59,7 @@ module VCAP::CloudController
 
           context 'retrying' do
             it 'does not delete the file' do
-              expect(File.exists?(local_file.path)).to be true
+              expect(File.exist?(local_file.path)).to be true
             end
           end
 
@@ -70,7 +70,7 @@ module VCAP::CloudController
               expect {
                 worker.work_off 1
               }.to change {
-                File.exists?(local_file.path)
+                File.exist?(local_file.path)
               }.from(true).to(false)
             end
           end

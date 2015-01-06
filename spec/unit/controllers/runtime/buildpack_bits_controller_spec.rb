@@ -257,7 +257,7 @@ module VCAP::CloudController
               get "/v2/buildpacks/#{test_buildpack.guid}/download"
               expect(last_response.status).to eq(200)
               buildpack_bits = last_response.headers.fetch('X-Accel-Redirect')
-              expect(File.exists?(File.join(buildpacks_root, buildpack_bits))).to be_truthy
+              expect(File.exist?(File.join(buildpacks_root, buildpack_bits))).to be_truthy
             end
           end
         end

@@ -30,7 +30,7 @@ module VCAP::CloudController
         end
 
         def error(job, _)
-          if !File.exists?(local_path)
+          if !File.exist?(local_path)
             @max_attempts = 1
           end
 

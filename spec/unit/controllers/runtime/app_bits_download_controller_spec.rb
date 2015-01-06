@@ -55,7 +55,7 @@ module VCAP::CloudController
             get "/v2/apps/#{app_obj.guid}/download", {}, headers_for(developer)
             expect(last_response.status).to eq(200)
             app_bit_path = last_response.headers.fetch('X-Accel-Redirect')
-            File.exists?(File.join(workspace, app_bit_path))
+            File.exist?(File.join(workspace, app_bit_path))
           end
         end
       end
