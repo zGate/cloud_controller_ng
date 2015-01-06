@@ -116,3 +116,6 @@ Style/Next:
 
 Metrics/ParameterLists:
   Enabled: false
+
+Style/Lambda:
+  Enabled: false
