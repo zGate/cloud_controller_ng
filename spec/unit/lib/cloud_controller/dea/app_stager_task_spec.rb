@@ -705,7 +705,7 @@ module VCAP::CloudController
 
         context 'when a specific buildpack is not requested' do
           it 'includes a list of admin buildpacks as hashes containing its blobstore URI and key' do
-            Timecop.freeze do #download_uri have an expire_at
+            Timecop.freeze do # download_uri have an expire_at
               request = staging_task.staging_request
 
               admin_buildpacks = request[:admin_buildpacks]
@@ -741,7 +741,7 @@ module VCAP::CloudController
 
           context 'when a specific buildpack is not requested' do
             it 'includes a list of enabled admin buildpacks as hashes containing its blobstore URI and key' do
-              Timecop.freeze do #download_uri have an expire_at
+              Timecop.freeze do # download_uri have an expire_at
                 request = staging_task.staging_request
 
                 admin_buildpacks = request[:admin_buildpacks]

@@ -11,7 +11,7 @@ module VCAP::CloudController
     end
 
     before do
-      #force evaluate the blobstore let before stubbing out dependency locator
+      # force evaluate the blobstore let before stubbing out dependency locator
       blobstore
       allow(CloudController::DependencyLocator.instance).to receive(:droplet_blobstore).
         and_return(blobstore)

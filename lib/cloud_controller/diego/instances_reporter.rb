@@ -63,7 +63,7 @@ module VCAP::CloudController
         raise Errors::InstancesUnavailable.new(e)
       end
 
-      #TODO: this is only a stub. stats are not yet available from diego.
+      # TODO: this is only a stub. stats are not yet available from diego.
       def stats_for_app(app)
         result    = {}
         instances = diego_client.lrp_instances(app)

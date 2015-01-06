@@ -23,7 +23,7 @@ shared_examples :no_access do
   it { is_expected.not_to allow_op_on_object :read_for_update, object }
   it { is_expected.not_to allow_op_on_object :update, object }
   it { is_expected.not_to allow_op_on_object :delete, object }
-  #it { should_not allow_op_on_object :index, object.class }
+  # it { should_not allow_op_on_object :index, object.class }
   # backward compatibility:
   # :index is not tested here because some subclasses of BaseAccess
   # override the default behavior of always allowing access to :index

@@ -11,7 +11,7 @@ def rename_foreign_key_internal(db, alter_table, table, current_name, new_name, 
       processed = true
     end
   end
-  #Since Sqlite doesn't return fk names let's just not rename them but still rename the nested index.
+  # Since Sqlite doesn't return fk names let's just not rename them but still rename the nested index.
   if !processed
     block.call(db, alter_table) unless block.nil?
   end
@@ -75,7 +75,7 @@ Sequel.migration do
     rename_foreign_key(:domains_organizations, :fk_domains_organizations_organization_id, :fk_domains_orgs_org_id)
     rename_foreign_key(:service_instances, :service_instances_service_plan_id, :svc_instances_service_plan_id)
 
-    #Where indexes and fk cross mysql requires that the fk be dropped before the index is dropped
+    # Where indexes and fk cross mysql requires that the fk be dropped before the index is dropped
     rename_foreign_key(:service_plans, :fk_service_plans_service_id, :fk_service_plans_service_id) do | db, alter_table |
       rename_index_internal(db, alter_table, :service_plans, [:service_id, :name], unique: true, name: :svc_plan_svc_id_name_index)
     end

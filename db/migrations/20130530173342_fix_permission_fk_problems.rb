@@ -9,7 +9,7 @@ def cleanup_permission_table(name, permission)
   new_fk_name = "#{join_table}_#{name}_fk".to_sym
   new_fk_user = "#{join_table}_user_fk".to_sym
   table = name.pluralize.to_sym
-  #rename based on finding an fk that references one of the bad columns
+  # rename based on finding an fk that references one of the bad columns
   foreign_key_list(join_table).each do | fk |
     if(fk[:columns] == [fk_name])
       alter_table join_table do

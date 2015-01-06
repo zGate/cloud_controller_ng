@@ -257,7 +257,7 @@ Sequel.migration do
       foreign_key [:service_plan_id], :service_plans, name: :service_instances_service_plan_id
 
       index :name
-      index [:space_id, :name], unique: true #, :name => :space_id_name_index
+      index [:space_id, :name], unique: true # , :name => :space_id_name_index
     end
 
     create_table :users do

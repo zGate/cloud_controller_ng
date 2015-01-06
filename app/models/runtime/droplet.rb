@@ -13,7 +13,7 @@ module VCAP::CloudController
       Jobs::Enqueuer.new(droplet_deletion_job, queue: 'cc-generic').enqueue
     end
 
-    #privatize?
+    # privatize?
     def file
       if app.staged?
         blob

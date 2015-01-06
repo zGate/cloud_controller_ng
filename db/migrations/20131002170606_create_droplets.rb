@@ -7,7 +7,7 @@ Sequel.migration do
       index :app_id
     end
 
-    #run "INSERT INTO droplets (app_id, droplet_hash) SELECT id, droplet_hash FROM apps WHERE droplet_hash IS NOT NULL"
+    # run "INSERT INTO droplets (app_id, droplet_hash) SELECT id, droplet_hash FROM apps WHERE droplet_hash IS NOT NULL"
   end
 
   down do
