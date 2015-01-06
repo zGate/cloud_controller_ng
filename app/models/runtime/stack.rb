@@ -45,8 +45,7 @@ module VCAP::CloudController
 
       self[name: @config_file.default].tap do |found_stack|
         unless found_stack
-          raise MissingDefaultStackError,
-            "Default stack with name '#{@config_file.default}' not found"
+          raise MissingDefaultStackError.new("Default stack with name '#{@config_file.default}' not found")
         end
       end
     end

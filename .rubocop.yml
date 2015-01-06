@@ -76,3 +76,9 @@ Lint/UnusedBlockArgument:
 
 Metrics/AbcSize:
   Enabled: false
+
+Style/IfUnlessModifier:
+  Enabled: false
+
+Style/RaiseArgs:
+  EnforcedStyle: compact

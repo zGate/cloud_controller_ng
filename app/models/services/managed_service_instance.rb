@@ -46,7 +46,7 @@ module VCAP::CloudController
         if response.ok?
           response.body
         else
-          raise ServiceGatewayError, "Service gateway upstream failure, responded with #{response.status}: #{response.body}"
+          raise ServiceGatewayError.new("Service gateway upstream failure, responded with #{response.status}: #{response.body}")
         end
       end
     end

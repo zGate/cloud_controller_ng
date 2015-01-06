@@ -38,7 +38,7 @@ class VCAP::CloudController::ResourcePool
   # Adds everything under source directory +dir+ to the resource pool.
   def add_directory(dir)
     unless File.exists?(dir) && File.directory?(dir)
-      raise ArgumentError, "Source directory #{dir} is not valid"
+      raise ArgumentError.new("Source directory #{dir} is not valid")
     end
 
     pattern = File.join(dir, '**', '*')
@@ -84,7 +84,7 @@ class VCAP::CloudController::ResourcePool
       overwrite_destination_with!(descriptor, destination)
     else
       logger.warn 'resource_pool.sync.failed', unknown_resource: descriptor, destination: destination
-      raise ArgumentError, "Can not copy bits we do not have #{descriptor}"
+      raise ArgumentError.new("Can not copy bits we do not have #{descriptor}")
     end
   end
 

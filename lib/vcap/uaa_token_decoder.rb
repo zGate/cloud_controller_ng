@@ -11,7 +11,7 @@ module VCAP
       @config = config
       @logger = Steno.logger('cc.uaa_token_decoder')
 
-      raise ArgumentError, 'grace period should be an integer' unless grace_period_in_seconds.is_a? Integer
+      raise ArgumentError.new('grace period should be an integer') unless grace_period_in_seconds.is_a? Integer
 
       @grace_period_in_seconds = grace_period_in_seconds
       if grace_period_in_seconds < 0

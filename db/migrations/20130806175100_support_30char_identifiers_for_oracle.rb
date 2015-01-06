@@ -145,7 +145,7 @@ Sequel.migration do
   end
 
   down do
-    raise Sequel::Error, "This migration cannot be reversed since we don't know if 'timestamp' and the fks were renamed originally."
+    raise Sequel::Error.new("This migration cannot be reversed since we don't know if 'timestamp' and the fks were renamed originally.")
   end
 end
 # rubocop:enable Metrics/LineLength

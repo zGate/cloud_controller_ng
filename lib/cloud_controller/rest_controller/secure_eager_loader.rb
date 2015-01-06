@@ -44,9 +44,10 @@ module VCAP::CloudController::RestController
         end
 
         unless association_model_class
-          raise ArgumentError,
+          raise ArgumentError.new(
             "Cannot resolve association #{association_name} on #{model_class} " +
               'while trying to build eager loading hash'
+          )
         end
 
         visibility_filter = default_visibility_filter

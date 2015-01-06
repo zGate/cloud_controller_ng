@@ -21,8 +21,8 @@ module VCAP::CloudController::RestController
     #
     # @param [Integer] depth The current recursion depth.
     #
-    # @param [Hash] orphans A hash to accumulate orphaned inline relationships 
-    # against, keyed by guid, or nil if inline relationships should be appended to 
+    # @param [Hash] orphans A hash to accumulate orphaned inline relationships
+    # against, keyed by guid, or nil if inline relationships should be appended to
     # parents instead of being orphaned.
     #
     # @return [Hash] Hash encoding of the object.
@@ -142,8 +142,7 @@ module VCAP::CloudController::RestController
 
     def get_preloaded_association_contents!(obj, association)
       unless obj.associations.has_key?(association.association_name.to_sym)
-        raise NotLoadedAssociationError,
-          "Association #{association.association_name} on #{obj.inspect} must be preloaded"
+        raise NotLoadedAssociationError.new("Association #{association.association_name} on #{obj.inspect} must be preloaded")
       end
       obj.associations[association.association_name]
     end

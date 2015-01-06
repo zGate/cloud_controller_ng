@@ -277,7 +277,7 @@ module VCAP::CloudController
           it 'copes when the app is destroyed halfway between staging (currently we dont know why this happened but seen on tabasco)' do
             allow(VCAP::CloudController::Dea::AppStagerTask::Response).to receive(:new) do
               app.destroy # We saw that app maybe destroyed half-way through staging
-              raise ArgumentError, 'Some Fake Error'
+              raise ArgumentError.new('Some Fake Error')
             end
 
             expect { stage }.to raise_error ArgumentError, 'Some Fake Error'

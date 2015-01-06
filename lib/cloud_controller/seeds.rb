@@ -36,7 +36,7 @@ module VCAP::CloudController
 
         quota_definition = QuotaDefinition.default
         unless quota_definition
-          raise ArgumentError, 'Missing default quota definition in config file'
+          raise ArgumentError.new('Missing default quota definition in config file')
         end
 
         org = Organization.find(name: config[:system_domain_organization])

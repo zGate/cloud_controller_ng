@@ -15,8 +15,8 @@ class MultiResponseMessageBusRequest
   end
 
   def request(data)
-    raise ArgumentError, 'at least one callback must be provided' if @responses.empty?
-    raise ArgumentError, 'request was already made' if @sid
+    raise ArgumentError.new('at least one callback must be provided') if @responses.empty?
+    raise ArgumentError.new('request was already made') if @sid
 
     @sid = @message_bus.request(@subject, data) do |response, error|
       handle_received_response(response, error)
@@ -27,7 +27,7 @@ class MultiResponseMessageBusRequest
   end
 
   def ignore_subsequent_responses
-    raise ArgumentError, 'request was not yet made' unless @sid
+    raise ArgumentError.new('request was not yet made') unless @sid
 
     EM.cancel_timer(@timeout) if @timeout
     unsubscribe
