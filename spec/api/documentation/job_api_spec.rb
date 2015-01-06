@@ -24,7 +24,7 @@ resource 'Jobs', type: [:api, :legacy_api] do
     before { Delayed::Job.delete_all }
 
     field :guid, 'The guid of the job.', required: false
-    field :status, 'The status of the job.', required: false, readonly: true, valid_values: %w[failed finished queued running]
+    field :status, 'The status of the job.', required: false, readonly: true, valid_values: %w(failed finished queued running)
 
     class KnownFailingJob < FakeJob
       def perform

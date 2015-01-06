@@ -92,7 +92,7 @@ module VCAP::CloudController::BrokerApiHelper
 
   def provision_service
     body = { dashboard_url: 'https://your.service.com/dashboard' }.to_json
-    stub_request(:put, %r(broker-url/v2/service_instances/[[:alnum:]-]+)).
+    stub_request(:put, %r{broker-url/v2/service_instances/[[:alnum:]-]+}).
       to_return(status: 201, body: "#{body}")
 
     post('/v2/service_instances',
@@ -108,7 +108,7 @@ module VCAP::CloudController::BrokerApiHelper
   end
 
   def upgrade_service_instance(return_code)
-    stub_request(:patch, %r(broker-url/v2/service_instances/[[:alnum:]-]+)).to_return(status: return_code, body: '{}')
+    stub_request(:patch, %r{broker-url/v2/service_instances/[[:alnum:]-]+}).to_return(status: return_code, body: '{}')
     put("/v2/service_instances/#{@service_instance_guid}",
     {
       service_plan_guid: @large_plan_guid
@@ -122,7 +122,7 @@ module VCAP::CloudController::BrokerApiHelper
   end
 
   def bind_service
-    stub_request(:put, %r(/v2/service_instances/#{@service_instance_guid}/service_bindings/[[:alnum:]-]+)).
+    stub_request(:put, %r{/v2/service_instances/#{@service_instance_guid}/service_bindings/[[:alnum:]-]+}).
       to_return(status: 201, body: {}.to_json)
 
     post('/v2/service_bindings',
@@ -133,7 +133,7 @@ module VCAP::CloudController::BrokerApiHelper
   end
 
   def deprovision_service
-    stub_request(:delete, %r(broker-url/v2/service_instances/[[:alnum:]-]+)).
+    stub_request(:delete, %r{broker-url/v2/service_instances/[[:alnum:]-]+}).
       to_return(status: 200, body: '{}')
 
     delete("/v2/service_instances/#{@service_instance_guid}", '{}', json_headers(admin_headers))

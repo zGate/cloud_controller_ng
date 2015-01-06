@@ -47,7 +47,7 @@ module VCAP::CloudController
         it 'requires authentication' do
           post '/v2/snapshots', payload, json_headers({})
           expect(last_response.status).to eq(401)
-          expect(a_request(:any, %r(http://horsemeat.com))).not_to have_been_made
+          expect(a_request(:any, %r{http://horsemeat.com})).not_to have_been_made
         end
       end
 
@@ -64,7 +64,7 @@ module VCAP::CloudController
         it 'denies access' do
           post '/v2/snapshots', payload, json_headers(headers_for(developer))
           expect(last_response.status).to eq 403
-          expect(a_request(:any, %r(http://horsemeat.com))).not_to have_been_made
+          expect(a_request(:any, %r{http://horsemeat.com})).not_to have_been_made
         end
       end
 
@@ -80,7 +80,7 @@ module VCAP::CloudController
           it 'does not create a snapshot' do
             expect_any_instance_of(ManagedServiceInstance).not_to receive(:create_snapshot)
             post '/v2/snapshots', '{}', json_headers(headers_for(developer))
-            expect(a_request(:any, %r(http://horsemeat.com))).not_to have_been_made
+            expect(a_request(:any, %r{http://horsemeat.com})).not_to have_been_made
           end
         end
 
@@ -91,7 +91,7 @@ module VCAP::CloudController
             expect_any_instance_of(ManagedServiceInstance).not_to receive(:create_snapshot)
             post '/v2/snapshots', payload, json_headers(headers_for(developer))
             expect(last_response.status).to eq(400)
-            expect(a_request(:any, %r(http://horsemeat.com))).not_to have_been_made
+            expect(a_request(:any, %r{http://horsemeat.com})).not_to have_been_made
           end
         end
 
@@ -100,7 +100,7 @@ module VCAP::CloudController
           it 'returns a 400 status code and does not create a snapshot' do
             post '/v2/snapshots', payload, json_headers(headers_for(developer))
             expect(last_response.status).to eq(400)
-            expect(a_request(:any, %r(http://horsemeat.com))).not_to have_been_made
+            expect(a_request(:any, %r{http://horsemeat.com})).not_to have_been_made
           end
         end
 
@@ -138,7 +138,7 @@ module VCAP::CloudController
       it 'requires authentication' do
         get snapshots_url
         expect(last_response.status).to eq(401)
-        expect(a_request(:any, %r(http://horsemeat.com))).not_to have_been_made
+        expect(a_request(:any, %r{http://horsemeat.com})).not_to have_been_made
       end
 
       context 'once authenticated' do

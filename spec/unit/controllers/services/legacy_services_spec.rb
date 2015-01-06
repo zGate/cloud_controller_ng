@@ -41,7 +41,7 @@ module VCAP::CloudController
         end
 
         it 'should return service names' do
-          expect(decoded_response.map { |a| a['name'] }.sort).to eq %w[core-0 core-1 core-2 noncore-0 noncore-1]
+          expect(decoded_response.map { |a| a['name'] }.sort).to eq %w(core-0 core-1 core-2 noncore-0 noncore-1)
         end
       end
 

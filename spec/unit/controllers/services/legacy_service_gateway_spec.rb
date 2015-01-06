@@ -112,8 +112,8 @@ module VCAP::CloudController
 
         context "using the deprecated 'plans' key" do
           it_behaves_like 'offering containing service plans' do
-            let(:just_free_plan) { build_offering(plans: %w[free]) }
-            let(:both_plans)     { build_offering(plans: %w[free nonfree]) }
+            let(:just_free_plan) { build_offering(plans: %w(free)) }
+            let(:both_plans)     { build_offering(plans: %w(free nonfree)) }
           end
         end
 
@@ -184,7 +184,7 @@ module VCAP::CloudController
             let(:just_free_plan) {
               build_offering(
                 plan_details: [{ 'name' => 'free', 'free' => true }],
-                plans: %w[free],
+                plans: %w(free),
               )
             }
 
@@ -194,7 +194,7 @@ module VCAP::CloudController
                   { 'name' => 'free',    'free' => true },
                   { 'name' => 'nonfree', 'free' => false },
                 ],
-                plans: %w[free nonfree],
+                plans: %w(free nonfree),
               )
             }
           end
@@ -268,7 +268,7 @@ module VCAP::CloudController
           resp = MultiJson.load(last_response.body)
           expect(resp['label']).to eq('foobar')
           expect(resp['url']).to eq('http://www.google.com')
-          expect(resp['plans'].sort).to eq(%w[free nonfree])
+          expect(resp['plans'].sort).to eq(%w(free nonfree))
           expect(resp['provider']).to eq('core')
         end
 
@@ -279,7 +279,7 @@ module VCAP::CloudController
           resp = MultiJson.load(last_response.body)
           expect(resp['label']).to eq('foobar')
           expect(resp['url']).to eq('http://www.google.com')
-          expect(resp['plans'].sort).to eq(%w[free nonfree])
+          expect(resp['plans'].sort).to eq(%w(free nonfree))
           expect(resp['provider']).to eq('test')
         end
       end

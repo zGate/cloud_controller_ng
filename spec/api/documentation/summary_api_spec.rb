@@ -23,7 +23,7 @@ resource 'Apps', type: [:api, :legacy_api] do
     field :space_guid, 'The guid of the associated space.'
 
     field :stack_guid, 'The guid of the associated stack.', default: 'Uses the default system stack.'
-    field :state, 'The current state of the app. One of STOPPED or STARTED.', default: 'STOPPED', valid_values: %w[STOPPED STARTED] # nice to validate this eventually..
+    field :state, 'The current state of the app. One of STOPPED or STARTED.', default: 'STOPPED', valid_values: %w(STOPPED STARTED) # nice to validate this eventually..
     field :command, "The command to start an app after it is staged (e.g. 'rails s -p $PORT' or 'java com.org.Server $PORT')."
     field :buildpack, 'Buildpack to build the app. 3 options: a) Blank means autodetection; b) A Git Url pointing to a buildpack; c) Name of an installed buildpack.'
     field :health_check_timeout, 'Timeout for health checking of an staged app when starting up'
@@ -34,7 +34,7 @@ resource 'Apps', type: [:api, :legacy_api] do
     field :production, 'Deprecated.', deprecated: true, default: true, valid_values: [true, false]
     field :console, 'Open the console port for the app (at $CONSOLE_PORT).', deprecated: true, default: false, valid_values: [true, false]
     field :debug, 'Open the debug port for the app (at $DEBUG_PORT).', deprecated: true, default: false, valid_values: [true, false]
-    field :package_state, 'The current state of the package. One of PENDING, STAGED or FAILED.', valid_values: %w[PENDING STAGED FAILED]
+    field :package_state, 'The current state of the package. One of PENDING, STAGED or FAILED.', valid_values: %w(PENDING STAGED FAILED)
     field :package_updated_at, 'Time when the package was last updated'
 
     field :system_env_json, 'environment_json for system variables, contains vcap_services by default, a hash containing key/value pairs of the names and information of the services associated with your app.'
@@ -174,7 +174,7 @@ resource 'Apps', type: [:api, :legacy_api] do
     field :space_guid, 'The guid of the associated space.'
 
     field :stack_guid, 'The guid of the associated stack.', default: 'Uses the default system stack.'
-    field :state, 'The current state of the app. One of STOPPED or STARTED.', default: 'STOPPED', valid_values: %w[STOPPED STARTED] # nice to validate this eventually..
+    field :state, 'The current state of the app. One of STOPPED or STARTED.', default: 'STOPPED', valid_values: %w(STOPPED STARTED) # nice to validate this eventually..
     field :command, "The command to start an app after it is staged (e.g. 'rails s -p $PORT' or 'java com.org.Server $PORT')."
     field :buildpack, 'Buildpack to build the app. 3 options: a) Blank means autodetection; b) A Git Url pointing to a buildpack; c) Name of an installed buildpack.'
     field :health_check_timeout, 'Timeout for health checking of an staged app when starting up'
@@ -185,7 +185,7 @@ resource 'Apps', type: [:api, :legacy_api] do
     field :production, 'Deprecated.', deprecated: true, default: true, valid_values: [true, false]
     field :console, 'Open the console port for the app (at $CONSOLE_PORT).', deprecated: true, default: false, valid_values: [true, false]
     field :debug, 'Open the debug port for the app (at $DEBUG_PORT).', deprecated: true, default: false, valid_values: [true, false]
-    field :package_state, 'The current state of the package. One of PENDING, STAGED or FAILED.', valid_values: %w[PENDING STAGED FAILED]
+    field :package_state, 'The current state of the package. One of PENDING, STAGED or FAILED.', valid_values: %w(PENDING STAGED FAILED)
     field :package_updated_at, 'Time when the package was last updated'
 
     field :system_env_json, 'environment_json for system variables, contains vcap_services by default, a hash containing key/value pairs of the names and information of the services associated with your app.'

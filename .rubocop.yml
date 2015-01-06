@@ -58,3 +58,12 @@ Style/AlignParameters:
 
 Style/NumericLiterals:
   Enabled: false
+
+Style/MultilineOperationIndentation:
+  Enabled: false
+
+Style/WordArray:
+  Enabled: false
+
+Style/GuardClause:
+  Enabled: false

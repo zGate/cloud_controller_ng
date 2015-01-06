@@ -253,7 +253,7 @@ module VCAP::CloudController
     end
 
     def admin_token
-      { 'user_id' => legacy_api_user.id, 'email' => 'legacyapi@example.com', 'scope' => %w[cloud_controller.admin] }
+      { 'user_id' => legacy_api_user.id, 'email' => 'legacyapi@example.com', 'scope' => %w(cloud_controller.admin) }
     end
 
     def set_v2_security_context

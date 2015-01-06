@@ -72,7 +72,7 @@ module ControllerHelpers
 
     scopes = opts[:scopes]
     if scopes.nil? && user
-      scopes = user.admin? ? %w[cloud_controller.admin] : %w[cloud_controller.read cloud_controller.write]
+      scopes = user.admin? ? %w(cloud_controller.admin) : %w(cloud_controller.read cloud_controller.write)
     end
 
     if user
