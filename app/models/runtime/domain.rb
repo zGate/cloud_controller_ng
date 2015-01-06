@@ -81,7 +81,7 @@ module VCAP::CloudController
     end
 
     def routes_match?
-      return false unless name and name =~ DOMAIN_REGEX
+      return false unless name && name =~ DOMAIN_REGEX
 
       if name.include?('.')
         route_host = name[0, name.index('.')]
@@ -94,7 +94,7 @@ module VCAP::CloudController
     end
 
     def self.intermediate_domains(name)
-      return [] unless name and name =~ DOMAIN_REGEX
+      return [] unless name && name =~ DOMAIN_REGEX
 
       name.split('.').reverse.inject([]) do |a, e|
         a.push(a.empty? ? e : "#{e}.#{a.last}")

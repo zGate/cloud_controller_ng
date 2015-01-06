@@ -97,7 +97,7 @@ class VCAP::CloudController::ResourcePool
   def resource_known?(descriptor)
     size = descriptor['size']
     sha1 = descriptor['sha1']
-    if size_allowed?(size) and valid_sha?(sha1)
+    if size_allowed?(size) && valid_sha?(sha1)
       key = key_from_sha1(sha1)
       blobstore.files.head(key)
     end

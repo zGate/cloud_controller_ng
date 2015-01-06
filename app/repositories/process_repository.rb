@@ -55,7 +55,7 @@ module VCAP::CloudController
         process_model = App.where(apps__guid: guid).
           eager_graph(:stack, space: :organization).all.first
 
-        yield nil, nil, [] and return if process_model.nil?
+        return if process_model.nil? && yield(nil, nil, [])
 
         neighboring_processes = []
         if process_model.app
@@ -83,7 +83,7 @@ module VCAP::CloudController
         process_model = App.where(apps__guid: guid).
           eager_graph(:stack, space: :organization).all.first
 
-        yield nil, nil and return if process_model.nil?
+        return if process_model.nil? && yield(nil,nil)
 
         @lock_acquired = true
         begin
@@ -96,7 +96,7 @@ module VCAP::CloudController
 
     def find_by_guid_for_update(guid)
       process_model = App.find(guid: guid)
-      yield nil and return if process_model.nil?
+      return if process_model.nil? && yield(nil)
 
       process_model.db.transaction do
         process_model.lock!
