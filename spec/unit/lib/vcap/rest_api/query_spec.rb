@@ -224,7 +224,7 @@ module VCAP::RestAPI
           q = 'published_at:asdf'
 
           expect { Query.filtered_dataset_from_query_params(Author, Author.dataset,
-            @queryable_attributes, q: q) 
+            @queryable_attributes, q: q)
           }.to raise_error(ArgumentError)
         end
       end

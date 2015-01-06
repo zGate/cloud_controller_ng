@@ -26,12 +26,12 @@ module VCAP::CloudController
         subject { private_domain }
         include_examples 'domain validation'
       end
-      
+
       it 'allows private bar.foo.com when foo.com has the same owner' do
         private_domain = PrivateDomain.make name: 'foo.com'
         expect { PrivateDomain.make name: 'bar.foo.com', owning_organization_id: private_domain.owning_organization_id }.to_not raise_error
       end
-      
+
       it 'allows private foo.com a when bar.foo.com has the same owner' do
         private_domain = PrivateDomain.make name: 'bar.foo.com'
         expect { PrivateDomain.make name: 'foo.com', owning_organization_id: private_domain.owning_organization_id }.to_not raise_error

@@ -3,13 +3,13 @@ require 'spec_helper'
 describe 'DB Schema' do
   context 'To support Oracle' do
     DbConfig.connection.tables.each do |table|
-      
+
       it "the table #{table}'s name should not be longer than 30 characters" do
         expect(table.length).to be <= 30
       end
-      
+
       DbConfig.connection.schema(table).each do |column|
-        it "the column #{table}.#{column}'s name should not be longer than 30 characters" do          
+        it "the column #{table}.#{column}'s name should not be longer than 30 characters" do
           expect(column[0].length).to be <= 30
         end
       end if DbConfig.connection.supports_schema_parsing?
@@ -26,5 +26,5 @@ describe 'DB Schema' do
         end
       end if DbConfig.connection.supports_index_parsing?
     end if DbConfig.connection.supports_table_listing?
-  end 
+  end
 end

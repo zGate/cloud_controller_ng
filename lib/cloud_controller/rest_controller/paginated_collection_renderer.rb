@@ -70,7 +70,7 @@ module VCAP::CloudController::RestController
       opts[:max_inline] ||= PreloadedObjectSerializer::MAX_INLINE_DEFAULT
       orphans = opts[:orphan_relations] == 1 ? {} : nil
       resources = dataset.all.map { |obj| @serializer.serialize(controller, obj, opts, orphans) }
- 
+
       result = {
          total_results: paginated_dataset.pagination_record_count,
          total_pages: paginated_dataset.page_count,

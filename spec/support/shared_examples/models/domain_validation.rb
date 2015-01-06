@@ -105,7 +105,7 @@ module VCAP::CloudController
         expect(subject).to_not be_valid
       end
     end
-    
+
     context 'domain overlapping' do
       context 'when the domain exists in a different casing' do
         before do

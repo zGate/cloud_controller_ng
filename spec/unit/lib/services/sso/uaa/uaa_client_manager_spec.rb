@@ -324,7 +324,7 @@ module VCAP::Services::SSO::UAA
       describe 'scope options' do
         let(:changeset) { [
           double('create_command', uaa_command: { action: 'add' }, client_attrs: {})
-        ] 
+        ]
         }
         let(:expected_json_body) { [
           {
@@ -335,7 +335,7 @@ module VCAP::Services::SSO::UAA
             authorized_grant_types: ['authorization_code'],
             action:                 'add'
           }
-        ].to_json 
+        ].to_json
         }
         let(:client_manager) { UaaClientManager.new }
 

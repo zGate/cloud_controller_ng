@@ -28,7 +28,7 @@ module VCAP::CloudController
       @config_file = File.expand_path('../../../config/cloud_controller.yml', __FILE__)
       parse_options!
       parse_config
-      
+
       setup_i18n
 
       @log_counter = Steno::Sink::Counter.new

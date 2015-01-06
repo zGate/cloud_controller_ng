@@ -14,7 +14,7 @@ module VCAP::CloudController
       context 'and the name is running' do
         context 'whether or not the user is an admin' do
           it 'returns the json as a hash' do
-            EnvironmentVariableGroup.make(name: 'running', environment_json: {            
+            EnvironmentVariableGroup.make(name: 'running', environment_json: {
               'foo' => 'bar',
               'to all' => 'a good morrow'
             })
@@ -32,7 +32,7 @@ module VCAP::CloudController
       context 'and the name is staging' do
         context 'whether or not the user is an admin' do
           it 'returns the json as a hash' do
-            EnvironmentVariableGroup.make(name: 'staging', environment_json: {            
+            EnvironmentVariableGroup.make(name: 'staging', environment_json: {
               'foo' => 'bar',
               'to all' => 'a good morrow'
             })

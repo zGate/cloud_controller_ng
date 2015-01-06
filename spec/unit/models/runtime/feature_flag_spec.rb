@@ -36,7 +36,7 @@ module VCAP::CloudController
           end
         end
       end
-      
+
       describe 'error message' do
         subject(:feature_flag) { FeatureFlag.make }
 

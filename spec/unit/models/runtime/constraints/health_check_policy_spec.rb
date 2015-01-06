@@ -12,7 +12,7 @@ describe HealthCheckPolicy do
 
     context 'when a health_check_timeout exceeds the maximum' do
       let(:health_check_timeout) { 1024 }
-      
+
       it 'registers error' do
         expect(validator).to validate_with_error(app, :health_check_timeout, :maximum_exceeded)
       end

@@ -29,7 +29,7 @@ module VCAP::CloudController
         })
       end
     end
-    
+
     describe 'permissions' do
       let(:quota_attributes) do
         {

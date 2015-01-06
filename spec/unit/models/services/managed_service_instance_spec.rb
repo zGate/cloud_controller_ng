@@ -295,7 +295,7 @@ module VCAP::CloudController
 
       context 'returns a list of snapshots' do
         let(:success_response) { MultiJson.dump({ snapshots: [{ snapshot_id: '1', name: 'foo', state: 'ok', size: 0 },
-                                                              { snapshot_id: '2', name: 'bar', state: 'bad', size: 0 }] }) 
+                                                              { snapshot_id: '2', name: 'bar', state: 'bad', size: 0 }] })
         }
         before do
           stub_request(:get, enum_snapshots_url_matcher).to_return(body: success_response)
