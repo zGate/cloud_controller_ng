@@ -97,3 +97,7 @@ Style/RescueModifier:
 
 Style/RedundantSelf:
   Enabled: false
+
+# enable me for #85546748
+Lint/HandleExceptions:
+  Enabled: false
