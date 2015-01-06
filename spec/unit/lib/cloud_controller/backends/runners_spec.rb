@@ -289,7 +289,7 @@ module VCAP::CloudController
         end
 
         it 'returns no apps' do
-          expect(runners.diego_apps(100, 0)).to be_empty()
+          expect(runners.diego_apps(100, 0)).to be_empty
         end
       end
     end

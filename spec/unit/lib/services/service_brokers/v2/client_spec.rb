@@ -322,14 +322,14 @@ module VCAP::Services::ServiceBrokers::V2
         client.provision(instance)
 
         expect(http_client).to have_received(:put).
-                                 with("/v2/service_instances/#{instance.guid}", anything())
+                                 with("/v2/service_instances/#{instance.guid}", anything)
       end
 
       it 'makes a put request with correct message' do
         client.provision(instance)
 
         expect(http_client).to have_received(:put).
-                                 with(anything(),
+                                 with(anything,
                                       {
                                         service_id:        instance.service.broker_provided_id,
                                         plan_id:           instance.service_plan.broker_provided_id,
@@ -560,7 +560,7 @@ module VCAP::Services::ServiceBrokers::V2
         client.update_service_plan(instance, new_plan)
 
         expect(http_client).to have_received(:patch).with(
-          anything(),
+          anything,
           {
             plan_id:	new_plan.broker_provided_id,
             previous_values: {
@@ -578,7 +578,7 @@ module VCAP::Services::ServiceBrokers::V2
 
         client.update_service_plan(instance, new_plan)
 
-        expect(http_client).to have_received(:patch).with(path, anything())
+        expect(http_client).to have_received(:patch).with(path, anything)
       end
 
       describe 'error handling' do
@@ -656,14 +656,14 @@ module VCAP::Services::ServiceBrokers::V2
         client.bind(binding)
 
         expect(http_client).to have_received(:put).
-                                 with("/v2/service_instances/#{binding.service_instance.guid}/service_bindings/#{binding.guid}", anything())
+                                 with("/v2/service_instances/#{binding.service_instance.guid}/service_bindings/#{binding.guid}", anything)
       end
 
       it 'makes a put request with correct message' do
         client.bind(binding)
 
         expect(http_client).to have_received(:put).
-                                 with(anything(),
+                                 with(anything,
                                       {
                                         plan_id:    binding.service_plan.broker_provided_id,
                                         service_id: binding.service.broker_provided_id,
@@ -810,14 +810,14 @@ module VCAP::Services::ServiceBrokers::V2
         client.unbind(binding)
 
         expect(http_client).to have_received(:delete).
-                                 with("/v2/service_instances/#{binding.service_instance.guid}/service_bindings/#{binding.guid}", anything())
+                                 with("/v2/service_instances/#{binding.service_instance.guid}/service_bindings/#{binding.guid}", anything)
       end
 
       it 'makes a delete request with correct message' do
         client.unbind(binding)
 
         expect(http_client).to have_received(:delete).
-                                 with(anything(),
+                                 with(anything,
                                       {
                                         plan_id:    binding.service_plan.broker_provided_id,
                                         service_id: binding.service.broker_provided_id,
@@ -872,14 +872,14 @@ module VCAP::Services::ServiceBrokers::V2
         client.deprovision(instance)
 
         expect(http_client).to have_received(:delete).
-                                 with("/v2/service_instances/#{instance.guid}", anything())
+                                 with("/v2/service_instances/#{instance.guid}", anything)
       end
 
       it 'makes a delete request with correct message' do
         client.deprovision(instance)
 
         expect(http_client).to have_received(:delete).
-                                 with(anything(),
+                                 with(anything,
                                       {
                                         service_id: instance.service.broker_provided_id,
                                         plan_id:    instance.service_plan.broker_provided_id

@@ -24,7 +24,7 @@ module VCAP::CloudController
         @logger.info("Queueing #{klass} at #{Time.now}")
         cutoff_age_in_days = @config.fetch(name.to_sym).fetch(:cutoff_age_in_days)
         job = klass.new(cutoff_age_in_days)
-        Jobs::Enqueuer.new(job, queue: 'cc-generic').enqueue()
+        Jobs::Enqueuer.new(job, queue: 'cc-generic').enqueue
       end
     end
 
@@ -35,7 +35,7 @@ module VCAP::CloudController
         @logger.info("Queueing #{klass} at #{Time.now}")
         expiration = config.fetch(:expiration_in_seconds)
         job = klass.new(expiration)
-        Jobs::Enqueuer.new(job, queue: 'cc-generic').enqueue()
+        Jobs::Enqueuer.new(job, queue: 'cc-generic').enqueue
       end
     end
   end

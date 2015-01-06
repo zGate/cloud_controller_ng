@@ -110,7 +110,7 @@ module VCAP::CloudController
           it 'does not raise' do
             expect {
               subject.validate_app(app)
-            }.to_not raise_error()
+            }.to_not raise_error
           end
         end
       end

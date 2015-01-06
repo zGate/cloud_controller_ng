@@ -201,7 +201,7 @@ module VCAP::CloudController
       delete_and_audit_job = Jobs::AuditEventJob.new(deletion_job, @services_event_repository, event_method, :delete, service_instance, {})
 
       if async?
-        job = Jobs::Enqueuer.new(delete_and_audit_job, queue: 'cc-generic').enqueue()
+        job = Jobs::Enqueuer.new(delete_and_audit_job, queue: 'cc-generic').enqueue
         [HTTP::ACCEPTED, JobPresenter.new(job).to_json]
       else
         delete_and_audit_job.perform

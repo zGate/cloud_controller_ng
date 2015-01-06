@@ -275,7 +275,7 @@ module VCAP::CloudController
     end
 
     describe '#enum_snapshots' do
-      subject { ManagedServiceInstance.make() }
+      subject { ManagedServiceInstance.make }
       let(:enum_snapshots_url_matcher) { "gw.example.com:12345/gateway/v2/configurations/#{subject.gateway_name}/snapshots" }
       let(:service_auth_token) { 'tokenvalue' }
       before do
@@ -317,7 +317,7 @@ module VCAP::CloudController
 
     describe '#create_snapshot' do
       let(:name) { 'New snapshot' }
-      subject { ManagedServiceInstance.make() }
+      subject { ManagedServiceInstance.make }
       let(:create_snapshot_url_matcher) { "gw.example.com:12345/gateway/v2/configurations/#{subject.gateway_name}/snapshots" }
       before do
         subject.service_plan.service.update(url: 'http://gw.example.com:12345/')

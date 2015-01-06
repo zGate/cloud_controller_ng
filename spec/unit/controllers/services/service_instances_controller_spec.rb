@@ -527,7 +527,7 @@ module VCAP::CloudController
       end
 
       context 'When the user has read but not write permissions' do
-        let(:auditor) { User.make() }
+        let(:auditor) { User.make }
 
         before do
           service_instance.space.organization.add_auditor(auditor)
@@ -977,7 +977,7 @@ module VCAP::CloudController
 
       context 'invalid space guid' do
         it 'returns a user friendly error' do
-          org = Organization.make()
+          org = Organization.make
           space = Space.make(organization: org)
           plan = ServicePlan.make(free: true)
 

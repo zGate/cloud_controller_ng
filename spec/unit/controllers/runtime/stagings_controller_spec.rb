@@ -356,7 +356,7 @@ module VCAP::CloudController
           it 'should redirect to the url provided by the blobstore_url_generator' do
             allow_any_instance_of(CloudController::Blobstore::UrlGenerator).to receive(:droplet_download_url).and_return('http://example.com/somewhere/else')
             get "/staging/droplets/#{app_obj.guid}/download"
-            expect(last_response).to be_redirect()
+            expect(last_response).to be_redirect
             expect(last_response.header['Location']).to eq('http://example.com/somewhere/else')
           end
 

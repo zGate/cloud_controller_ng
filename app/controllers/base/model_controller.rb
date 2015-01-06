@@ -76,7 +76,7 @@ module VCAP::CloudController::RestController
       raise_if_has_associations!(obj) if v2_api? && !recursive?
       model_deletion_job = Jobs::Runtime::ModelDeletion.new(obj.class, obj.guid)
       if async?
-        job = Jobs::Enqueuer.new(model_deletion_job, queue: 'cc-generic').enqueue()
+        job = Jobs::Enqueuer.new(model_deletion_job, queue: 'cc-generic').enqueue
         [HTTP::ACCEPTED, JobPresenter.new(job).to_json]
       else
         model_deletion_job.perform

@@ -721,7 +721,7 @@ module VCAP::CloudController
         context 'when a specific buildpack is requested' do
           before do
             app.buildpack = Buildpack.first.name
-            app.save()
+            app.save
           end
 
           it "includes a list of admin buildpacks so that the system doesn't think the buildpacks are gone" do
@@ -767,18 +767,18 @@ module VCAP::CloudController
       end
 
       it 'includes the key of an admin buildpack when the app has a buildpack specified' do
-        buildpack = Buildpack.make()
+        buildpack = Buildpack.make
         app.buildpack = buildpack.name
-        app.save()
+        app.save
 
         request = staging_task.staging_request
         expect(request[:properties][:buildpack_key]).to eql buildpack.key
       end
 
       it "doesn't include the custom buildpack url keys when the app has a buildpack specified" do
-        buildpack = Buildpack.make()
+        buildpack = Buildpack.make
         app.buildpack = buildpack.name
-        app.save()
+        app.save
 
         request = staging_task.staging_request
         expect(request[:properties]).to_not have_key(:buildpack)

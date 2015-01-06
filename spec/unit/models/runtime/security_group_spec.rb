@@ -140,7 +140,7 @@ module VCAP::CloudController
 
           context 'when it is missing' do
             let(:rule) do
-              default_rule = build_transport_rule()
+              default_rule = build_transport_rule
               default_rule.delete('destination')
               default_rule
             end
@@ -296,7 +296,7 @@ module VCAP::CloudController
 
                 context 'when it is missing' do
                   let(:rule) do
-                    default_rule = build_icmp_rule()
+                    default_rule = build_icmp_rule
                     default_rule.delete('type')
                     default_rule
                   end
@@ -352,7 +352,7 @@ module VCAP::CloudController
 
                 context 'when it is missing' do
                   let(:rule) do
-                    default_rule = build_icmp_rule()
+                    default_rule = build_icmp_rule
                     default_rule.delete('code')
                     default_rule
                   end
@@ -417,7 +417,7 @@ module VCAP::CloudController
 
                 context 'when it is missing' do
                   let(:rule) do
-                    default_rule = build_icmp_rule()
+                    default_rule = build_icmp_rule
                     default_rule.delete('destination')
                     default_rule
                   end
@@ -537,7 +537,7 @@ module VCAP::CloudController
 
                 context 'when it is missing' do
                   let(:rule) do
-                    default_rule = build_all_rule()
+                    default_rule = build_all_rule
                     default_rule.delete('destination')
                     default_rule
                   end

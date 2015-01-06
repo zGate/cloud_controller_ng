@@ -821,7 +821,7 @@ module VCAP::CloudController
         end
 
         it 'must deal with null env_json to remain null after encryption' do
-          null_json_app = AppFactory.make()
+          null_json_app = AppFactory.make
           expect(null_json_app.environment_json).to be_nil
         end
 

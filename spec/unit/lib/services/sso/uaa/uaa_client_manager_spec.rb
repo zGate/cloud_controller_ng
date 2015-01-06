@@ -338,7 +338,7 @@ module VCAP::Services::SSO::UAA
         let(:client_manager) { UaaClientManager.new }
 
         before do
-          allow(VCAP::CloudController::Config.config).to receive(:[]).with(anything()).and_call_original
+          allow(VCAP::CloudController::Config.config).to receive(:[]).with(anything).and_call_original
           allow(VCAP::CloudController::Config.config).to receive(:[]).with(:uaa_client_scope).and_return(configured_scope)
 
           client_manager.modify_transaction(changeset)
