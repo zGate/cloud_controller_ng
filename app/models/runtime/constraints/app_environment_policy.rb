@@ -8,7 +8,7 @@ class AppEnvironmentPolicy
 
   def validate
     return if @environment_json.nil?
-    unless @environment_json.kind_of?(Hash)
+    unless @environment_json.is_a?(Hash)
       @errors.add(:environment_json, :invalid_environment)
       return
     end

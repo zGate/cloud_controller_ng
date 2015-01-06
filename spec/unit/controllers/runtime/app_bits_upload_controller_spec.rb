@@ -256,16 +256,16 @@ module VCAP::CloudController
           @app_event_repo = app_event_repo
           @user           = user
           @email          = email
-          @@copies        = []
         end
 
         def perform
           FakeCopier.copies << [@src_app, @dest_app, @app_event_repo, @user, @email]
         end
 
-        def self.copies
-          @@copies ||= []
+        class << self
+          attr_accessor :copies
         end
+        self.copies = []
       end
 
       context 'when no source guid is sent' do

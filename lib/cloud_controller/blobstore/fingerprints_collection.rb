@@ -2,7 +2,7 @@ module CloudController
   module Blobstore
     class FingerprintsCollection
       def initialize(fingerprints)
-        unless fingerprints.kind_of?(Array)
+        unless fingerprints.is_a?(Array)
           raise VCAP::Errors::ApiError.new_from_details('AppBitsUploadInvalid', 'invalid :resources')
         end
 

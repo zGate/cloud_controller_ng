@@ -71,17 +71,21 @@ module VCAP::RestAPI
       end
     end
 
+    class << self
+      attr_accessor :uuid
+    end
+
     def parse
-      @@v ||= SecureRandom.uuid
+      Query.uuid ||= SecureRandom.uuid
       segments = []
 
       query.each do |q|
-        q.gsub!(';;', @@v)
+        q.gsub!(';;', Query.uuid)
         segments.concat(q.split(';'))
       end
 
       segments.collect do |segment|
-        segment.gsub!(@@v, ';')
+        segment.gsub!(Query.uuid, ';')
         key, comparison, value = segment.split(/(:|>=|<=|<|>| IN )/, 2)
 
         comparison = '=' if comparison == ':'

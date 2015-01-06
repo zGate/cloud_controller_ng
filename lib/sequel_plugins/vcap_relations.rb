@@ -64,7 +64,7 @@ module Sequel::Plugins::VcapRelations
         # sequel is not capable of merging adds to a many_to_many association
         # like it is for a one_to_many and nds up throwing a db exception,
         # so lets squash the add
-        if other.kind_of?(Integer)
+        if other.is_a?(Integer)
           super(other) unless send(ids_attr).include? other
         else
           super(other) unless send(name).include? other
@@ -173,7 +173,7 @@ module Sequel::Plugins::VcapRelations
       end
 
       define_method("remove_#{singular_name}") do |other|
-        if other.kind_of?(Integer)
+        if other.is_a?(Integer)
           super(other) if send(ids_attr).include? other
         else
           super(other) if send(name).include? other
