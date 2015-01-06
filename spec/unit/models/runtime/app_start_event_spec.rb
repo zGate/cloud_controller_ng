@@ -25,7 +25,8 @@ module VCAP::CloudController
 
     describe 'Serialization' do
       it { is_expected.to export_attributes :timestamp, :event_type, :organization_guid, :organization_name, :space_guid, :space_name,
-                                    :app_guid, :app_name, :app_run_id, :app_plan_name, :app_memory, :app_instance_count }
+                                    :app_guid, :app_name, :app_run_id, :app_plan_name, :app_memory, :app_instance_count 
+      }
       it { is_expected.to import_attributes }
     end
 

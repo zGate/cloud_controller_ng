@@ -101,3 +101,6 @@ Style/RedundantSelf:
 # enable me for #85546748
 Lint/HandleExceptions:
   Enabled: false
+
+Metrics/PerceivedComplexity:
+  Enabled: false

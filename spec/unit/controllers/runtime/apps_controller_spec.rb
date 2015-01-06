@@ -350,9 +350,13 @@ module VCAP::CloudController
 
       context 'when the user reads environment variables from the app endpoint using inline-relations-depth=2' do
         let!(:test_environment_json) { { 'environ_key' => 'value' } }
-        let!(:app_obj) { AppFactory.make(detected_buildpack: 'buildpack-name',
-                                         space:              space,
-                                         environment_json:   test_environment_json) }
+        let!(:app_obj) do
+          AppFactory.make(
+            detected_buildpack: 'buildpack-name',
+            space:              space,
+            environment_json:   test_environment_json
+          )
+        end
         let!(:service_instance) { ManagedServiceInstance.make(space: app_obj.space) }
         let!(:service_binding) { ServiceBinding.make(app: app_obj, service_instance: service_instance) }
 

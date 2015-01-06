@@ -541,7 +541,8 @@ module VCAP::CloudController
             package_state: 'PENDING',
             instances: 1,
             state: 'STARTED'
-        ) }
+        ) 
+        }
 
         it 'keeps app as needs staging' do
           subject.stack = new_stack

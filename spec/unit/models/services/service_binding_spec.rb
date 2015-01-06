@@ -52,9 +52,11 @@ module VCAP::CloudController
 
     describe 'Serialization' do
       it { is_expected.to export_attributes :app_guid, :service_instance_guid, :credentials, :binding_options,
-                                    :gateway_data, :gateway_name, :syslog_drain_url }
+                                    :gateway_data, :gateway_name, :syslog_drain_url 
+      }
       it { is_expected.to import_attributes :app_guid, :service_instance_guid, :credentials,
-                                    :binding_options, :gateway_data, :syslog_drain_url }
+                                    :binding_options, :gateway_data, :syslog_drain_url 
+      }
     end
 
     describe '#create' do

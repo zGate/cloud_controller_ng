@@ -54,12 +54,12 @@ module VCAP::CloudController
       admin = VCAP::CloudController::SecurityContext.admin?
       return unless user || admin
 
-      if @config[:https_required]
-        raise Errors::ApiError.new_from_details('NotAuthorized') unless request.scheme == 'https'
+      if @config[:https_required] && request.scheme != 'https'
+        raise Errors::ApiError.new_from_details('NotAuthorized')
       end
 
-      if @config[:https_required_for_admins] && admin
-        raise Errors::ApiError.new_from_details('NotAuthorized') unless request.scheme == 'https'
+      if @config[:https_required_for_admins] && admin && request.scheme != 'https'
+        raise Errors::ApiError.new_from_details('NotAuthorized')
       end
     end
 
