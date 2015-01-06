@@ -29,6 +29,7 @@ module CloudController
       end
 
       private
+
       def download_uri_for_file
         if @cdn
           return @cdn.download_uri(file.key)

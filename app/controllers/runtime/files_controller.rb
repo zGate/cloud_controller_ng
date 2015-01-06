@@ -31,6 +31,7 @@ module VCAP::CloudController
     end
 
     private
+
     # @param [String, URI::Generic] uri
     # @return [String] uri with tail=<whatever> added to query string
     def add_tail(uri)

@@ -25,6 +25,7 @@ class FakeNginxReverseProxy
   end
 
   private
+
   def multipart?(env)
     return false unless ['PUT', 'POST'].include?(env['REQUEST_METHOD'])
     env['CONTENT_TYPE'].downcase.start_with?('multipart/form-data; boundary')

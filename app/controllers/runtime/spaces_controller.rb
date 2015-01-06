@@ -105,6 +105,7 @@ module VCAP::CloudController
     end
 
     private
+
     def after_create(space)
       @space_event_repository.record_space_create(space, SecurityContext.current_user, SecurityContext.current_user_email, request_attrs)
     end

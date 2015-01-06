@@ -25,6 +25,7 @@ module VCAP::CloudController
     end
 
     private
+
     def read(group)
       validate_access(:read, model)
       [HTTP::OK, MultiJson.dump(group.environment_json, pretty: true)]

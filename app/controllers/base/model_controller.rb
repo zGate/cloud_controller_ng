@@ -230,6 +230,7 @@ module VCAP::CloudController::RestController
     end
 
     protected
+
     attr_reader :object_renderer, :collection_renderer
 
     private

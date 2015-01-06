@@ -110,3 +110,6 @@ Style/PredicateName:
 
 Style/NegatedIf:
   Enabled: false
+
+Style/Next:
+  Enabled: false

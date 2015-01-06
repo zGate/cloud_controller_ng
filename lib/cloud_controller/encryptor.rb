@@ -23,6 +23,7 @@ module VCAP::CloudController::Encryptor
     attr_accessor :db_encryption_key
 
     private
+
     def make_cipher
       OpenSSL::Cipher::Cipher.new(ALGORITHM)
     end

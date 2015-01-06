@@ -28,6 +28,7 @@ module VCAP::CloudController
     end
 
     private
+
     def process_cors_headers
       return unless env['HTTP_ORIGIN']
       return unless allowed_cors_domains.any? { |d| d =~ env['HTTP_ORIGIN'] }

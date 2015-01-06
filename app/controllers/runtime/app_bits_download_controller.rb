@@ -27,6 +27,7 @@ module VCAP::CloudController
     end
 
     private
+
     def inject_dependencies(dependencies)
       @blob_sender = dependencies.fetch(:blob_sender)
       @blobstore = dependencies.fetch(:package_blobstore)

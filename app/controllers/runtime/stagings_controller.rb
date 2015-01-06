@@ -110,6 +110,7 @@ module VCAP::CloudController
     end
 
     private
+
     def inject_dependencies(dependencies)
       super
       @blobstore = dependencies.fetch(:droplet_blobstore)

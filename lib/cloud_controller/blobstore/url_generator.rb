@@ -47,6 +47,7 @@ module CloudController
       end
 
       private
+
       def generate_download_url(store, path, blobstore_key)
         uri = store.download_uri(blobstore_key)
         return nil unless uri

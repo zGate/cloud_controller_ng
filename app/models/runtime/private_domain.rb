@@ -59,6 +59,7 @@ module VCAP::CloudController
     end
 
     private
+
     def owned_by?(org)
       owning_organization_id == org.id
     end

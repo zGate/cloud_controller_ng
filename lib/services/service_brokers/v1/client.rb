@@ -80,6 +80,7 @@ module VCAP::Services
     end
 
     private
+
     def logger
       @logger ||= Steno.logger('cc.services.v1_client')
     end

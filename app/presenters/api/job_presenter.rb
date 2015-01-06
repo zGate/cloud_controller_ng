@@ -8,6 +8,7 @@ class JobPresenter < ApiPresenter
   end
 
   protected
+
   def metadata_hash
     {
       guid: @object.guid,
