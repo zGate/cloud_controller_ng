@@ -102,8 +102,8 @@ module VCAP::CloudController
       @services_event_repository.record_service_instance_event(:create, service_instance, request_attrs)
 
       [HTTP::CREATED,
-        { 'Location' => "#{self.class.path}/#{service_instance.guid}" },
-        object_renderer.render_json(self.class, service_instance, @opts)
+       { 'Location' => "#{self.class.path}/#{service_instance.guid}" },
+       object_renderer.render_json(self.class, service_instance, @opts)
       ]
     end
 

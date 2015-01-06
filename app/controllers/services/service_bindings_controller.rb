@@ -50,8 +50,8 @@ module VCAP::CloudController
       @services_event_repository.record_service_binding_event(:create, service_binding)
 
       [HTTP::CREATED,
-        { 'Location' => "#{self.class.path}/#{service_binding.guid}" },
-        object_renderer.render_json(self.class, service_binding, @opts)
+       { 'Location' => "#{self.class.path}/#{service_binding.guid}" },
+       object_renderer.render_json(self.class, service_binding, @opts)
       ]
     end
 

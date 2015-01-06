@@ -36,7 +36,7 @@ resource 'Apps', type: [:api, :legacy_api] do
   let(:fingerprints) {
     [
       { fn: 'path/to/content.txt', size: 123, sha1: 'b907173290db6a155949ab4dc9b2d019dea0c901' },
-        { fn: 'path/to/code.jar', size: 123, sha1: 'ff84f89760317996b9dd180ab996b079f418396f' }
+      { fn: 'path/to/code.jar', size: 123, sha1: 'ff84f89760317996b9dd180ab996b079f418396f' }
     ]
   }
 

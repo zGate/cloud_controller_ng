@@ -25,7 +25,7 @@ module VCAP::CloudController::RestController
 
       all_relationships = {}
       [associated_controller.to_one_relationships,
-        associated_controller.to_many_relationships,
+       associated_controller.to_many_relationships,
       ].each do |rel|
         all_relationships.merge!(rel) if rel && rel.any?
       end

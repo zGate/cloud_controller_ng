@@ -6,7 +6,7 @@ module VCAP::CloudController
   class StagingsController < RestController::BaseController
     def self.dependencies
       [:droplet_blobstore, :buildpack_cache_blobstore, :package_blobstore,
-        :blobstore_url_generator, :missing_blob_handler, :blob_sender, :config]
+       :blobstore_url_generator, :missing_blob_handler, :blob_sender, :config]
     end
 
     include VCAP::Errors
