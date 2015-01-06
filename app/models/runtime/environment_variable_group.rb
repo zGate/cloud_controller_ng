@@ -25,8 +25,6 @@ module VCAP::CloudController
     end
     alias_method_chain :environment_json, 'serialization'
 
-    private
-
     def self.find_by_name(group)
       EnvironmentVariableGroup.find_or_create(name: group.to_s)
     end

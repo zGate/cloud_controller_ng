@@ -25,8 +25,6 @@ module VCAP::CloudController
       Thread.current[:current_request] = nil
     end
 
-    private
-
     def self.request_info(request)
       {
         start_time: Time.now.to_f,

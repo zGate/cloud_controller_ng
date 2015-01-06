@@ -19,8 +19,6 @@ module CloudController
       errs
     end
 
-    private
-
     def self.validate_icmp_control_message(value)
       value.is_a?(Integer) && value >= -1 && value < 256
     end

@@ -33,8 +33,6 @@ module VCAP::CloudController
       update_thread_info
     end
 
-    private
-
     def self.get_pending_job_count_by_queue
       jobs_by_queue_with_count = Delayed::Job.where(attempts: 0).group_and_count(:queue)
 

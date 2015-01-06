@@ -13,8 +13,6 @@ module CloudController
       errs
     end
 
-    private
-
     def self.validate_port(port)
       return false if /[^\d\s\-,]/.match(port)
 

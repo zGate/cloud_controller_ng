@@ -35,8 +35,6 @@ module VCAP::CloudController
       map(attrs, domain, app)
     end
 
-    private
-
     def self.get_attrs(domain, app)
       attrs = {}
       attrs[:guid]                 = domain.guid

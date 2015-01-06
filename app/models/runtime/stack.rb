@@ -54,8 +54,6 @@ module VCAP::CloudController
       full_dataset_filter
     end
 
-    private
-
     def self.populate_from_hash(hash)
       stack = find(name: hash['name'])
       if stack
@@ -77,8 +75,6 @@ module VCAP::CloudController
 
       def stacks; @hash['stacks']; end
       def default; @hash['default']; end
-
-      private
 
       Schema = Membrane::SchemaParser.parse {{
         'default' => String,
