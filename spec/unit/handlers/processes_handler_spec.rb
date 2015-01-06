@@ -82,7 +82,6 @@ module VCAP::CloudController
         expect(process_repo).to have_received(:update!).with(updated_process)
         expect(process_event_repo).to have_received(:record_app_update).
           with(updated_process, space, ac.user, ac.user_email, update_opts)
-
       end
     end
 

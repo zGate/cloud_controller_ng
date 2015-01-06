@@ -2,7 +2,6 @@ require 'spec_helper'
 
 module VCAP::CloudController
   describe VCAP::CloudController::DomainsController do
-
     describe 'Query Parameters' do
       it { expect(described_class).to be_queryable_by(:name) }
       it { expect(described_class).to be_queryable_by(:owning_organization_guid) }

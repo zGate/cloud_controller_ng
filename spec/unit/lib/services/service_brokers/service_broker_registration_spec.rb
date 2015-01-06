@@ -2,7 +2,6 @@ require 'spec_helper'
 
 module VCAP::Services::ServiceBrokers
   describe ServiceBrokerRegistration do
-
     subject(:registration) { ServiceBrokerRegistration.new(broker, service_manager, services_event_repository) }
 
     let(:client_manager) { double(:dashboard_manager, synchronize_clients_with_catalog: true, warnings: []) }
@@ -189,7 +188,6 @@ module VCAP::Services::ServiceBrokers
 
             expect(service_manager).not_to have_received(:sync_services_and_plans)
           end
-
         end
 
         context 'because the dashboard client manager failed' do
@@ -323,7 +321,6 @@ module VCAP::Services::ServiceBrokers
         expect {
           registration.update
         }.not_to change(VCAP::CloudController::ServiceBroker, :count)
-
       end
 
       it 'updates a service broker' do
@@ -464,7 +461,6 @@ module VCAP::Services::ServiceBrokers
 
             expect(service_manager).not_to have_received(:sync_services_and_plans)
           end
-
         end
 
         context 'because the dashboard client manager failed' do

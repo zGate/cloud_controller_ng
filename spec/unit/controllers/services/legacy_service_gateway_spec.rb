@@ -369,7 +369,6 @@ module VCAP::CloudController
 
         describe 'with default provider' do
           before :each do
-
             plan = ServicePlan.make(service: svc)
             cfg = ManagedServiceInstance.make(name: 'bar1', service_plan: plan)
             cfg.gateway_name = 'foo1'
@@ -497,7 +496,6 @@ module VCAP::CloudController
           expect(svc).to be_nil
         end
       end
-
     end
   end
 end

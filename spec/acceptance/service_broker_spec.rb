@@ -284,7 +284,6 @@ describe 'Service Broker' do
 
         expect(VCAP::CloudController::ServiceDashboardClient.count).to eq(0)
       end
-
     end
   end
 
@@ -430,7 +429,6 @@ describe 'Service Broker' do
           client_modifications = JSON.parse(req.body)
           expect(client_modifications).to match_array(expected_client_modifications)
         end).to have_been_made
-
       end
 
       it 'can update the service broker name' do
@@ -549,7 +547,6 @@ HEREDOC
       end
 
       context 'when it has no existing instance' do
-
         it 'the plan should become inactive' do
           update_broker(catalog_with_large_plan)
           expect(last_response).to have_status_code(200)
@@ -563,7 +560,6 @@ HEREDOC
       end
 
       context 'when the service is updated to have no plans' do
-
         it 'returns an error and does not update the broker' do
           update_broker(catalog_with_no_plans)
           expect(last_response).to have_status_code(502)
@@ -585,7 +581,6 @@ HEREDOC
       let(:service_3) { build_service }
 
       before do
-
         # set up a fake broker catalog that includes dashboard_client for services
         stub_catalog_fetch(200, services: [service_1, service_2, service_3])
         UAARequests.stub_all

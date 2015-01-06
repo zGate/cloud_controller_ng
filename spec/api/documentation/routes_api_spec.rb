@@ -72,6 +72,5 @@ resource 'Routes', type: [:api, :legacy_api] do
         expect(status).to eq 204
       end
     end
-
   end
 end

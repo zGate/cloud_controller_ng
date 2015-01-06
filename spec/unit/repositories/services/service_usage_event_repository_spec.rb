@@ -46,7 +46,6 @@ module VCAP::CloudController
           end
 
           context 'fails to create the event' do
-
             context 'if service instance does not have a space' do
               before do
                 service_instance.space = nil
@@ -58,7 +57,6 @@ module VCAP::CloudController
                 }.to raise_error
               end
             end
-
           end
         end
 
@@ -72,7 +70,6 @@ module VCAP::CloudController
             expect(event).to match_service_instance(service_instance)
           end
         end
-
       end
 
       describe '#purge_and_reseed_started_apps!' do

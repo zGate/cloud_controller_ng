@@ -62,7 +62,6 @@ module VCAP::CloudController
     end
 
     describe '#validate_app' do
-
       context 'when the app package hash is blank' do
         let(:package_hash) { '' }
 

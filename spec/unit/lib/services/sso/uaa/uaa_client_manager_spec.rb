@@ -244,9 +244,7 @@ module VCAP::Services::SSO::UAA
           expect {
             client_manager.modify_transaction(changeset)
           }.to raise_error(UaaUnavailable)
-
         end
-
       end
 
       describe 'ssl options' do

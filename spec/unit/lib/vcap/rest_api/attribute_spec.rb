@@ -2,7 +2,6 @@ require 'spec_helper'
 
 module VCAP::CloudController
   describe VCAP::RestAPI::NamedAttribute do
-
     describe '#name' do
       it 'should return the name provided' do
         attr = NamedAttribute.new('some_attr')

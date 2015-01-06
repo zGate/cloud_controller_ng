@@ -35,7 +35,6 @@ module VCAP::CloudController
 
         subject.handle_requests
       end
-
     end
 
     let(:app) do

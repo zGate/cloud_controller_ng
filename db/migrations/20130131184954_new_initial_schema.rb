@@ -22,7 +22,6 @@
 # http://code.google.com/p/ruby-sequel/issues/detail?id=284
 
 Sequel.migration do
-
   change do
     # rather than creating different tables for each type of events, we're
     # going to denormalize them into one table.

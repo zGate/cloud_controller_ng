@@ -226,7 +226,6 @@ module VCAP::CloudController
             expect(last_response.status).to eq(204)
           end
         end
-
       end
 
       describe 'events' do

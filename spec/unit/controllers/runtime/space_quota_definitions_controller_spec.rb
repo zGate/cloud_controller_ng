@@ -2,7 +2,6 @@ require 'spec_helper'
 
 module VCAP::CloudController
   describe VCAP::CloudController::SpaceQuotaDefinitionsController do
-
     describe 'Attributes' do
       it do
         expect(described_class).to have_creatable_attributes({

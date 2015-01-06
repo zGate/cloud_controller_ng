@@ -764,7 +764,6 @@ module VCAP::CloudController
             end
           end
         end
-
       end
 
       it 'includes the key of an admin buildpack when the app has a buildpack specified' do

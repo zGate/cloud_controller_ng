@@ -30,7 +30,6 @@ module VCAP::Services::ServiceBrokers::V2
           }
         })
       end
-
     end
 
     context 'without a description in the body' do
@@ -52,9 +51,7 @@ module VCAP::Services::ServiceBrokers::V2
           'source' => { 'foo' => 'bar' }
         })
       end
-
     end
-
   end
 
   describe 'the remaining ServiceBrokers::V2 exceptions' do
@@ -685,7 +682,6 @@ module VCAP::Services::ServiceBrokers::V2
       end
 
       context 'with a syslog drain url' do
-
         let(:response_data) do
           {
               'credentials' => {},
@@ -697,11 +693,9 @@ module VCAP::Services::ServiceBrokers::V2
           client.bind(binding)
           expect(binding.syslog_drain_url).to eq('syslog://example.com:514')
         end
-
       end
 
       context 'without a syslog drain url' do
-
         let(:response_data) do
           {
               'credentials' => {}
@@ -712,7 +706,6 @@ module VCAP::Services::ServiceBrokers::V2
           client.bind(binding)
           expect(binding.syslog_drain_url).to_not be
         end
-
       end
 
       context 'when bind takes longer than broker configured timeout' do
@@ -788,7 +781,6 @@ module VCAP::Services::ServiceBrokers::V2
           let(:operation) { client.bind(binding) }
         end
       end
-
     end
 
     describe '#unbind' do

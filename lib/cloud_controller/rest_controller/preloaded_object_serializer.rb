@@ -80,7 +80,6 @@ module VCAP::CloudController::RestController
     def serialize_relationships(relationships, controller, depth, obj, opts, parents, orphans)
       response = {}
       (relationships || {}).each do |relationship_name, association|
-
         associated_model = get_associated_model_class_for(obj, association.association_name)
         next unless associated_model
         associated_controller = VCAP::CloudController.controller_from_model_name(associated_model.name)

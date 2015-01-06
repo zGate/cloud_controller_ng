@@ -2,7 +2,6 @@ require 'spec_helper'
 
 module VCAP::CloudController
   describe VCAP::CloudController::ServiceAuthToken, type: :model do
-
     it_behaves_like 'a model with an encrypted attribute' do
       let(:encrypted_attr) { :token }
       let(:attr_salt) { :salt }

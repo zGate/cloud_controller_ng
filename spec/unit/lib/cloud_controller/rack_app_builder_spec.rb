@@ -24,7 +24,6 @@ module VCAP::CloudController
           builder.build(TestConfig.config).to_app
           expect(Rack::CommonLogger).to have_received(:new).with(anything, instance_of(File))
         end
-
       end
 
       context 'when nginx is enabled' do

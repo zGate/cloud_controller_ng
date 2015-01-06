@@ -217,7 +217,6 @@ resource 'Events', type: [:api, :legacy_api] do
                                actee_name: test_space.name,
                                space_guid: test_space.guid,
                                metadata: { 'request' => space_request }
-
     end
 
     example 'List Space Update Events' do
@@ -440,7 +439,6 @@ resource 'Events', type: [:api, :legacy_api] do
                                space_guid: '',
                                organization_guid: test_plan_visibility.organization_guid,
                                metadata: { 'request' => {} }
-
     end
 
     example 'List Service Create Events (experimental)' do

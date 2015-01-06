@@ -28,7 +28,6 @@ describe 'Cloud controller Loggregator Integration', type: :integration do
       @authed_headers
     )
     @space_guid = space.json_body['metadata']['guid']
-
   end
 
   after(:all) do

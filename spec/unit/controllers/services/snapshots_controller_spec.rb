@@ -2,7 +2,6 @@ require 'spec_helper'
 
 module VCAP::CloudController
   describe VCAP::CloudController::SnapshotsController do
-
     describe 'Attributes' do
       it do
         expect(described_class).to have_creatable_attributes({

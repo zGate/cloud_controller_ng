@@ -118,7 +118,6 @@ resource 'Buildpacks', type: [:api, :legacy_api] do
     end
 
     example 'Upload the bits for an admin Buildpack' do
-
       explanation 'PUT not shown because it involves putting a large zip file. Right now only zipped admin buildpacks are accepted'
 
       no_doc do

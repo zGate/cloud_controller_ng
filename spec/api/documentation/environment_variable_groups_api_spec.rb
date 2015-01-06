@@ -11,7 +11,6 @@ resource 'Environment Variable Groups', type: [:api, :legacy_api] do
   describe 'Standard endpoints' do
     get '/v2/config/environment_variable_groups/staging' do
       example 'Getting the contents of the staging environment variable group' do
-
         explanation 'returns the set of default environment variables available during staging'
 
         staging_group.update(environment_json: {

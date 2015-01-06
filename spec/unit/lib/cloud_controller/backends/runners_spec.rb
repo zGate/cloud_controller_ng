@@ -108,9 +108,7 @@ module VCAP::CloudController
               expect(runners).to receive(:dea_runner).with(app).and_call_original
               expect(runner).to be_a(Dea::Runner)
             end
-
           end
-
         end
 
         context 'when the app is not configured to run on Diego' do

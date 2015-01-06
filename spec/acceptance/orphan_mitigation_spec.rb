@@ -71,7 +71,6 @@ describe 'orphan mitigation' do
     end
 
     context 'when the broker times out' do
-
       it 'makes the request to the broker and deprovisions' do
         expect(a_request(:put, %r(http://username:password@broker-url/v2/service_instances/#{service_instance_guid}/service_bindings/#{guid_pattern}))).
           to have_been_made

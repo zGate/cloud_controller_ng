@@ -3,7 +3,6 @@ require 'repositories/process_repository'
 
 module VCAP::CloudController
   describe ProcessRepository do
-
     let(:space_guid) { Space.make.guid }
     let(:stack_guid) { Stack.make.guid }
     subject(:repo) { ProcessRepository.new }

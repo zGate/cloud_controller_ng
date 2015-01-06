@@ -2,7 +2,6 @@ require 'spec_helper'
 
 module VCAP::CloudController
   describe AppMemoryCalculator do
-
     subject { described_class.new(app) }
     let(:app) { AppFactory.make(package_hash: 'made-up-hash') }
     let(:stopped_state) { 'STOPPED' }

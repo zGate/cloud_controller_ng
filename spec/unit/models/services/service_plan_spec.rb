@@ -2,7 +2,6 @@ require 'spec_helper'
 
 module VCAP::CloudController
   describe ServicePlan, type: :model do
-
     it { is_expected.to have_timestamp_columns }
 
     describe 'Associations' do
@@ -69,7 +68,6 @@ module VCAP::CloudController
             expect { ServicePlan.make(attrs2) }.to raise_exception('Plan names must be unique within a service')
           end
         end
-
       end
 
       context 'on update' do
@@ -143,6 +141,5 @@ module VCAP::CloudController
         specify { expect(service_plan).not_to be_bindable }
       end
     end
-
   end
 end

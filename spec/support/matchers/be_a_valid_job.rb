@@ -10,5 +10,4 @@ RSpec::Matchers.define :be_a_valid_job do
   failure_message do |actual_job|
     "Not a valid Job. Problems were:\n" + problems.join("\n")
   end
-
 end

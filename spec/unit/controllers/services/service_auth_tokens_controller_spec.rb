@@ -2,7 +2,6 @@ require 'spec_helper'
 
 module VCAP::CloudController
   describe VCAP::CloudController::ServiceAuthTokensController, :services do
-
     describe 'Query Parameters' do
       it { expect(described_class).to be_queryable_by(:label) }
       it { expect(described_class).to be_queryable_by(:provider) }
@@ -36,7 +35,6 @@ module VCAP::CloudController
 
     describe 'CREATE', '/v2/service_auth_tokens' do
       it 'adds the X-Cf-Warning with the right message to the response' do
-
         req = {
           label: 'some-label',
           provider: 'some-provider',

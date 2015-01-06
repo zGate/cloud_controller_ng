@@ -189,7 +189,6 @@ module VCAP::CloudController
             expect(bp1.key).to_not eq(bp2.key)
           end
         end
-
       end
 
       context '/v2/buildpacks/:guid/download' do

@@ -5,7 +5,6 @@ require 'cloud_controller/security_context'
 
 module VCAP::Services::ServiceBrokers
   describe ServiceManager do
-
     let(:broker) { VCAP::CloudController::ServiceBroker.make }
 
     let(:service_id) { Sham.guid }

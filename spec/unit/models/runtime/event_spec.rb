@@ -57,7 +57,6 @@ module VCAP::CloudController
 
     describe 'supports deleted spaces (for auditing purposes)' do
       context 'when the space is deleted' do
-
         let(:space_guid) { 'space-guid-1234' }
 
         let(:new_org) { Organization.make }

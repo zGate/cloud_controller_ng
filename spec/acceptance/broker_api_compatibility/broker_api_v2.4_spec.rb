@@ -65,7 +65,6 @@ describe 'Service Broker API integration' do
           expect(last_response.status).to eq 502
         end
       end
-
     end
   end
 end

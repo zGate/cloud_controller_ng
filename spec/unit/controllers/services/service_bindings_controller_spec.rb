@@ -2,7 +2,6 @@ require 'spec_helper'
 
 module VCAP::CloudController
   describe ServiceBindingsController do
-
     describe 'Query Parameters' do
       it { expect(described_class).to be_queryable_by(:app_guid) }
       it { expect(described_class).to be_queryable_by(:service_instance_guid) }
@@ -211,7 +210,6 @@ module VCAP::CloudController
               'app_guid' => req[:app_guid]
             }
           })
-
         end
 
         it 'unbinds the service instance when an exception is raised' do
@@ -421,7 +419,6 @@ module VCAP::CloudController
         expect(event.metadata).to include({
           'request' => {}
         })
-
       end
 
       context 'with ?async=true' do

@@ -124,7 +124,6 @@ module VCAP::CloudController
     end
 
     describe '#stats_for_app' do
-
       before do
         allow(Dea::Client).to receive(:find_stats).and_return('some return value')
       end

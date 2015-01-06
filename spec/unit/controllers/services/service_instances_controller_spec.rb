@@ -315,7 +315,6 @@ module VCAP::CloudController
         end
 
         context 'with naming collisions' do
-
           it 'does not allow duplicate managed service instances' do
             create_managed_service_instance
             expect(last_response.status).to eq(201)
@@ -351,7 +350,6 @@ module VCAP::CloudController
             expect(last_response.status).to eq(400)
             expect(decoded_response['code']).to eq(60002)
           end
-
         end
 
         context 'when the service_plan does not exist' do
@@ -400,7 +398,6 @@ module VCAP::CloudController
             expect(last_response.status).to eq(500)
           end
         end
-
       end
     end
 
@@ -803,7 +800,6 @@ module VCAP::CloudController
             expect(JSON.parse(last_response.body)['description']).to include 'service gateway error'
           end
         end
-
       end
 
       context 'with a user provided service instance' do
@@ -1018,6 +1014,5 @@ module VCAP::CloudController
 
       ServiceInstance.last
     end
-
   end
 end

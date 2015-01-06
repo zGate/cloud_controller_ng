@@ -2,7 +2,6 @@ require 'spec_helper'
 
 module VCAP::CloudController
   describe Domain do
-
     it { is_expected.to have_timestamp_columns }
 
     it "can't be created if a would become parent" do

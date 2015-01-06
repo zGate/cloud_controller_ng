@@ -132,7 +132,6 @@ module VCAP::CloudController
           expect(last_response.status).to eq(403)
         end
       end
-
     end
 
     describe 'GET /v2/service_usage_events/:guid' do
