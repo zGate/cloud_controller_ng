@@ -123,7 +123,7 @@ module VCAP::CloudController
 
       before do
         klass.class_eval do
-          def set_underlying_sekret value
+          def set_underlying_sekret(value)
             @sekret = value
           end
           def get_underlying_sekret

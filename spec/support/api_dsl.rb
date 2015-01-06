@@ -19,30 +19,30 @@ module ApiDsl
     end
   end
 
-  def standard_list_response response_json, model
+  def standard_list_response(response_json, model)
     standard_paginated_response_format? response_json
     resource = response_json['resources'].first
     standard_entity_response resource, model
   end
 
-  def standard_entity_response json, model, expected_values={}
+  def standard_entity_response(json, model, expected_values={})
     expect(json).to include('metadata')
     expect(json).to include('entity')
     standard_metadata_response_format? json['metadata'], model
     validate_response model, json['entity'], expected_values
   end
 
-  def standard_paginated_response_format? json
+  def standard_paginated_response_format?(json)
     validate_response VCAP::RestAPI::PaginatedResponse, json
   end
 
-  def standard_metadata_response_format? json, model
+  def standard_metadata_response_format?(json, model)
     ignored_attributes = []
     ignored_attributes = [:updated_at] unless model_has_updated_at?(model)
     validate_response VCAP::RestAPI::MetadataMessage, json, {}, ignored_attributes
   end
 
-  def expected_attributes_for_model model
+  def expected_attributes_for_model(model)
     return model.fields.keys if model.respond_to? :fields
     "VCAP::CloudController::#{model.to_s.classify}".constantize.export_attrs
   end
@@ -57,7 +57,7 @@ module ApiDsl
     end
   end
 
-  def audited_event event
+  def audited_event(event)
     attributes = event.columns.map do |column|
       if column == :metadata
         { attribute_name: column.to_s, value: JSON.pretty_generate(JSON.parse(event[column])), is_json: true }

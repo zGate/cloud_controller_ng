@@ -38,7 +38,7 @@ module VCAP::CloudController::Encryptor
     extend ActiveSupport::Concern
 
     module ClassMethods
-      def encrypt field_name, options={}
+      def encrypt(field_name, options={})
         field_name = field_name.to_sym
         salt_name = (options[:salt] || "#{field_name}_salt").to_sym
         generate_salt_name = "generate_#{salt_name}".to_sym
