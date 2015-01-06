@@ -35,7 +35,12 @@ describe UserSummaryPresenter do
           updated_at: nil,
         },
         entity: {
-          organizations: [OrganizationPresenter.new(org).to_hash, OrganizationPresenter.new(managed_org).to_hash, OrganizationPresenter.new(billing_managed_org).to_hash, OrganizationPresenter.new(audited_org).to_hash],
+          organizations: [
+            OrganizationPresenter.new(org).to_hash,
+            OrganizationPresenter.new(managed_org).to_hash,
+            OrganizationPresenter.new(billing_managed_org).to_hash,
+            OrganizationPresenter.new(audited_org).to_hash
+          ],
           managed_organizations: [OrganizationPresenter.new(managed_org).to_hash],
           billing_managed_organizations: [OrganizationPresenter.new(billing_managed_org).to_hash],
           audited_organizations: [OrganizationPresenter.new(audited_org).to_hash],

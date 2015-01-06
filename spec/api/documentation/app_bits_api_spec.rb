@@ -72,6 +72,7 @@ resource 'Apps', type: [:api, :legacy_api] do
         Bits that have not already been uploaded to Cloud Foundry must be included as a zipped binary file named "application".
       eos
 
+      # rubocop:disable LineLength
       request_body_example = <<-eos.gsub(/^ */, '')
         --AaB03x
         Content-Disposition: form-data; name="async"
@@ -90,6 +91,7 @@ resource 'Apps', type: [:api, :legacy_api] do
         &lt;&lt;binary artifact bytes&gt;&gt;
         --AaB03x
       eos
+      # rubocop:enable LineLength
 
       client.put "/v2/apps/#{app_obj.guid}/bits", app_bits_put_params, headers
       example.metadata[:requests].each do |req|

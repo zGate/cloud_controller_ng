@@ -3,6 +3,8 @@ require 'presenters/message_bus/service_binding_presenter'
 module VCAP::CloudController
   module Dea
     class AppStagerTask
+      STAGING_ALREADY_FAILURE_MSG = 'failed to stage application: staging had already been marked as failed, this could mean that staging took too long'
+
       attr_reader :config
       attr_reader :message_bus
 
@@ -172,7 +174,7 @@ module VCAP::CloudController
         end
 
         if @app.staging_failed?
-          raise Errors::ApiError.new_from_details('StagingError', 'failed to stage application: staging had already been marked as failed, this could mean that staging took too long')
+          raise Errors::ApiError.new_from_details('StagingError', STAGING_ALREADY_FAILURE_MSG)
         end
       end
 

@@ -51,7 +51,7 @@ module VCAP::CloudController
     one_to_many :domains,
       dataset: -> { organization.domains_dataset },
       adder: ->(domain) { domain.addable_to_organization!(organization) },
-      eager_loader: proc do |eo|
+      eager_loader: proc { |eo|
         id_map = {}
         eo[:rows].each do |space|
           space.associations[:domains] = []
@@ -70,7 +70,7 @@ module VCAP::CloudController
             id_map[domain.owning_organization_id].each { |space| space.associations[:domains] << domain }
           end
         end
-      end
+      }
 
     many_to_one :space_quota_definition
 

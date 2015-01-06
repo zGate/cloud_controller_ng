@@ -1,6 +1,7 @@
 require 'spec_helper'
 require 'rspec_api_documentation/dsl'
 
+# rubocop:disable Metrics/LineLength
 resource 'Feature Flags', type: [:api, :legacy_api] do
   let(:admin_auth_header) { admin_headers['HTTP_AUTHORIZATION'] }
 
@@ -87,7 +88,7 @@ resource 'Feature Flags', type: [:api, :legacy_api] do
 
   get '/v2/config/feature_flags/app_scaling' do
     example 'Get the App Scaling feature flag' do
-      explanation 'When enabled, space developers can perform scaling operations (i.e. change memory, disk or instances). When disabled, only admin users can perform scaling operations.'
+      explanation 'When enabled, space developers can perform scaling operations (i.e. change memory, disk or instances). When disabled, only admins can perform scaling operations.'
       client.get '/v2/config/feature_flags/app_scaling', {}, headers
 
       expect(status).to eq(200)
@@ -183,3 +184,4 @@ resource 'Feature Flags', type: [:api, :legacy_api] do
     end
   end
 end
+# rubocop:enable Metrics/LineLength

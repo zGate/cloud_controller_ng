@@ -1,4 +1,5 @@
 # Copyright (c) 2009-2012 VMware, Inc.
+# rubocop:disable Metrics/LineLength
 
 def rename_foreign_key_internal(db, alter_table, table, current_name, new_name, &block)
   processed = false
@@ -104,7 +105,7 @@ Sequel.migration do
         rename_index_internal(db, alter_table, :service_bindings, [:app_id, :service_instance_id], unique: true, name: :sb_app_id_srv_inst_id_index)
       end
     end
-          
+
     rename_index(:billing_events, :timestamp, name: :be_event_timestamp_index)
     rename_common_indexes(:billing_events, :be)
     rename_index(:quota_definitions, :name, unique: true, name: :qd_name_index)
@@ -118,22 +119,22 @@ Sequel.migration do
     rename_index(:service_instances, :name, name: :service_instances_name_index)
     rename_common_indexes(:service_bindings, :sb)
 
-    rename_foreign_key(:apps, :fk_apps_space_id, :fk_apps_space_id) do | db, alter_table |    
+    rename_foreign_key(:apps, :fk_apps_space_id, :fk_apps_space_id) do | db, alter_table |
       rename_index_internal(db, alter_table, :apps, [:space_id, :name, :not_deleted], unique: true, name: :apps_space_id_name_nd_idx)
     end
 
     rename_index(:service_instances, :gateway_name, name: :si_gateway_name_index)
-   
+
     rename_foreign_key(:service_plan_visibilities, :fk_service_plan_visibilities_organization_id, :fk_spv_organization_id) do | db, alter_table |
       rename_foreign_key_internal(db, alter_table, :service_plan_visibilities, :fk_service_plan_visibilities_service_plan_id, :fk_spv_service_plan_id) do | db, alter_table |
         rename_index_internal(db, alter_table, :service_plan_visibilities, [:organization_id, :service_plan_id], unique: true, name: :spv_org_id_sp_id_index)
       end
     end
-    
+
     rename_common_indexes(:service_plan_visibilities, :spv)
     rename_common_indexes(:service_brokers, :sbrokers)
     rename_index(:service_brokers, :broker_url, unique: true, name: :sb_broker_url_index)
-          
+
     [:users, :managers, :billing_managers, :auditors].each do |perm|
       rename_permission_table(:organization, :org, perm)
     end
@@ -147,3 +148,4 @@ Sequel.migration do
     raise Sequel::Error, "This migration cannot be reversed since we don't know if 'timestamp' and the fks were renamed originally."
   end
 end
+# rubocop:enable Metrics/LineLength

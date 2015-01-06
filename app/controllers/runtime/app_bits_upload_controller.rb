@@ -56,7 +56,13 @@ module VCAP::CloudController
       src_app = find_guid_and_validate_access(:upload, source_app_guid)
       dest_app = find_guid_and_validate_access(:upload, dest_app_guid)
 
-      app_bits_copier = Jobs::Runtime::AppBitsCopier.new(src_app, dest_app, @app_event_repository, SecurityContext.current_user, SecurityContext.current_user_email)
+      app_bits_copier = Jobs::Runtime::AppBitsCopier.new(
+        src_app,
+        dest_app,
+        @app_event_repository,
+        SecurityContext.current_user,
+        SecurityContext.current_user_email
+      )
 
       job = Jobs::Enqueuer.new(app_bits_copier, queue: 'cc-generic').enqueue
       [HTTP::CREATED, JobPresenter.new(job).to_json]

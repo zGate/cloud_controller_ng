@@ -2,7 +2,11 @@ module VCAP::Services::SSO
   class DashboardClientManager
     attr_reader :errors, :service_broker, :warnings
 
-    REQUESTED_FEATURE_DISABLED_WARNING = 'Warning: This broker includes configuration for a dashboard client. Auto-creation of OAuth2 clients has been disabled in this Cloud Foundry instance. The broker catalog has been updated but its dashboard client configuration will be ignored.'
+    REQUESTED_FEATURE_DISABLED_WARNING = [
+      'Warning: This broker includes configuration for a dashboard client.',
+      'Auto-creation of OAuth2 clients has been disabled in this Cloud Foundry instance.',
+      'The broker catalog has been updated but its dashboard client configuration will be ignored.'
+    ].join(' ').freeze
 
     def initialize(service_broker, services_event_repository)
       @service_broker = service_broker

@@ -271,7 +271,7 @@ describe 'Service Broker' do
         }.to_json, json_headers(admin_headers))
 
         warning = CGI.unescape(last_response.headers['X-Cf-Warnings'])
-        expect(warning).to eq('Warning: This broker includes configuration for a dashboard client. Auto-creation of OAuth2 clients has been disabled in this Cloud Foundry instance. The broker catalog has been updated but its dashboard client configuration will be ignored.')
+        expect(warning).to eq(VCAP::Services::SSO::DashboardClientManager::REQUESTED_FEATURE_DISABLED_WARNING)
       end
 
       it 'does not create any dashboard clients' do
@@ -580,7 +580,7 @@ HEREDOC
 
   describe 'deleting a service broker' do
     context 'when broker has dashboard clients' do
-      let(:service_1) { build_service(dashboard_client: { id: 'client-1', secret: 'shhhhh', redirect_uri: service_1 = 'http://example.com/client-1' }) }
+      let(:service_1) { build_service(dashboard_client: { id: 'client-1', secret: 'shhhhh', redirect_uri: 'http://example.com/client-1' }) }
       let(:service_2) { build_service(dashboard_client: { id: 'client-2', secret: 'sekret', redirect_uri: 'http://example.com/client-2' }) }
       let(:service_3) { build_service }
 

@@ -14,7 +14,11 @@ resource 'Buildpacks', type: [:api, :legacy_api] do
 
   describe 'Standard endpoints' do
     shared_context 'updatable_fields' do |opts|
-      field :name, 'The name of the buildpack. To be used by app buildpack field. (only alphanumeric characters)', required: opts[:required], example_values: ['Golang_buildpack']
+      field :name,
+        'The name of the buildpack. To be used by app buildpack field. (only alphanumeric characters)',
+        required: opts[:required],
+        example_values: ['Golang_buildpack']
+
       field :position, 'The order in which the buildpacks are checked during buildpack auto-detection.'
       field :enabled, 'Whether or not the buildpack will be used for staging', default: true
       field :locked, 'Whether or not the buildpack is locked to prevent updates', default: false

@@ -17,7 +17,13 @@ resource 'Organization Quota Definitions', type: [:api, :legacy_api] do
     field :total_services, 'How many services an organization can have.', required: opts[:required], example_values: [5, 201]
     field :total_routes, 'How many routes an organization can have.', required: opts[:required], example_values: [10, 23]
     field :memory_limit, 'How much memory in megabyte an organization can have.', required: opts[:required], example_values: [5_120, 9999]
-    field :instance_memory_limit, 'The maximum amount of memory in megabyte an application instance can have. (-1 represents an unlimited amount)', required: opts[:required], default: -1, example_values: [-1, 10_240, 9999]
+
+    field :instance_memory_limit,
+      'The maximum amount of memory in megabyte an application instance can have. (-1 represents an unlimited amount)',
+      required: opts[:required],
+      default: -1,
+      example_values: [-1, 10_240, 9999]
+
     field :trial_db_allowed, 'If an organization can have a trial db.', deprecated: true
   end
 

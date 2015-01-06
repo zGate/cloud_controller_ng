@@ -21,7 +21,7 @@ Style/SignalException:
   Enabled: false
 
 LineLength:
-  Max: 160
+  Max: 180
 
 MethodLength:
   Max: 60
@@ -35,7 +35,7 @@ Style/DoubleNegation:
 CyclomaticComplexity:
   Max: 12
 
-Styles/ClassAndModuleChildren:
+Style/ClassAndModuleChildren:
   Enabled: false
 
 Style/Blocks:

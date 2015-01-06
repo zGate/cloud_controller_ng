@@ -37,7 +37,8 @@ module VCAP::CloudController
 
         headers['Access-Control-Allow-Methods'] = 'GET,PUT,POST,DELETE'
         headers['Access-Control-Max-Age'] = '900'
-        headers['Access-Control-Allow-Headers'] = Set.new(['origin', 'content-type', 'authorization']).merge(env['HTTP_ACCESS_CONTROL_REQUEST_HEADERS'].to_s.split(',').map(&:strip).map(&:downcase)).to_a.join(',')
+        headers['Access-Control-Allow-Headers'] = Set.new(['origin', 'content-type', 'authorization']).
+          merge(env['HTTP_ACCESS_CONTROL_REQUEST_HEADERS'].to_s.split(',').map(&:strip).map(&:downcase)).to_a.join(',')
       end
 
       headers['Vary'] = 'Origin'

@@ -5,6 +5,8 @@ require 'cloud_controller/internal_api'
 
 module VCAP::CloudController
   class StagingCompletionController < RestController::BaseController
+    STAGING_FAILURE_MSG = 'failed to stage application: staging had already been marked as failed, this could mean that staging took too long'.freeze
+
     def self.dependencies
       [ :stagers ]
     end
@@ -33,7 +35,7 @@ module VCAP::CloudController
       app = App.find(guid: staging_response['app_id'])
       raise Errors::ApiError.new_from_details('NotFound') unless app
       raise Errors::ApiError.new_from_details('StagingBackendInvalid') unless app.stage_with_diego?
-      raise Errors::ApiError.new_from_details('StagingError', 'failed to stage application: staging had already been marked as failed, this could mean that staging took too long') if app.staging_failed?
+      raise Errors::ApiError.new_from_details('StagingError', STAGING_FAILURE_MSG) if app.staging_failed?
 
       begin
         stagers.stager_for_app(app).staging_complete(staging_response)

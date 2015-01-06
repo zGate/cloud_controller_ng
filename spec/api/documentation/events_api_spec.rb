@@ -73,7 +73,9 @@ resource 'Events', type: [:api, :legacy_api] do
     let(:test_broker) { VCAP::CloudController::ServiceBroker.make }
     let(:test_service) { VCAP::CloudController::Service.make(service_broker: test_broker) }
     let(:test_plan) { VCAP::CloudController::ServicePlan.make(service: test_service) }
-    let(:test_plan_visibility) { VCAP::CloudController::ServicePlanVisibility.make(organization_guid: test_organization.guid, service_plan_guid: test_plan.guid) }
+    let(:test_plan_visibility) do
+      VCAP::CloudController::ServicePlanVisibility.make(organization_guid: test_organization.guid, service_plan_guid: test_plan.guid)
+    end
 
     let(:app_request) do
       {
@@ -257,7 +259,7 @@ resource 'Events', type: [:api, :legacy_api] do
         'redirect_uri' => 'example.com/redirect'
       }
 
-      dashboard_client = VCAP::CloudController::ServiceDashboardClient.new(
+      VCAP::CloudController::ServiceDashboardClient.new(
         uaa_id: client_attrs['id'],
         service_broker: VCAP::CloudController::ServiceBroker.make
       ).save
@@ -285,7 +287,7 @@ resource 'Events', type: [:api, :legacy_api] do
         'id' => 'client_id'
       }
 
-      dashboard_client = VCAP::CloudController::ServiceDashboardClient.new(
+      VCAP::CloudController::ServiceDashboardClient.new(
         uaa_id: client_attrs['id'],
         service_broker: VCAP::CloudController::ServiceBroker.make
       ).save

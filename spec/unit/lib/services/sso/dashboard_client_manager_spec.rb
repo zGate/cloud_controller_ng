@@ -410,7 +410,7 @@ module VCAP::Services::SSO
             manager.synchronize_clients_with_catalog(catalog)
 
             expect(manager.has_warnings?).to be true
-            expect(manager.warnings).to include('Warning: This broker includes configuration for a dashboard client. Auto-creation of OAuth2 clients has been disabled in this Cloud Foundry instance. The broker catalog has been updated but its dashboard client configuration will be ignored.')
+            expect(manager.warnings).to include(VCAP::Services::SSO::DashboardClientManager::REQUESTED_FEATURE_DISABLED_WARNING)
           end
         end
 

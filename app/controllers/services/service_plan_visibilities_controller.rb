@@ -72,7 +72,14 @@ module VCAP::CloudController
       raise_if_has_associations!(service_plan_visibility) if v2_api? && !recursive?
 
       model_deletion_job = Jobs::Runtime::ModelDeletion.new(ServicePlanVisibility, guid)
-      delete_and_audit_job = Jobs::AuditEventJob.new(model_deletion_job, @services_event_repository, :record_service_plan_visibility_event, :delete, service_plan_visibility, {})
+      delete_and_audit_job = Jobs::AuditEventJob.new(
+        model_deletion_job,
+        @services_event_repository,
+        :record_service_plan_visibility_event,
+        :delete,
+        service_plan_visibility,
+        {}
+      )
 
       if async?
         job = Jobs::Enqueuer.new(delete_and_audit_job, queue: 'cc-generic').enqueue()

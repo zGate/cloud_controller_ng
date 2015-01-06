@@ -17,17 +17,32 @@ resource 'Apps', type: [:api, :legacy_api] do
   shared_context 'fields' do |opts|
     field :name, 'The name of the app.', required: opts[:required], example_values: ['my_super_app']
     field :memory, 'The amount of memory each instance should have. In megabytes.', example_values: [1_024, 512]
-    field :instances, 'The number of instances of the app to run. To ensure optimal availability, ensure there are at least 2 instances.', example_values: [2, 6, 10]
+
+    field :instances,
+      'The number of instances of the app to run. To ensure optimal availability, ensure there are at least 2 instances.',
+      example_values: [2, 6, 10]
+
     field :disk_quota, 'The maximum amount of disk available to an instance of an app. In megabytes.', example_values: [1_204, 2_048]
     field :space_guid, 'The guid of the associated space.', required: opts[:required], example_values: [Sham.guid]
     field :stack_guid, 'The guid of the associated stack.', default: 'Uses the default system stack.'
-    field :state, 'The current desired state of the app. One of STOPPED or STARTED.', default: 'STOPPED', valid_values: %w[STOPPED STARTED] # nice to validate this eventually..
+    field :state, 'The current desired state of the app. One of STOPPED or STARTED.', default: 'STOPPED', valid_values: %w[STOPPED STARTED]
     field :detected_start_command, 'The command detected by the buildpack during staging.', read_only: true
     field :command, "The command to start an app after it is staged (e.g. 'rails s -p $PORT' or 'java com.org.Server $PORT')."
-    field :buildpack, 'Buildpack to build the app. 3 options: a) Blank means autodetection; b) A Git Url pointing to a buildpack; c) Name of an installed buildpack.', default: '', example_values: ['', 'https://github.com/virtualstaticvoid/heroku-buildpack-r.git', 'an_example_installed_buildpack']
+
+    field :buildpack,
+      'Buildpack to build the app. 3 options: a) Blank means autodetection; b) A Git Url pointing to a buildpack; c) Name of an installed buildpack.',
+      default: '',
+      example_values: ['', 'https://github.com/virtualstaticvoid/heroku-buildpack-r.git', 'an_example_installed_buildpack']
+
     field :health_check_type, 'Type of health check to perform.', default: 'port', valid_values: ['port', 'none']
     field :health_check_timeout, 'Timeout for health checking of an staged app when starting up'
-    field :docker_image, 'Name of the Docker image containing the app', default: nil, experimental: true, example_values: ['cloudfoundry/helloworld', 'registry.example.com:5000/user/repository/tag']
+
+    field :docker_image,
+      'Name of the Docker image containing the app',
+      default: nil,
+      experimental: true,
+      example_values: ['cloudfoundry/helloworld', 'registry.example.com:5000/user/repository/tag']
+
     field :environment_json, 'Key/value pairs of all the environment variables to run in your app. Does not include any system or service variables.'
     field :production, 'Deprecated.', deprecated: true, default: true, valid_values: [true, false]
     field :console, 'Open the console port for the app (at $CONSOLE_PORT).', deprecated: true, default: false, valid_values: [true, false]

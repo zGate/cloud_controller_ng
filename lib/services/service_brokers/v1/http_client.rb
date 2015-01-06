@@ -69,7 +69,12 @@ module VCAP::Services
           http.request(request)
         end
 
-        logger.debug "Response from request to #{uri.request_uri}: STATUS #{response.code.to_i}, BODY: #{response.body.inspect}, HEADERS: #{response.to_hash.inspect}"
+        logger.debug [
+          "Response from request to #{uri.request_uri}:",
+          "STATUS #{response.code.to_i},",
+          "BODY: #{response.body.inspect},",
+          "HEADERS: #{response.to_hash.inspect}"
+        ].join(' ')
 
         case response
         when Net::HTTPSuccess

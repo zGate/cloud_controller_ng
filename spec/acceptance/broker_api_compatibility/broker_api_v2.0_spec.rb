@@ -265,7 +265,8 @@ describe 'Service Broker API integration' do
         end
 
         it 'sends request with basic auth' do
-          expect(a_request(:put, %r(http://username:password@broker-url/v2/service_instances/#{service_instance_guid}/service_bindings/#{guid_pattern}$))).to have_been_made
+          expect(a_request(:put, %r(http://username:password@broker-url/v2/service_instances/#{service_instance_guid}/service_bindings/#{guid_pattern}$))).
+            to have_been_made
         end
 
         it 'sends all required fields' do
@@ -344,8 +345,10 @@ describe 'Service Broker API integration' do
         include_examples 'broker errors'
 
         it 'sends all required fields' do
-          expect(a_request(:delete, %r(broker-url/v2/service_instances/#{service_instance_guid}/service_bindings/#{guid_pattern}\?plan_id=plan1-guid-here&service_id=service-guid-here))).
-            to have_been_made
+          # rubocop:disable Metrics/LineLength
+          expected_url = %r(broker-url/v2/service_instances/#{service_instance_guid}/service_bindings/#{guid_pattern}\?plan_id=plan1-guid-here&service_id=service-guid-here)
+          # rubocop:enable Metrics/LineLength
+          expect(a_request(:delete, expected_url)).to have_been_made
         end
 
         context 'broker returns a 200 response' do

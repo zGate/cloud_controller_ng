@@ -18,7 +18,12 @@ resource 'Space Quota Definitions', type: [:api, :legacy_api] do
     field :total_services, 'How many services a space can have.', required: opts[:required], example_values: [5, 201]
     field :total_routes, 'How many routes a space can have.', required: opts[:required], example_values: [10, 23]
     field :memory_limit, 'How much memory in megabytes a space can have.', required: opts[:required], example_values: [5_120, 10_024]
-    field :instance_memory_limit, 'The maximum amount of memory in megabytes an application instance can have. (-1 represents an unlimited amount)', default: -1, example_values: [-1, 10_024]
+
+    field :instance_memory_limit,
+      'The maximum amount of memory in megabytes an application instance can have. (-1 represents an unlimited amount)',
+      default: -1,
+      example_values: [-1, 10_024]
+
     field :organization_guid, 'The owning organization of the space quota', required: opts[:required], example_values: [Sham.guid]
   end
 

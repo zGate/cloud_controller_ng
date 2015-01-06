@@ -165,7 +165,9 @@ module VCAP::CloudController
         end
 
         context 'when some of the desired instances are crashed' do
-          let(:app_0_api_response) { generate_hm_api_response(app0, [{ index: 0, state: 'RUNNING' }, { index: 1, state: 'CRASHED' }, { index: 2, state: 'STARTING' }, { index: 2, state: 'CRASHED' }]) }
+          let(:app_0_api_response) do
+            generate_hm_api_response(app0, [{ index: 0, state: 'RUNNING' }, { index: 1, state: 'CRASHED' }, { index: 2, state: 'STARTING' }, { index: 2, state: 'CRASHED' }])
+          end
 
           it 'should not count the crashed instances' do
             expect(hm9000_client.healthy_instances(app0)).to eq(2)
@@ -240,7 +242,13 @@ module VCAP::CloudController
     end
 
     describe 'find_crashes' do
-      let(:app_0_api_response) { generate_hm_api_response(app0, [{ index: 0, state: 'CRASHED', instance_guid: 'sham' }, { index: 1, state: 'CRASHED', instance_guid: 'wow' }, { index: 1, state: 'RUNNING' }]) }
+      let(:app_0_api_response) do
+        generate_hm_api_response(app0, [
+          { index: 0, state: 'CRASHED', instance_guid: 'sham' },
+          { index: 1, state: 'CRASHED', instance_guid: 'wow' },
+          { index: 1, state: 'RUNNING' }
+        ])
+      end
 
       context 'when the request fails' do
         let(:app0_request_should_fail) { true }
@@ -261,7 +269,9 @@ module VCAP::CloudController
     end
 
     describe 'find_flapping_indices' do
-      let(:app_0_api_response) { generate_hm_api_response(app0, [], [{ instance_index:0, crash_count:3 }, { instance_index:1, crash_count:1 }, { instance_index:2, crash_count:10 }]) }
+      let(:app_0_api_response) do
+        generate_hm_api_response(app0, [], [{ instance_index:0, crash_count:3 }, { instance_index:1, crash_count:1 }, { instance_index:2, crash_count:10 }])
+      end
 
       context 'when the request fails' do
         let(:app0_request_should_fail) { true }

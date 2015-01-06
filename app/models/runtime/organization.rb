@@ -71,7 +71,8 @@ module VCAP::CloudController
                       :auditor_guids, :quota_definition_guid, :status
 
     def remove_user(user)
-      raise VCAP::Errors::ApiError.new_from_details('AssociationNotEmpty', 'user', 'spaces in the org') unless ([user.spaces, user.audited_spaces, user.managed_spaces].flatten & spaces).empty?
+      can_remove = ([user.spaces, user.audited_spaces, user.managed_spaces].flatten & spaces).empty?
+      raise VCAP::Errors::ApiError.new_from_details('AssociationNotEmpty', 'user', 'spaces in the org') unless can_remove
       super(user)
     end
 
