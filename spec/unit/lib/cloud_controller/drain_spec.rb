@@ -89,14 +89,14 @@ module VCAP::CloudController
       end
 
       it 'sleeps while it waits for the pid file to be deleted' do
-        expect(File).to receive(:exists?).with(pid_path).and_return(true, true, false)
+        expect(File).to receive(:exist?).with(pid_path).and_return(true, true, false)
         expect(drain).to receive(:sleep).exactly(2).times
 
         drain.shutdown_nginx(pid_path)
       end
 
       it 'logs while it waits for the pid file to be deleted' do
-        expect(File).to receive(:exists?).with(pid_path).and_return(true, true, false)
+        expect(File).to receive(:exist?).with(pid_path).and_return(true, true, false)
 
         drain.shutdown_nginx(pid_path)
 
@@ -106,7 +106,7 @@ module VCAP::CloudController
       end
 
       it 'logs that the process has stopped running when its pid file is deleted' do
-        expect(File).to receive(:exists?).with(pid_path).and_return(true, false)
+        expect(File).to receive(:exist?).with(pid_path).and_return(true, false)
 
         drain.shutdown_nginx(pid_path)
 

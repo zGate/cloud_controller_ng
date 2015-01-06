@@ -138,7 +138,7 @@ describe SafeZipper do
       let(:tmp_zip) { '/non/existent/path/to/tmp.zip' }
 
       it 'will raise an error' do
-        allow(File).to receive(:exists?).and_return(true)
+        allow(File).to receive(:exist?).and_return(true)
 
         expect {
           SafeZipper.zip(root_path, tmp_zip)
