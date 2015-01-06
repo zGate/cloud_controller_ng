@@ -5,63 +5,63 @@ describe 'Service Broker' do
 
   let(:catalog_with_no_plans) {{
     services:
-      [{
-         id:          'service-guid-here',
-         name:        service_name,
-         description: 'A MySQL-compatible relational database',
-         bindable:    true,
-         plans:       [{}]
-       }]
+    [{
+      id:          'service-guid-here',
+      name:        service_name,
+      description: 'A MySQL-compatible relational database',
+      bindable:    true,
+      plans:       [{}]
+    }]
   }}
 
   let(:catalog_with_small_plan) {{
     services:
-      [{
-         id:          'service-guid-here',
-         name:        service_name,
-         description: 'A MySQL-compatible relational database',
-         bindable:    true,
-         plans:       [{
-                         id:          'plan1-guid-here',
-                         name:        'small',
-                         description: 'A small shared database with 100mb storage quota and 10 connections'
-                       }]
-       }]
+    [{
+      id:          'service-guid-here',
+      name:        service_name,
+      description: 'A MySQL-compatible relational database',
+      bindable:    true,
+      plans:       [{
+        id:          'plan1-guid-here',
+        name:        'small',
+        description: 'A small shared database with 100mb storage quota and 10 connections'
+      }]
+    }]
   }}
 
   let(:catalog_with_large_plan) {{
     services:
-      [{
-         id:          'service-guid-here',
-         name:        service_name,
-         description: 'A MySQL-compatible relational database',
-         bindable:    true,
-         plans:       [{
-                         id:          'plan2-guid-here',
-                         name:        'large',
-                         description: 'A large dedicated database with 10GB storage quota, 512MB of RAM, and 100 connections'
-                       }]
-       }]
+    [{
+      id:          'service-guid-here',
+      name:        service_name,
+      description: 'A MySQL-compatible relational database',
+      bindable:    true,
+      plans:       [{
+        id:          'plan2-guid-here',
+        name:        'large',
+        description: 'A large dedicated database with 10GB storage quota, 512MB of RAM, and 100 connections'
+      }]
+    }]
   }}
 
   let(:catalog_with_two_plans)  {{
     services:
+    [{
+      id:          'service-guid-here',
+      name:        service_name,
+      description: 'A MySQL-compatible relational database',
+      bindable:    true,
+      plans:
       [{
-          id:          'service-guid-here',
-          name:        service_name,
-          description: 'A MySQL-compatible relational database',
-          bindable:    true,
-          plans:
-            [{
-               id:          'plan1-guid-here',
-               name:        'small',
-               description: 'A small shared database with 100mb storage quota and 10 connections'
-             }, {
-               id:          'plan2-guid-here',
-               name:        'large',
-               description: 'A large dedicated database with 10GB storage quota, 512MB of RAM, and 100 connections'
-             }]
+        id:          'plan1-guid-here',
+        name:        'small',
+        description: 'A small shared database with 100mb storage quota and 10 connections'
+      }, {
+        id:          'plan2-guid-here',
+        name:        'large',
+        description: 'A large dedicated database with 10GB storage quota, 512MB of RAM, and 100 connections'
       }]
+    }]
   }}
 
   before(:each) { setup_cc }
@@ -75,10 +75,10 @@ describe 'Service Broker' do
       description: 'A service, duh!',
       bindable: true,
       plans: [{
-                id: "plan-#{@index}",
-                name: "plan-#{@index}",
-                description: 'A plan, duh!'
-              }]
+        id: "plan-#{@index}",
+        name: "plan-#{@index}",
+        description: 'A plan, duh!'
+      }]
     }.merge(attrs)
   end
 
@@ -113,21 +113,24 @@ describe 'Service Broker' do
     context 'when there are multiple validation problems in the catalog' do
       before do
         stub_catalog_fetch(200, {
-          services: [{
-            id: 12345,
-            name: 'service-1',
-            description: 'A service, duh!',
-            bindable: true,
-            plans: [{
-              id: 'plan-1',
-              name: 'small',
-              description: 'A small shared database with 100mb storage quota and 10 connections'
-            }, {
-              id: 'plan-2',
-              name: 'large',
-              description: 'A large dedicated database with 10GB storage quota, 512MB of RAM, and 100 connections'
-            }]
-          },
+          services: [
+            {
+              id: 12345,
+              name: 'service-1',
+              description: 'A service, duh!',
+              bindable: true,
+              plans: [
+                {
+                  id: 'plan-1',
+                  name: 'small',
+                  description: 'A small shared database with 100mb storage quota and 10 connections'
+                }, {
+                  id: 'plan-2',
+                  name: 'large',
+                  description: 'A large dedicated database with 10GB storage quota, 512MB of RAM, and 100 connections'
+                }
+              ]
+            },
             {
               id: '67890',
               name: 'service-2',
@@ -189,22 +192,22 @@ describe 'Service Broker' do
         expect(decoded_response['code']).to eql(270012)
         expect(decoded_response['description']).to eql(
           "Service broker catalog is invalid: \n" \
-            "Service ids must be unique\n" \
-            "Service dashboard_client id must be unique\n" \
-            "Service service-1\n" \
-            "  Service id must be a string, but has value 12345\n" \
-            "Service service-2\n" \
-            "  Plan ids must be unique\n" \
-            "  Plan large\n" \
-            "    Plan description is required\n" \
-            "Service service-3\n" \
-            "  Service dashboard client secret is required\n" \
-            "  Service dashboard client redirect_uri is required\n" \
-            "  Plan names must be unique within a service\n" \
-            "  Plan tiny\n" \
-            "    Plan id must be a string, but has value 123\n" \
-            "Service service-4\n" \
-            "  At least one plan is required\n"
+          "Service ids must be unique\n" \
+          "Service dashboard_client id must be unique\n" \
+          "Service service-1\n" \
+          "  Service id must be a string, but has value 12345\n" \
+          "Service service-2\n" \
+          "  Plan ids must be unique\n" \
+          "  Plan large\n" \
+          "    Plan description is required\n" \
+          "Service service-3\n" \
+          "  Service dashboard client secret is required\n" \
+          "  Service dashboard client redirect_uri is required\n" \
+          "  Plan names must be unique within a service\n" \
+          "  Plan tiny\n" \
+          "    Plan id must be a string, but has value 123\n" \
+          "Service service-4\n" \
+          "  At least one plan is required\n"
         )
       end
     end
@@ -304,14 +307,14 @@ describe 'Service Broker' do
 
         # add that broker to the CC
         post('/v2/service_brokers',
-          {
-            name: 'broker_name',
-            broker_url: stubbed_broker_url,
-            auth_username: stubbed_broker_username,
-            auth_password: stubbed_broker_password
-          }.to_json,
-          json_headers(admin_headers)
-        )
+             {
+          name: 'broker_name',
+          broker_url: stubbed_broker_url,
+          auth_username: stubbed_broker_username,
+          auth_password: stubbed_broker_password
+        }.to_json,
+        json_headers(admin_headers)
+            )
         expect(last_response).to have_status_code(201)
         @service_broker_guid = decoded_response.fetch('metadata').fetch('guid')
 
@@ -355,9 +358,9 @@ describe 'Service Broker' do
 
         stub_request(:post, %r{http://localhost:8080/uaa/oauth/clients/tx/modify}).
           to_return(
-          status: 200,
-          headers: { 'content-type' => 'application/json' },
-          body: ''
+            status: 200,
+            headers: { 'content-type' => 'application/json' },
+            body: ''
         )
       end
 
@@ -495,9 +498,9 @@ describe 'Service Broker' do
 
         put("/v2/service_brokers/#{guid}", {
           name: 'some-guid',
-          broker_url: 'http://broker-url',
-          auth_username: 'username',
-          auth_password: 'password'
+            broker_url: 'http://broker-url',
+            auth_username: 'username',
+            auth_password: 'password'
         }.to_json, json_headers(admin_headers))
       end
 
@@ -536,13 +539,13 @@ describe 'Service Broker' do
 
           warning = CGI.unescape(last_response.headers['X-Cf-Warnings'])
 
-# rubocop:disable LineLength
+          # rubocop:disable LineLength
           expect(warning).to eq(<<HEREDOC)
 Warning: Service plans are missing from the broker's catalog (http://#{stubbed_broker_host}/v2/catalog) but can not be removed from Cloud Foundry while instances exist. The plans have been deactivated to prevent users from attempting to provision new instances of these plans. The broker should continue to support bind, unbind, and delete for existing instances; if these operations fail contact your broker provider.
-#{service_name}
+          #{service_name}
   small
 HEREDOC
-# rubocop:enable LineLength
+          # rubocop:enable LineLength
         end
       end
 
@@ -589,13 +592,13 @@ HEREDOC
         # add that broker to the CC
         post('/v2/service_brokers',
              {
-               name: 'broker_name',
-               broker_url: stubbed_broker_url,
-               auth_username: stubbed_broker_username,
-               auth_password: stubbed_broker_password
-             }.to_json,
-             json_headers(admin_headers)
-        )
+          name: 'broker_name',
+          broker_url: stubbed_broker_url,
+          auth_username: stubbed_broker_username,
+          auth_password: stubbed_broker_password
+        }.to_json,
+        json_headers(admin_headers)
+            )
         expect(last_response).to have_status_code(201)
         @service_broker_guid = decoded_response.fetch('metadata').fetch('guid')
 
@@ -610,9 +613,9 @@ HEREDOC
 
         stub_request(:post, %r{http://localhost:8080/uaa/oauth/clients/tx/modify}).
           to_return(
-          status: 200,
-          headers: { 'content-type' => 'application/json' },
-          body: ''
+            status: 200,
+            headers: { 'content-type' => 'application/json' },
+            body: ''
         )
       end
 
@@ -657,7 +660,7 @@ HEREDOC
       end
 
       it 'does not delete the broker', isolation: :truncation do # Can't use transactions for isolation because we're
-                                                                 # testing a rollback
+        # testing a rollback
         delete_broker
         expect(last_response).to have_status_code(400)
 

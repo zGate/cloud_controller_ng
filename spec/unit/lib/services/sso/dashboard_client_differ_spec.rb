@@ -136,10 +136,10 @@ module VCAP::Services::SSO
         let(:requested_clients) { [] }
         let(:existing_db_clients) do
           [
-          double(:client,
-                   service_id_on_broker: service_broker.id,
-                   uaa_id: dashboard_client['id']
-            )
+            double(:client,
+                     service_id_on_broker: service_broker.id,
+                     uaa_id: dashboard_client['id']
+              )
           ]
         end
 

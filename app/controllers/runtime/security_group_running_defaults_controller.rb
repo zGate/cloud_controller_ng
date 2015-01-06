@@ -24,8 +24,8 @@ module VCAP::CloudController
       end
 
       [
-          HTTP::OK,
-          object_renderer.render_json(self.class, obj, @opts)
+        HTTP::OK,
+        object_renderer.render_json(self.class, obj, @opts)
       ]
     end
 
@@ -39,7 +39,7 @@ module VCAP::CloudController
       end
 
       [
-          HTTP::NO_CONTENT
+        HTTP::NO_CONTENT
       ]
     end
 

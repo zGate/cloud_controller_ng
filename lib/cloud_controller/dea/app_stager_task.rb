@@ -64,17 +64,17 @@ module VCAP::CloudController
       # We never stage if there is not a start request
       def staging_request
         {
-            app_id:                       @app.guid,
-            task_id:                      task_id,
-            properties:                   staging_task_properties(@app),
-            # All url generation should go to blobstore_url_generator
-            download_uri:                 @blobstore_url_generator.app_package_download_url(@app),
-            upload_uri:                   @blobstore_url_generator.droplet_upload_url(@app),
-            buildpack_cache_download_uri: @blobstore_url_generator.buildpack_cache_download_url(@app),
-            buildpack_cache_upload_uri:   @blobstore_url_generator.buildpack_cache_upload_url(@app),
-            start_message:                start_app_message,
-            admin_buildpacks:             admin_buildpacks,
-            egress_network_rules:         staging_egress_rules,
+          app_id:                       @app.guid,
+          task_id:                      task_id,
+          properties:                   staging_task_properties(@app),
+          # All url generation should go to blobstore_url_generator
+          download_uri:                 @blobstore_url_generator.app_package_download_url(@app),
+          upload_uri:                   @blobstore_url_generator.droplet_upload_url(@app),
+          buildpack_cache_download_uri: @blobstore_url_generator.buildpack_cache_download_url(@app),
+          buildpack_cache_upload_uri:   @blobstore_url_generator.buildpack_cache_upload_url(@app),
+          start_message:                start_app_message,
+          admin_buildpacks:             admin_buildpacks,
+          egress_network_rules:         staging_egress_rules,
         }
       end
 
@@ -202,15 +202,15 @@ module VCAP::CloudController
         env         = staging_env.merge(app_env).map { |k, v| "#{k}=#{v}" }
 
         {
-            services: app.service_bindings.map { |sb| service_binding_to_staging_request(sb) },
-            resources: {
-                memory: app.memory,
-                disk: app.disk_quota,
-                fds: app.file_descriptors
-            },
+          services: app.service_bindings.map { |sb| service_binding_to_staging_request(sb) },
+          resources: {
+            memory: app.memory,
+            disk: app.disk_quota,
+            fds: app.file_descriptors
+          },
 
-            environment: env,
-            meta: app.metadata
+          environment: env,
+          meta: app.metadata
         }
       end
 
@@ -228,8 +228,8 @@ module VCAP::CloudController
 
       def staging_task_memory_mb
         [
-            (@config[:staging] && @config[:staging][:minimum_staging_memory_mb] || 1024),
-            @app.memory
+          (@config[:staging] && @config[:staging][:minimum_staging_memory_mb] || 1024),
+          @app.memory
         ].max
       end
 

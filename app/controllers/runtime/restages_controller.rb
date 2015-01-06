@@ -30,9 +30,9 @@ module VCAP::CloudController
       @app_event_repository.record_app_restage(app, SecurityContext.current_user, SecurityContext.current_user_email)
 
       [
-          HTTP::CREATED,
-          { 'Location' => "#{self.class.path}/#{app.guid}" },
-          object_renderer.render_json(self.class, app, @opts)
+        HTTP::CREATED,
+        { 'Location' => "#{self.class.path}/#{app.guid}" },
+        object_renderer.render_json(self.class, app, @opts)
       ]
     end
   end

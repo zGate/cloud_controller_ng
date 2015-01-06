@@ -687,8 +687,8 @@ module VCAP::CloudController
         app.instances = 3
 
         flapping_instances = [
-            { 'index' => 0, 'since' => 1 },
-          ]
+          { 'index' => 0, 'since' => 1 },
+        ]
 
         expect(health_manager_client).to receive(:find_flapping_indices).
           with(app).and_return(flapping_instances)
