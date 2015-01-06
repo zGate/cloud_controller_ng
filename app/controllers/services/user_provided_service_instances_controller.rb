@@ -12,7 +12,7 @@ module VCAP::CloudController
     end
 
     def self.dependencies
-      [ :services_event_repository ]
+      [:services_event_repository]
     end
 
     def inject_dependencies(dependencies)

@@ -1,7 +1,7 @@
 module VCAP::CloudController
   class InstancesController < RestController::ModelController
     def self.dependencies
-      [ :instances_reporters, :index_stopper ]
+      [:instances_reporters, :index_stopper]
     end
 
     path_base 'apps'

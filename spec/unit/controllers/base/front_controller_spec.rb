@@ -56,7 +56,7 @@ module VCAP::CloudController
       context 'when the Origin header is present' do
         let(:config) do
           {
-            allowed_cors_domains: [ 'https://talkoncorners.com', 'http://*.inblue.net', 'http://borrowedheaven.org' ]
+            allowed_cors_domains: ['https://talkoncorners.com', 'http://*.inblue.net', 'http://borrowedheaven.org']
           }
         end
 

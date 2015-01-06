@@ -5,8 +5,8 @@ require 'presenters/api/staging_job_presenter'
 module VCAP::CloudController
   class StagingsController < RestController::BaseController
     def self.dependencies
-      [ :droplet_blobstore, :buildpack_cache_blobstore, :package_blobstore,
-        :blobstore_url_generator, :missing_blob_handler, :blob_sender, :config ]
+      [:droplet_blobstore, :buildpack_cache_blobstore, :package_blobstore,
+        :blobstore_url_generator, :missing_blob_handler, :blob_sender, :config]
     end
 
     include VCAP::Errors

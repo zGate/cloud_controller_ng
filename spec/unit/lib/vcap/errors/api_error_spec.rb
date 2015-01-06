@@ -15,7 +15,7 @@ module VCAP::Errors
     let(:messageServiceInvalid) { 'ServiceInvalid' }
     let(:messagePartialTranslated) { 'MessagePartialTranslated' }
     let(:messageNotTranslated) { 'MessageNotTranslated' }
-    let(:args) { [ 'foo', 'bar' ] }
+    let(:args) { ['foo', 'bar'] }
 
     let(:messageServiceInvalidDetails) { create_details(messageServiceInvalid) }
     let(:messagePartialTranslatedDetails) { create_details(messagePartialTranslated) }

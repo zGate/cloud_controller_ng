@@ -1,7 +1,7 @@
 module VCAP::CloudController
   class AppsController < RestController::ModelController
     def self.dependencies
-      [ :app_event_repository ]
+      [:app_event_repository]
     end
 
     define_attributes do
@@ -98,7 +98,7 @@ module VCAP::CloudController
           SecurityContext.current_user_email,
           recursive?)
 
-      [ HTTP::NO_CONTENT, nil ]
+      [HTTP::NO_CONTENT, nil]
     end
 
     private

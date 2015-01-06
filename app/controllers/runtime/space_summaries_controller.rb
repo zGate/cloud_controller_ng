@@ -1,7 +1,7 @@
 module VCAP::CloudController
   class SpaceSummariesController < RestController::ModelController
     def self.dependencies
-      [ :instances_reporters ]
+      [:instances_reporters]
     end
 
     path_base 'spaces'

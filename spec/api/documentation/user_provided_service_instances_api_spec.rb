@@ -14,10 +14,10 @@ resource 'User Provided Service Instances', type: [:api, :legacy_api] do
     standard_model_delete_without_async :user_provided_service_instance
 
     post '/v2/user_provided_service_instances/' do
-      field :name, 'A name for the service instance', required: true, example_values: [ 'my-user-provided-instance' ]
+      field :name, 'A name for the service instance', required: true, example_values: ['my-user-provided-instance']
       field :space_guid, 'The guid of the space in which the instance will be created', required: true
-      field :syslog_drain_url, 'The url for the syslog_drain to direct to', required: false, example_values: [ 'syslog://example.com' ]
-      field :credentials, 'A hash that can be used to store credentials', required: false, example_values: [ { somekey: 'somevalue' }.to_s ]
+      field :syslog_drain_url, 'The url for the syslog_drain to direct to', required: false, example_values: ['syslog://example.com']
+      field :credentials, 'A hash that can be used to store credentials', required: false, example_values: [{ somekey: 'somevalue' }.to_s]
 
       example 'Creating a User Provided Service Instance' do
         space_guid = VCAP::CloudController::Space.make.guid
@@ -34,9 +34,9 @@ resource 'User Provided Service Instances', type: [:api, :legacy_api] do
     end
 
     put '/v2/user_provided_service_instances/:guid' do
-      field :name, 'A name for the service instance', required: true, example_values: [ 'my-user-provided-instance' ]
-      field :syslog_drain_url, 'The url for the syslog_drain to direct to', required: false, example_values: [ 'syslog://example.com' ]
-      field :credentials, 'A hash that can be used to store credentials', required: false, example_values: [ { somekey: 'somevalue' }.to_s ]
+      field :name, 'A name for the service instance', required: true, example_values: ['my-user-provided-instance']
+      field :syslog_drain_url, 'The url for the syslog_drain to direct to', required: false, example_values: ['syslog://example.com']
+      field :credentials, 'A hash that can be used to store credentials', required: false, example_values: [{ somekey: 'somevalue' }.to_s]
 
       example 'Updating a User Provided Service Instance' do
         request_hash = {

@@ -111,7 +111,7 @@ module VCAP::CloudController
         it 'should provide the egress rules in the start message' do
           res = Dea::StartAppMessage.new(app, 1, TestConfig.config, blobstore_url_generator)
           expect(res[:egress_network_rules]).to match_array(
-            [ sg_default_rules_1, sg_default_rules_2, sg_for_space_rules ].flatten
+            [sg_default_rules_1, sg_default_rules_2, sg_for_space_rules].flatten
           )
         end
       end

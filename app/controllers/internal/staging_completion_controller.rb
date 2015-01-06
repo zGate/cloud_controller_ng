@@ -8,7 +8,7 @@ module VCAP::CloudController
     STAGING_FAILURE_MSG = 'failed to stage application: staging had already been marked as failed, this could mean that staging took too long'.freeze
 
     def self.dependencies
-      [ :stagers ]
+      [:stagers]
     end
 
     # Endpoint does its own (non-standard) auth

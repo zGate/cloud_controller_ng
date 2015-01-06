@@ -8,7 +8,7 @@ module VCAP::CloudController
     query_parameters :organization_guid, :service_plan_guid
 
     def self.dependencies
-      [ :services_event_repository ]
+      [:services_event_repository]
     end
 
     def inject_dependencies(dependencies)

@@ -1,7 +1,7 @@
 module VCAP::CloudController
   class SpacesController < RestController::ModelController
     def self.dependencies
-      [ :space_event_repository ]
+      [:space_event_repository]
     end
 
     define_attributes do

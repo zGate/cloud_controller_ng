@@ -3,7 +3,7 @@ require 'repositories/runtime/app_usage_event_repository'
 module VCAP::CloudController
   class AppUsageEventsController < RestController::ModelController
     def self.dependencies
-      [ :large_paginated_collection_renderer ]
+      [:large_paginated_collection_renderer]
     end
 
     preserve_query_parameters :after_guid

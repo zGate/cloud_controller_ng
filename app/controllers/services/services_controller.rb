@@ -36,7 +36,7 @@ module VCAP::CloudController
     query_parameters :active, :label, :provider, :service_broker_guid
 
     def self.dependencies
-      [ :services_event_repository ]
+      [:services_event_repository]
     end
 
     def inject_dependencies(dependencies)

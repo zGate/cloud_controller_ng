@@ -34,7 +34,7 @@ module VCAP::CloudController
           get '/v2/syslog_drain_urls', '{}'
           expect(last_response).to be_successful
           expect(decoded_results).to eq({
-            app_obj.guid => [ 'fishfinger', 'foobar' ]
+            app_obj.guid => ['fishfinger', 'foobar']
           })
         end
 

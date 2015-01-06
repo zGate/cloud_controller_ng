@@ -1,7 +1,7 @@
 module VCAP::CloudController
   class RestagesController < RestController::ModelController
     def self.dependencies
-      [ :app_event_repository ]
+      [:app_event_repository]
     end
 
     path_base 'apps'

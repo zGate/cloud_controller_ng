@@ -25,7 +25,7 @@ module VCAP::CloudController
 
         :system_domain => String,
         :system_domain_organization => enum(String, NilClass),
-        :app_domains => [ String ],
+        :app_domains => [String],
         :app_events => {
           cutoff_age_in_days: Fixnum
         },
@@ -207,7 +207,7 @@ module VCAP::CloudController
         optional(:app_bits_upload_grace_period_in_seconds) => Integer,
 
         optional(:default_locale) => String,
-        optional(:allowed_cors_domains) => [ String ],
+        optional(:allowed_cors_domains) => [String],
 
         optional(:diego) => {
           optional(:staging) => enum(

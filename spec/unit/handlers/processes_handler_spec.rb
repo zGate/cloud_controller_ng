@@ -46,7 +46,7 @@ module VCAP::CloudController
           process_model2 = AppFactory.make(space: space, type: 'worker')
 
           updated_process = process.with_changes(update_opts)
-          neighbor_processes = [ ProcessMapper.map_model_to_domain(process_model2) ]
+          neighbor_processes = [ProcessMapper.map_model_to_domain(process_model2)]
 
           ac = double(:ac, cannot?: false, user: User.make, user_email: 'jim@jim.com')
 

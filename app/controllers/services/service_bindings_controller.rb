@@ -14,7 +14,7 @@ module VCAP::CloudController
     query_parameters :app_guid, :service_instance_guid
 
     def self.dependencies
-      [ :services_event_repository ]
+      [:services_event_repository]
     end
 
     def inject_dependencies(dependencies)
@@ -50,7 +50,7 @@ module VCAP::CloudController
 
       @services_event_repository.record_service_binding_event(:create, service_binding)
 
-      [ HTTP::CREATED,
+      [HTTP::CREATED,
         { 'Location' => "#{self.class.path}/#{service_binding.guid}" },
         object_renderer.render_json(self.class, service_binding, @opts)
       ]

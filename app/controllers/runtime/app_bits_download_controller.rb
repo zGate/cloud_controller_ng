@@ -1,7 +1,7 @@
 module VCAP::CloudController
   class AppBitsDownloadController < RestController::ModelController
     def self.dependencies
-      [ :blob_sender, :package_blobstore, :missing_blob_handler ]
+      [:blob_sender, :package_blobstore, :missing_blob_handler]
     end
 
     path_base 'apps'

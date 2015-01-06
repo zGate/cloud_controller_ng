@@ -47,7 +47,7 @@ module VCAP::CloudController
 
       plan.destroy
 
-      [ HTTP::NO_CONTENT, nil ]
+      [HTTP::NO_CONTENT, nil]
     end
 
     def self.translate_validation_exception(e, attributes)

@@ -1,7 +1,7 @@
 module VCAP::CloudController
   class CrashesController < RestController::ModelController
     def self.dependencies
-      [ :instances_reporters ]
+      [:instances_reporters]
     end
 
     path_base 'apps'
