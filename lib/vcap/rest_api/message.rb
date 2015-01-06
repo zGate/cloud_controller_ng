@@ -28,16 +28,16 @@ module VCAP
         schema.deparse
       end
 
-      URL       = readable_regexp(URI::regexp(%w(http https)),
+      URL       = readable_regexp(URI.regexp(%w(http https)),
                                   'String /URL_REGEX/',
                                   'must be a valid URL')
-      HTTPS_URL = readable_regexp(URI::regexp('https'),
+      HTTPS_URL = readable_regexp(URI.regexp('https'),
                                   'String /HTTPS_URL_REGEX/',
                                   'must be a valid HTTPS URL')
       EMAIL     = readable_regexp(RFC822::EMAIL_REGEXP_WHOLE,
                                   'String /EMAIL_REGEX/',
                                   'must be a valid email')
-      GIT_URL   = readable_regexp(URI::regexp(%w(http https git)),
+      GIT_URL   = readable_regexp(URI.regexp(%w(http https git)),
                                   'String /GIT_URL_REGEX/',
                                   'must be a valid git URL')
 

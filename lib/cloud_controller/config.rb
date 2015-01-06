@@ -349,7 +349,7 @@ module VCAP::CloudController
       end
 
       def escape_userinfo(value)
-        URI::escape(value, "%#{URI::REGEXP::PATTERN::RESERVED}")
+        URI.escape(value, "%#{URI::REGEXP::PATTERN::RESERVED}")
       end
 
       def valid_in_userinfo?(value)

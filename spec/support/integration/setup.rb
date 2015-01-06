@@ -55,7 +55,7 @@ module IntegrationSetup
   end
 
   def wait_for_nats_to_start(port)
-    Timeout::timeout(10) do
+    Timeout.timeout(10) do
       loop do
         sleep 0.2
         break if nats_up?(port)
@@ -95,7 +95,7 @@ module IntegrationSetupHelpers
 
   def graceful_kill(name, pid)
     Process.kill('TERM', pid)
-    Timeout::timeout(1) do
+    Timeout.timeout(1) do
       Process.wait(pid)
     end
   rescue Timeout::Error

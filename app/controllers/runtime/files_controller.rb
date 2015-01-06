@@ -37,11 +37,11 @@ module VCAP::CloudController
     def add_tail(uri)
       uri = URI(uri)
       # query is Array of [key, value1, value2...]
-      query = URI::decode_www_form(uri.query || '')
+      query = URI.decode_www_form(uri.query || '')
       unless query.assoc('tail')
         query.push(['tail', ''])
       end
-      uri.query = URI::encode_www_form(query)
+      uri.query = URI.encode_www_form(query)
       uri.to_s
     end
 
