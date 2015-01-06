@@ -19,7 +19,6 @@ module VCAP::CloudController
       update(changes, :state)
     end
 
-
     def undo_scale(changes)
       instances = changes[:instances]
       return false if instances.nil? || instances[0] >= instances[1]

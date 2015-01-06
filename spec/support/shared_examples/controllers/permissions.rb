@@ -49,7 +49,6 @@ shared_context 'permissions' do
   end
 end
 
-
 shared_examples 'permission enumeration' do |perm_name, opts|
   name = opts[:name]
   path = opts[:path]

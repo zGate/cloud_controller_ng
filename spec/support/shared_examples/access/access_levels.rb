@@ -29,7 +29,6 @@ shared_examples :no_access do
   # override the default behavior of always allowing access to :index
 end
 
-
 shared_examples :admin_full_access do
   include_context :admin_setup
   it_behaves_like :full_access

@@ -30,7 +30,6 @@ module VCAP::CloudController
         @service_event = Event.make(space_guid: '', organization_guid: '', type: 'audit.service_broker.create')
       end
 
-
       describe 'default order' do
         it 'sorts by timestamp' do
           type = SecureRandom.uuid

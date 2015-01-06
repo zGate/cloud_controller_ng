@@ -64,7 +64,6 @@ module VCAP::CloudController
       super(opts)
     end
 
-
     def bind!
       client.bind(self)
 

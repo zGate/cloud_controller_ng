@@ -74,7 +74,6 @@ module VCAP::CloudController
         filter(label: label, provider: DEFAULT_PROVIDER).
         select_map(Sequel.qualify(:service_plans, :name))
 
-
       new_plan_attrs.each do |attrs|
         ServicePlan.update_or_create(
           service_id: service.id,
@@ -208,7 +207,6 @@ module VCAP::CloudController
 
       service = Service[label: label, provider: provider]
       raise ApiError.new_from_details('ServiceNotFound', "label=#{label} provider=#{provider}") unless service
-
 
       plans_ds = service.service_plans_dataset
       instances_ds = ManagedServiceInstance.filter(service_plan: plans_ds)

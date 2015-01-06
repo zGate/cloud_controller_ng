@@ -20,7 +20,6 @@ RSpec::Matchers.define :export_attributes do |*attributes|
   end
 end
 
-
 RSpec::Matchers.define :import_attributes do |*attributes|
   description do
     "imports #{attributes.join(", ")}"

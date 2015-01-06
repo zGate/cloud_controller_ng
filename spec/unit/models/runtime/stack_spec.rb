@@ -88,7 +88,6 @@ module VCAP::CloudController
                 cider.description = 'cider-description has changed'
                 cider.save
 
-
                 mock_logger = double
                 allow(Steno).to receive(:logger).and_return(mock_logger)
 

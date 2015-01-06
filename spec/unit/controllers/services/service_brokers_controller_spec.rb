@@ -323,7 +323,6 @@ module VCAP::CloudController
         expect(registration).to have_received(:update)
       end
 
-
       it 'returns the serialized broker' do
         put "/v2/service_brokers/#{broker.guid}", body, headers
 

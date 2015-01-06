@@ -28,7 +28,6 @@ module VCAP::CloudController
     let(:reporter2) { double(:Reporter) }
     let(:instances_reporters) { InstancesReporters.new(config, diego_client, hm_client) }
 
-
     describe '#number_of_starting_and_running_instances_for_app' do
       it 'delegates to the reporter' do
         allow(Dea::InstancesReporter).to receive(:new).with(hm_client).and_return(reporter)

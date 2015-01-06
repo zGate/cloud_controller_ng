@@ -83,7 +83,6 @@ resource 'Users', type: [:api, :legacy_api] do
       let(:managed_space) { VCAP::CloudController::Space.make }
       let(:managed_space_guid) { managed_space.guid }
 
-
       standard_model_list :space, VCAP::CloudController::SpacesController, outer_model: :user, path: :managed_spaces
       nested_model_associate :managed_space, :user
       nested_model_remove :managed_space, :user

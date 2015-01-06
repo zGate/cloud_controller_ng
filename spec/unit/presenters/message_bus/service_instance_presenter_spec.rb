@@ -36,7 +36,6 @@ describe ServiceInstancePresenter do
         expect(subject.fetch(:tags)).to eq(['relational', 'mysql'])
       end
 
-
       context 'when the service does not have a version' do
         let(:service) { VCAP::CloudController::Service.make(version: nil) }
 

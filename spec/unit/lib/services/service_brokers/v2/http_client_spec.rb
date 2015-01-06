@@ -43,7 +43,6 @@ module VCAP::Services::ServiceBrokers::V2
     end
   end
 
-
   describe HttpClient do
     let(:auth_username) { 'me' }
     let(:auth_password) { 'abc123' }

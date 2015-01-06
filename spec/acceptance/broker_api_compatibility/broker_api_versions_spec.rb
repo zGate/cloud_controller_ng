@@ -39,7 +39,6 @@ describe 'Broker API Versions' do
       actual_checksums[spec] = Digest::MD5.hexdigest(File.read(filename))
     end
 
-
     # These tests are not meant to be changed since they help ensure backwards compatibility.
     # If you do need to update this test, you can update the expected sha
     expect(actual_checksums).to eq(spec_sha)

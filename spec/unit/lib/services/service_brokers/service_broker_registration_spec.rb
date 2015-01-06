@@ -259,7 +259,6 @@ module VCAP::Services::ServiceBrokers
           }.to_not change(VCAP::CloudController::ServiceBroker, :count)
         end
 
-
         it 'does not synchronize the catalog' do
           registration.create rescue nil
 

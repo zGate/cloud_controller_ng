@@ -11,7 +11,6 @@ module VCAP::CloudController
       it { is_expected.to import_attributes :name }
     end
 
-
     describe '#as_summary_json' do
       it 'returns a hash containing the guid and name' do
         expect(subject.as_summary_json).to eq(

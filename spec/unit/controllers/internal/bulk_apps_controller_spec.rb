@@ -149,7 +149,6 @@ module VCAP::CloudController
 
             expect(decoded_response['apps'].size).to eq(6)
 
-
             last_response_app = decoded_response['apps'][5]
             expect(last_response_app.except('environment')).to match_object({
               'disk_mb' => 1_024,

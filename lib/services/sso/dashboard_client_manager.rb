@@ -88,7 +88,6 @@ module VCAP::Services::SSO
       true
     end
 
-
     def fetch_clients_from_uaa(requested_client_ids)
       client_manager.get_clients(requested_client_ids)
     rescue VCAP::Services::SSO::UAA::UaaError => e

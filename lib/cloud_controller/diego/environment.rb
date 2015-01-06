@@ -24,7 +24,6 @@ module VCAP::CloudController
         env
       end
 
-
       private
 
       attr_reader :app

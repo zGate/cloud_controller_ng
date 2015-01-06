@@ -27,7 +27,6 @@ module VCAP::Services
         allow(VCAP::Request).to receive(:current_id).and_return(request_id)
       end
 
-
       describe 'http client timeout' do
         let(:http) { double('http', request: response) }
         let(:response) { Net::HTTPOK.new('1.0', 200, nil) }
@@ -63,7 +62,6 @@ module VCAP::Services
 
         context 'when the broker timeout is not set' do
           let(:config) { { missing_broker_client_timeout: nil } }
-
 
           it 'sets HTTP timeouts on provisions' do
             expect_timeout_to_be 60

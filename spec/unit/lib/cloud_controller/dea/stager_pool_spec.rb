@@ -13,7 +13,6 @@ module VCAP::CloudController
       }
     end
 
-
     subject { Dea::StagerPool.new(TestConfig.config, message_bus, url_generator) }
 
     describe '#register_subscriptions' do

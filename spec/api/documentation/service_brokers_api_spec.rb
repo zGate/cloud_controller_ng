@@ -72,7 +72,6 @@ resource 'Service Brokers', type: [:api, :legacy_api] do
       end
     end
 
-
     put '/v2/service_brokers/:guid' do
       include_context 'guid_parameter'
       include_context 'updatable_fields'

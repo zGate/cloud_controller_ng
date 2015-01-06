@@ -101,7 +101,6 @@ module VCAP::CloudController
             end
           end
 
-
           context 'when its the final attempt' do
             it 'it deletes the file' do
               worker.work_off 1

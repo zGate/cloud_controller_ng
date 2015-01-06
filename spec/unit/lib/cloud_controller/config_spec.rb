@@ -368,7 +368,6 @@ module VCAP::CloudController
         end
       end
 
-
       context 'invalid configurations' do
         let(:invalid_config) do
           { diego: { staging: 'disabled', running: 'optional' } }

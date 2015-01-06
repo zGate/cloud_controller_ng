@@ -87,7 +87,6 @@ resource 'Jobs', type: [:api, :legacy_api] do
       end
     end
 
-
     describe 'For a queued job' do
       class SuccessfulJob < FakeJob; end
 
