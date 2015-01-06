@@ -240,7 +240,6 @@ module VCAP::CloudController
         it 'returns a JSON body with full url containing the correct external_protocol' do
           TestConfig.config[:external_protocol] = 'https'
           post "/staging/droplets/#{app_obj.guid}/upload?async=true", upload_req
-          job = Delayed::Job.last
           expect(decoded_response.fetch('metadata').fetch('url')).to start_with('https://')
         end
 

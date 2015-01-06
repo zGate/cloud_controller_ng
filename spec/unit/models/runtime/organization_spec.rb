@@ -404,7 +404,7 @@ module VCAP::CloudController
         org1 = Organization.make
 
         private_domain1 = PrivateDomain.make(owning_organization: org1)
-        private_domain2 = PrivateDomain.make(owning_organization: org1)
+        PrivateDomain.make(owning_organization: org1)
 
         eager_block = proc { |ds| ds.where(id: private_domain1.id) }
 

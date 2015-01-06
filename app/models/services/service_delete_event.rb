@@ -25,7 +25,7 @@ module VCAP::CloudController
 
     def self.create_from_service_instance(instance)
       plan = instance.service_plan
-      svc = plan.service
+      plan.service
       space = instance.space
       org = space.organization
 

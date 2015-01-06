@@ -181,9 +181,9 @@ module VCAP::CloudController
       context 'when filtering results' do
         it 'returns only matching results' do
           user_provided_service_instance_1 = UserProvidedServiceInstance.make(space: space, name: 'provided service 1')
-          user_provided_service_instance_2 = UserProvidedServiceInstance.make(space: space, name: 'provided service 2')
+          UserProvidedServiceInstance.make(space: space, name: 'provided service 2')
           managed_service_instance_1 = ManagedServiceInstance.make(space: space, name: 'managed service 1')
-          managed_service_instance_2 = ManagedServiceInstance.make(space: space, name: 'managed service 2')
+          ManagedServiceInstance.make(space: space, name: 'managed service 2')
 
           get "v2/spaces/#{space.guid}/service_instances", { 'q' => 'name:provided service 1;', 'return_user_provided_service_instances' => true }, headers_for(developer)
           guids = decoded_response.fetch('resources').map { |service| service.fetch('metadata').fetch('guid') }

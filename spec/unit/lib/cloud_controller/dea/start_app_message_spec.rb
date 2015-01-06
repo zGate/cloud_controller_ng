@@ -5,7 +5,7 @@ module VCAP::CloudController
     let(:num_service_instances) { 3 }
 
     let(:app) do
-      app = AppFactory.make.tap do |app|
+      AppFactory.make.tap do |app|
         num_service_instances.times do
           instance = ManagedServiceInstance.make(space: app.space)
           binding = ServiceBinding.make(

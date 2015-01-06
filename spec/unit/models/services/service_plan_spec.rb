@@ -62,7 +62,7 @@ module VCAP::CloudController
           let(:attrs2) { { name: 'dumbo', service_id: service.id } }
           let(:service) { Service.make({}) }
 
-          before { plan = ServicePlan.make(attrs1) }
+          before { ServicePlan.make(attrs1) }
 
           it 'throws a useful error' do
             expect { ServicePlan.make(attrs2) }.to raise_exception('Plan names must be unique within a service')

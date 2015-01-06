@@ -193,7 +193,7 @@ module VCAP::CloudController
           name: 'other'
         )
 
-        non_core = Service.make
+        Service.make
 
         get '/info/services', {}, headers_for(User.make)
       end

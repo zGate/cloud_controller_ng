@@ -117,7 +117,7 @@ module VCAP::CloudController
     end
 
     def legacy_service_offering_encoding(svc)
-      svc_offering = {
+      {
         label: "#{svc.label}-#{svc.version}",
         provider: svc.provider,
         url: svc.url,

@@ -55,7 +55,7 @@ module VCAP::CloudController
 
           context 'when the specified user is created after verifying it does not exist' do
             it 'finds the created user' do
-              user = User.make(guid: user_guid)
+              User.make(guid: user_guid)
               allow(User).to receive(:find) do
                 allow(User).to receive(:find).and_call_original
                 nil

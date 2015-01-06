@@ -17,7 +17,7 @@ module CloudController
 
       def storage_size
         @fingerprints.inject(0) do |sum, fingerprint|
-          sum += fingerprint['size']
+          sum + fingerprint['size']
         end
       end
     end

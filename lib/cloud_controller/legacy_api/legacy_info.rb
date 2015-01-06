@@ -60,7 +60,6 @@ module VCAP::CloudController
         app_mem += (app.memory * app.instances)
       end
 
-      service_count = 0
       {
         memory: app_mem,
         apps: app_num,

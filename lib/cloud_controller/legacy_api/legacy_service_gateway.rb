@@ -97,7 +97,7 @@ module VCAP::CloudController
     end
 
     def list_handles(label_and_version, provider=DEFAULT_PROVIDER)
-      (label, version) = label_and_version.split('-')
+      (label, _) = label_and_version.split('-')
 
       service = Service[label: label, provider: provider]
       raise ApiError.new_from_details('ServiceNotFound', "label=#{label} provider=#{provider}") unless service
@@ -198,7 +198,7 @@ module VCAP::CloudController
     # P.S. While I applaud Ruby for allowing this default parameter in the
     # middle, I'm really not wild for _any_ function overloading in Ruby
     def update_handle(label_and_version, provider=DEFAULT_PROVIDER, id)
-      (label, version) = label_and_version.split('-')
+      (label, _) = label_and_version.split('-')
 
       validate_access(label, provider)
       set_v2_security_context

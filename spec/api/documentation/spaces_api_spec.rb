@@ -164,7 +164,7 @@ resource 'Spaces', type: [:api, :legacy_api] do
     describe 'Services' do
       before do
         some_service = VCAP::CloudController::Service.make(active: true)
-        service_plan = VCAP::CloudController::ServicePlan.make(service: some_service, public: false)
+        VCAP::CloudController::ServicePlan.make(service: some_service, public: false)
         VCAP::CloudController::ServicePlanVisibility.make(service_plan: some_service.service_plans.first, organization: space.organization)
       end
 

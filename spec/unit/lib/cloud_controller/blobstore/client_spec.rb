@@ -152,7 +152,6 @@ module CloudController
             it 'does not copy files below the minimum size limit' do
               path = File.join(local_dir, 'file_with_little_content')
               File.open(path, 'w') { |file| file.write('a') }
-              key = '987654321'
 
               expect(client).not_to receive(:exists)
               expect(client).not_to receive(:cp_to_blobstore)
@@ -162,7 +161,6 @@ module CloudController
             it 'does not copy files above the maximum size limit' do
               path = File.join(local_dir, 'file_with_more_content')
               File.open(path, 'w') { |file| file.write('an amount of content that is larger than the maximum limit') }
-              key = '777777777'
 
               expect(client).not_to receive(:exists)
               expect(client).not_to receive(:cp_to_blobstore)

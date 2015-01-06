@@ -363,7 +363,7 @@ module VCAP::CloudController
       end
 
       describe 'POST services/v1/offerings/:label_and_version(/:provider)/handles/:id' do
-        let!(:svc) { svc = Service.make(label: 'foobar', provider: 'core') }
+        let!(:svc) { Service.make(label: 'foobar', provider: 'core') }
 
         before { @auth_header = { 'HTTP_X_VCAP_SERVICE_TOKEN' => svc.service_auth_token.token } }
 
@@ -414,7 +414,7 @@ module VCAP::CloudController
         end
 
         describe 'with specific provider' do
-          let!(:svc) { svc = Service.make(label: 'foobar', provider: 'test') }
+          let!(:svc) { Service.make(label: 'foobar', provider: 'test') }
 
           before :each do
             plan = ServicePlan.make(

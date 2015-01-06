@@ -51,7 +51,7 @@ module VCAP
       begin
         tries -= 1
         decode_token_with_key(auth_token, pkey: asymmetric_key.value)
-      rescue CF::UAA::InvalidSignature => e
+      rescue CF::UAA::InvalidSignature
         asymmetric_key.refresh
         tries > 0 ? retry : raise
       end

@@ -32,12 +32,12 @@ module VCAP::CloudController
       end
 
       it 'allows shared foo.com when private bar.foo.com exists' do
-        private_domain = PrivateDomain.make name: 'bar.foo.com'
+        PrivateDomain.make name: 'bar.foo.com'
         expect { SharedDomain.make name: 'foo.com' }.to_not raise_error
       end
 
       it 'allows shared foo.com when shared bar.foo.com exists' do
-        private_domain = SharedDomain.make name: 'bar.foo.com'
+        SharedDomain.make name: 'bar.foo.com'
         expect { SharedDomain.make name: 'foo.com' }.to_not raise_error
       end
 

@@ -46,7 +46,7 @@ module VCAP::CloudController
 
         it 'should create an app stop event using the run id from the most recently created start event' do
           Timecop.freeze do
-            newest_by_time = AppStartEvent.create_from_app(app)
+            AppStartEvent.create_from_app(app)
 
             newest_by_sequence = AppStartEvent.create_from_app(app)
             newest_by_sequence.timestamp = Time.now - 3600

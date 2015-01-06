@@ -755,7 +755,7 @@ module VCAP::CloudController
 
           context 'when a buildpack has missing bits' do
             it 'does not include the buildpack' do
-              buildpack_d = Buildpack.make(key: 'd key', position: 5)
+              Buildpack.make(key: 'd key', position: 5)
 
               request = staging_task.staging_request
               admin_buildpacks = request[:admin_buildpacks]

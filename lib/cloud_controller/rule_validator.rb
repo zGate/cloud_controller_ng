@@ -24,8 +24,8 @@ module CloudController
     private
 
     def self.validate_fields(rule)
-      errs = (required_fields - rule.keys).map { |field| "missing required field '#{field}'" }
-      errs += (rule.keys - (required_fields + optional_fields)).map { |key| "contains the invalid field '#{key}'" }
+      (required_fields - rule.keys).map { |field| "missing required field '#{field}'" } +
+        (rule.keys - (required_fields + optional_fields)).map { |key| "contains the invalid field '#{key}'" }
     end
 
     def self.validate_destination(destination)

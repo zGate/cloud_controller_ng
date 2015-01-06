@@ -169,13 +169,13 @@ module VCAP::CloudController
 
           it 'does not allow a private git url' do
             expect {
-              app = AppFactory.make(buildpack: 'git@example.com:foo.git')
+              AppFactory.make(buildpack: 'git@example.com:foo.git')
             }.to raise_error(Sequel::ValidationFailed, /custom buildpacks are disabled/)
           end
 
           it 'does not allow a private git url with ssh schema' do
             expect {
-              app = AppFactory.make(buildpack: 'ssh://git@example.com:foo.git')
+              AppFactory.make(buildpack: 'ssh://git@example.com:foo.git')
             }.to raise_error(Sequel::ValidationFailed, /custom buildpacks are disabled/)
           end
         end
@@ -195,7 +195,7 @@ module VCAP::CloudController
 
         it 'does not allow a non-url string' do
           expect {
-            app = AppFactory.make(buildpack: 'Hello, world!')
+            AppFactory.make(buildpack: 'Hello, world!')
           }.to raise_error(Sequel::ValidationFailed, /is not valid public url or a known buildpack name/)
         end
       end
@@ -841,11 +841,11 @@ module VCAP::CloudController
         before do
           sql_service_plan = ServicePlan.make(service: Service.make(label: 'elephantsql-n/a'))
           sql_service_instance = ManagedServiceInstance.make(space: space, service_plan: sql_service_plan, name: 'elephantsql-vip-uat')
-          sql_binding = ServiceBinding.make(app: app, service_instance: sql_service_instance, credentials: { 'uri' => 'mysql://foo.com' })
+          ServiceBinding.make(app: app, service_instance: sql_service_instance, credentials: { 'uri' => 'mysql://foo.com' })
 
           banana_service_plan = ServicePlan.make(service: Service.make(label: 'chiquita-n/a'))
           banana_service_instance = ManagedServiceInstance.make(space: space, service_plan: banana_service_plan, name: 'chiqiuta-yummy')
-          banana_binding = ServiceBinding.make(app: app, service_instance: banana_service_instance, credentials: { 'uri' => 'banana://yum.com' })
+          ServiceBinding.make(app: app, service_instance: banana_service_instance, credentials: { 'uri' => 'banana://yum.com' })
         end
 
         it 'returns database uri' do
@@ -857,11 +857,11 @@ module VCAP::CloudController
         before do
           banana_service_plan = ServicePlan.make(service: Service.make(label: 'chiquita-n/a'))
           banana_service_instance = ManagedServiceInstance.make(space: space, service_plan: banana_service_plan, name: 'chiqiuta-yummy')
-          banana_binding = ServiceBinding.make(app: app, service_instance: banana_service_instance, credentials: { 'uri' => 'banana://yum.com' })
+          ServiceBinding.make(app: app, service_instance: banana_service_instance, credentials: { 'uri' => 'banana://yum.com' })
 
           uncredentialed_service_plan = ServicePlan.make(service: Service.make(label: 'mysterious-n/a'))
           uncredentialed_service_instance = ManagedServiceInstance.make(space: space, service_plan: uncredentialed_service_plan, name: 'mysterious-mystery')
-          uncredentialed_binding = ServiceBinding.make(app: app, service_instance: uncredentialed_service_instance, credentials: {})
+          ServiceBinding.make(app: app, service_instance: uncredentialed_service_instance, credentials: {})
         end
 
         it 'returns nil' do

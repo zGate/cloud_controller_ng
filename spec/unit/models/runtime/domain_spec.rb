@@ -115,7 +115,7 @@ module VCAP::CloudController
         org = domain.owning_organization
 
         space1 = Space.make(organization: org)
-        space2 = Space.make(organization: org)
+        Space.make(organization: org)
 
         eager_block = proc { |ds| ds.where(id: space1.id) }
 
@@ -129,7 +129,7 @@ module VCAP::CloudController
       it 'allow nested eager_load' do
         domain = PrivateDomain.make
         org = domain.owning_organization
-        space1 = Space.make(organization: org)
+        Space.make(organization: org)
 
         expect {
           @eager_loaded_domain = Domain.eager(spaces_sti_eager_load: :organization).where(id: domain.id).all.first
