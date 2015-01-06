@@ -168,7 +168,7 @@ module VCAP::CloudController
 
         describe 'a simple request or actual request' do
           def make_request_with_origin(origin)
-              get '/test_front_endpoint', '', { 'HTTP_ORIGIN' => origin }
+            get '/test_front_endpoint', '', { 'HTTP_ORIGIN' => origin }
           end
 
           context 'and the origin is not in the whitelist' do

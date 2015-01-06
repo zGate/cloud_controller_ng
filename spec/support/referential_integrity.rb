@@ -25,9 +25,9 @@ class ReferentialIntegrity
   end
 
   def without_referential_integrity_mysql
-      db.run('SET FOREIGN_KEY_CHECKS = 0;')
-      yield
-    ensure
-      db.run('SET FOREIGN_KEY_CHECKS = 1;')
+    db.run('SET FOREIGN_KEY_CHECKS = 0;')
+    yield
+  ensure
+    db.run('SET FOREIGN_KEY_CHECKS = 1;')
   end
 end

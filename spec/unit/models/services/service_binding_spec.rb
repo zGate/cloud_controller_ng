@@ -161,8 +161,8 @@ module VCAP::CloudController
             service_binding.syslog_drain_url = 'http://this.is.a.mean.url.com'
             service_binding.save
           }.to raise_error { |error|
-              expect(error).to be_a(VCAP::Errors::ApiError)
-              expect(error.code).to eq(90006)
+            expect(error).to be_a(VCAP::Errors::ApiError)
+            expect(error.code).to eq(90006)
           }
         end
 

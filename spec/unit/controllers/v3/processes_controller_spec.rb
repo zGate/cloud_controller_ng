@@ -14,18 +14,18 @@ module VCAP::CloudController
     let(:expected_response) { 'process_response_body' }
 
     let(:process_controller) do
-        ProcessesController.new(
-          {},
-          logger,
-          {},
-          {},
-          req_body,
-          nil,
-          {
-            processes_handler: processes_handler,
-            process_presenter: process_presenter
-          },
-        )
+      ProcessesController.new(
+        {},
+        logger,
+        {},
+        {},
+        req_body,
+        nil,
+        {
+          processes_handler: processes_handler,
+          process_presenter: process_presenter
+        },
+      )
     end
 
     before do

@@ -491,7 +491,7 @@ module VCAP::CloudController
         )
         get "#{@app_url}/routes", {}, @headers_for_user
         expect(decoded_response['resources'].map { |r|
-                 r['metadata']['guid']
+          r['metadata']['guid']
         }.sort).to eq([bar_route.guid, route.guid].sort)
 
         expect(Dea::Client).to receive(:update_uris).with(an_instance_of(VCAP::CloudController::App)) do |app|

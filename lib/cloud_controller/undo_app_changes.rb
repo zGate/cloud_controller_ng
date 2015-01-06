@@ -33,7 +33,7 @@ module VCAP::CloudController
 
       update_columns = { key => changes[key][0] }
 
-      count = App.dataset.where(where_columns).update(update_columns)      
+      count = App.dataset.where(where_columns).update(update_columns)
       app.refresh
       logger.warn('app.rollback.failed', guid: app.guid, self: app.inspect, to: update_columns) if count == 0
 
@@ -41,7 +41,7 @@ module VCAP::CloudController
     end
 
     def logger
-       @logger ||= Steno.logger('cc.undo_app_changes')
+      @logger ||= Steno.logger('cc.undo_app_changes')
     end
   end
 end

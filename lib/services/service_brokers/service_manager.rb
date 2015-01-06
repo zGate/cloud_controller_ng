@@ -72,11 +72,11 @@ module VCAP::Services::ServiceBrokers
     end
 
     def find_or_new_model(model_class, cond)
-        obj = model_class.first(cond)
-        unless obj
-          obj = model_class.new(cond)
-        end
-        obj
+      obj = model_class.first(cond)
+      unless obj
+        obj = model_class.new(cond)
+      end
+      obj
     end
 
     def deactivate_services(catalog)

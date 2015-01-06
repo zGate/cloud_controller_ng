@@ -79,8 +79,8 @@ module VCAP::CloudController
 
       context 'user app download' do
         it 'should return 403' do
-           get "/v2/apps/#{app_obj.guid}/download", {}, headers_for(user)
-           expect(last_response.status).to eq(403)
+          get "/v2/apps/#{app_obj.guid}/download", {}, headers_for(user)
+          expect(last_response.status).to eq(403)
         end
       end
     end

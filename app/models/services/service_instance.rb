@@ -127,7 +127,7 @@ module VCAP::CloudController
     end
 
     def validate_space(space)
-       service_bindings.each { |binding| validate_service_binding(binding) }
+      service_bindings.each { |binding| validate_service_binding(binding) }
     end
 
     def service_instance_usage_event_repository

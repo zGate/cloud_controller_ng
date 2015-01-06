@@ -121,23 +121,23 @@ module VCAP::CloudController::RestController
     end
 
     def add_relationship_url_to_response(response, controller, associated_controller, relationship_name, association, obj)
-        if association.is_a?(ControllerDSL::ToOneAttribute)
-          associated_model_instance = get_preloaded_association_contents!(obj, association)
-          if associated_model_instance
-            associated_url = associated_controller.url_for_guid(associated_model_instance.guid)
-          end
-        else
-          associated_url = "#{controller.url_for_guid(obj.guid)}/#{relationship_name}"
+      if association.is_a?(ControllerDSL::ToOneAttribute)
+        associated_model_instance = get_preloaded_association_contents!(obj, association)
+        if associated_model_instance
+          associated_url = associated_controller.url_for_guid(associated_model_instance.guid)
         end
+      else
+        associated_url = "#{controller.url_for_guid(obj.guid)}/#{relationship_name}"
+      end
 
-        response["#{relationship_name}_url"] = associated_url if associated_url
+      response["#{relationship_name}_url"] = associated_url if associated_url
     end
 
     def relationship_link_only?(association, associated_controller, relationship_name, opts, depth, parents)
-        return true if association.link_only?
-        return true if opts[:exclude_relations] && opts[:exclude_relations].include?(relationship_name.to_s)
-        return true if opts[:include_relations] && !opts[:include_relations].include?(relationship_name.to_s)
-        depth >= opts[:inline_relations_depth] || parents.include?(associated_controller)
+      return true if association.link_only?
+      return true if opts[:exclude_relations] && opts[:exclude_relations].include?(relationship_name.to_s)
+      return true if opts[:include_relations] && !opts[:include_relations].include?(relationship_name.to_s)
+      depth >= opts[:inline_relations_depth] || parents.include?(associated_controller)
     end
 
     def get_preloaded_association_contents!(obj, association)

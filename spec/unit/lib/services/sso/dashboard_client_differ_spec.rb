@@ -34,7 +34,7 @@ module VCAP::Services::SSO
           expect(changeset).to have(1).items
           expect(changeset.first).to be_a Commands::UpdateClientCommand
           expect(changeset.first.client_attrs).to eq(dashboard_client)
-         end
+        end
       end
 
       context 'when an existing client is removed from the catalog' do

@@ -12,19 +12,19 @@ module VCAP::CloudController
     let(:app_presenter) { double(:app_presenter) }
     let(:apps_controller) do
       AppsV3Controller.new(
-          {},
-          logger,
-          {},
-          {},
-          req_body,
-          nil,
-          {
-            apps_handler: apps_handler,
-            app_presenter: app_presenter,
-            processes_handler: process_handler,
-            process_presenter: process_presenter
-          },
-        )
+        {},
+        logger,
+        {},
+        {},
+        req_body,
+        nil,
+        {
+          apps_handler: apps_handler,
+          app_presenter: app_presenter,
+          processes_handler: process_handler,
+          process_presenter: process_presenter
+        },
+      )
     end
     let(:app_response) { 'app_response_body' }
     let(:process_response) { 'process_response_body' }
@@ -123,7 +123,7 @@ module VCAP::CloudController
 
       context 'when a user can create a app' do
         it 'returns a 201 Created response' do
-           response_code, _ = apps_controller.create
+          response_code, _ = apps_controller.create
           expect(response_code).to eq 201
         end
 
@@ -265,9 +265,9 @@ module VCAP::CloudController
 
       context 'when the app does exist' do
         it 'returns a 204' do
-            response_code, _ = apps_controller.delete('guid')
-            expect(response_code).to eq 204
-          end
+          response_code, _ = apps_controller.delete('guid')
+          expect(response_code).to eq 204
+        end
 
         context 'when the app has child processes' do
           before do
@@ -276,7 +276,7 @@ module VCAP::CloudController
 
           it 'raises a 400' do
             expect {
-             _, _ = apps_controller.delete('guid')
+              _, _ = apps_controller.delete('guid')
             }.to raise_error do |error|
               expect(error.name).to eq 'UnableToPerform'
               expect(error.response_code).to eq 400
