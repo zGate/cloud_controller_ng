@@ -104,3 +104,9 @@ Lint/HandleExceptions:
 
 Metrics/PerceivedComplexity:
   Enabled: false
+
+Style/PredicateName:
+  Enabled: false
+
+Style/NegatedIf:
+  Enabled: false
