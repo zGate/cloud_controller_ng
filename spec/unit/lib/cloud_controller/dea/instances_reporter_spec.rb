@@ -93,9 +93,8 @@ module VCAP::CloudController
       describe 'running apps' do
         before do
           allow(health_manager_client).to receive(:healthy_instances_bulk) do |apps|
-            apps.reduce({}) do |hash, app|
+            apps.each_with_object({}) do |app, hash|
               hash[app.guid] = 3
-              hash
             end
           end
         end

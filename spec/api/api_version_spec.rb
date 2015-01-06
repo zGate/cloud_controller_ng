@@ -12,9 +12,8 @@ describe 'Stable API warning system', api_version_check: true do
     api_folder = File.expand_path('..', __FILE__)
     filenames = Dir.glob("#{api_folder}/**/*").reject { |filename| File.directory?(filename) || filename == __FILE__ }.sort
 
-    all_file_checksum = filenames.inject('') do |memo, filename|
+    all_file_checksum = filenames.each_with_object('') do |filename, memo|
       memo << Digest::SHA1.file(filename).hexdigest
-      memo
     end
 
     new_checksum = Digest::SHA1.hexdigest(all_file_checksum)

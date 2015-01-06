@@ -77,7 +77,7 @@ module VCAP::CloudController
       runners = dependency_locator.runners
 
       apps = runners.dea_apps(batch_size, last_id)
-      app_hashes = apps.inject({}) { |acc, app| acc[app.guid] = runners.runner_for_app(app).desired_app_info; acc }
+      app_hashes = apps.each_with_object({}) { |app, acc| acc[app.guid] = runners.runner_for_app(app).desired_app_info }
       id_for_next_token = apps.empty? ? nil : apps.last.id
 
       BulkResponse.new(

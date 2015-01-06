@@ -36,9 +36,8 @@ module VCAP::CloudController
     def self.pending_job_count_by_queue
       jobs_by_queue_with_count = Delayed::Job.where(attempts: 0).group_and_count(:queue)
 
-      jobs_by_queue_with_count.reduce({}) do |hash, row|
+      jobs_by_queue_with_count.each_with_object({}) do |row, hash|
         hash[row[:queue].to_sym] = row[:count]
-        hash
       end
     end
 
