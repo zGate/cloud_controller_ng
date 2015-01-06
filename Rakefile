@@ -1,5 +1,5 @@
-$:.unshift(File.expand_path('../lib', __FILE__))
-$:.unshift(File.expand_path('../app', __FILE__))
+$LOAD_PATH.unshift(File.expand_path('../lib', __FILE__))
+$LOAD_PATH.unshift(File.expand_path('../app', __FILE__))
 
 ENV['BUNDLE_GEMFILE'] ||= File.expand_path('../Gemfile', __FILE__)
 require 'bundler/setup'

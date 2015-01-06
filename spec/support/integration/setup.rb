@@ -87,7 +87,7 @@ module IntegrationSetupHelpers
 
     if opts[:wait]
       Process.wait(pid)
-      raise "`#{cmd}` exited with #{$?}" unless $?.success?
+      raise "`#{cmd}` exited with #{$CHILD_STATUS}" unless $CHILD_STATUS.success?
     end
 
     pid
