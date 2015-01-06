@@ -5,7 +5,8 @@ module VCAP::CloudController
     let(:space) { Space.make }
 
     let(:event) do
-      Event.make type: 'audit.movie.premiere',
+      Event.make(
+        type: 'audit.movie.premiere',
         actor: 'ncage',
         actor_type: 'One True God',
         actor_name: 'Nicolas Cage',
@@ -15,6 +16,7 @@ module VCAP::CloudController
         timestamp: Time.new(1997, 6, 27),
         metadata: { 'popcorn_price' => '$(arm + leg)' },
         space: space
+      )
     end
 
     it { is_expected.to have_timestamp_columns }

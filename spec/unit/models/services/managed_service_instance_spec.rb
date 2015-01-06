@@ -171,25 +171,32 @@ module VCAP::CloudController
       let(:paid_plan) { ServicePlan.make(free: false) }
 
       let(:free_quota) do
-        QuotaDefinition.make(total_services: 1,
-                                     non_basic_services_allowed: false)
+        QuotaDefinition.make(
+          total_services: 1,
+          non_basic_services_allowed: false
+        )
       end
       let(:paid_quota) do
-        QuotaDefinition.make(total_services: 1,
-                                     non_basic_services_allowed: true)
+        QuotaDefinition.make(
+          total_services: 1,
+          non_basic_services_allowed: true
+        )
       end
 
       context 'exceed quota' do
         it 'should raise quota error when quota is exceeded' do
           org = Organization.make(quota_definition: free_quota)
           space = Space.make(organization: org)
-          ManagedServiceInstance.make(space: space,
-                                              service_plan: free_plan).
-            save(validate: false)
+          ManagedServiceInstance.make(
+            space: space,
+            service_plan: free_plan
+          ).save(validate: false)
           space.refresh
           expect do
-            ManagedServiceInstance.make(space: space,
-                                                service_plan: free_plan)
+            ManagedServiceInstance.make(
+              space: space,
+              service_plan: free_plan
+            )
           end.to raise_error(Sequel::ValidationFailed, /quota service_instance_quota_exceeded/)
         end
 
@@ -197,8 +204,10 @@ module VCAP::CloudController
           org = Organization.make(quota_definition: paid_quota)
           space = Space.make(organization: org)
           expect do
-            ManagedServiceInstance.make(space: space,
-                                                service_plan: free_plan)
+            ManagedServiceInstance.make(
+              space: space,
+              service_plan: free_plan
+            )
           end.to_not raise_error
         end
       end
@@ -208,8 +217,10 @@ module VCAP::CloudController
           org = Organization.make(quota_definition: free_quota)
           space = Space.make(organization: org)
           expect do
-            ManagedServiceInstance.make(space: space,
-                                                service_plan: free_plan)
+            ManagedServiceInstance.make(
+              space: space,
+              service_plan: free_plan
+            )
           end.to_not raise_error
         end
 
@@ -217,8 +228,10 @@ module VCAP::CloudController
           org = Organization.make(quota_definition: paid_quota)
           space = Space.make(organization: org)
           expect do
-            ManagedServiceInstance.make(space: space,
-                                                service_plan: free_plan)
+            ManagedServiceInstance.make(
+              space: space,
+              service_plan: free_plan
+            )
           end.to_not raise_error
         end
       end
@@ -228,8 +241,10 @@ module VCAP::CloudController
           org = Organization.make(quota_definition: free_quota)
           space = Space.make(organization: org)
           expect do
-            ManagedServiceInstance.make(space: space,
-                                                service_plan: paid_plan)
+            ManagedServiceInstance.make(
+              space: space,
+              service_plan: paid_plan
+            )
           end.to raise_error(Sequel::ValidationFailed,
                              /service_plan paid_services_not_allowed_by_quota/)
         end
@@ -238,8 +253,10 @@ module VCAP::CloudController
           org = Organization.make(quota_definition: paid_quota)
           space = Space.make(organization: org)
           expect do
-            ManagedServiceInstance.make(space: space,
-                                                service_plan: paid_plan)
+            ManagedServiceInstance.make(
+              space: space,
+              service_plan: paid_plan
+            )
           end.to_not raise_error
         end
       end
@@ -278,7 +295,7 @@ module VCAP::CloudController
 
       context 'returns a list of snapshots' do
         let(:success_response) { MultiJson.dump({ snapshots: [{ snapshot_id: '1', name: 'foo', state: 'ok', size: 0 },
-                                                                   { snapshot_id: '2', name: 'bar', state: 'bad', size: 0 }] }) }
+                                                              { snapshot_id: '2', name: 'bar', state: 'bad', size: 0 }] }) }
         before do
           stub_request(:get, enum_snapshots_url_matcher).to_return(body: success_response)
         end

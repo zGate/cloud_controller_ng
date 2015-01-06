@@ -6,8 +6,10 @@ module VCAP
     subject { described_class.new(config_hash) }
 
     let(:config_hash) do
-      { resource_id: 'resource-id',
-       symmetric_secret: nil }
+      {
+        resource_id: 'resource-id',
+        symmetric_secret: nil
+      }
     end
 
     let(:uaa_info) { double(CF::UAA::Info) }

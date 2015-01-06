@@ -878,12 +878,16 @@ module VCAP::CloudController
     describe 'Validation messages' do
       let(:paid_quota) { QuotaDefinition.make(total_services: 1) }
       let(:free_quota_with_no_services) do
-        QuotaDefinition.make(total_services: 0,
-                                     non_basic_services_allowed: false)
+        QuotaDefinition.make(
+          total_services: 0,
+          non_basic_services_allowed: false
+        )
       end
       let(:free_quota_with_one_service) do
-        QuotaDefinition.make(total_services: 1,
-                                     non_basic_services_allowed: false)
+        QuotaDefinition.make(
+          total_services: 1,
+          non_basic_services_allowed: false
+        )
       end
       let(:paid_plan) { ServicePlan.make }
       let(:free_plan) { ServicePlan.make(free: true) }

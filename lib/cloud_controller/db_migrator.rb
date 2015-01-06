@@ -21,8 +21,7 @@ class DBMigrator
   def rollback(number_to_rollback)
     recent_migrations = @db[:schema_migrations].order(Sequel.desc(:filename)).limit(number_to_rollback + 1).all
     recent_migrations = recent_migrations.collect { |hash| hash[:filename].split('_', 2).first.to_i }
-    apply_migrations(current: recent_migrations.first,
-      target: recent_migrations.last)
+    apply_migrations(current: recent_migrations.first, target: recent_migrations.last)
   end
 
   def check_migrations!

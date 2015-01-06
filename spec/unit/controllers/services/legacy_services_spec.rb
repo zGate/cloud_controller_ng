@@ -47,15 +47,19 @@ module VCAP::CloudController
 
       describe 'GET /services/v1/offerings' do
         before do
-          svc = Service.make(label: 'foo',
-                                     provider: 'core',
-                                     version: '1.0',
-                                     url: 'http://localhost:56789')
+          svc = Service.make(
+            label: 'foo',
+            provider: 'core',
+            version: '1.0',
+            url: 'http://localhost:56789'
+          )
 
-          svc_test = Service.make(label: 'foo',
-                                          provider: 'test',
-                                          version: '1.0',
-                                          url: 'http://localhost:56789')
+          svc_test = Service.make(
+            label: 'foo',
+            provider: 'test',
+            version: '1.0',
+            url: 'http://localhost:56789'
+          )
 
           [svc, svc_test].each do |s|
             ServicePlan.make(service: s, name: 'free')

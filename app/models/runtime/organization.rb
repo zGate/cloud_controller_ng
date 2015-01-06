@@ -17,8 +17,12 @@ module VCAP::CloudController
     one_to_many :app_events,
                 dataset: -> { VCAP::CloudController::AppEvent.filter(app: apps) }
 
-    one_to_many :private_domains, key: :owning_organization_id,
-                before_add: proc { |org, private_domain| private_domain.addable_to_organization!(org) }
+    one_to_many(
+      :private_domains,
+      key: :owning_organization_id,
+      before_add: proc { |org, private_domain| private_domain.addable_to_organization!(org) }
+    )
+
     one_to_many :service_plan_visibilities
     many_to_one :quota_definition
 
@@ -50,11 +54,13 @@ module VCAP::CloudController
     one_to_many :space_quota_definitions,
                 before_add: proc { |org, quota| quota.organization.id == org.id }
 
-    add_association_dependencies spaces: :destroy,
+    add_association_dependencies(
+      spaces: :destroy,
       service_instances: :destroy,
       private_domains: :destroy,
       service_plan_visibilities: :destroy,
       space_quota_definitions: :destroy
+    )
 
     define_user_group :users
     define_user_group :managers,

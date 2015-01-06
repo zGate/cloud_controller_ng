@@ -24,7 +24,9 @@ log (enables logging for the egress rule)
 DESC
 
     field :name, 'The name of the security group.', required: opts[:required], example_values: ['my_super_sec_group']
-    field :rules, rules_description, default: [], render_example_pre_tag: true,
+    field :rules, rules_description,
+      default: [],
+      render_example_pre_tag: true,
       example_values: [JSON.pretty_generate([
         { protocol: 'icmp', destination: '0.0.0.0/0', type: 0, code: 1 },
         { protocol: 'tcp', destination: '0.0.0.0/0', ports: '2048-3000', log: true },

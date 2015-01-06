@@ -16,8 +16,13 @@ module VCAP::CloudController
     let(:hm_client) { instance_double(Dea::HM9000::Client) }
 
     let(:dea_app) { AppFactory.make(package_hash: 'abc', package_state: 'STAGED') }
-    let(:diego_app) { AppFactory.make(package_hash: 'abc', package_state: 'STAGED', 
-      environment_json: { 'DIEGO_RUN_BETA' => 'true' }) }
+    let(:diego_app) do
+      AppFactory.make(
+        package_hash: 'abc',
+        package_state: 'STAGED',
+        environment_json: { 'DIEGO_RUN_BETA' => 'true' }
+      )
+    end
 
     let(:reporter) { double(:Reporter) }
     let(:reporter2) { double(:Reporter) }

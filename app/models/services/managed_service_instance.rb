@@ -34,11 +34,15 @@ module VCAP::CloudController
         u = URI.parse(service.url)
         u.path = "/gateway/v2/configurations/#{service_id}/snapshots"
 
-        response = client.public_send(method, u,
-          header: { VCAP::Services::Api::GATEWAY_TOKEN_HEADER => token.token,
+        response = client.public_send(
+          method,
+          u,
+          header: {
+            VCAP::Services::Api::GATEWAY_TOKEN_HEADER => token.token,
             'Content-Type' => 'application/json'
           },
-          body: payload)
+          body: payload
+        )
         if response.ok?
           response.body
         else

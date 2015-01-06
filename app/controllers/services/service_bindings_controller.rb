@@ -28,8 +28,7 @@ module VCAP::CloudController
 
       @request_attrs = json_msg.extract(stringify_keys: true)
 
-      logger.debug 'cc.create', model: self.class.model_class_name,
-        attributes: request_attrs
+      logger.debug 'cc.create', model: self.class.model_class_name, attributes: request_attrs
 
       raise InvalidRequest unless request_attrs
 

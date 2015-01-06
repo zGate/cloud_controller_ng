@@ -178,34 +178,34 @@ module VCAP::CloudController
     describe '.configure_components' do
       before do
         @test_config = {
-            packages: {
-              fog_connection: {},
-              app_package_directory_key: 'app_key',
+          packages: {
+            fog_connection: {},
+            app_package_directory_key: 'app_key',
+          },
+          droplets: {
+            fog_connection: {},
+            droplet_directory_key: 'droplet_key',
+          },
+          buildpacks: {
+            fog_connection: {},
+            buildpack_directory_key: 'bp_key',
+          },
+          resource_pool: {
+            minimum_size: 0,
+            maximum_size: 0,
+            fog_connection: {},
+            resource_directory_key: 'resource_key',
+          },
+          cc_partition: 'ng',
+          bulk_api: {},
+          external_host: 'host',
+          external_port: 1234,
+          staging: {
+            auth: {
+              user: 'user',
+              password: 'password',
             },
-            droplets: {
-              fog_connection: {},
-              droplet_directory_key: 'droplet_key',
-            },
-            buildpacks: {
-              fog_connection: {},
-              buildpack_directory_key: 'bp_key',
-            },
-            resource_pool: {
-              minimum_size: 0,
-              maximum_size: 0,
-              fog_connection: {},
-              resource_directory_key: 'resource_key',
-            },
-            cc_partition: 'ng',
-            bulk_api: {},
-            external_host: 'host',
-            external_port: 1234,
-            staging: {
-              auth: {
-                user: 'user',
-                password: 'password',
-                },
-            },
+          },
           diego: {
             staging: 'optional',
             running: 'optional',
@@ -232,21 +232,21 @@ module VCAP::CloudController
 
       it 'creates the runners' do
         expect(VCAP::CloudController::Runners).to receive(:new).with(
-                                    @test_config,
-                                    message_bus,
-                                    instance_of(Dea::Pool),
-                                    instance_of(Dea::StagerPool))
+          @test_config,
+          message_bus,
+          instance_of(Dea::Pool),
+          instance_of(Dea::StagerPool))
         Config.configure_components(@test_config)
         Config.configure_components_depending_on_message_bus(message_bus)
       end
 
       it 'creates the stagers' do
         expect(VCAP::CloudController::Stagers).to receive(:new).with(
-                                    @test_config,
-                                    message_bus,
-                                    instance_of(Dea::Pool),
-                                    instance_of(Dea::StagerPool),
-                                    instance_of(Runners))
+          @test_config,
+          message_bus,
+          instance_of(Dea::Pool),
+          instance_of(Dea::StagerPool),
+          instance_of(Runners))
         Config.configure_components(@test_config)
         Config.configure_components_depending_on_message_bus(message_bus)
       end

@@ -66,8 +66,7 @@ module VCAP::CloudController
 
       service_plan_guid = request_attrs['service_plan_guid']
 
-      logger.debug 'cc.create', model: self.class.model_class_name,
-        attributes: request_attrs
+      logger.debug 'cc.create', model: self.class.model_class_name, attributes: request_attrs
 
       raise Errors::ApiError.new_from_details('InvalidRequest') unless request_attrs
 

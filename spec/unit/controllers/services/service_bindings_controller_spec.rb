@@ -51,13 +51,17 @@ module VCAP::CloudController
       before do
         @app_a = AppFactory.make(space: @space_a)
         @service_instance_a = ManagedServiceInstance.make(space: @space_a)
-        @obj_a = ServiceBinding.make(app: @app_a,
-                                             service_instance: @service_instance_a)
+        @obj_a = ServiceBinding.make(
+          app: @app_a,
+          service_instance: @service_instance_a
+        )
 
         @app_b = AppFactory.make(space: @space_b)
         @service_instance_b = ManagedServiceInstance.make(space: @space_b)
-        @obj_b = ServiceBinding.make(app: @app_b,
-                                             service_instance: @service_instance_b)
+        @obj_b = ServiceBinding.make(
+          app: @app_b,
+          service_instance: @service_instance_b
+        )
       end
 
       describe 'Org Level Permissions' do

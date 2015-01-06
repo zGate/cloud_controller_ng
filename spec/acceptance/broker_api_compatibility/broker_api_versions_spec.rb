@@ -5,9 +5,9 @@ describe 'Broker API Versions' do
     {
       'broker_api_v2.0_spec.rb' => '5af68b620fa95af117b4c2a59cf03870',
       'broker_api_v2.1_spec.rb' => '79cb09f2525a4006c8da0c6eb9ad9322',
-      'broker_api_v2.2_spec.rb' => 'e2828295dd36f93462a537a7c0f5fd57',
+      'broker_api_v2.2_spec.rb' => '29d240c39137cc654c1aeff6e0e2abf1',
       'broker_api_v2.3_spec.rb' => '784b3ca4f7afbac4428c55a37b82b7e4',
-      'broker_api_v2.4_spec.rb' => '68a05e9818bec75cf89052a97863f35f',
+      'broker_api_v2.4_spec.rb' => '9be296cb6ce21259cafa15c9a6f06004',
     }
   end
 

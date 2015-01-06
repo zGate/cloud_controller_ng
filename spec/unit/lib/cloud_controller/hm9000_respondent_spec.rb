@@ -38,9 +38,14 @@ module VCAP::CloudController
     end
 
     let(:app) do
-      AppFactory.make instances: 2, state: app_state, droplet_hash: droplet_hash,
-        package_hash: 'abcd', package_state: package_state,
+      AppFactory.make(
+        instances: 2,
+        state: app_state,
+        droplet_hash: droplet_hash,
+        package_hash: 'abcd',
+        package_state: package_state,
         environment_json: environment
+      )
     end
 
     let(:environment) { {} }
@@ -92,7 +97,7 @@ module VCAP::CloudController
                   subject.process_hm9000_start(hm9000_start_message)
                 end
               end
-              
+
               context 'and the DIEGO_RUN_BETA flag is not set' do
                 it 'should send the start message' do
                   expect(dea_client).to receive(:start_instance_at_index) do |app_to_start, index_to_start|

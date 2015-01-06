@@ -32,8 +32,9 @@ module VCAP::CloudController
       context 'with invalid config' do
         let(:file) { File.join(Paths::FIXTURES, 'config/invalid_stacks.yml') }
 
-        { default: 'default => Missing key',
-         stacks: 'name => Missing key'
+        {
+          default: 'default => Missing key',
+          stacks: 'name => Missing key'
         }.each do |key, expected_error|
           it "requires #{key} (validates via '#{expected_error}')" do
             expect {

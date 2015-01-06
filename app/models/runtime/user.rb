@@ -7,8 +7,7 @@ module VCAP::CloudController
     many_to_many :organizations,
       before_remove: :validate_organization_roles
 
-    many_to_one :default_space, key: :default_space_id,
-      class: 'VCAP::CloudController::Space'
+    many_to_one :default_space, key: :default_space_id, class: 'VCAP::CloudController::Space'
 
     many_to_many :managed_organizations,
       class: 'VCAP::CloudController::Organization',

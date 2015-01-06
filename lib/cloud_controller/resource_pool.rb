@@ -148,8 +148,7 @@ class VCAP::CloudController::ResourcePool
 
     took = Time.now - start
 
-    logger.debug 'resource_pool.download.complete', took: took,
-      destination: destination
+    logger.debug 'resource_pool.download.complete', took: took, destination: destination
   end
 
   def key_from_sha1(sha1)

@@ -17,8 +17,11 @@ module VCAP::CloudController
 
       context 'owning_organization' do
         let(:org) { Organization.make }
-        it { is_expected.to have_associated :owning_organization, test_instance: Domain.make(owning_organization: org),
-          associated_instance: ->(domain) { org } }
+        it do
+          is_expected.to have_associated :owning_organization,
+            test_instance: Domain.make(owning_organization: org),
+            associated_instance: ->(domain) { org }
+        end
       end
 
       context 'changing owning_organization' do

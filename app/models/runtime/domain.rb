@@ -47,8 +47,11 @@ module VCAP::CloudController
                   end
                 }
 
-    many_to_one :owning_organization, class: 'VCAP::CloudController::Organization',
-                  before_set: :validate_change_owning_organization
+    many_to_one(
+      :owning_organization,
+      class: 'VCAP::CloudController::Organization',
+      before_set: :validate_change_owning_organization
+    )
     one_to_many :routes
 
     add_association_dependencies routes: :destroy
