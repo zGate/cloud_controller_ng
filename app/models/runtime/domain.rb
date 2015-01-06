@@ -82,7 +82,7 @@ module VCAP::CloudController
 
       if name.include?('.')
         route_host = name[0, name.index('.')]
-        route_domain_name = name[name.index('.')+1, name.length]
+        route_domain_name = name[name.index('.') + 1, name.length]
         route_domain = Domain.find(name: route_domain_name)
         return false if route_domain.nil?
         return true if Route.dataset.filter(host: route_host, domain: route_domain).count > 0

@@ -145,14 +145,14 @@ module VCAP::Services::ServiceBrokers
         expect(event.space_guid).to eq('')
         expect(event.organization_guid).to eq('')
         expect(event.metadata).to include({
-          'name'=>service_plan.name,
-          'free'=>service_plan.free,
-          'description'=>service_plan.description,
-          'service_guid'=>service_plan.service.guid,
-          'extra'=>"{\"cost\":\"0.0\"}",
-          'unique_id'=>service_plan.unique_id,
-          'public'=>service_plan.public,
-          'active'=>service_plan.active
+          'name' => service_plan.name,
+          'free' => service_plan.free,
+          'description' => service_plan.description,
+          'service_guid' => service_plan.service.guid,
+          'extra' => "{\"cost\":\"0.0\"}",
+          'unique_id' => service_plan.unique_id,
+          'public' => service_plan.public,
+          'active' => service_plan.active
         })
       end
 

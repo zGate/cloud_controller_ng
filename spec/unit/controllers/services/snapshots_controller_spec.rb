@@ -172,7 +172,7 @@ module VCAP::CloudController
             'total_pages' => 1,
             'prev_url' => nil,
             'next_url' => nil,
-            'resources'=>[
+            'resources' => [
               {
                 'metadata' => {
                   'guid' => "#{service_instance.guid}_1234",

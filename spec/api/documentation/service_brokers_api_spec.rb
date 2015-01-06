@@ -110,6 +110,6 @@ resource 'Service Brokers', type: [:api, :legacy_api] do
   end
 
   def document_warning_header(response_headers)
-    response_headers['X-Cf-Warnings']= 'Warning%3A+Warning+message+may+go+here.'
+    response_headers['X-Cf-Warnings'] = 'Warning%3A+Warning+message+may+go+here.'
   end
 end

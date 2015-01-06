@@ -139,7 +139,8 @@ module VCAP::CloudController
               end
 
               it 'allows custom headers to be returned' do
-                expect(last_response.headers['Access-Control-Expose-Headers'].split(',')).to contain_exactly('x-cf-warnings', 'x-app-staging-log', 'range', 'location', ::VCAP::Request::HEADER_NAME.downcase)
+                expect(last_response.headers['Access-Control-Expose-Headers'].split(',')).
+                  to contain_exactly('x-cf-warnings', 'x-app-staging-log', 'range', 'location', ::VCAP::Request::HEADER_NAME.downcase)
               end
 
               it 'allows needed request headers to be included' do

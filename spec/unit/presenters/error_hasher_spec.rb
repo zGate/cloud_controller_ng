@@ -81,12 +81,12 @@ describe ErrorHasher do
       let(:error) { to_h_error }
 
       it 'lets the error do the conversion' do
-        expect(unsanitized_hash).to eq({ 'code'=>67890,
-                                        'description'=>'fake message',
-                                        'error_code'=>'CF-RuntimeError',
-                                        'backtrace'=>['fake backtrace'],
-                                        'arbritratry key'=>'arbritratry value',
-                                        'source'=>'fake source' })
+        expect(unsanitized_hash).to eq({ 'code' => 67890,
+                                        'description' => 'fake message',
+                                        'error_code' => 'CF-RuntimeError',
+                                        'backtrace' => ['fake backtrace'],
+                                        'arbritratry key' => 'arbritratry value',
+                                        'source' => 'fake source' })
       end
     end
 
@@ -94,10 +94,10 @@ describe ErrorHasher do
       let(:error) { api_error }
 
       it 'uses a standard convention by default' do
-        expect(unsanitized_hash).to eq({ 'code'=>130001,
-                                        'description'=>'The domain is invalid: notadomain',
-                                        'error_code'=>'CF-DomainInvalid',
-                                        'backtrace'=>['fake backtrace'] })
+        expect(unsanitized_hash).to eq({ 'code' => 130001,
+                                        'description' => 'The domain is invalid: notadomain',
+                                        'error_code' => 'CF-DomainInvalid',
+                                        'backtrace' => ['fake backtrace'] })
       end
     end
 
@@ -105,11 +105,11 @@ describe ErrorHasher do
       let(:error) { services_error }
 
       it 'uses a standard convention by default' do
-        expect(unsanitized_hash).to eq({ 'code'=>10001,
-                                        'description'=>'fake message',
-                                        'error_code'=>'CF-StructuredError',
-                                        'backtrace'=>['fake backtrace'],
-                                        'source'=>'fake source' })
+        expect(unsanitized_hash).to eq({ 'code' => 10001,
+                                        'description' => 'fake message',
+                                        'error_code' => 'CF-StructuredError',
+                                        'backtrace' => ['fake backtrace'],
+                                        'source' => 'fake source' })
       end
     end
 
@@ -129,10 +129,10 @@ describe ErrorHasher do
       let(:error) { unknown_error }
 
       it 'uses a standard convention by default' do
-        expect(unsanitized_hash).to eq({ 'code'=>10001,
-                                        'description'=>'fake message',
-                                        'error_code'=>'CF-RuntimeError',
-                                        'backtrace'=>['fake backtrace'] })
+        expect(unsanitized_hash).to eq({ 'code' => 10001,
+                                        'description' => 'fake message',
+                                        'error_code' => 'CF-RuntimeError',
+                                        'backtrace' => ['fake backtrace'] })
       end
     end
   end
@@ -146,9 +146,9 @@ describe ErrorHasher do
       let(:error) { to_h_error }
 
       it 'returns the default hash' do
-        expect(sanitized_hash).to eq({ 'error_code'=>'UnknownError',
-                                      'description'=>'An unknown error occurred.',
-                                      'code'=>10001 })
+        expect(sanitized_hash).to eq({ 'error_code' => 'UnknownError',
+                                      'description' => 'An unknown error occurred.',
+                                      'code' => 10001 })
       end
     end
 
@@ -156,9 +156,9 @@ describe ErrorHasher do
       let(:error) { api_error }
 
       it 'uses a standard convention by default' do
-        expect(sanitized_hash).to eq({ 'code'=>130001,
-                                      'description'=>'The domain is invalid: notadomain',
-                                      'error_code'=>'CF-DomainInvalid'
+        expect(sanitized_hash).to eq({ 'code' => 130001,
+                                      'description' => 'The domain is invalid: notadomain',
+                                      'error_code' => 'CF-DomainInvalid'
                                      })
       end
     end
@@ -167,9 +167,9 @@ describe ErrorHasher do
       let(:error) { services_error }
 
       it 'uses a standard convention by default' do
-        expect(sanitized_hash).to eq({ 'code'=>10001,
-                                      'description'=>'fake message',
-                                      'error_code'=>'CF-StructuredError' })
+        expect(sanitized_hash).to eq({ 'code' => 10001,
+                                      'description' => 'fake message',
+                                      'error_code' => 'CF-StructuredError' })
       end
     end
 
@@ -189,9 +189,9 @@ describe ErrorHasher do
       let(:error) { unknown_error }
 
       it 'uses a standard convention by default' do
-        expect(sanitized_hash).to eq({ 'code'=>10001,
-                                      'description'=>'An unknown error occurred.',
-                                      'error_code'=>'UnknownError' })
+        expect(sanitized_hash).to eq({ 'code' => 10001,
+                                      'description' => 'An unknown error occurred.',
+                                      'error_code' => 'UnknownError' })
       end
     end
 

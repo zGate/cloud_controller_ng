@@ -170,7 +170,7 @@ module VCAP::CloudController
         let(:path) do
           '/v2/billing_events?' +
             "start_date=#{@start_time.iso8601}" +
-            "&end_date=#{(@end_time-1).iso8601}"
+            "&end_date=#{(@end_time - 1).iso8601}"
         end
 
         it 'correctly filters events' do
@@ -186,7 +186,7 @@ module VCAP::CloudController
       context 'when events are before of the start_date' do
         let(:path) do
           '/v2/billing_events?' +
-            "start_date=#{(@start_time+1).iso8601}" +
+            "start_date=#{(@start_time + 1).iso8601}" +
             "&end_date=#{@end_time.iso8601}"
         end
 

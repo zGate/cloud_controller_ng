@@ -26,7 +26,7 @@ module VCAP::CloudController
       before do
         5.times do |i|
           make_diego_app(
-            id: i+1,
+            id: i + 1,
             state: 'STARTED',
           )
         end

@@ -219,8 +219,8 @@ module VCAP::CloudController
       end
 
       it 'sets up the account capacity' do
-        Config.configure_components(@test_config.merge(admin_account_capacity: { memory: 64*1024 }))
-        expect(AccountCapacity.admin[:memory]).to eq(64*1024)
+        Config.configure_components(@test_config.merge(admin_account_capacity: { memory: 64 * 1024 }))
+        expect(AccountCapacity.admin[:memory]).to eq(64 * 1024)
 
         AccountCapacity.admin[:memory] = AccountCapacity::ADMIN_MEM
       end

@@ -63,9 +63,9 @@ module VCAP::CloudController::BrokerApiHelper
     get('/v2/services?inline-relations-depth=1', '{}', json_headers(admin_headers))
     response   = JSON.parse(last_response.body)
     service_plans = response['resources'].first['entity']['service_plans']
-    @plan_guid = service_plans.find { |plan| plan['entity']['name']=='small' }['metadata']['guid']
+    @plan_guid = service_plans.find { |plan| plan['entity']['name'] == 'small' }['metadata']['guid']
 
-    large_plan = service_plans.find { |plan| plan['entity']['name']=='large' }
+    large_plan = service_plans.find { |plan| plan['entity']['name'] == 'large' }
     @large_plan_guid = large_plan['metadata']['guid'] if large_plan
     make_all_plans_public
 

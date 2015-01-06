@@ -160,7 +160,7 @@ module VCAP::CloudController
         allow(runners).to receive(:diego_running_disabled?).and_return(false)
 
         5.times do |i|
-          app = make_diego_app(id: i+1, state: 'STARTED')
+          app = make_diego_app(id: i + 1, state: 'STARTED')
           app.add_route(Route.make(space: app.space))
         end
 
@@ -303,7 +303,7 @@ module VCAP::CloudController
         allow(runners).to receive(:diego_running_optional?).and_return(true)
 
         5.times do |i|
-          app = make_dea_app(id: i+1, state: 'STARTED')
+          app = make_dea_app(id: i + 1, state: 'STARTED')
           app.add_route(Route.make(space: app.space))
         end
       end

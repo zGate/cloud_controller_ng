@@ -333,14 +333,14 @@ resource 'Events', type: [:api, :legacy_api] do
                                actee_name: new_plan.name,
                                space_guid: '',
                                metadata: {
-                                 'name'=> new_plan.name,
-                                 'free'=> new_plan.free,
-                                 'description'=> new_plan.description,
-                                 'service_guid'=> new_plan.service.guid,
-                                 'extra'=> new_plan.extra,
-                                 'unique_id'=> new_plan.unique_id,
-                                 'public'=> new_plan.public,
-                                 'active'=> new_plan.active
+                                 'name' => new_plan.name,
+                                 'free' => new_plan.free,
+                                 'description' => new_plan.description,
+                                 'service_guid' => new_plan.service.guid,
+                                 'extra' => new_plan.extra,
+                                 'unique_id' => new_plan.unique_id,
+                                 'public' => new_plan.public,
+                                 'active' => new_plan.active
                                }
     end
 

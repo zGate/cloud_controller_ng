@@ -108,7 +108,7 @@ module VCAP::CloudController
         it 'returns the memory * instances of the db row' do
           expected      = app.instances * app.memory
           app.instances += 5
-          app.memory    +=100
+          app.memory += 100
 
           expect(subject.currently_used_memory).to eq(expected)
         end

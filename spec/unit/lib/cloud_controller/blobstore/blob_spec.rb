@@ -37,7 +37,7 @@ module CloudController
           it 'is valid for an hour' do
             Timecop.freeze do
               now = Time.now
-              expect(file).to receive(:url).with(now+3600)
+              expect(file).to receive(:url).with(now + 3600)
               blob.download_url
             end
           end
@@ -74,7 +74,7 @@ module CloudController
         end
 
         it 'returns attributes for a set of keys' do
-          expect(blob.attributes('c')).to eq({ 'c'=>'d' })
+          expect(blob.attributes('c')).to eq({ 'c' => 'd' })
         end
       end
     end

@@ -13,8 +13,8 @@ module VCAP::CloudController
         {
           install_buildpacks: [
             {
-              'name'=>'buildpack1',
-              'package'=>'mybuildpackpkg'
+              'name' => 'buildpack1',
+              'package' => 'mybuildpackpkg'
             },
           ]
         }
@@ -36,8 +36,8 @@ module VCAP::CloudController
 
       it 'handles multiple buildpacks' do
         TestConfig.config[:install_buildpacks] << {
-          'name'=>'buildpack2',
-          'package'=>'myotherpkg'
+          'name' => 'buildpack2',
+          'package' => 'myotherpkg'
         }
 
         expect(Jobs::Runtime::BuildpackInstaller).to receive(:new).with('buildpack1', 'abuildpack.zip', {}).ordered.and_return(job)
@@ -73,9 +73,9 @@ module VCAP::CloudController
           {
             install_buildpacks: [
               {
-                'name'=>'buildpack1',
-                'package'=>'mybuildpackpkg',
-                'file'=>'another.zip',
+                'name' => 'buildpack1',
+                'package' => 'mybuildpackpkg',
+                'file' => 'another.zip',
               },
             ]
           }
@@ -129,11 +129,11 @@ module VCAP::CloudController
           {
             install_buildpacks: [
               {
-                'name'=>'buildpack1',
-                'package'=>'mybuildpackpkg',
-                'enabled'=>true,
-                'locked'=>false,
-                'position'=>5,
+                'name' => 'buildpack1',
+                'package' => 'mybuildpackpkg',
+                'enabled' => true,
+                'locked' => false,
+                'position' => 5,
               },
             ]
           }

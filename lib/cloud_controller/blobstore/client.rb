@@ -161,7 +161,7 @@ module CloudController
       end
 
       def within_limits?(size)
-        size>=@min_size && (@max_size.nil? || size<=@max_size)
+        size >= @min_size && (@max_size.nil? || size <= @max_size)
       end
     end
   end

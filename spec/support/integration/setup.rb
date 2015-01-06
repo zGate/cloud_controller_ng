@@ -41,7 +41,7 @@ module IntegrationSetup
 
     info_endpoint = "http://localhost:#{config["external_port"]}/info"
 
-    Integer(CC_START_TIMEOUT/SLEEP_INTERVAL).times do
+    Integer(CC_START_TIMEOUT / SLEEP_INTERVAL).times do
       sleep SLEEP_INTERVAL
       result = Net::HTTP.get_response(URI.parse(info_endpoint)) rescue nil
       return if result && result.code.to_i == 200

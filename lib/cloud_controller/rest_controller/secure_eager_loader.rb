@@ -63,7 +63,7 @@ module VCAP::CloudController::RestController
                 association_model_class.associated_class,
                 default_visibility_filter,
                 additional_visibility_filters,
-                depth-1,
+                depth - 1,
               )
             }
           elsif association.is_a?(ControllerDSL::ToOneAttribute)

@@ -164,7 +164,7 @@ module VCAP::CloudController
               'created_at' => test_model_many_to_one.test_model.created_at,
               'updated_at' => test_model_many_to_one.test_model.updated_at
             },
-            'entity'=>{
+            'entity' => {
               'unique_value' => test_model_many_to_one.test_model.unique_value,
               'test_model_many_to_ones_url' => "/v2/test_models/#{test_model_many_to_one.test_model.guid}/test_model_many_to_ones",
               'test_model_many_to_manies_url' => "/v2/test_models/#{test_model_many_to_one.test_model.guid}/test_model_many_to_manies",
