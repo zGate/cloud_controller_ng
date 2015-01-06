@@ -188,22 +188,22 @@ describe 'Service Broker' do
         expect(last_response.status).to eql(502)
         expect(decoded_response['code']).to eql(270012)
         expect(decoded_response['description']).to eql(
-          "Service broker catalog is invalid: \n" +
-            "Service ids must be unique\n" +
-            "Service dashboard_client id must be unique\n" +
-            "Service service-1\n" +
-            "  Service id must be a string, but has value 12345\n" +
-            "Service service-2\n" +
-            "  Plan ids must be unique\n" +
-            "  Plan large\n" +
-            "    Plan description is required\n" +
-            "Service service-3\n" +
-            "  Service dashboard client secret is required\n" +
-            "  Service dashboard client redirect_uri is required\n" +
-            "  Plan names must be unique within a service\n" +
-            "  Plan tiny\n" +
-            "    Plan id must be a string, but has value 123\n" +
-            "Service service-4\n" +
+          "Service broker catalog is invalid: \n" \
+            "Service ids must be unique\n" \
+            "Service dashboard_client id must be unique\n" \
+            "Service service-1\n" \
+            "  Service id must be a string, but has value 12345\n" \
+            "Service service-2\n" \
+            "  Plan ids must be unique\n" \
+            "  Plan large\n" \
+            "    Plan description is required\n" \
+            "Service service-3\n" \
+            "  Service dashboard client secret is required\n" \
+            "  Service dashboard client redirect_uri is required\n" \
+            "  Plan names must be unique within a service\n" \
+            "  Plan tiny\n" \
+            "    Plan id must be a string, but has value 123\n" \
+            "Service service-4\n" \
             "  At least one plan is required\n"
         )
       end

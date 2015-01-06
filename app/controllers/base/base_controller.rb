@@ -132,7 +132,7 @@ module VCAP::CloudController::RestController
       elsif VCAP::CloudController::SecurityContext.invalid_token?
         raise VCAP::Errors::ApiError.new_from_details('InvalidAuthToken')
       else
-        logger.error 'Unexpected condition: valid token with no user/client id ' +
+        logger.error 'Unexpected condition: valid token with no user/client id ' \
                        "or admin scope. Token hash: #{VCAP::CloudController::SecurityContext.token}"
         raise VCAP::Errors::ApiError.new_from_details('InvalidAuthToken')
       end

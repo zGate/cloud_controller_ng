@@ -88,3 +88,9 @@ Style/MultilineBlockChain:
 
 Style/MultilineBlockLayout:
   Enabled: false
+
+Metrics/ClassLength:
+  Enabled: false
+
+Style/RescueModifier:
+  Enabled: false

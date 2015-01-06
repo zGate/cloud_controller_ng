@@ -45,7 +45,7 @@ module VCAP::CloudController::RestController
 
         unless association_model_class
           raise ArgumentError.new(
-            "Cannot resolve association #{association_name} on #{model_class} " +
+            "Cannot resolve association #{association_name} on #{model_class} " \
               'while trying to build eager loading hash'
           )
         end

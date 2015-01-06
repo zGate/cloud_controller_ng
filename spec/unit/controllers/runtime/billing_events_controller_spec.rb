@@ -62,8 +62,8 @@ module VCAP::CloudController
 
       context 'with valid start and end date parameters' do
         let(:path) do
-          '/v2/billing_events?' +
-            "start_date=#{@start_time.utc.iso8601}" +
+          '/v2/billing_events?' \
+            "start_date=#{@start_time.utc.iso8601}" \
             "&end_date=#{@end_time.utc.iso8601}"
         end
 
@@ -168,8 +168,8 @@ module VCAP::CloudController
 
       context 'when events are after of the end_date' do
         let(:path) do
-          '/v2/billing_events?' +
-            "start_date=#{@start_time.iso8601}" +
+          '/v2/billing_events?' \
+            "start_date=#{@start_time.iso8601}" \
             "&end_date=#{(@end_time - 1).iso8601}"
         end
 
@@ -185,8 +185,8 @@ module VCAP::CloudController
 
       context 'when events are before of the start_date' do
         let(:path) do
-          '/v2/billing_events?' +
-            "start_date=#{(@start_time + 1).iso8601}" +
+          '/v2/billing_events?' \
+            "start_date=#{(@start_time + 1).iso8601}" \
             "&end_date=#{@end_time.iso8601}"
         end
 
