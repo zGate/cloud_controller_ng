@@ -4,7 +4,7 @@ describe 'Sequel::Plugins::VcapValidations' do
   before do
     @c = Class.new(Sequel::Model) do
       attr_accessor :val
-      def self.set_validations(&block)
+      def self.define_validations(&block)
         define_method(:validate, &block)
       end
     end
@@ -14,7 +14,7 @@ describe 'Sequel::Plugins::VcapValidations' do
 
   describe 'validates_url' do
     before do
-      @c.set_validations { validates_url(:val) }
+      @c.define_validations { validates_url(:val) }
     end
 
     it 'should allow a http url' do
@@ -53,7 +53,7 @@ describe 'Sequel::Plugins::VcapValidations' do
     end
 
     context 'with a given error message' do
-      before { @c.set_validations { validates_url(:val, message: 'must be a valid url') } }
+      before { @c.define_validations { validates_url(:val, message: 'must be a valid url') } }
 
       it 'uses that message for the validation error' do
         @m.val = ''
@@ -65,7 +65,7 @@ describe 'Sequel::Plugins::VcapValidations' do
 
   describe 'validates_email' do
     before do
-      @c.set_validations { validates_email(:val) }
+      @c.define_validations { validates_email(:val) }
     end
 
     it 'should allow a valid email' do

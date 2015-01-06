@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module VCAP::CloudController
   describe Buildpack, type: :model do
-    def get_bp_ordered
+    def ordered_buildpacks
       Buildpack.order(:position).map { |bp| [bp.name, bp.position] }
     end
 
@@ -155,7 +155,7 @@ module VCAP::CloudController
           expect {
             Buildpack.create(name: 'new_buildpack', key: 'abcdef', position: 5)
           }.to change {
-            get_bp_ordered
+            ordered_buildpacks
           }.from([]).to([['new_buildpack', 1]])
         end
 
@@ -170,7 +170,7 @@ module VCAP::CloudController
           expect {
             Buildpack.create(name: 'new_buildpack', key: 'abcdef')
           }.to change {
-            get_bp_ordered
+            ordered_buildpacks
           }.from([]).to([['new_buildpack', 1]])
         end
       end
@@ -193,7 +193,7 @@ module VCAP::CloudController
             expect {
               Buildpack.create(name: 'new_buildpack', key: 'abcdef', position: 0)
             }.to change {
-              get_bp_ordered
+              ordered_buildpacks
             }.from(
                    [['name_100', 1], ['name_99', 2], ['name_98', 3], ['name_97', 4]]
                  ).to(
@@ -205,7 +205,7 @@ module VCAP::CloudController
             expect {
               Buildpack.create(name: 'new_buildpack', key: 'abcdef', position: 7)
             }.to change {
-              get_bp_ordered
+              ordered_buildpacks
             }.from(
                    [['name_100', 1], ['name_99', 2], ['name_98', 3], ['name_97', 4]]
                  ).to(
@@ -217,7 +217,7 @@ module VCAP::CloudController
             expect {
               Buildpack.create(name: 'new_buildpack', key: 'abcdef', position: 2)
             }.to change {
-              get_bp_ordered
+              ordered_buildpacks
             }.from(
                    [['name_100', 1], ['name_99', 2], ['name_98', 3], ['name_97', 4]]
                  ).to(
@@ -229,7 +229,7 @@ module VCAP::CloudController
             expect {
               Buildpack.create(name: 'new_buildpack', key: 'abcdef', position: 4)
             }.to change {
-              get_bp_ordered
+              ordered_buildpacks
             }.from(
                    [['name_100', 1], ['name_99', 2], ['name_98', 3], ['name_97', 4]]
                  ).to(
@@ -243,7 +243,7 @@ module VCAP::CloudController
             expect {
               Buildpack.create(name: 'new_buildpack', key: 'abcdef')
             }.to change {
-              get_bp_ordered
+              ordered_buildpacks
             }.from(
                    [['name_100', 1], ['name_99', 2], ['name_98', 3], ['name_97', 4]]
                  ).to(
@@ -259,7 +259,7 @@ module VCAP::CloudController
                 bp.set_all(name: 'new_buildpack', key: 'abcdef', position: 1)
               end
             }.to change {
-              get_bp_ordered
+              ordered_buildpacks
             }.from(
                    [['name_100', 1], ['name_99', 2], ['name_98', 3], ['name_97', 4]]
                  ).to(
@@ -292,7 +292,7 @@ module VCAP::CloudController
         expect {
           buildpacks.first.update(key: 'abcdef')
         }.to_not change {
-          get_bp_ordered
+          ordered_buildpacks
         }
       end
 
@@ -306,7 +306,7 @@ module VCAP::CloudController
         expect {
           buildpacks[3].update(position: 1)
         }.to change {
-          get_bp_ordered
+          ordered_buildpacks
         }.from(
                [['name_100', 1], ['name_99', 2], ['name_98', 3], ['name_97', 4]]
              ).to(
@@ -318,7 +318,7 @@ module VCAP::CloudController
         expect {
           buildpacks[3].update(position: 2)
         }.to change {
-          get_bp_ordered
+          ordered_buildpacks
         }.from(
                [['name_100', 1], ['name_99', 2], ['name_98', 3], ['name_97', 4]]
              ).to(
@@ -330,7 +330,7 @@ module VCAP::CloudController
         expect {
           buildpacks.first.update({ position: 4 })
         }.to change {
-          get_bp_ordered
+          ordered_buildpacks
         }.from(
                [['name_100', 1], ['name_99', 2], ['name_98', 3], ['name_97', 4]]
              ).to(
@@ -344,7 +344,7 @@ module VCAP::CloudController
             expect {
               buildpacks[1].update(position: 0)
             }.to change {
-              get_bp_ordered
+              ordered_buildpacks
             }.from(
                    [['name_100', 1], ['name_99', 2], ['name_98', 3], ['name_97', 4]]
                  ).to(
@@ -358,7 +358,7 @@ module VCAP::CloudController
             expect {
               buildpacks[2].update(position: 5)
             }.to change {
-              get_bp_ordered
+              ordered_buildpacks
             }.from(
                    [['name_100', 1], ['name_99', 2], ['name_98', 3], ['name_97', 4]]
                  ).to(
@@ -377,7 +377,7 @@ module VCAP::CloudController
         expect {
           buildpack1.destroy
         }.to change {
-          get_bp_ordered
+          ordered_buildpacks
         }.from(
                [['first_buildpack', 1], ['second_buildpack', 2]]
              ).to(
@@ -389,7 +389,7 @@ module VCAP::CloudController
         expect {
           buildpack2.destroy
         }.to change {
-          get_bp_ordered
+          ordered_buildpacks
         }.from(
                [['first_buildpack', 1], ['second_buildpack', 2]]
              ).to(

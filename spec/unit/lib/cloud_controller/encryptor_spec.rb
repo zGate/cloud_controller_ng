@@ -123,10 +123,10 @@ module VCAP::CloudController
 
       before do
         klass.class_eval do
-          def set_underlying_sekret(value)
+          def underlying_sekret=(value)
             @sekret = value
           end
-          def get_underlying_sekret
+          def underlying_sekret
             @sekret
           end
         end
@@ -157,7 +157,7 @@ module VCAP::CloudController
       describe 'decryption' do
         it 'decrypts by passing the salt and the underlying value to Encryptor' do
           subject.sekret_salt = 'asdf'
-          subject.set_underlying_sekret 'underlying'
+          subject.underlying_sekret = 'underlying'
           expect(Encryptor).to receive(:decrypt).with('underlying', 'asdf') { 'unencrypted' }
           expect(subject.sekret).to eq 'unencrypted'
         end
@@ -174,7 +174,7 @@ module VCAP::CloudController
             expect(Encryptor).to_not receive(:encrypt)
             [nil, ''].each do |blank_value|
               subject.sekret = blank_value
-              expect(subject.get_underlying_sekret).to eq nil
+              expect(subject.underlying_sekret).to eq nil
             end
           end
         end
@@ -184,7 +184,7 @@ module VCAP::CloudController
             subject.sekret_salt = 'asdf'
             expect(Encryptor).to receive(:encrypt).with('unencrypted', 'asdf') { 'encrypted' }
             subject.sekret = 'unencrypted'
-            expect(subject.get_underlying_sekret).to eq 'encrypted'
+            expect(subject.underlying_sekret).to eq 'encrypted'
           end
         end
       end
