@@ -2,7 +2,6 @@ require 'spec_helper'
 
 module VCAP::CloudController
   module Jobs::Runtime
-
     describe PendingPackagesCleanup do
       let(:expiration_in_seconds) { 5.minutes }
 

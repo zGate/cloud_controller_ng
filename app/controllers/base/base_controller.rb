@@ -4,7 +4,6 @@ require 'cloud_controller/rest_controller/routes'
 require 'cloud_controller/security/access_context'
 
 module VCAP::CloudController::RestController
-
   # The base class for all api endpoints.
   class BaseController
     ROUTE_PREFIX = '/v2'

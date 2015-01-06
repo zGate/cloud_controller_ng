@@ -2,7 +2,6 @@ require 'spec_helper'
 
 module VCAP::CloudController
   module Jobs::Runtime
-
     class FailingJob
       def perform; raise 'Hell'; end
       def failure; end

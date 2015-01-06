@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 module VCAP::Services::ServiceBrokers::V2
-
   describe ServiceBrokerApiUnreachable do
     let(:uri) { 'http://www.example.com/' }
     let(:error) { SocketError.new('some message') }

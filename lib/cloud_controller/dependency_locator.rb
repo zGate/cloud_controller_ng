@@ -11,7 +11,6 @@ require 'cloud_controller/diego/messenger'
 require 'cloud_controller/diego/traditional/protocol'
 
 module CloudController
-
   class DependencyLocator
     include Singleton
     include VCAP::CloudController

@@ -1,7 +1,6 @@
 require 'presenters/api/job_presenter'
 
 module VCAP::CloudController::RestController
-
   # Wraps models and presents collection and per object rest end points
   class ModelController < BaseController
     include Routes

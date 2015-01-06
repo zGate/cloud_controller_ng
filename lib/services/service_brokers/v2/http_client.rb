@@ -2,7 +2,6 @@ require 'net/http'
 
 module VCAP::Services
   module ServiceBrokers::V2
-
     class ServiceBrokerApiUnreachable < HttpRequestError
       def initialize(uri, method, source)
         super(

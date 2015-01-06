@@ -1,7 +1,6 @@
 require 'set'
 
 module VCAP::CloudController
-
   class Roles
     CLOUD_CONTROLLER_ADMIN_SCOPE = 'cloud_controller.admin'
 

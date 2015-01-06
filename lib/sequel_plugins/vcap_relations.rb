@@ -180,6 +180,5 @@ module Sequel::Plugins::VcapRelations
         end
       end
     end
-
   end
 end
