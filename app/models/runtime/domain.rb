@@ -77,7 +77,7 @@ module VCAP::CloudController
         d.nil? || d.owning_organization == owning_organization || d.shared?
       end
 
-      return false
+      false
     end
 
     def routes_match?

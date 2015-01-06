@@ -53,7 +53,7 @@ module VCAP::CloudController
 
     def domains_match?
       return false if domain.nil? || host.nil? || host.empty?
-      return !Domain.find(name: fqdn).nil?
+      !Domain.find(name: fqdn).nil?
     end
 
     def validate_app(app)

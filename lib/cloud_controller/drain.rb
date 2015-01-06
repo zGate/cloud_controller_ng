@@ -64,7 +64,7 @@ module VCAP
           log_info("#{program} not running")
           return false
         end
-        return true
+        true
       end
 
       def logger

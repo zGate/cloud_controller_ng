@@ -37,7 +37,7 @@ module VCAP::CloudController
       app.refresh
       logger.warn('app.rollback.failed', guid: app.guid, self: app.inspect, to: update_columns) if count == 0
 
-      return count == 1
+      count == 1
     end
 
     def logger

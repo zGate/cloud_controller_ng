@@ -59,7 +59,7 @@ module VCAP::CloudController
           return false
         end
 
-        return true
+        true
       end
 
       attr_reader :logger

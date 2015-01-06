@@ -36,7 +36,7 @@ module VCAP::Services::SSO
       return false unless all_clients_can_be_claimed_in_uaa?(existing_uaa_client_ids, catalog)
 
       claim_clients_and_update_uaa(requested_clients, existing_ccdb_clients, existing_uaa_client_ids)
-      return true
+      true
     end
 
     def remove_clients_for_broker

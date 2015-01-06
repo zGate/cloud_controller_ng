@@ -20,7 +20,7 @@ module VCAP::CloudController
     end
 
     def run_with_diego?(app)
-      return app.run_with_diego? && !diego_running_disabled?
+      app.run_with_diego? && !diego_running_disabled?
     end
 
     def diego_apps(batch_size, last_id)

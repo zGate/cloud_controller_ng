@@ -42,7 +42,7 @@ module VCAP::CloudController
     def find_for_show(guid)
       process_model = App.where(apps__guid: guid).eager_graph(:space).all.first
       return nil, nil if process_model.nil?
-      return ProcessMapper.map_model_to_domain(process_model), process_model.space
+      [ProcessMapper.map_model_to_domain(process_model), process_model.space]
     end
 
     def find_for_update(guid)

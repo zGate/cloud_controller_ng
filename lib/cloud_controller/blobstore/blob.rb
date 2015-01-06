@@ -16,7 +16,7 @@ module CloudController
       end
 
       def download_url
-        return download_uri_for_file
+        download_uri_for_file
       end
 
       def public_url
@@ -37,7 +37,7 @@ module CloudController
         if file.respond_to?(:url)
           return file.url(Time.now + 3600)
         end
-        return file.public_url
+        file.public_url
       end
     end
   end

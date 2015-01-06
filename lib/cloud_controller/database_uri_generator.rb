@@ -26,7 +26,7 @@ module VCAP::CloudController
         end
       end
 
-      return nil
+      nil
     end
 
     def convert_scheme_to_rails_style_adapter(uri)

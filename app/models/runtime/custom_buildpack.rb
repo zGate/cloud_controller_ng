@@ -15,7 +15,7 @@ module VCAP::CloudController
       unless url =~ URI_REGEXP
         @errors << "#{url} is not valid public url or a known buildpack name"
       end
-      return @errors.empty?
+      @errors.empty?
     end
 
     def errors

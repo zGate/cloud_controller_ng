@@ -41,7 +41,7 @@ module VCAP::CloudController
       end
 
       def has_app_package?
-        return !self[:executableUri].nil?
+        !self[:executableUri].nil?
       end
     end
   end

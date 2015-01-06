@@ -24,7 +24,7 @@ module VCAP::Services::ServiceBrokers
         broker.destroy
         raise e
       end
-      return self
+      self
     end
 
     def update
@@ -36,7 +36,7 @@ module VCAP::Services::ServiceBrokers
         broker.save
         synchronize_services_and_plans!
       end
-      return self
+      self
     end
 
     def errors

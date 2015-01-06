@@ -12,7 +12,7 @@ module VCAP::CloudController
     def has_default_space?
       raise Errors::ApiError.new_from_details('NotAuthorized') unless user
       return true if user.default_space || !user.spaces.empty?
-      return false
+      false
     end
   end
 end

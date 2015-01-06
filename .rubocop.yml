@@ -94,3 +94,6 @@ Metrics/ClassLength:
 
 Style/RescueModifier:
   Enabled: false
+
+Style/RedundantSelf:
+  Enabled: false
