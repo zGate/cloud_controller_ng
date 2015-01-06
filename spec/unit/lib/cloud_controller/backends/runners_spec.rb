@@ -35,7 +35,7 @@ module VCAP::CloudController
       true
     end
 
-    let (:buildpack) do
+    let(:buildpack) do
       instance_double(AutoDetectionBuildpack,
         custom?: false
       )

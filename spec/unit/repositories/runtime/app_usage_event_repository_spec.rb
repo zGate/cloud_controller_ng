@@ -33,7 +33,7 @@ module VCAP::CloudController
         end
 
         context 'when a custom state is provided' do
-          let (:custom_state) { 'CUSTOM' }
+          let(:custom_state) { 'CUSTOM' }
 
           it 'will populate the event with the custom state' do
             event = repository.create_from_app(app, custom_state)
@@ -92,7 +92,7 @@ module VCAP::CloudController
         end
 
         context 'when a custom buildpack is associated with the app' do
-          let (:buildpack_url) { 'https://git.example.com/repo.git' }
+          let(:buildpack_url) { 'https://git.example.com/repo.git' }
 
           before do
             app.buildpack = buildpack_url
@@ -141,7 +141,7 @@ module VCAP::CloudController
           # Truncate in mysql causes an implicit commit.
           # This stub will cause the same behavior, but not commit.
           allow(AppUsageEvent.dataset).to receive(:truncate) do
-            AppUsageEvent.dataset.delete 
+            AppUsageEvent.dataset.delete
           end
           allow(AppObserver).to receive(:updated)
         end
@@ -177,7 +177,7 @@ module VCAP::CloudController
           end
 
           context 'with associated buidpack information' do
-            let (:buildpack) { Buildpack.make }
+            let(:buildpack) { Buildpack.make }
 
             before do
               app.buildpack = buildpack.name
@@ -219,7 +219,7 @@ module VCAP::CloudController
             repository.delete_events_older_than(cutoff_age_in_days)
           }.to change {
             AppUsageEvent.count
-          }.to (1)
+          }.to(1)
 
           expect(AppUsageEvent.last).to match_app(app)
         end

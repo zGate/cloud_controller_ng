@@ -11,7 +11,7 @@ module VCAP::CloudController
         instance_double(App)
       end
 
-      let (:protocol) do
+      let(:protocol) do
         instance_double(Diego::Traditional::Protocol, desire_app_message: {})
       end
 

@@ -5,7 +5,7 @@ require 'thread'
 describe 'Cloud controller', type: :integration, monitoring: true do
   let(:port) { 8181 }
 
-  let (:newrelic_config_file) {
+  let(:newrelic_config_file) {
     File.expand_path(File.join(File.dirname(__FILE__), '../fixtures/config/newrelic.yml'))
   }
 

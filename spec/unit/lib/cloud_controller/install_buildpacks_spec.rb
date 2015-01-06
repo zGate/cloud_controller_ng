@@ -3,11 +3,11 @@ require 'spec_helper'
 module VCAP::CloudController
   describe InstallBuildpacks do
     describe 'installs buildpacks' do
-      let (:installer) { InstallBuildpacks.new(TestConfig.config) }
-      let (:job) { double(Jobs::Runtime::BuildpackInstaller) }
-      let (:job2) { double(Jobs::Runtime::BuildpackInstaller) }
-      let (:enqueuer) { double(Jobs::Enqueuer) }
-      let (:install_buildpack_config) do
+      let(:installer) { InstallBuildpacks.new(TestConfig.config) }
+      let(:job) { double(Jobs::Runtime::BuildpackInstaller) }
+      let(:job2) { double(Jobs::Runtime::BuildpackInstaller) }
+      let(:enqueuer) { double(Jobs::Enqueuer) }
+      let(:install_buildpack_config) do
         {
           install_buildpacks: [
             {
@@ -67,7 +67,7 @@ module VCAP::CloudController
       end
 
       context 'override file location' do
-        let (:install_buildpack_config) do
+        let(:install_buildpack_config) do
           {
             install_buildpacks: [
               {
@@ -123,7 +123,7 @@ module VCAP::CloudController
       end
 
       context 'additional options' do
-        let (:install_buildpack_config) do
+        let(:install_buildpack_config) do
           {
             install_buildpacks: [
               {

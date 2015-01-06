@@ -269,7 +269,7 @@ module VCAP::CloudController::RestController
         end
 
         context 'when ascending' do
-          let (:order_direction) { 'asc' }
+          let(:order_direction) { 'asc' }
 
           it 'includes order-direction in next_url and prev_url' do
             prev_url = JSON.parse(render_json_call)['prev_url']
@@ -280,7 +280,7 @@ module VCAP::CloudController::RestController
         end
 
         context 'when descending' do
-          let (:order_direction) { 'desc' }
+          let(:order_direction) { 'desc' }
 
           it 'includes order-direction in next_url and prev_url' do
             prev_url = JSON.parse(render_json_call)['prev_url']

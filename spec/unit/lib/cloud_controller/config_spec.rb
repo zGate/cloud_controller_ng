@@ -20,7 +20,7 @@ module VCAP::CloudController
 
     describe '.merge_defaults' do
       context 'when no config values are provided' do
-        let (:config) { Config.from_file(File.join(Paths::FIXTURES, 'config/minimal_config.yml')) }
+        let(:config) { Config.from_file(File.join(Paths::FIXTURES, 'config/minimal_config.yml')) }
         it 'sets default stacks_file' do
           expect(config[:stacks_file]).to eq(File.join(Config.config_dir, 'stacks.yml'))
         end
@@ -70,7 +70,7 @@ module VCAP::CloudController
 
       context 'when config values are provided' do
         context 'and the values are valid' do
-          let (:config) { Config.from_file(File.join(Paths::FIXTURES, 'config/default_overriding_config.yml')) }
+          let(:config) { Config.from_file(File.join(Paths::FIXTURES, 'config/default_overriding_config.yml')) }
 
           it 'preserves the stacks_file value from the file' do
             expect(config[:stacks_file]).to eq('/tmp/foo')
@@ -125,7 +125,7 @@ module VCAP::CloudController
 
           context 'when the staging auth is already url encoded' do
             let(:tmpdir) { Dir.mktmpdir }
-            let (:config_from_file) { Config.from_file(File.join(tmpdir, 'overridden_with_urlencoded_values.yml')) }
+            let(:config_from_file) { Config.from_file(File.join(tmpdir, 'overridden_with_urlencoded_values.yml')) }
 
             before do
               config_hash = YAML.load_file(File.join(Paths::FIXTURES, 'config/minimal_config.yml'))
@@ -146,7 +146,7 @@ module VCAP::CloudController
 
         context 'and the values are invalid' do
           let(:tmpdir) { Dir.mktmpdir }
-          let (:config_from_file) { Config.from_file(File.join(tmpdir, 'incorrect_overridden_config.yml')) }
+          let(:config_from_file) { Config.from_file(File.join(tmpdir, 'incorrect_overridden_config.yml')) }
 
           before do
             config_hash = YAML.load_file(File.join(Paths::FIXTURES, 'config/minimal_config.yml'))

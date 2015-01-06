@@ -6,7 +6,7 @@ module VCAP::CloudController
       RackAppBuilder.new
     end
 
-    let (:use_nginx) { false }
+    let(:use_nginx) { false }
 
     before do
       TestConfig.override({
@@ -27,7 +27,7 @@ module VCAP::CloudController
       end
 
       context 'when nginx is enabled' do
-        let (:use_nginx) { true }
+        let(:use_nginx) { true }
 
         it 'does not use Rack::CommonLogger' do
           builder.build(TestConfig.config).to_app

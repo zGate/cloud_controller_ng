@@ -276,7 +276,7 @@ module VCAP::CloudController
     end
 
     describe '#initialize' do
-      let (:argv_options) { [] }
+      let(:argv_options) { [] }
 
       before do
         allow_any_instance_of(Runner).to receive(:deprecation_warning)
@@ -297,7 +297,7 @@ module VCAP::CloudController
         describe 'Configuration File' do
           ['-c', '--config'].each do |flag|
             describe flag do
-              let (:argv_options) { [flag, config_file.path] }
+              let(:argv_options) { [flag, config_file.path] }
 
               it 'should set the configuration file' do
                 expect(subject.config_file).to eq(config_file.path)
@@ -308,7 +308,7 @@ module VCAP::CloudController
 
         describe 'Insert seed data' do
           ['-s', '--insert-seed'].each do |flag|
-            let (:argv_options) { [flag] }
+            let(:argv_options) { [flag] }
 
             it 'should set insert_seed_data to true' do
               expect(subject.insert_seed_data).to be true
@@ -316,7 +316,7 @@ module VCAP::CloudController
           end
 
           ['-m', '--run-migrations'].each do |flag|
-            let (:argv_options) { [flag] }
+            let(:argv_options) { [flag] }
 
             it 'should set insert_seed_data to true' do
               expect_any_instance_of(Runner).to receive(:deprecation_warning).with('Deprecated: Use -s or --insert-seed flag')

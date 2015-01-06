@@ -29,7 +29,7 @@ module VCAP::CloudController
       Rack::Test::UploadedFile.new(zip_file)
     end
 
-    let (:staging_timeout) { TestConfig.config[:staging][:timeout_in_seconds] }
+    let(:staging_timeout) { TestConfig.config[:staging][:timeout_in_seconds] }
 
     let(:expected_sha_valid_zip) { "#{buildpack.guid}_#{sha_valid_zip}" }
 
@@ -115,7 +115,7 @@ module VCAP::CloudController
         end
 
         context 'when the same bits are uploaded twice' do
-          let (:buildpack2) { VCAP::CloudController::Buildpack.create_from_hash({ name: 'buildpack2', position: 0 }) }
+          let(:buildpack2) { VCAP::CloudController::Buildpack.create_from_hash({ name: 'buildpack2', position: 0 }) }
 
           it 'should have different keys' do
             upload_buildpack.upload_buildpack(buildpack, valid_zip2, filename)

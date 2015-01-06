@@ -9,7 +9,7 @@ module VCAP::CloudController
 
       let(:app) { AppFactory.make(staging_task_id: 'first_id') }
 
-      let (:completion_handler) do
+      let(:completion_handler) do
         instance_double(Diego::Traditional::StagingCompletionHandler, staging_complete: nil)
       end
 
@@ -39,7 +39,7 @@ module VCAP::CloudController
       end
 
       describe '#staging_complete' do
-        let (:staging_response) do
+        let(:staging_response) do
           { app_id: 'app-id', task_id: 'task_id' }
         end
 

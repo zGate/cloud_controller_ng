@@ -190,7 +190,7 @@ module VCAP::CloudController
       let(:other_org) { Organization.make }
       let(:space_one) { Space.make(organization: org) }
       let(:user) { make_developer_for_space(space_one) }
-      let (:headers) do
+      let(:headers) do
         headers_for(user)
       end
 

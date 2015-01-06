@@ -206,7 +206,7 @@ module VCAP::CloudController
           TestConfig.override({ billing_event_writing_enabled: true })
         end
 
-        let (:org) do
+        let(:org) do
           o = Organization.make
           2.times do
             space = Space.make(

@@ -430,7 +430,7 @@ module VCAP::CloudController
       let(:space_one) { Space.make(organization: organization_one) }
       let(:space_two) { Space.make(organization: organization_two) }
       let(:user) { make_developer_for_space(space_one) }
-      let (:headers) do
+      let(:headers) do
         headers_for(user)
       end
 

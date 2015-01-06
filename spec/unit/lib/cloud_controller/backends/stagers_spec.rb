@@ -37,7 +37,7 @@ module VCAP::CloudController
       true
     end
 
-    let (:buildpack) do
+    let(:buildpack) do
       instance_double(AutoDetectionBuildpack,
         custom?: false
       )
@@ -73,7 +73,7 @@ module VCAP::CloudController
       end
 
       context 'when a custom buildpack is specified' do
-        let (:buildpack) do
+        let(:buildpack) do
           instance_double(CustomBuildpack, custom?: true)
         end
 
@@ -95,7 +95,7 @@ module VCAP::CloudController
       end
 
       context 'when an admin buildpack is specified' do
-        let (:buildpack) { instance_double(Buildpack, custom?: false) }
+        let(:buildpack) { instance_double(Buildpack, custom?: false) }
 
         before do
           allow(app).to receive(:buildpack_specified?).and_return(true)

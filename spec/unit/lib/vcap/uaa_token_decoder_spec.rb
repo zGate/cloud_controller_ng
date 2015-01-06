@@ -184,7 +184,7 @@ module VCAP
             it 'sets the grace period to be 0 instead' do
               token_content['exp'] = Time.now.to_i
               expired_token = generate_token(rsa_key, token_content)
-              allow(logger).to receive (:warn)
+              allow(logger).to receive(:warn)
               expect {
                 subject.decode_token("bearer #{expired_token}")
               }.to raise_error(VCAP::UaaTokenDecoder::BadToken)

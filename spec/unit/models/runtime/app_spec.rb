@@ -1022,8 +1022,8 @@ module VCAP::CloudController
     end
 
     describe 'update_detected_buildpack' do
-      let (:app) { AppFactory.make }
-      let (:detect_output) { 'buildpack detect script output' }
+      let(:app) { AppFactory.make }
+      let(:detect_output) { 'buildpack detect script output' }
 
       context 'when detect output is available' do
         it 'sets detected_buildpack with the output of the detect script' do
@@ -1033,7 +1033,7 @@ module VCAP::CloudController
       end
 
       context 'when an admin buildpack is used for staging' do
-        let (:admin_buildpack) { Buildpack.make }
+        let(:admin_buildpack) { Buildpack.make }
         before do
           app.buildpack = admin_buildpack.name
         end
@@ -1050,7 +1050,7 @@ module VCAP::CloudController
       end
 
       context 'when the buildpack key is missing (custom buildpack used)' do
-        let (:custom_buildpack_url) { 'https://example.com/repo.git' }
+        let(:custom_buildpack_url) { 'https://example.com/repo.git' }
         before do
           app.buildpack = custom_buildpack_url
         end
@@ -1464,7 +1464,7 @@ module VCAP::CloudController
     end
 
     describe '#mark_as_failed_to_stage' do
-      let (:app) { AppFactory.make }
+      let(:app) { AppFactory.make }
 
       it 'should set the package state to failed' do
         expect {
