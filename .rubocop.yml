@@ -82,3 +82,6 @@ Style/IfUnlessModifier:
 
 Style/RaiseArgs:
   EnforcedStyle: compact
+
+Style/MultilineBlockChain:
+  Enabled: false
