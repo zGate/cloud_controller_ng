@@ -2,7 +2,6 @@ require 'socket'
 require 'loggregator_messages/log_message.pb'
 
 class FakeLoggregatorServer
-
   attr_reader :messages, :port, :sock
 
   def initialize(port)

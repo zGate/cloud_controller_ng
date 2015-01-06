@@ -6,7 +6,6 @@ module VCAP::CloudController
   # cloudcontroller metaprogramming. We manually generate the JSON
   # expected by CFoundry and CF.
   class ServiceBrokersController < RestController::ModelController
-
     define_attributes do
       attribute :name,       String
       attribute :broker_url, String

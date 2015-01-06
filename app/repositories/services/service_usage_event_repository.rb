@@ -2,7 +2,6 @@ module VCAP::CloudController
   module Repositories
     module Services
       class ServiceUsageEventRepository
-
         DELETED_EVENT_STATE = 'DELETED'.freeze
         CREATED_EVENT_STATE = 'CREATED'.freeze
 
@@ -78,7 +77,6 @@ module VCAP::CloudController
 
           ServiceUsageEvent.insert(column_map.keys, usage_query)
         end
-
       end
     end
   end

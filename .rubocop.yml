@@ -67,3 +67,12 @@ Style/WordArray:
 
 Style/GuardClause:
   Enabled: false
+
+Lint/AmbiguousRegexpLiteral:
+  Enabled: false
+
+Lint/UnusedBlockArgument:
+  Enabled: false
+
+Metrics/AbcSize:
+  Enabled: false

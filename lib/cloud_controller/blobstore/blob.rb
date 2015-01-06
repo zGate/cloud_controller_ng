@@ -2,7 +2,6 @@ module CloudController
   module Blobstore
     # Central place to get download urls for a blob object stored in a blobstore
     class Blob
-
       CACHE_ATTRIBUTES = [:etag, :last_modified, :created_at]
 
       attr_reader :file

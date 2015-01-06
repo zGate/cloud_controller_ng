@@ -1,6 +1,5 @@
 module VCAP::CloudController
     class StenoConfigurer
-
     def initialize(logging_config)
       @config = logging_config || {}
     end

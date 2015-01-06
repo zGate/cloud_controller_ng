@@ -8,7 +8,6 @@ module VCAP::CloudController
     let(:sinatra) { nil }
 
     class TestController < RestController::BaseController
-
       def test_endpoint
         'test_response'
       end

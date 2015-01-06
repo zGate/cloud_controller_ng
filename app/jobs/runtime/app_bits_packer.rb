@@ -5,7 +5,6 @@ module VCAP::CloudController
   module Jobs
     module Runtime
       class AppBitsPacker < Struct.new(:app_guid, :uploaded_compressed_path, :fingerprints)
-
         def perform
           logger = Steno.logger('cc.background')
           logger.info("Packing the app bits for app '#{app_guid}'")

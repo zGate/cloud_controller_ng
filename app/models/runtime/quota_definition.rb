@@ -1,6 +1,5 @@
 module VCAP::CloudController
   class QuotaDefinition < Sequel::Model
-
     one_to_many :organizations
 
     export_attributes :name, :non_basic_services_allowed, :total_services, :total_routes,

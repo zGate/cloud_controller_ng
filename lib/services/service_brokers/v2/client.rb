@@ -77,7 +77,6 @@ module VCAP::Services::ServiceBrokers::V2
   end
 
   class Client
-
     CATALOG_PATH = '/v2/catalog'.freeze
 
     def initialize(attrs)

@@ -10,7 +10,6 @@ module VCAP::RestAPI
   # filtered dataset.  Since datasets aren't bound to a particular model,
   # we need to pass both pieces of infomration.
   class Query
-
     # Create a new Query.
     #
     # @param [Sequel::Model] model The model to query against

@@ -142,6 +142,5 @@ module VCAP::CloudController
     rescue => unbind_e
       logger.error "Unable to unbind #{self}: #{unbind_e}"
     end
-
   end
 end

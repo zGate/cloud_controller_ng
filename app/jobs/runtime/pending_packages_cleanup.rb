@@ -2,7 +2,6 @@ module VCAP::CloudController
   module Jobs
     module Runtime
       class PendingPackagesCleanup < Struct.new(:expiration_in_seconds)
-
         def perform
           cutoff_time = Time.now - expiration_in_seconds
           App.where('package_pending_since < ?', cutoff_time).update(

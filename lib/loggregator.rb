@@ -1,5 +1,4 @@
 class Loggregator
-
   @@emitter = nil
 
   def self.emit(app_id, message)

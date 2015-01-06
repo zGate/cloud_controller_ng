@@ -1,7 +1,6 @@
 module VCAP
   module Errors
     class Details
-
       def self.yaml_file_path
         File.join(File.expand_path('../../../../vendor/errors', __FILE__), 'v2.yml')
       end

@@ -1,6 +1,5 @@
 module VCAP::CloudController
   class InstallBuildpacks
-
     attr_reader :config
 
     def initialize(config)
@@ -51,6 +50,5 @@ module VCAP::CloudController
       job_dir = File.join('/var/vcap/packages', package, '*.zip')
       Dir[job_dir].first
     end
-
   end
 end

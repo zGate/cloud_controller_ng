@@ -5,7 +5,6 @@ module VCAP::CloudController
   module Diego
     module Docker
       class StagingCompletionHandler < VCAP::CloudController::Diego::StagingCompletionHandlerBase
-
         def initialize(runners)
           super(runners, Steno.logger('cc.docker.stager'), 'diego.docker.staging.')
         end

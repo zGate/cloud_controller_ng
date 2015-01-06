@@ -1,6 +1,5 @@
 module VCAP::CloudController
   class ProcessMapper
-
     def self.map_model_to_domain(model)
       AppProcess.new({
         'guid'                 => model.values[:guid],

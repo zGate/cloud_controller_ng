@@ -1,6 +1,5 @@
 module VCAP::CloudController
   class Diagnostics
-
     def self.collect(output_directory)
       data = {
         time: Time.now,

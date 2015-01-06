@@ -94,5 +94,4 @@ class AttributeValidator
       schema_string == expected_type
     end
   end
-
 end

@@ -1,7 +1,6 @@
 require_relative 'api_presenter'
 
 class JobPresenter < ApiPresenter
-
   def initialize(object, url_host_name=nil)
     super(object)
     @object ||= NullJob.new

@@ -2,7 +2,6 @@ module VCAP::CloudController
   module Jobs
     module Runtime
       class AppEventsCleanup < Struct.new(:cutoff_age_in_days)
-
         def perform
           old_app_events = AppEvent.where("created_at < CURRENT_TIMESTAMP - INTERVAL '?' DAY", cutoff_age_in_days.to_i)
           logger = Steno.logger('cc.background')

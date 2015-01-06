@@ -1,7 +1,6 @@
 module VCAP::Services
   module ServiceBrokers::V1
     class HttpClient
-
       def initialize(attrs)
         @url = attrs.fetch(:url)
         @token = attrs.fetch(:auth_token)

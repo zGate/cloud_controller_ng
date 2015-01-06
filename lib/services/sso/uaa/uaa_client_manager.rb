@@ -3,7 +3,6 @@ require 'uaa'
 module VCAP::Services::SSO::UAA
 
   class UaaClientManager
-
     ROUTER_404_KEY   = 'X-Cf-Routererror'
     ROUTER_404_VALUE = 'unknown_route'
 

@@ -30,7 +30,6 @@ module VCAP::Services
     end
 
     class HttpClient
-
       attr_reader :url
 
       def initialize(attrs)
