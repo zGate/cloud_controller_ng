@@ -18,12 +18,12 @@ describe 'Sequel::Plugins::VcapValidations' do
     end
 
     it 'should allow a http url' do
-      @m.val = 'http://foo.com/bla';
+      @m.val = 'http://foo.com/bla'
       expect(@m).to be_valid
     end
 
     it 'should allow a https url' do
-      @m.val = 'https://foo.com/bla';
+      @m.val = 'https://foo.com/bla'
       expect(@m).to be_valid
     end
 

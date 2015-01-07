@@ -211,7 +211,7 @@ module VCAP::Services::ServiceBrokers::V2
 
       when 410
         if method == :delete
-          logger.warn("Already deleted: #{uri.to_s}")
+          logger.warn("Already deleted: #{uri}")
           return nil
         end
       end

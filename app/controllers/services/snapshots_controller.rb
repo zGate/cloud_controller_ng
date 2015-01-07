@@ -15,7 +15,7 @@ module VCAP::CloudController
       instance = VCAP::CloudController::ManagedServiceInstance.find(guid: req.service_instance_guid)
       validate_access(:update, instance)
       snapshot = instance.create_snapshot(req.name)
-      snap_guid = '%s_%s' % [instance.guid, snapshot.snapshot_id]
+      snap_guid = sprintf('%s_%s', instance.guid, snapshot.snapshot_id)
       [
         HTTP::CREATED,
         MultiJson.dump(

@@ -119,3 +119,6 @@ Metrics/ParameterLists:
 
 Style/Lambda:
   Enabled: false
+
+Style/FormatString:
+  EnforcedStyle: sprintf

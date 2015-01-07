@@ -37,7 +37,7 @@ module VCAP::Services::SSO::UAA
         http.verify_mode = verify_certs? ? OpenSSL::SSL::VERIFY_PEER : OpenSSL::SSL::VERIFY_NONE
       end
 
-      logger.info("POST UAA transaction: #{uri.to_s} - #{scrub(request_body).to_json}")
+      logger.info("POST UAA transaction: #{uri} - #{scrub(request_body).to_json}")
       response = http.request(request)
 
       case response.code.to_i

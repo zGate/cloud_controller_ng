@@ -122,7 +122,7 @@ module VCAP::CloudController
           total_size = App.count
 
           token = '{}'
-          while apps.size < total_size do
+          while apps.size < total_size
             get '/bulk/apps', {
               'batch_size' => 2,
               'bulk_token' => MultiJson.dump(token),

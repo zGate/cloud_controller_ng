@@ -14,7 +14,7 @@ class FakeLoggregatorServer
     @sock.bind('localhost', port)
 
     @thread = Thread.new do
-      while true
+      loop do
         begin
           stuff = @sock.recv(65536)
           envelope = LogEnvelope.decode(stuff)
@@ -23,7 +23,6 @@ class FakeLoggregatorServer
           puts 'ERROR'
           puts e
         end
-
       end
     end
   end

@@ -835,7 +835,7 @@ def stub_schedule_sync(&before_resolve)
       else
         promise.deliver(blk.call)
       end
-    rescue Exception => e
+    rescue => e
       promise.fail(e)
     end
 

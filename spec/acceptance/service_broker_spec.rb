@@ -498,9 +498,9 @@ describe 'Service Broker' do
 
         put("/v2/service_brokers/#{guid}", {
           name: 'some-guid',
-            broker_url: 'http://broker-url',
-            auth_username: 'username',
-            auth_password: 'password'
+          broker_url: 'http://broker-url',
+          auth_username: 'username',
+          auth_password: 'password'
         }.to_json, json_headers(admin_headers))
       end
 

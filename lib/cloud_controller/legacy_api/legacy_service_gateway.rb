@@ -184,12 +184,12 @@ module VCAP::CloudController
         # :supported_versions,
         # :version_aliases,
       ].each do |field|
-          if service.values[:field]
-            offering[:field] = service[:field]
-          end
+        if service.values[:field]
+          offering[:field] = service[:field]
         end
-        offering[:plans] = service.service_plans.map(&:name)
-        MultiJson.dump(offering)
+      end
+      offering[:plans] = service.service_plans.map(&:name)
+      MultiJson.dump(offering)
     end
 
     # NB: ambiguous API: the handle id appears in both URI and body.

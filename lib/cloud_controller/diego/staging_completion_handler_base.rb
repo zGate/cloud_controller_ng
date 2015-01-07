@@ -41,7 +41,7 @@ module VCAP::CloudController
 
       def get_app(payload)
         app = App.find(guid: payload['app_id'])
-        if app == nil
+        if app.nil?
           logger.error(@logger_prefix + 'unknown-app', response: payload)
           return
         end

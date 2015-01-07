@@ -36,8 +36,8 @@ module VCAP::CloudController
       @default_quota_name = config[:default_quota_definition]
     end
 
-    def self.default_quota_name
-      @default_quota_name
+    class << self
+      attr_reader :default_quota_name
     end
 
     def self.default

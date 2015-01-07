@@ -2,7 +2,7 @@ require 'uaa/info'
 
 module VCAP
   class UaaTokenDecoder
-    class BadToken < StandardError;
+    class BadToken < StandardError
     end
 
     attr_reader :config

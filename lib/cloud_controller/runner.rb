@@ -100,7 +100,7 @@ module VCAP::CloudController
           router_registrar.register_with_router
 
           VCAP::CloudController::Varz.setup_updates
-        rescue Exception => e
+        rescue => e
           logger.error "Encountered error: #{e}\n#{e.backtrace.join("\n")}"
           raise e
         end

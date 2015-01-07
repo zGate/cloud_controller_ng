@@ -3,7 +3,6 @@ require 'spec_helper'
 describe 'DB Schema' do
   context 'To support Oracle' do
     DbConfig.connection.tables.each do |table|
-
       it "the table #{table}'s name should not be longer than 30 characters" do
         expect(table.length).to be <= 30
       end

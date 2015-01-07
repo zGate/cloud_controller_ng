@@ -53,7 +53,7 @@ module ApiDsl
 
   def field_is_url_and_relationship_not_present?(json, field)
     if field =~ /(.*)_url$/
-      !json["#$1_guid".to_sym]
+      !json["#{Regexp.last_match[1]}_guid".to_sym]
     end
   end
 

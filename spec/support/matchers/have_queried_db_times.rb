@@ -8,7 +8,7 @@ RSpec::Matchers.define :have_queried_db_times do |query_regex, expected_times|
       actual_blk.call
       @matched_calls = @calls.select { |call| call[1] =~ query_regex }
       @matched_calls.size == expected_times
-    rescue Exception => e
+    rescue => e
       @raised_exception = e
       false
     ensure

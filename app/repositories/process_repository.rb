@@ -83,7 +83,7 @@ module VCAP::CloudController
         process_model = App.where(apps__guid: guid).
           eager_graph(:stack, space: :organization).all.first
 
-        return if process_model.nil? && yield(nil,nil)
+        return if process_model.nil? && yield(nil, nil)
 
         @lock_acquired = true
         begin

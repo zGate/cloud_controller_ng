@@ -16,15 +16,15 @@ module VCAP::CloudController
     end
 
     def self.update_job_queue_length
-      pending_job_count_by_queue = pending_job_count_by_queue
+      local_pending_job_count_by_queue = pending_job_count_by_queue
 
-      ::VCAP::Component.varz.synchronize { ::VCAP::Component.varz[:cc_job_queue_length] = pending_job_count_by_queue }
+      ::VCAP::Component.varz.synchronize { ::VCAP::Component.varz[:cc_job_queue_length] = local_pending_job_count_by_queue }
     end
 
     def self.update_thread_info
-      thread_info = thread_info
+      local_thread_info = thread_info
 
-      ::VCAP::Component.varz.synchronize { ::VCAP::Component.varz[:thread_info] = thread_info }
+      ::VCAP::Component.varz.synchronize { ::VCAP::Component.varz[:thread_info] = local_thread_info }
     end
 
     def self.update!

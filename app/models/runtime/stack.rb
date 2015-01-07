@@ -73,9 +73,13 @@ module VCAP::CloudController
         end
       end
 
-      def stacks; @hash['stacks']; end
+      def stacks
+        @hash['stacks']
+      end
 
-      def default; @hash['default']; end
+      def default
+        @hash['default']
+      end
 
       Schema = Membrane::SchemaParser.parse {{
         'default' => String,

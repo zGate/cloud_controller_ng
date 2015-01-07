@@ -58,7 +58,6 @@ module VCAP::Services
       else
         binding.syslog_drain_url =  response.fetch('syslog_drain_url')
       end
-
     end
 
     def unbind(binding)

@@ -82,7 +82,7 @@ module VCAP::CloudController
         include_examples 'permission enumeration', 'Admin',
                          name: 'user',
                          path: '/v2/users',
-                         enumerate: Proc.new { User.count },
+                         enumerate: proc { User.count },
                          permissions_overlap: true
       end
     end

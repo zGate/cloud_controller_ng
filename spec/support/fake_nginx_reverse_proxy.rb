@@ -55,7 +55,7 @@ class FakeNginxReverseProxy
         "#{key}_path" => File.join(tmpdir, File.basename(v[:tempfile].path)),
         # keeps the uploaded file to trick the multipart encoder, but
         # obfuscates the form field name so we're not likely gonna use it
-        ('%06x' % rand(0x1000000)) => Rack::Multipart::UploadedFile.new(v[:tempfile].path),
+        sprintf('%06x', rand(0x1000000)) => Rack::Multipart::UploadedFile.new(v[:tempfile].path),
       }
     )
     v[:tempfile].unlink

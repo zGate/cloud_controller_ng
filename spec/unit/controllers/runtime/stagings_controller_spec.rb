@@ -347,30 +347,30 @@ module VCAP::CloudController
         end
       end
 
-        context 'when the blobstore is not local' do
-          before do
-            allow_any_instance_of(CloudController::Blobstore::Client).to receive(:local?).and_return(false)
-            authorize(staging_user, staging_password)
-          end
-
-          it 'should redirect to the url provided by the blobstore_url_generator' do
-            allow_any_instance_of(CloudController::Blobstore::UrlGenerator).to receive(:droplet_download_url).and_return('http://example.com/somewhere/else')
-            get "/staging/droplets/#{app_obj.guid}/download"
-            expect(last_response).to be_redirect
-            expect(last_response.header['Location']).to eq('http://example.com/somewhere/else')
-          end
-
-          it 'should return an error for non-existent apps' do
-            get '/staging/droplets/not-a-thing-app/download'
-            expect(last_response.status).to eq(404)
-          end
-
-          it 'should return an error for an app without a package' do
-            allow_any_instance_of(CloudController::Blobstore::UrlGenerator).to receive(:droplet_download_url).and_return(nil)
-            get '/staging/droplets/app-guid-without-droplet/download'
-            expect(last_response.status).to eq(404)
-          end
+      context 'when the blobstore is not local' do
+        before do
+          allow_any_instance_of(CloudController::Blobstore::Client).to receive(:local?).and_return(false)
+          authorize(staging_user, staging_password)
         end
+
+        it 'should redirect to the url provided by the blobstore_url_generator' do
+          allow_any_instance_of(CloudController::Blobstore::UrlGenerator).to receive(:droplet_download_url).and_return('http://example.com/somewhere/else')
+          get "/staging/droplets/#{app_obj.guid}/download"
+          expect(last_response).to be_redirect
+          expect(last_response.header['Location']).to eq('http://example.com/somewhere/else')
+        end
+
+        it 'should return an error for non-existent apps' do
+          get '/staging/droplets/not-a-thing-app/download'
+          expect(last_response.status).to eq(404)
+        end
+
+        it 'should return an error for an app without a package' do
+          allow_any_instance_of(CloudController::Blobstore::UrlGenerator).to receive(:droplet_download_url).and_return(nil)
+          get '/staging/droplets/app-guid-without-droplet/download'
+          expect(last_response.status).to eq(404)
+        end
+      end
     end
 
     describe 'POST /staging/buildpack_cache/:guid/upload' do

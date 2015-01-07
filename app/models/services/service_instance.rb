@@ -61,10 +61,10 @@ module VCAP::CloudController
       validates_presence :name
       validates_presence :space
       validates_unique [:space_id, :name], where: (proc do |_, obj, arr|
-          vals = arr.map { |x| obj.send(x) }
-          next if vals.any?(&:nil?)
-          ServiceInstance.where(arr.zip(vals))
-        end)
+                                                     vals = arr.map { |x| obj.send(x) }
+                                                     next if vals.any?(&:nil?)
+                                                     ServiceInstance.where(arr.zip(vals))
+                                                   end)
       validates_max_length 50, :name
     end
 

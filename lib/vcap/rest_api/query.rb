@@ -134,7 +134,7 @@ module VCAP::RestAPI
     def foreign_key_association(query_key)
       return unless query_key =~ /(.*)_(gu)?id$/
 
-      foreign_key_table = $1
+      foreign_key_table = Regexp.last_match[1]
 
       if model.associations.include?(foreign_key_table.to_sym)
         foreign_key_table.to_sym

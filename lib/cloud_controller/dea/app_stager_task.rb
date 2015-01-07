@@ -163,7 +163,7 @@ module VCAP::CloudController
           # Reload to find other updates of staging task id
           # which means that there was a new staging process initiated
           @app.refresh
-        rescue Exception => e
+        rescue => e
           Loggregator.emit_error(@app.guid, "Exception checking staging status: #{e.message}")
           logger.error("Exception checking staging status: #{e.inspect}\n  #{e.backtrace.join("\n  ")}")
           raise Errors::ApiError.new_from_details('StagingError', "failed to stage application: can't retrieve staging status")

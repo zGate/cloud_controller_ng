@@ -123,7 +123,7 @@ module VCAP::CloudController
             total_size = App.count
 
             token = 0
-            while apps.size < total_size do
+            while apps.size < total_size
               get '/v2/syslog_drain_urls', {
                 'batch_size' => 2,
                 'next_id' => token,
