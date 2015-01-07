@@ -70,8 +70,6 @@ module VCAP::CloudController::RestController
           elsif association.is_a?(ControllerDSL::ToOneAttribute)
             # Preload one-to-one since we need to know record's guid
             eager_load_hash[association_name] = visibility_filter
-          else
-            # Do not preload many association
           end
         end
       end

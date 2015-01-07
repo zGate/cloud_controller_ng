@@ -122,3 +122,9 @@ Style/Lambda:
 
 Style/FormatString:
   EnforcedStyle: sprintf
+
+Style/SingleLineBlockParams:
+  Enabled: false
+
+Style/TrivialAccessors:
+  Enabled: false

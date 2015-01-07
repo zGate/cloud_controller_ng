@@ -16,8 +16,8 @@ module VCAP::CloudController
       nil
     end
 
-    def eql?(another)
-      another.nil? || another.is_a?(AutoDetectionBuildpack)
+    def eql?(other)
+      other.nil? || other.is_a?(AutoDetectionBuildpack)
     end
 
     def to_s

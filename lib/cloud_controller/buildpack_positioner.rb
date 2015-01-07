@@ -20,12 +20,13 @@ module VCAP::CloudController
       last_position = Buildpack.at_last_position.position
       normalized_position = normalize_position_for_move(desired_position, last_position)
 
-      unless normalized_position == current_position
+      if normalized_position != current_position
         if normalized_position > current_position
           @shifter.shift_positions_down_between(current_position, normalized_position)
         elsif normalized_position < current_position
           @shifter.shift_positions_up_between(normalized_position, current_position)
-        end      end
+        end
+      end
 
       normalized_position
     end

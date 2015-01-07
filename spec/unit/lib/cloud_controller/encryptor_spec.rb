@@ -123,7 +123,13 @@ module VCAP::CloudController
 
       before do
         klass.class_eval do
-          attr_accessor :underlying_sekret
+          def underlying_sekret=(value)
+            @sekret = value
+          end
+
+          def underlying_sekret
+            @sekret
+          end
         end
         klass2.send :encrypt, :sekret, encryption_args
       end

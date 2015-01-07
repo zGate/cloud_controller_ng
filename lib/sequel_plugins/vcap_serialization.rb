@@ -114,7 +114,7 @@ module Sequel::Plugins::VcapSerialization
     def update_or_create_options(hash, opts)
       results = {}
       attrs = self.import_attrs || []
-      attrs = attrs - opts[:only] unless opts[:only].nil?
+      attrs -= opts[:only] unless opts[:only].nil?
       attrs.each do |attr|
         key = nil
         if hash.key?(attr)
