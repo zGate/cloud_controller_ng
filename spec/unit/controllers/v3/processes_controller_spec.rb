@@ -43,6 +43,7 @@ module VCAP::CloudController
         before do
           allow(processes_handler).to receive(:show).and_return(nil)
         end
+
         it 'raises an ApiError with a 404 code' do
           expect {
             process_controller.show(guid)
