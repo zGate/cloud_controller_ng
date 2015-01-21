@@ -90,19 +90,10 @@ module VCAP::CloudController
               'log_guid' => app.guid,
               'docker_image' => app.docker_image,
               'health_check_type' => app.health_check_type,
+              'health_check_timeout_in_seconds' => app.health_check_timeout,
               'egress_rules' => ['running_egress_rule'],
               'etag' => app.updated_at.to_f.to_s,
             })
-          end
-
-          context 'when the app has a health_check_timeout' do
-            before do
-              app.health_check_timeout = 123
-            end
-
-            it 'includes the timeout in the message' do
-              expect(message['health_check_timeout_in_seconds']).to eq(app.health_check_timeout)
-            end
           end
         end
 

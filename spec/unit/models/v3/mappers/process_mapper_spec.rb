@@ -19,7 +19,7 @@ module VCAP::CloudController
         expect(process.state).to eq(model.state)
         expect(process.command).to eq(model.command)
         expect(process.buildpack).to be_nil
-        expect(process.health_check_timeout).to eq(model.health_check_timeout)
+        expect(process.health_check_timeout).to eq(model.values[:health_check_timeout])
         expect(process.docker_image).to eq(model.docker_image)
         expect(process.environment_json).to eq(model.environment_json)
         expect(process.type).to eq(model.type)
@@ -72,7 +72,7 @@ module VCAP::CloudController
       end
 
       context 'and some values are nil' do
-        let(:custom_opts) { { 'guid' => nil, 'instances' => nil } }
+        let(:custom_opts) { { 'guid' => nil, 'instances' => nil, 'health_check_timeout' => nil } }
 
         it 'does not map them' do
           model = ProcessMapper.map_domain_to_new_model(process)
@@ -87,7 +87,7 @@ module VCAP::CloudController
           expect(model.state).to eq('STARTED')
           expect(model.command).to eq('start-command')
           expect(model.buildpack.url).to eq('buildpack')
-          expect(model.health_check_timeout).to eq(3)
+          expect(model.values[:health_check_timeout]).to be_nil
           expect(model.docker_image).to eq('docker_image:latest')
           expect(model.environment_json).to eq('env_json')
           expect(model.type).to eq('worker')

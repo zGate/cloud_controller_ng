@@ -50,21 +50,7 @@ module VCAP::CloudController
         app = AppFactory.make(buildpack: 'http://the-buildpack.com', space: space_model)
 
         process, space = repo.find_for_show(app.guid)
-
-        expect(process.guid).to eq(app.guid)
-        expect(process.name).to eq(app.name)
-        expect(process.memory).to eq(app.memory)
-        expect(process.instances).to eq(app.instances)
-        expect(process.disk_quota).to eq(app.disk_quota)
-        expect(process.space_guid).to eq(app.space.guid)
-        expect(process.stack_guid).to eq(app.stack.guid)
-        expect(process.state).to eq(app.state)
-        expect(process.command).to eq(app.command)
-        expect(process.buildpack).to eq(app.buildpack.url)
-        expect(process.health_check_timeout).to eq(app.health_check_timeout)
-        expect(process.docker_image).to eq(app.docker_image)
-        expect(process.environment_json).to eq(app.environment_json)
-
+        expect(process).to eq(ProcessMapper.map_model_to_domain(app))
         expect(space).to eq(space_model)
       end
 
@@ -80,19 +66,7 @@ module VCAP::CloudController
         app                = AppFactory.make(buildpack: 'http://the-buildpack.com')
         process_repository = ProcessRepository.new
         process            = process_repository.find_by_guid(app.guid)
-        expect(process.guid).to eq(app.guid)
-        expect(process.name).to eq(app.name)
-        expect(process.memory).to eq(app.memory)
-        expect(process.instances).to eq(app.instances)
-        expect(process.disk_quota).to eq(app.disk_quota)
-        expect(process.space_guid).to eq(app.space.guid)
-        expect(process.stack_guid).to eq(app.stack.guid)
-        expect(process.state).to eq(app.state)
-        expect(process.command).to eq(app.command)
-        expect(process.buildpack).to eq('http://the-buildpack.com')
-        expect(process.health_check_timeout).to eq(app.health_check_timeout)
-        expect(process.docker_image).to eq(app.docker_image)
-        expect(process.environment_json).to eq(app.environment_json)
+        expect(process).to eq(ProcessMapper.map_model_to_domain(app))
       end
 
       it 'returns nil when the process does not exist' do
@@ -107,19 +81,7 @@ module VCAP::CloudController
         app                = AppFactory.make(buildpack: 'http://the-buildpack.com')
         process_repository = ProcessRepository.new
         process_repository.find_by_guid_for_update(app.guid) do |process|
-          expect(process.guid).to eq(app.guid)
-          expect(process.name).to eq(app.name)
-          expect(process.memory).to eq(app.memory)
-          expect(process.instances).to eq(app.instances)
-          expect(process.disk_quota).to eq(app.disk_quota)
-          expect(process.space_guid).to eq(app.space.guid)
-          expect(process.stack_guid).to eq(app.stack.guid)
-          expect(process.state).to eq(app.state)
-          expect(process.command).to eq(app.command)
-          expect(process.buildpack).to eq('http://the-buildpack.com')
-          expect(process.health_check_timeout).to eq(app.health_check_timeout)
-          expect(process.docker_image).to eq(app.docker_image)
-          expect(process.environment_json).to eq(app.environment_json)
+          expect(process).to eq(ProcessMapper.map_model_to_domain(app))
         end
       end
     end
@@ -265,7 +227,6 @@ module VCAP::CloudController
         let(:app) { AppFactory.make(package_state: 'STAGED') }
 
         it 'updates the existing process data model' do
-          original_package_state = app.package_state
           process_repository     = ProcessRepository.new
           process_repository.find_by_guid_for_update(app.guid) do |initial_process|
             updated_process = initial_process.with_changes({ 'name' => 'my-super-awesome-name' })
@@ -273,22 +234,10 @@ module VCAP::CloudController
             expect {
               process_repository.update!(updated_process)
             }.not_to change { App.count }
-            process = process_repository.find_by_guid(app.guid)
 
-            expect(process.guid).to eq(app.guid)
-            expect(process.name).to eq('my-super-awesome-name')
-            expect(process.memory).to eq(app.memory)
-            expect(process.instances).to eq(app.instances)
-            expect(process.disk_quota).to eq(app.disk_quota)
-            expect(process.space_guid).to eq(app.space.guid)
-            expect(process.stack_guid).to eq(app.stack.guid)
-            expect(process.state).to eq(app.state)
-            expect(process.command).to eq(app.command)
-            expect(process.buildpack).to be_nil
-            expect(process.health_check_timeout).to eq(app.health_check_timeout)
-            expect(process.docker_image).to eq(app.docker_image)
-            expect(process.environment_json).to eq(app.environment_json)
-            expect(app.reload.package_state).to eq(original_package_state)
+            app.reload
+            process = process_repository.find_by_guid(app.guid)
+            expect(process).to eq(ProcessMapper.map_model_to_domain(app))
           end
         end
 

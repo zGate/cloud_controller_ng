@@ -124,16 +124,6 @@ module VCAP::CloudController
               'etag' => '12345.6789'
             )
           end
-
-          context 'when the app does not have a health_check_timeout set' do
-            before do
-              allow(app).to receive(:health_check_timeout).and_return(nil)
-            end
-
-            it 'omits health_check_timeout_in_seconds' do
-              expect(message).not_to have_key('health_check_timeout_in_seconds')
-            end
-          end
         end
 
         describe '#stop_staging_app_request' do

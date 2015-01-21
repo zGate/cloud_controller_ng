@@ -1158,19 +1158,19 @@ module VCAP::CloudController
 
     describe 'health_check_timeout' do
       before do
-        TestConfig.override({ maximum_health_check_timeout: 512 })
+        TestConfig.override(default_health_check_timeout: 90, maximum_health_check_timeout: 512)
       end
 
       context 'when the health_check_timeout was not specified' do
-        it 'should use nil as health_check_timeout' do
-          app = AppFactory.make
-          expect(app.health_check_timeout).to eq(nil)
-        end
-
         it 'should not raise error if value is nil' do
           expect {
             AppFactory.make(health_check_timeout: nil)
           }.to_not raise_error
+        end
+
+        it 'should use the default health_check_timeout from the config' do
+          app = AppFactory.make
+          expect(app.health_check_timeout).to eq(90)
         end
       end
 

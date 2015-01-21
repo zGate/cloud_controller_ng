@@ -356,6 +356,10 @@ module VCAP::CloudController
       VCAP::CloudController::Config.config[:maximum_app_disk_in_mb]
     end
 
+    def health_check_timeout
+      super || VCAP::CloudController::Config.config[:default_health_check_timeout]
+    end
+
     # We need to overide this ourselves because we are really doing a
     # many-to-many with ServiceInstances and want to remove the relationship
     # to that when we remove the binding like sequel would do if the
