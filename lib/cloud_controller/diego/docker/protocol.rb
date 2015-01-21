@@ -9,15 +9,15 @@ module VCAP::CloudController
           @common_protocol = common_protocol
         end
 
-        def stage_app_request(app, staging_timeout)
-          ['diego.docker.staging.start', stage_app_message(app, staging_timeout).to_json]
+        def stage_app_request(app, staging_timeout, minimum_staging_memory)
+          ['diego.docker.staging.start', stage_app_message(app, staging_timeout, minimum_staging_memory).to_json]
         end
 
-        def stage_app_message(app, staging_timeout)
+        def stage_app_message(app, staging_timeout, minimum_staging_memory)
           {
             'app_id' => app.guid,
             'task_id' => app.staging_task_id,
-            'memory_mb' => app.memory,
+            'memory_mb' => [app.memory, minimum_staging_memory].max,
             'disk_mb' => app.disk_quota,
             'file_descriptors' => app.file_descriptors,
             'stack' => app.stack.name,

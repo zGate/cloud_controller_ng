@@ -14,7 +14,7 @@ module VCAP::CloudController
       end
 
       subject(:stager) do
-        Stager.new(app, messenger, completion_handler, 900)
+        Stager.new(app, messenger, completion_handler, 900, 2048)
       end
 
       describe '#stage' do
@@ -26,7 +26,7 @@ module VCAP::CloudController
         end
 
         it 'notifies Diego that the app needs staging' do
-          expect(messenger).to receive(:send_stage_request).with(app, 900)
+          expect(messenger).to receive(:send_stage_request).with(app, 900, 2048)
           stager.stage
         end
 

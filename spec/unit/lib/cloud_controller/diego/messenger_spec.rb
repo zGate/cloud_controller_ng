@@ -35,12 +35,12 @@ module VCAP::CloudController
 
       describe 'staging an app' do
         it 'sends a nats message with the appropriate staging subject and payload' do
-          messenger.send_stage_request(app, 90)
+          messenger.send_stage_request(app, 90, 2048)
 
           expected_message = {
             'app_id' => app.guid,
             'task_id' => app.staging_task_id,
-            'memory_mb' => app.memory,
+            'memory_mb' => 2048,
             'disk_mb' => app.disk_quota,
             'file_descriptors' => app.file_descriptors,
             'environment' => Environment.new(app).as_json,

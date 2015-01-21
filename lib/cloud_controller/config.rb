@@ -98,6 +98,7 @@ module VCAP::CloudController
           :timeout_in_seconds => Fixnum,
           optional(:minimum_staging_memory_mb) => Fixnum,
           optional(:minimum_staging_disk_mb) => Fixnum,
+          optional(:minimum_file_descriptors) => Fixnum,
           :auth => {
             user: String,
             password: String,

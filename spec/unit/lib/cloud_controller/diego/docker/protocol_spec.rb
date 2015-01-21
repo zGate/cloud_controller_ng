@@ -28,33 +28,63 @@ module VCAP::CloudController
 
         describe '#stage_app_request' do
           subject(:request) do
-            protocol.stage_app_request(app, 900)
+            protocol.stage_app_request(app, 900, 2048)
           end
 
           it 'includes a subject and message for CfMessageBus::MessageBus#publish' do
             expect(request.size).to eq(2)
             expect(request.first).to eq('diego.docker.staging.start')
-            expect(request.last).to match_json(protocol.stage_app_message(app, 900))
+            expect(request.last).to match_json(protocol.stage_app_message(app, 900, 2048))
           end
         end
 
         describe '#stage_app_message' do
-          subject(:message) do
-            protocol.stage_app_message(app, 900)
+          context 'when the app memory is less than the minimum staging memory' do
+            let(:app) do
+              AppFactory.make(docker_image: 'fake/docker_image', memory: 512)
+            end
+
+            subject(:message) do
+              protocol.stage_app_message(app, 900, 2048)
+            end
+
+            it 'includes the fields needed to stage a Docker app' do
+              expect(message).to eq({
+                    'app_id' => app.guid,
+                    'task_id' => app.staging_task_id,
+                    'memory_mb' => 2048,
+                    'disk_mb' => app.disk_quota,
+                    'file_descriptors' => app.file_descriptors,
+                    'stack' => app.stack.name,
+                    'docker_image' => app.docker_image,
+                    'egress_rules' => ['staging_egress_rule'],
+                    'timeout' => 900,
+                  })
+            end
           end
 
-          it 'includes the fields needed to stage a Docker app' do
-            expect(message).to eq({
-              'app_id' => app.guid,
-              'task_id' => app.staging_task_id,
-              'memory_mb' => app.memory,
-              'disk_mb' => app.disk_quota,
-              'file_descriptors' => app.file_descriptors,
-              'stack' => app.stack.name,
-              'docker_image' => app.docker_image,
-              'egress_rules' => ['staging_egress_rule'],
-              'timeout' => 900,
-            })
+          context 'when the app memory is greater than the minimum staging memory' do
+            let(:app) do
+              AppFactory.make(docker_image: 'fake/docker_image', memory: 2049)
+            end
+
+            subject(:message) do
+              protocol.stage_app_message(app, 900, 2048)
+            end
+
+            it 'includes the fields needed to stage a Docker app' do
+              expect(message).to eq({
+                    'app_id' => app.guid,
+                    'task_id' => app.staging_task_id,
+                    'memory_mb' => app.memory,
+                    'disk_mb' => app.disk_quota,
+                    'file_descriptors' => app.file_descriptors,
+                    'stack' => app.stack.name,
+                    'docker_image' => app.docker_image,
+                    'egress_rules' => ['staging_egress_rule'],
+                    'timeout' => 900,
+                  })
+            end
           end
         end
 

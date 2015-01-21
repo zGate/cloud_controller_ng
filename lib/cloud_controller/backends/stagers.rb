@@ -62,7 +62,7 @@ module VCAP::CloudController
       protocol = Diego::Docker::Protocol.new(Diego::Common::Protocol.new)
       messenger = Diego::Messenger.new(@message_bus, protocol)
       completion_handler = Diego::Docker::StagingCompletionHandler.new(@runners)
-      Diego::Stager.new(app, messenger, completion_handler, staging_timeout)
+      Diego::Stager.new(app, messenger, completion_handler, staging_timeout, minimum_staging_memory)
     end
 
     def diego_traditional_stager(app)
@@ -70,11 +70,15 @@ module VCAP::CloudController
       protocol = Diego::Traditional::Protocol.new(dependency_locator.blobstore_url_generator, Diego::Common::Protocol.new)
       messenger = Diego::Messenger.new(@message_bus, protocol)
       completion_handler = Diego::Traditional::StagingCompletionHandler.new(@runners)
-      Diego::Stager.new(app, messenger, completion_handler, staging_timeout)
+      Diego::Stager.new(app, messenger, completion_handler, staging_timeout, minimum_staging_memory)
     end
 
     def staging_timeout
       @config[:staging][:timeout_in_seconds]
+    end
+
+    def minimum_staging_memory
+      @config[:staging] && @config[:staging][:minimum_staging_memory_mb] || 1024
     end
   end
 end

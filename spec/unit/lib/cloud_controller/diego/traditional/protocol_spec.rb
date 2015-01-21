@@ -30,41 +30,74 @@ module VCAP::CloudController
         end
 
         describe '#stage_app_request' do
-          let(:request) { protocol.stage_app_request(app, 900) }
+          let(:request) { protocol.stage_app_request(app, 900, 2048) }
 
           it 'returns arguments intended for CfMessageBus::MessageBus#publish' do
             expect(request.size).to eq(2)
             expect(request.first).to eq('diego.staging.start')
-            expect(request.last).to match_json(protocol.stage_app_message(app, 900))
+            expect(request.last).to match_json(protocol.stage_app_message(app, 900, 2048))
           end
         end
 
         describe '#stage_app_message' do
-          let(:message) { protocol.stage_app_message(app, 900) }
+          let(:message) { protocol.stage_app_message(app, 900, 2048) }
 
           before do
             app.update(staging_task_id: 'fake-staging-task-id') # Mimic Diego::Messenger#send_stage_request
           end
 
-          it 'is a nats message with the appropriate staging subject and payload' do
-            buildpack_entry_generator = BuildpackEntryGenerator.new(blobstore_url_generator)
+          context 'when the app memory is less than the minimum staging memory' do
+            let(:app) do
+              AppFactory.make(memory: 512)
+            end
 
-            expect(message).to eq(
-              'app_id' => app.guid,
-              'task_id' => 'fake-staging-task-id',
-              'memory_mb' => app.memory,
-              'disk_mb' => app.disk_quota,
-              'file_descriptors' => app.file_descriptors,
-              'environment' => Environment.new(app).as_json,
-              'stack' => app.stack.name,
-              'build_artifacts_cache_download_uri' => 'http://buildpack-artifacts-cache.com',
-              'build_artifacts_cache_upload_uri' => 'http://buildpack-artifacts-cache.up.com',
-              'app_bits_download_uri' => 'http://app-package.com',
-              'buildpacks' => buildpack_entry_generator.buildpack_entries(app),
-              'droplet_upload_uri' => 'http://droplet-upload-uri',
-              'egress_rules' => ['staging_egress_rule'],
-              'timeout' => 900,
-            )
+            it 'is a nats message with the appropriate staging subject and payload' do
+              buildpack_entry_generator = BuildpackEntryGenerator.new(blobstore_url_generator)
+
+              expect(message).to eq(
+                  'app_id' => app.guid,
+                  'task_id' => 'fake-staging-task-id',
+                  'memory_mb' => 2048,
+                  'disk_mb' => app.disk_quota,
+                  'file_descriptors' => app.file_descriptors,
+                  'environment' => Environment.new(app).as_json,
+                  'stack' => app.stack.name,
+                  'build_artifacts_cache_download_uri' => 'http://buildpack-artifacts-cache.com',
+                  'build_artifacts_cache_upload_uri' => 'http://buildpack-artifacts-cache.up.com',
+                  'app_bits_download_uri' => 'http://app-package.com',
+                  'buildpacks' => buildpack_entry_generator.buildpack_entries(app),
+                  'droplet_upload_uri' => 'http://droplet-upload-uri',
+                  'egress_rules' => ['staging_egress_rule'],
+                  'timeout' => 900,
+                )
+            end
+          end
+
+          context 'when the app memory is greater the minimum staging memory' do
+            let(:app) do
+              AppFactory.make(memory: 2049)
+            end
+
+            it 'is a nats message with the appropriate staging subject and payload' do
+              buildpack_entry_generator = BuildpackEntryGenerator.new(blobstore_url_generator)
+
+              expect(message).to eq(
+                  'app_id' => app.guid,
+                  'task_id' => 'fake-staging-task-id',
+                  'memory_mb' => app.memory,
+                  'disk_mb' => app.disk_quota,
+                  'file_descriptors' => app.file_descriptors,
+                  'environment' => Environment.new(app).as_json,
+                  'stack' => app.stack.name,
+                  'build_artifacts_cache_download_uri' => 'http://buildpack-artifacts-cache.com',
+                  'build_artifacts_cache_upload_uri' => 'http://buildpack-artifacts-cache.up.com',
+                  'app_bits_download_uri' => 'http://app-package.com',
+                  'buildpacks' => buildpack_entry_generator.buildpack_entries(app),
+                  'droplet_upload_uri' => 'http://droplet-upload-uri',
+                  'egress_rules' => ['staging_egress_rule'],
+                  'timeout' => 900,
+                )
+            end
           end
         end
 
