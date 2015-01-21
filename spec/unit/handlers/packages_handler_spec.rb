@@ -414,4 +414,16 @@ module VCAP::CloudController
       end
     end
   end
+
+  describe "PackagesHandler again" do
+    it "doesn't return packages outside your permissions" do
+      app = AppModel.make
+      p = PackageModel.make(app_guid: app.guid, type: 'bits', state: PackageModel::CREATED_STATE)
+      stub_const("VCAP::CloudController::PackageModel", double(:foo, user_visible: PackageModel.dataset))
+      packages_handler = PackagesHandler.new("what config?")
+      joe_ac = double(:ac, user: double(:user), roles: double(:roles, admin?: false))
+
+      expect(packages_handler.list(PaginationOptions.new(1,10), joe_ac)).to eq(PaginatedResult.new([p], 1, PaginationOptions.new(1,10)))
+    end
+  end
 end

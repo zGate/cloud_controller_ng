@@ -24,6 +24,62 @@ resource 'Packages (Experimental)', type: :api do
   end
 
   context 'standard endpoints' do
+    get '/v3/packages' do
+      parameter :page, 'Page to display', valid_values: '>= 1'
+      parameter :per_page, 'Number of results per page', valid_values: '1-5000'
+      let(:page) { 1 }
+      let(:per_page) { 2 }
+
+      example 'Get all packages' do
+        space_guid = VCAP::CloudController::Space.make.guid
+        package_model = VCAP::CloudController::PackageModel.make(space_guid: space_guid)
+        package_model2 = VCAP::CloudController::PackageModel.make(space_guid: space_guid)
+        VCAP::CloudController::PackageModel.make(space_guid: space_guid)
+        guid = package_model.guid
+
+        expected_response = {
+          'resources' => [{
+          'type'       => package_model.type,
+          'guid'       => guid,
+          'hash'       => nil,
+          'state'      => VCAP::CloudController::PackageModel::CREATED_STATE,
+          'url'        => nil,
+          'error'      => nil,
+          'created_at' => package_model.created_at.as_json,
+          '_links'     => {
+            'self'   => { 'href' => "/v3/packages/#{guid}" },
+            'upload' => { 'href' => "/v3/packages/#{guid}/upload" },
+            'space'  => { 'href' => "/v2/spaces/#{space_guid}" },
+          }},
+          {
+          'type'       => package_model2.type,
+          'guid'       => package_model2.guid,
+          'hash'       => nil,
+          'state'      => VCAP::CloudController::PackageModel::CREATED_STATE,
+          'url'        => nil,
+          'error'      => nil,
+          'created_at' => package_model2.created_at.as_json,
+          '_links'     => {
+            'self'   => { 'href' => "/v3/packages/#{package_model2.guid}" },
+            'upload' => { 'href' => "/v3/packages/#{package_model2.guid}/upload" },
+            'space'  => { 'href' => "/v2/spaces/#{space_guid}" },
+          }}
+          ],
+          'pagination' => {
+            'total_results' => 3,
+            'first'         => { 'href' => '/v3/packages?page=1&per_page=2' },
+            'last'          => { 'href' => '/v3/packages?page=2&per_page=2' },
+            'next'          => { 'href' => '/v3/packages?page=2&per_page=2' },
+            'previous'      => nil,
+          }
+        }
+        do_request_with_error_handling
+
+        parsed_response = MultiJson.load(response_body)
+        expect(response_status).to eq(200)
+        expect(parsed_response).to match(expected_response)
+      end
+    end
     get '/v3/packages/:guid' do
       let(:space) { VCAP::CloudController::Space.make }
       let(:package_model) do

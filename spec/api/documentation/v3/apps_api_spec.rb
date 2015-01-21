@@ -16,7 +16,11 @@ resource 'Apps (Experimental)', type: :api do
     end
   end
 
+
   context 'standard endpoints' do
+    get '/v3/apps/:guid/packages' do
+
+    end
     get '/v3/apps' do
       parameter :page, 'Page to display', valid_values: '>= 1'
       parameter :per_page, 'Number of results per page', valid_values: '1-5000'

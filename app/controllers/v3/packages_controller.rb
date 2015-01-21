@@ -52,6 +52,14 @@ module VCAP::CloudController
       bits_already_uploaded!
     end
 
+    get '/v3/packages', :index
+    def index
+      pagination_options = PaginationOptions.from_params(params)
+      paginated_result = @packages_handler.list(pagination_options, @access_context)
+      packages_json = @package_presenter.present_json_list(paginated_result)
+      [HTTP::OK, packages_json]
+    end
+
     get '/v3/packages/:guid', :show
     def show(package_guid)
       package = @packages_handler.show(package_guid, @access_context)

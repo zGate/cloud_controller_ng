@@ -9,5 +9,11 @@ module VCAP::CloudController
     def validate
       validates_includes PACKAGE_STATES, :state, allow_missing: true
     end
+
+    def self.user_visibility_filter(user)
+      Sequel.or([
+        [:packages__app_guid, user.spaces_dataset.join(:apps, apps_space_guid: :spaces__guid)]
+      ])
+    end
   end
 end
