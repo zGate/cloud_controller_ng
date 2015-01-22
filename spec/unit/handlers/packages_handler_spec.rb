@@ -224,7 +224,8 @@ module VCAP::CloudController
     end
 
     describe '#upload' do
-      let(:package) { PackageModel.make(space_guid: space_guid, type: 'bits', state: PackageModel::CREATED_STATE) }
+      let(:app) { AppModel.make(space_guid: space_guid) }
+      let(:package) { PackageModel.make(app_guid: app.guid, type: 'bits', state: PackageModel::CREATED_STATE) }
       let(:upload_message) { PackageUploadMessage.new(package_guid, upload_opts) }
       let(:create_opts) { { 'bit_path' => 'path/to/bits' } }
       let(:upload_opts) { { 'bits_path' => 'foobar' } }
@@ -281,7 +282,8 @@ module VCAP::CloudController
             end
 
             context 'when the package is not of type bits' do
-              let(:package) { PackageModel.make(space_guid: space_guid, type: 'docker') }
+              let(:app) { AppModel.make(space_guid: space_guid) }
+              let(:package) { PackageModel.make(app_guid: app.guid, type: 'docker') }
 
               it 'raises an InvalidPackage exception' do
                 expect {
@@ -364,7 +366,8 @@ module VCAP::CloudController
     end
 
     describe '#delete' do
-      let!(:package) { PackageModel.make(space_guid: space.guid) }
+      let!(:app) { AppModel.make(space_guid: space.guid) }
+      let!(:package) { PackageModel.make(app_guid: app.guid) }
       let(:package_guid) { package.guid }
 
       context 'when the user can access a package' do
@@ -409,7 +412,7 @@ module VCAP::CloudController
             deleted_package = packages_handler.delete(package_guid, access_context)
             expect(deleted_package).to be_nil
           }.to raise_error(PackagesHandler::Unauthorized)
-          expect(access_context).to have_received(:cannot?).with(:delete, kind_of(PackageModel), space)
+          expect(access_context).to have_received(:cannot?).with(:delete, kind_of(PackageModel), app)
         end
       end
     end
