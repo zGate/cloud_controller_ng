@@ -81,7 +81,7 @@ module VCAP::CloudController
       package.url      = message.url
       package.state = message.type == 'bits' ? PackageModel::CREATED_STATE : PackageModel::READY_STATE
 
-      space = Space.find(guid: package.app_guid)
+      space = Space.find(guid: package.app.space_guid)
       raise SpaceNotFound if space.nil?
 
       raise Unauthorized if access_context.cannot?(:create, package, space)

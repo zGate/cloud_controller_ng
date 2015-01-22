@@ -416,17 +416,78 @@ module VCAP::CloudController
         end
       end
     end
-  end
 
-  describe "PackagesHandler again" do
-    it "doesn't return packages outside your permissions" do
-      app = AppModel.make
-      p = PackageModel.make(app_guid: app.guid, type: 'bits', state: PackageModel::CREATED_STATE)
-      stub_const("VCAP::CloudController::PackageModel", double(:foo, user_visible: PackageModel.dataset))
-      packages_handler = PackagesHandler.new("what config?")
-      joe_ac = double(:ac, user: double(:user), roles: double(:roles, admin?: false))
+    describe '#list' do
+      let!(:app) { AppModel.make(space_guid: space.guid) }
+      let!(:package1) { PackageModel.make(app_guid: app.guid) }
+      let!(:package2) { PackageModel.make(app_guid: app.guid) }
+      let(:user) { User.make }
+      let(:page) { 1 }
+      let(:per_page) { 1 }
+      let(:pagination_options) { PaginationOptions.new(page, per_page) }
+      let(:paginator) { double(:paginator) }
+      let(:handler) { described_class.new(nil, paginator) }
+      let(:roles) { double(:roles, admin?: admin_role) }
+      let(:admin_role) { false }
 
-      expect(packages_handler.list(PaginationOptions.new(1,10), joe_ac)).to eq(PaginatedResult.new([p], 1, PaginationOptions.new(1,10)))
+      before do
+        allow(access_context).to receive(:roles).and_return(roles)
+        allow(access_context).to receive(:user).and_return(user)
+        allow(paginator).to receive(:get_page)
+      end
+
+      context 'when the user is an admin' do
+        let(:admin_role) { true }
+        before do
+          allow(access_context).to receive(:roles).and_return(roles)
+          PackageModel.make
+        end
+
+        it 'allows viewing all packages' do
+          handler.list(pagination_options, access_context)
+          expect(paginator).to have_received(:get_page) do |dataset, _|
+            expect(dataset.count).to eq(3)
+          end
+        end
+      end
+
+      context 'when the user cannot list any packages' do
+        it 'applies a user visibility filter properly' do
+          handler.list(pagination_options, access_context)
+          expect(paginator).to have_received(:get_page) do |dataset, _|
+            expect(dataset.count).to eq(0)
+          end
+        end
+      end
+
+      context 'when the user can list packages' do
+        before do
+          space.organization.add_user(user)
+          space.add_developer(user)
+          PackageModel.make
+        end
+
+        it 'applies a user visibility filter properly' do
+          handler.list(pagination_options, access_context)
+          expect(paginator).to have_received(:get_page) do |dataset, _|
+            expect(dataset.count).to eq(2)
+          end
+        end
+
+        it 'can filter by app_guid' do
+          v3app = AppModel.make
+          process1.app_guid = v3app.guid
+          process1.save
+
+          filter_options = { app_guid: v3app.guid }
+
+          handler.list(pagination_options, access_context, filter_options)
+
+          expect(paginator).to have_received(:get_page) do |dataset, _|
+            expect(dataset.count).to eq(1)
+          end
+        end
+      end
     end
   end
 end

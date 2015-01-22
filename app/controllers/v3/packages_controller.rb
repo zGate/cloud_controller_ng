@@ -18,7 +18,7 @@ module VCAP::CloudController
       app = @apps_handler.show(app_guid, @access_context)
       app_not_found! if app.nil?
 
-      message = PackageCreateMessage.create_from_http_request(app.space_guid, body)
+      message = PackageCreateMessage.create_from_http_request(app.guid, body)
       valid, errors = message.validate
       unprocessable!(errors.join(', ')) if !valid
 
@@ -52,11 +52,11 @@ module VCAP::CloudController
       bits_already_uploaded!
     end
 
-    get '/v3/packages', :index
-    def index
+    get '/v3/packages', :list
+    def list
       pagination_options = PaginationOptions.from_params(params)
-      paginated_result = @packages_handler.list(pagination_options, @access_context)
-      packages_json = @package_presenter.present_json_list(paginated_result)
+      paginated_result   = @packages_handler.list(pagination_options, @access_context)
+      packages_json      = @package_presenter.present_json_list(paginated_result)
       [HTTP::OK, packages_json]
     end
 

@@ -17,6 +17,8 @@ module VCAP::CloudController
     end
 
     def package_hash(package)
+      p package
+      p AppModel.count
       {
         guid: package.guid,
         type: package.type,
@@ -33,7 +35,7 @@ module VCAP::CloudController
             href: "/v3/packages/#{package.guid}/upload",
           },
           space: {
-            href: "/v2/spaces/#{package.space_guid}",
+            href: "/v2/spaces/#{package.app.space_guid}",
           },
         },
       }

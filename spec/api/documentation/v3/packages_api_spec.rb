@@ -121,8 +121,9 @@ resource 'Packages (Experimental)', type: :api do
     post '/v3/packages/:guid/upload' do
       let(:type) { 'bits' }
       let!(:package_model) do
-        VCAP::CloudController::PackageModel.make(space_guid: space_guid, type: type)
+        VCAP::CloudController::PackageModel.make(app_guid: app.guid, type: type)
       end
+      let(:app) { VCAP::CloudController::AppModel.make(space_guid: space_guid) }
       let(:space) { VCAP::CloudController::Space.make }
       let(:space_guid) { space.guid }
       let(:guid) { package_model.guid }
@@ -187,6 +188,7 @@ resource 'Packages (Experimental)', type: :api do
       end
     end
 
+    describe 'thing' do
     post '/v3/apps/:guid/packages' do
       let(:space) { VCAP::CloudController::Space.make }
       let(:space_guid) { space.guid }
@@ -214,6 +216,7 @@ resource 'Packages (Experimental)', type: :api do
       example 'Create a Package' do
         expect {
           do_request packages_params
+          p response_body
         }.to change { VCAP::CloudController::PackageModel.count }.by(1)
 
         package = VCAP::CloudController::PackageModel.last
@@ -237,6 +240,7 @@ resource 'Packages (Experimental)', type: :api do
         expect(response_status).to eq(201)
         expect(parsed_response).to match(expected_response)
       end
+    end
     end
 
     delete '/v3/packages/:guid' do
