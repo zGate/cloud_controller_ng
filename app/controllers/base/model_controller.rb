@@ -224,6 +224,9 @@ module VCAP::CloudController::RestController
       end
 
       if @access_context.cannot?(op, obj, *args)
+        if obj.is_a? Class
+          obj = obj.to_s
+        end
         logger.info('allowy.access-denied.not-authorized', op: op, obj: obj, user: user, roles: roles)
         raise VCAP::Errors::ApiError.new_from_details('NotAuthorized')
       end
