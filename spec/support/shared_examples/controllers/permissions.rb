@@ -57,7 +57,9 @@ shared_examples 'permission enumeration' do |perm_name, opts|
   describe "GET #{path}" do
     it "should return #{name.pluralize} to a user that has #{perm_name} permissions" do
       expected_count = expected.respond_to?(:call) ? expected.call : expected
+      Steno.logger('cc.db').info("waaaat #{path}, #{perm_name}")
       get path, {}, headers_a
+      Steno.logger('cc.db').info("baaaat")
       if expected_count == :not_allowed
         expect(last_response.status).to eq(403)
       else

@@ -38,6 +38,8 @@ module VCAP::CloudController::RestController
     # send_file changed that.
     #
     def initialize(config, logger, env, params, body, sinatra=nil, dependencies={})
+      Steno.logger('cc.db').info "cat"
+      Steno.logger('cc.db').info caller
       @config  = config
       @logger  = logger
       @env     = env

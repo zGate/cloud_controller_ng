@@ -59,6 +59,13 @@ module VCAP::CloudController
       end
     end
 
+    it "doesn't query all users when unauthorized" do
+        user = User.make(active: true)
+        Steno.logger('cc.db').info "wat"
+        get '/v2/users', '', headers_for(user)
+        Steno.logger('cc.db').info "bat"
+    end
+
     describe 'permissions' do
       include_context 'permissions'
       before do

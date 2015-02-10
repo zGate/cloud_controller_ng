@@ -223,12 +223,14 @@ module VCAP::CloudController::RestController
         raise VCAP::Errors::ApiError.new_from_details('InsufficientScope')
       end
 
+      Steno.logger('cc.db').info "fat"
       if @access_context.cannot?(op, obj, *args)
-        if obj.is_a? Class
-          obj = obj.to_s
-        end
+        # if obj.is_a? Class
+        #   obj = obj.to_s
+        # end
         logger.info('allowy.access-denied.not-authorized', op: op, obj: obj, user: user, roles: roles)
         raise VCAP::Errors::ApiError.new_from_details('NotAuthorized')
+        Steno.logger('cc.db').info "mat"
       end
     end
 
