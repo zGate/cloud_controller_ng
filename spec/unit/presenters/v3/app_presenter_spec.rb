@@ -15,6 +15,8 @@ module VCAP::CloudController
         expect(result['desired_state']).to eq(app.desired_state)
         expect(result['environment_variables']).to eq(app.environment_variables)
         expect(result['_links']).not_to include('desired_droplet')
+        expect(result['_links']).not_to include('start')
+        expect(result['_links']).not_to include('stop')
       end
 
       it 'returns an empty hash as environment_variables if not present' do
