@@ -116,7 +116,7 @@ module VCAP::CloudController
 
       delete_action = SpaceDelete.new(current_user.id, current_user_email)
       deletion_job = VCAP::CloudController::Jobs::DeleteActionJob.new(Space, guid, delete_action)
-      enqueue_deletion_job(deletion_job)
+      enqueue_or_execute_deletion_job(deletion_job)
     end
 
     private

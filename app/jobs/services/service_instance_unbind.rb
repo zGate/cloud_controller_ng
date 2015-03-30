@@ -13,7 +13,7 @@ module VCAP::CloudController
         end
 
         def perform
-          logger = Steno.logger('cc-background')
+          logger = Steno.logger('cc.background')
           logger.info('There was an error during service binding creation. Attempting to delete potentially orphaned binding.')
 
           client = VCAP::Services::ServiceBrokers::V2::Client.new(client_attrs)

@@ -185,7 +185,7 @@ module VCAP::CloudController
       false
     end
 
-    def lock_by_blocking_other_operations(&block)
+    def perform_operation(type, &block)
       ManagedServiceInstance.db.transaction do
         lock!
         last_operation.lock! if last_operation
@@ -194,7 +194,42 @@ module VCAP::CloudController
           raise Errors::ApiError.new_from_details('ServiceInstanceOperationInProgress')
         end
 
-        block.call
+        save_with_operation(
+          last_operation: {
+            type: type,
+            state: 'in progress'
+          }
+        )
+      end
+
+      begin
+        result = block.call
+        allowed_results = [
+          'succeeded',
+          'failed',
+          'in progress'
+        ]
+
+        unless allowed_results.include? result
+          result = 'failed'
+        end
+
+        if exists?
+          save_with_operation(
+            last_operation: {
+              type: type,
+              state: result
+            }
+          )
+        end
+      rescue
+        save_with_operation(
+          last_operation: {
+            type: type,
+            state: 'failed'
+          }
+        )
+        raise
       end
     end
 

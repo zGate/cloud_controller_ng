@@ -6,32 +6,24 @@ module VCAP::CloudController
       @logger = logger
     end
 
-    def deprovision_service_instance(service_instance, params)
+    def deprovision_service_instance(service_instance, accepts_incomplete:, async:)
       @access_validator.validate_access(:delete, service_instance)
 
-      return perform_delete(service_instance, params) unless service_instance.managed_instance?
+      return perform_delete(service_instance, async: async) unless service_instance.managed_instance?
 
-      service_instance.lock_by_failing_other_operations('delete') do
-        if accepts_incomplete?(params) && service_instance.managed_instance?
+      service_instance.perform_operation('delete') do
+        if accepts_incomplete && service_instance.managed_instance?
           perform_accepts_incomplete_delete(service_instance)
         else
-          perform_delete(service_instance, params)
+          perform_delete(service_instance, async: async)
         end
       end
     end
 
     private
 
-    def accepts_incomplete?(params)
-      params['accepts_incomplete'] == 'true'
-    end
-
-    def async?(params)
-      params['async'] == 'true'
-    end
-
-    def enqueue_deletion_job(deletion_job, params)
-      if async?(params)
+    def enqueue_or_execute_deletion_job(deletion_job, async:)
+      if async
         job = Jobs::Enqueuer.new(deletion_job, queue: 'cc-generic').enqueue
         [nil, job]
       else
@@ -40,12 +32,12 @@ module VCAP::CloudController
       end
     end
 
-    def perform_delete(service_instance, params)
+    def perform_delete(service_instance, async:)
       deletion_job = Jobs::Services::ServiceInstanceDeletion.new(service_instance.guid)
       event_method = service_instance.type == 'managed_service_instance' ?  :record_service_instance_event : :record_user_provided_service_instance_event
       delete_and_audit_job = Jobs::AuditEventJob.new(deletion_job, @services_event_repository, event_method, :delete, service_instance, {})
 
-      enqueue_deletion_job(delete_and_audit_job, params)
+      enqueue_or_execute_deletion_job(delete_and_audit_job, async: async)
     end
 
     def perform_accepts_incomplete_delete(service_instance)

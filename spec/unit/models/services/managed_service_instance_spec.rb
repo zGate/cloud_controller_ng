@@ -88,13 +88,37 @@ module VCAP::CloudController
       end
     end
 
-    describe '#lock_by_blocking_other_operations' do
-      it 'locks the service instance' do
+    describe '#perform_operation' do
+      it 'locks the service instance at start of transaction, setting in_progress, and setting final status' do
         allow(service_instance).to receive(:lock!).and_call_original
 
-        service_instance.lock_by_blocking_other_operations {}
+        service_instance.perform_operation('update') {}
 
-        expect(service_instance).to have_received(:lock!)
+        expect(service_instance).to have_received(:lock!).thrice
+      end
+
+      describe 'validating block return status' do
+        it 'sets the status to succeeded if the block return succeeded' do
+          service_instance.perform_operation('update') {
+            'succeeded'
+          }
+          expect(service_instance.last_operation.state).to eq('succeeded')
+        end
+        it 'sets the status to failed if the block return failed' do
+          service_instance.perform_operation('update') {
+            'failed'
+          }
+          expect(service_instance.last_operation.state).to eq('failed')
+        end
+        it 'sets the status to in progress if the block return in progress'
+
+        it 'sets the status to failed if the block returns anything else' do
+          service_instance.perform_operation('update') {
+            'meow'
+          }
+
+          expect(service_instance.last_operation.state).to eq('failed')
+        end
       end
 
       context 'when the instance has a last_operation' do
@@ -106,25 +130,46 @@ module VCAP::CloudController
         it 'locks the last_operation' do
           allow(last_operation).to receive(:lock!).and_call_original
 
-          service_instance.lock_by_blocking_other_operations {}
+          service_instance.perform_operation('update') {}
 
           expect(last_operation).to have_received(:lock!)
         end
       end
 
+      it 'saves the last_operation state as `in progress` before executing the block' do
+        service_instance.perform_operation('update') {
+          expect(service_instance.last_operation.state).to eq('in progress')
+        }
+
+        service_instance.reload.last_operation.reload
+        expect(service_instance.last_operation.type).to eq 'update'
+      end
+
       context 'when there is an operation in progress' do
         before do
           service_instance.save_with_operation({
-            last_operation: {
-              state: 'in progress'
-            }
-          })
+              last_operation: {
+                state: 'in progress'
+              }
+            })
         end
 
         it 'raises an error' do
           expect {
-            service_instance.lock_by_blocking_other_operations {}
+            service_instance.perform_operation('update') {}
           }.to raise_error(Errors::ApiError)
+        end
+      end
+
+      context 'when the block fails' do
+        it 'updates the last_operation to state `failed`' do
+          expect {
+            service_instance.perform_operation('update') { raise 'BOOO' }
+          }.to raise_error(StandardError, /BOOO/)
+
+          service_instance.reload.last_operation.reload
+          expect(service_instance.last_operation.type).to eq 'update'
+          expect(service_instance.last_operation.state).to eq 'failed'
         end
       end
     end

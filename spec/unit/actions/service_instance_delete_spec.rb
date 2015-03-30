@@ -35,6 +35,23 @@ module VCAP::CloudController
         }.to change { ServiceBinding.count }.by(-2)
       end
 
+      context 'when the service instance has an operation in progress' do
+        before do
+          service_instance_1.save_with_operation({
+            last_operation: {
+              state: 'in progress'
+            }
+          })
+        end
+
+        it 'fails to delete that service instance' do
+          service_instance_delete.delete(service_instance_dataset)
+
+          expect(ServiceInstance.first(id: service_instance_1.id)).to be
+          expect(ServiceInstance.first(id: service_instance_2.id)).to be_nil
+        end
+      end
+
       context 'when unbinding a service instance times out' do
         before do
           stub_unbind(service_binding_1, body: lambda { |r|

@@ -12,7 +12,7 @@ module VCAP::CloudController
         end
 
         def perform
-          logger = Steno.logger('cc-background')
+          logger = Steno.logger('cc.background')
           logger.info('There was an error during service instance provisioning. Attempting to delete potentially orphaned instance.')
 
           client = VCAP::Services::ServiceBrokers::V2::Client.new(client_attrs)

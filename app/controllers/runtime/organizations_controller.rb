@@ -85,7 +85,7 @@ module VCAP::CloudController
 
       delete_action = OrganizationDelete.new(SpaceDelete.new(current_user.id, current_user_email))
       deletion_job = VCAP::CloudController::Jobs::DeleteActionJob.new(Organization, guid, delete_action)
-      enqueue_deletion_job(deletion_job)
+      enqueue_or_execute_deletion_job(deletion_job)
     end
 
     def remove_related(guid, name, other_guid)

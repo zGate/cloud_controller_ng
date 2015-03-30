@@ -180,7 +180,11 @@ module VCAP::CloudController
       raise_if_has_associations!(service_instance) if v2_api? && !recursive?
 
       deprovisioner = ServiceInstanceDeprovisioner.new(@services_event_repository, self, logger)
-      service_instance, delete_job = deprovisioner.deprovision_service_instance(service_instance, params)
+      service_instance, delete_job = deprovisioner.deprovision_service_instance(
+        service_instance,
+        accepts_incomplete: params['accepts_incomplete'] == 'true',
+        async: params['async'] == 'true',
+      )
 
       if service_instance
         [HTTP::ACCEPTED, {}, object_renderer.render_json(self.class, service_instance, @opts)]

@@ -24,7 +24,7 @@ module VCAP::CloudController
 
       @delegate.retry_state_updater unless service_instance.terminal_state?
     rescue HttpRequestError, HttpResponseError, Sequel::Error => e
-      logger = Steno.logger('cc-background')
+      logger = Steno.logger('cc.background')
       logger.error("There was an error while fetching the service instance operation state: #{e}")
       @delegate.retry_state_updater
     end

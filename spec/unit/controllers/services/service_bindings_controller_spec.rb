@@ -601,6 +601,25 @@ module VCAP::CloudController
               expect(service_binding).not_to be_nil
               expect(Delayed::Job.first).to be_a_fully_wrapped_job_of Jobs::AuditEventJob
 
+              #complete all the jobs
+              expect(service_instance.refresh.last_operation.state).to eq 'succeeded'
+              expect(service_instance.refresh.last_operation.type).to eq 'create'
+            end
+
+            # Is there something for creation also?
+            it 'does not revert the operation until the binding is actually deleted' do
+              service_instance = service_binding.service_instance
+
+              delete "/v2/service_bindings/#{service_binding.guid}?async=true", '{}', json_headers(headers_for(developer))
+              expect(service_binding).not_to be_nil
+              expect(Delayed::Job.first).to be_a_fully_wrapped_job_of Jobs::AuditEventJob
+
+              expect(service_instance.refresh.last_operation.state).to eq 'in progress'
+              expect(service_instance.refresh.last_operation.type).to eq 'update'
+
+              successes, failures = Delayed::Worker.new.work_off
+              expect(successes.length).to eq(1)
+
               expect(service_instance.refresh.last_operation.state).to eq 'succeeded'
               expect(service_instance.refresh.last_operation.type).to eq 'create'
             end

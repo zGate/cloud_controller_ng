@@ -81,7 +81,7 @@ module VCAP::CloudController
         {}
       )
 
-      enqueue_deletion_job(delete_and_audit_job)
+      enqueue_or_execute_deletion_job(delete_and_audit_job)
     end
 
     define_messages

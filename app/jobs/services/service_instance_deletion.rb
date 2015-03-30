@@ -15,10 +15,7 @@ module VCAP::CloudController
 
           return if service_instance.nil?
           begin
-            ManagedServiceInstance.db.transaction do
-              if service_instance.managed_instance?
-                service_instance.last_operation.try(:destroy)
-              end
+            ManagedServiceInstance.db.transaction do #buh
               errs = ServiceInstanceDelete.new.delete([service_instance])
               unless errs.empty?
                 raise errs.first
