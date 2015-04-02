@@ -10,12 +10,25 @@ module VCAP::CloudController
       it { expect(described_class).to be_queryable_by(:space_guid) }
       it { expect(described_class).to be_queryable_by(:organization_guid) }
       it { expect(described_class).to be_queryable_by(:diego) }
+      it { expect(described_class).to be_queryable_by(:stack_guid) }
     end
 
     describe 'query by org_guid' do
       let(:app_obj) { AppFactory.make(detected_buildpack: 'buildpack-name', environment_json: { env_var: 'env_val' }) }
       it 'filters apps by org_guid' do
         get "/v2/apps?q=organization_guid:#{app_obj.organization.guid}", {}, json_headers(admin_headers)
+        expect(last_response.status).to eq(200)
+        expect(decoded_response['resources'][0]['entity']['name']).to eq(app_obj.name)
+      end
+    end
+
+    describe 'querying by stack guid' do
+      let(:stack_guid) { '12345' }
+      let(:stack) { Stack.make(guid: stack_guid) }
+      let(:app_obj) { App.make(stack_id: stack.id) }
+
+      it 'filters apps by stack guid' do
+        get "/v2/apps?q=stack_guid:#{app_obj.stack_guid}", {}, json_headers(admin_headers)
         expect(last_response.status).to eq(200)
         expect(decoded_response['resources'][0]['entity']['name']).to eq(app_obj.name)
       end
