@@ -128,12 +128,12 @@ module VCAP::CloudController
     end
 
     def self.user_visibility_filter(user)
-      Sequel.or(
-        organization: user.managed_organizations_dataset,
-        developers: [user],
-        managers: [user],
-        auditors: [user]
-      )
+      ids = user.spaces.map(&:id)
+      ids += user.audited_spaces.map(&:id)
+      ids += user.managed_spaces.map(&:id)
+      orgs = user.managed_organizations_dataset.map(&:id)
+      ids += dataset.where(organization_id: orgs).map(&:id)
+      { id: ids.uniq }
     end
 
     def has_remaining_memory(mem)
