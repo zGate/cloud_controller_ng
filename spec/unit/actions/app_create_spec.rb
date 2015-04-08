@@ -56,9 +56,9 @@ module VCAP::CloudController
             )
 
             expect { app_create.create(message) }.to raise_error('buildpack not found')
+            expect(AppModel.find(name: 'my-app')).to be_nil
           end
         end
-
 
         context 'and the buildpack is an invalid url' do
           it 'raises an error' do
@@ -70,6 +70,7 @@ module VCAP::CloudController
             )
 
             expect { app_create.create(message) }.to raise_error('buildpack not found')
+            expect(AppModel.find(name: 'my-app')).to be_nil
           end
         end
 

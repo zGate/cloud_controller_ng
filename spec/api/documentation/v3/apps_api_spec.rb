@@ -231,15 +231,21 @@ resource 'Apps (Experimental)', type: :api do
     let(:space_guid) { space.guid }
     let(:droplet) { VCAP::CloudController::DropletModel.make(app_guid: guid) }
     let(:app_model) { VCAP::CloudController::AppModel.make(name: 'original_name', space_guid: space_guid) }
+    let(:buildpack_entity) { VCAP::CloudController::Buildpack.make }
+    let(:buildpack) { buildpack_entity.name }
 
     before do
       space.organization.add_user(user)
       space.add_developer(user)
+      original_buildpack = VCAP::CloudController::Buildpack.make
+      app_model.buildpack = original_buildpack.name
+      app_model.save
     end
 
     parameter :name, 'Name of the App'
     parameter :desired_droplet_guid, 'GUID of the Droplet to be used for the App'
     parameter :environment_variables, 'Environment variables to be used for the App when running'
+    parameter :buildpack, 'The buildpack to use when staging this app', required: false, example: 'some stuff'
 
     let(:name) { 'new_name' }
     let(:desired_droplet_guid) { droplet.guid }
@@ -261,7 +267,7 @@ resource 'Apps (Experimental)', type: :api do
         'guid'   => app_model.guid,
         'desired_state' => app_model.desired_state,
         'environment_variables' => environment_variables,
-        'buildpack'             => nil,
+        'buildpack'             => buildpack,
         '_links' => {
           'self'            => { 'href' => "/v3/apps/#{app_model.guid}" },
           'processes'       => { 'href' => "/v3/apps/#{app_model.guid}/processes" },
@@ -287,7 +293,12 @@ resource 'Apps (Experimental)', type: :api do
         space_guid: space_guid,
         organization_guid: space.organization.guid
       })
-      expect(event.metadata['updated_fields']).to include('name', 'environment_variables', 'desired_droplet_guid')
+      expect(event.metadata['updated_fields']).to include(
+        'name',
+        'environment_variables',
+        'desired_droplet_guid',
+        'buildpack'
+      )
     end
   end
 

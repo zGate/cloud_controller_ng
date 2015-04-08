@@ -1,3 +1,5 @@
+require 'cloud_controller/buildpack_name_validator'
+
 module VCAP::CloudController
   class AppCreate
     class InvalidApp < StandardError; end
@@ -9,7 +11,7 @@ module VCAP::CloudController
     end
 
     def create(message)
-      raise 'buildpack not found' if !message.buildpack.nil? && !validate_buildpack(message)
+      raise 'buildpack not found' if !message.buildpack.nil? && !BuildpackNameValidator.new.valid?(message.buildpack)
 
       app = AppModel.create(
         name:                  message.name,
@@ -34,28 +36,6 @@ module VCAP::CloudController
       app
     rescue Sequel::ValidationFailed => e
       raise InvalidApp.new(e.message)
-    end
-
-    private
-
-    def validate_buildpack(message)
-      if !valid_url?(message.buildpack)
-        buildpack = Buildpack.find(name: message.buildpack)
-        return false if buildpack.nil?
-      end
-
-      true
-    end
-
-    def valid_url?(url)
-      begin
-        uri = URI.parse(url)
-        return false if !(uri.kind_of?(URI::HTTP) || uri.kind_of?(URI::HTTPS))
-      rescue URI::InvalidURIError
-        return false
-      end
-
-      true
     end
   end
 end

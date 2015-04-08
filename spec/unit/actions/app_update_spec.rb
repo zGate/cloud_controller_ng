@@ -8,7 +8,7 @@ module VCAP::CloudController
     let(:user_email) { 'cool_dude@hoopy_frood.com' }
     let(:app_update) { AppUpdate.new(user, user_email) }
 
-    describe '.update' do
+    describe '#update' do
       context 'when the desired_droplet does not exist' do
         let(:message) { { 'desired_droplet_guid' => 'not_a_guid' } }
 
@@ -116,6 +116,51 @@ module VCAP::CloudController
 
         it 'raises an invalid app error' do
           expect { app_update.update(app_model, message) }.to raise_error(AppUpdate::InvalidApp)
+        end
+      end
+
+      context 'when the build pack is valid and not a url' do
+        let(:buildpack) { Buildpack.make }
+        let(:message) { { 'buildpack' => buildpack.name } }
+
+        it 'sets the buildpack' do
+          app_update.update(app_model, message)
+
+          app_model.reload
+          expect(app_model.buildpack).to eq(buildpack.name)
+        end
+      end
+
+      context 'when the build pack is invalid and not a url' do
+        let(:message) { { 'buildpack' => 'invalid-buildpack' } }
+
+        it 'fail the update because buildpack name is wrong' do
+          expect { app_update.update(app_model, message) }.to raise_error('buildpack not found')
+
+          app_model.reload
+          expect(app_model.buildpack).not_to eq('invalid-buildpack')
+        end
+      end
+
+      context 'when the build pack is valid and it is a url, we are not creating this with make' do
+        let(:message) { { 'buildpack' => 'http://cf.buildpack.com' } }
+
+          it 'sets the buildpack' do
+            app_update.update(app_model, message)
+
+            app_model.reload
+            expect(app_model.buildpack).to eq('http://cf.buildpack.com')
+        end
+      end
+
+      context 'when the build pack is invalid url' do
+        let(:message) { { 'buildpack' => 'http://invalid url with spaces pack.com' } }
+
+        it 'fail the update because buildpack url is invalid' do
+          expect { app_update.update(app_model, message) }.to raise_error('buildpack not found')
+
+          app_model.reload
+          expect(app_model.buildpack).not_to eq('http://invalid url with spaces pack.com')
         end
       end
     end
