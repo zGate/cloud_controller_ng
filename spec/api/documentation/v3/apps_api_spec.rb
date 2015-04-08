@@ -60,6 +60,7 @@ resource 'Apps (Experimental)', type: :api do
             'guid'   => app_model3.guid,
             'desired_state' => app_model3.desired_state,
             'environment_variables' => environment_variables,
+            'buildpack'             => nil,
             '_links' => {
               'self'      => { 'href' => "/v3/apps/#{app_model3.guid}" },
               'processes' => { 'href' => "/v3/apps/#{app_model3.guid}/processes" },
@@ -74,6 +75,7 @@ resource 'Apps (Experimental)', type: :api do
             'guid'   => app_model2.guid,
             'desired_state' => app_model2.desired_state,
             'environment_variables' => {},
+            'buildpack'             => nil,
             '_links' => {
               'self'      => { 'href' => "/v3/apps/#{app_model2.guid}" },
               'processes' => { 'href' => "/v3/apps/#{app_model2.guid}/processes" },
@@ -145,6 +147,7 @@ resource 'Apps (Experimental)', type: :api do
         'guid'   => guid,
         'desired_state' => app_model.desired_state,
         'environment_variables' => environment_variables,
+        'buildpack'             => nil,
         '_links' => {
           'self'            => { 'href' => "/v3/apps/#{guid}" },
           'processes'       => { 'href' => "/v3/apps/#{guid}/processes" },
@@ -169,6 +172,8 @@ resource 'Apps (Experimental)', type: :api do
     let(:space_guid) { space.guid }
     let(:name) { 'my_app' }
     let(:environment_variables) { { 'open' => 'source' } }
+    let(:buildpack_entity) { VCAP::CloudController::Buildpack.make }
+    let(:buildpack) { buildpack_entity.name }
 
     before do
       space.organization.add_user(user)
@@ -178,6 +183,7 @@ resource 'Apps (Experimental)', type: :api do
     parameter :name, 'Name of the App', required: true
     parameter :space_guid, 'GUID of associated Space', required: true
     parameter :environment_variables, 'Environment variables to be used for the App when running', required: false
+    parameter :buildpack, 'The buildpack to use when staging this app', required: false, example: 'some stuff'
 
     let(:raw_post) { MultiJson.dump(params, pretty: true) }
 
@@ -188,11 +194,12 @@ resource 'Apps (Experimental)', type: :api do
 
       expected_guid     = VCAP::CloudController::AppModel.last.guid
       expected_response = {
-        'name'   => name,
-        'guid'   => expected_guid,
-        'desired_state' => 'STOPPED',
+        'name'                  => name,
+        'guid'                  => expected_guid,
+        'desired_state'         => 'STOPPED',
         'environment_variables' => environment_variables,
-        '_links' => {
+        'buildpack'             => buildpack,
+        '_links'                => {
           'self'      => { 'href' => "/v3/apps/#{expected_guid}" },
           'processes' => { 'href' => "/v3/apps/#{expected_guid}/processes" },
           'packages'  => { 'href' => "/v3/apps/#{expected_guid}/packages" },
@@ -207,13 +214,13 @@ resource 'Apps (Experimental)', type: :api do
       expect(parsed_response).to match(expected_response)
       event = VCAP::CloudController::Event.last
       expect(event.values).to include({
-        type: 'audit.app.create',
-        actee: expected_guid,
-        actee_type: 'v3-app',
-        actee_name: name,
-        actor: user.guid,
-        actor_type: 'user',
-        space_guid: space_guid,
+        type:              'audit.app.create',
+        actee:             expected_guid,
+        actee_type:        'v3-app',
+        actee_name:        name,
+        actor:             user.guid,
+        actor_type:        'user',
+        space_guid:        space_guid,
         organization_guid: space.organization.guid,
       })
     end
@@ -254,6 +261,7 @@ resource 'Apps (Experimental)', type: :api do
         'guid'   => app_model.guid,
         'desired_state' => app_model.desired_state,
         'environment_variables' => environment_variables,
+        'buildpack'             => nil,
         '_links' => {
           'self'            => { 'href' => "/v3/apps/#{app_model.guid}" },
           'processes'       => { 'href' => "/v3/apps/#{app_model.guid}/processes" },
@@ -346,6 +354,7 @@ resource 'Apps (Experimental)', type: :api do
         'guid'   => app_model.guid,
         'desired_state'   => 'STARTED',
         'environment_variables' => {},
+        'buildpack'             => nil,
         '_links' => {
           'self'            => { 'href' => "/v3/apps/#{app_model.guid}" },
           'processes'       => { 'href' => "/v3/apps/#{app_model.guid}/processes" },
@@ -402,6 +411,7 @@ resource 'Apps (Experimental)', type: :api do
         'guid'   => app_model.guid,
         'desired_state'   => 'STOPPED',
         'environment_variables' => {},
+        'buildpack'             => nil,
         '_links' => {
           'self'            => { 'href' => "/v3/apps/#{app_model.guid}" },
           'processes'       => { 'href' => "/v3/apps/#{app_model.guid}/processes" },

@@ -28,7 +28,7 @@ module VCAP::CloudController
   end
 
   class AppCreateMessage
-    attr_reader :name, :space_guid, :environment_variables
+    attr_reader :name, :space_guid, :environment_variables, :buildpack
     attr_accessor :error
 
     def self.create_from_http_request(body)
@@ -45,6 +45,7 @@ module VCAP::CloudController
       @name                  = opts['name']
       @space_guid            = opts['space_guid']
       @environment_variables = opts['environment_variables']
+      @buildpack             = opts['buildpack']
     end
   end
 

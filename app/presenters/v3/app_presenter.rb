@@ -30,6 +30,7 @@ module VCAP::CloudController
         name:                  app.name,
         desired_state:         app.desired_state,
         environment_variables: app.environment_variables || {},
+        buildpack:             app.buildpack,
         _links:                build_links(app)
       }
     end
