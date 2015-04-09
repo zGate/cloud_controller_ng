@@ -65,7 +65,27 @@ module VCAP::CloudController
       end
 
       describe 'App Space Level Permissions' do
-        user_sees_empty_enumerate('SpaceManager', :@space_a_manager, :@space_b_manager)
+        describe 'SpaceManager' do
+          let(:member_a) { @space_a_manager }
+          let(:member_b) { @space_b_manager }
+
+          include_examples 'permission enumeration', 'SpaceManager',
+            name: 'managed service instance',
+            path: '/v2/service_instances',
+            enumerate: 1
+
+          it 'redacts the credentials hash for service instance enumeration' do
+            get '/v2/service_instances', '', headers_for(member_a)
+            expect(last_response).to have_status_code(200)
+            expect(decoded_response['resources'].first['entity']['credentials']).to eq({ 'redacted_message' => '[PRIVATE DATA HIDDEN]' })
+          end
+
+          it 'redacts the credentials hash for service instance read' do
+            get "/v2/service_instances/#{@obj_a.guid}", '', headers_for(member_a)
+            expect(last_response).to have_status_code(200)
+            expect(decoded_response['entity']['credentials']).to eq({ 'redacted_message' => '[PRIVATE DATA HIDDEN]' })
+          end
+        end
 
         describe 'Developer' do
           let(:member_a) { @space_a_developer }

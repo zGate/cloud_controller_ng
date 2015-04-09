@@ -268,6 +268,7 @@ module VCAP::CloudController
 
       describe 'Permissions' do
         include_context 'permissions'
+
         shared_examples 'disallow enumerating service instances' do |perm_name|
           describe 'disallowing enumerating service instances' do
             it "disallows a user that only has #{perm_name} permission on the space" do
@@ -392,7 +393,7 @@ module VCAP::CloudController
           describe 'SpaceManager' do
             it_behaves_like(
               'enumerating service instances', 'SpaceManager',
-              expected: 0,
+              expected: 1,
             ) do
               let(:member_a) { @space_a_manager }
               let(:member_b) { @space_b_manager }
@@ -403,6 +404,14 @@ module VCAP::CloudController
             ) do
               let(:member_a) { @space_a_manager }
               let(:member_b) { @space_b_manager }
+            end
+
+            it 'redacts any credentials' do
+              ManagedServiceInstance.make(space: @space_a)
+
+              get "/v2/spaces/#{@space_a.guid}/service_instances", {}, headers_for(@space_a_manager)
+              expect(last_response).to have_status_code 200
+              expect(decoded_response['resources'].first['entity']['credentials']).to eq('redacted_message' => '[PRIVATE DATA HIDDEN]')
             end
           end
 

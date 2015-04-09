@@ -107,7 +107,19 @@ module VCAP::CloudController
           include_examples 'permission enumeration', 'SpaceManager',
                            name: 'getting service key',
                            path: '/v2/service_keys',
-                           enumerate: 0
+                           enumerate: 1
+
+          it 'redacts credentials for service key enumerate' do
+            get '/v2/service_keys', {}, headers_for(member_a)
+            expect(last_response).to have_status_code 200
+            expect(decoded_response['resources'].first['entity']['credentials']).to eq('redacted_message' => '[PRIVATE DATA HIDDEN]')
+          end
+
+          it 'redacts credentials for service key read' do
+            get "/v2/service_keys/#{@obj_a.guid}", {}, headers_for(member_a)
+            expect(last_response).to have_status_code 200
+            expect(decoded_response['entity']['credentials']).to eq('redacted_message' => '[PRIVATE DATA HIDDEN]')
+          end
         end
 
         describe 'Developer' do
