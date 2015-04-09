@@ -23,7 +23,7 @@ module VCAP::CloudController
 
         raise 'buildpack not found' if !message['buildpack'].nil? && !BuildpackNameValidator.new.valid?(message['buildpack'])
 
-        if(message['buildpack'])
+        if message['buildpack']
           app.buildpack = message['buildpack']
           updated_fields << 'buildpack'
         end

@@ -12,7 +12,7 @@ module VCAP::CloudController
     def valid_url?(url)
       begin
         uri = URI.parse(url)
-        return false if !(uri.kind_of?(URI::HTTP) || uri.kind_of?(URI::HTTPS))
+        return false if !(uri.is_a?(URI::HTTP) || uri.is_a?(URI::HTTPS))
       rescue URI::InvalidURIError
         return false
       end

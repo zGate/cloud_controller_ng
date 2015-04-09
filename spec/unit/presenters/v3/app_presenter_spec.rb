@@ -5,7 +5,7 @@ module VCAP::CloudController
   describe AppPresenter do
     describe '#present_json' do
       it 'presents the app as json' do
-        app = AppModel.make(environment_variables: { 'some' => 'stuff' }, desired_state: 'STOPPED',buildpack: 'mybuildpack')
+        app = AppModel.make(environment_variables: { 'some' => 'stuff' }, desired_state: 'STOPPED', buildpack: 'mybuildpack')
 
         json_result = AppPresenter.new.present_json(app)
         result      = MultiJson.load(json_result)

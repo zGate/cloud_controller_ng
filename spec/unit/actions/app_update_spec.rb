@@ -145,11 +145,11 @@ module VCAP::CloudController
       context 'when the build pack is valid and it is a url, we are not creating this with make' do
         let(:message) { { 'buildpack' => 'http://cf.buildpack.com' } }
 
-          it 'sets the buildpack' do
-            app_update.update(app_model, message)
+        it 'sets the buildpack' do
+          app_update.update(app_model, message)
 
-            app_model.reload
-            expect(app_model.buildpack).to eq('http://cf.buildpack.com')
+          app_model.reload
+          expect(app_model.buildpack).to eq('http://cf.buildpack.com')
         end
       end
 
