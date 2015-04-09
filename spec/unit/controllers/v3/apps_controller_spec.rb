@@ -43,20 +43,29 @@ module VCAP::CloudController
       let(:page) { 1 }
       let(:per_page) { 2 }
       let(:params) { { 'page' => page, 'per_page' => per_page } }
-      let(:list_response) { 'list_response' }
+      let(:app) { AppModel.make }
+      let(:fetcher) { double(:fetcher, fetch: [app]) }
 
       before do
         allow(app_presenter).to receive(:present_json_list).and_return(app_response)
-        allow(apps_handler).to receive(:list).and_return(list_response)
+        allow(apps_controller).to receive(:check_read_permissions!).and_return(true)
+        allow(AppListFetcher).to receive(:new).and_return(fetcher)
+        allow(membership).to receive(:space_guids_for_managed_orgs).
+          and_return(['some-space-guid', 'yet-another-space-guid'])
       end
 
       it 'returns 200 and lists the apps' do
         response_code, response_body = apps_controller.list
 
-        expect(apps_handler).to have_received(:list)
-        expect(app_presenter).to have_received(:present_json_list).with(list_response, {})
+        expect(app_presenter).to have_received(:present_json_list).with([app], {})
         expect(response_code).to eq(200)
         expect(response_body).to eq(app_response)
+      end
+
+      it 'checks for read permissions' do
+        apps_controller.list
+
+        expect(apps_controller).to have_received(:check_read_permissions!)
       end
 
       context 'query params' do
@@ -149,9 +158,9 @@ module VCAP::CloudController
           allow(membership).to receive(:has_any_roles?).and_raise('incorrect args')
           allow(membership).to receive(:has_any_roles?).with(
               [Membership::SPACE_DEVELOPER,
-                Membership::SPACE_MANAGER,
-                Membership::SPACE_AUDITOR,
-                Membership::ORG_MANAGER], space.guid, org.guid).and_return(false)
+               Membership::SPACE_MANAGER,
+               Membership::SPACE_AUDITOR,
+               Membership::ORG_MANAGER], space.guid, org.guid).and_return(false)
         end
 
         it 'returns a 404 ResourceNotFound error' do
@@ -349,12 +358,6 @@ module VCAP::CloudController
 
       context 'when the user can update the app' do
         let(:req_body) { { name: new_name }.to_json }
-        let(:app_response) do
-          {
-            'guid' => app_model.guid,
-            'name' => new_name,
-          }
-        end
 
         before do
           allow(apps_controller).to receive(:check_write_permissions!).and_return(nil)

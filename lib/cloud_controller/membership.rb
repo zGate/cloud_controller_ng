@@ -20,6 +20,21 @@ module VCAP::CloudController
       member_guids.include?(space_guid) || member_guids.include?(org_guid)
     end
 
+    def space_guids
+      dataset = []
+
+      if @user.admin?
+        dataset =  Space.dataset
+      else
+        spaces = @user.spaces + @user.audited_spaces + @user.managed_spaces
+        org_guids = @user.managed_organizations.map(&:guid)
+        spaces_from_orgs = Space.join(:organizations, organizations__id: :spaces__organization_id).where(organizations__guid: org_guids).select(:spaces__guid)
+        dataset = spaces + spaces_from_orgs
+      end
+
+      dataset.map(&:guid)
+    end
+
     private
 
     def member_guids(roles: [])
