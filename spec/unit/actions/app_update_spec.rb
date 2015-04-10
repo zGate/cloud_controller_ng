@@ -118,6 +118,31 @@ module VCAP::CloudController
           expect { app_update.update(app_model, message) }.to raise_error(AppUpdate::InvalidApp)
         end
       end
+
+      context 'when updating the procfile' do
+        let(:procfile) { 'jim: new name' }
+        let(:message) { { 'procfile' => procfile } }
+
+        it 'updates the app procfile' do
+          app_update.update(app_model, message)
+          app_model.reload
+
+          expect(app_model.procfile).to eq(procfile)
+        end
+
+        it 'creates an audit event' do
+          app_update.update(app_model, message)
+
+          event = Event.last
+          expect(event.type).to eq('audit.app.update')
+          expect(event.actor).to eq('1337')
+          expect(event.actor_name).to eq(user_email)
+          expect(event.actee_type).to eq('v3-app')
+          expect(event.actee).to eq(app_model.guid)
+          expect(event.actee_name).to eq(app_model.name)
+          expect(event.metadata['updated_fields']).to include('procfile')
+        end
+      end
     end
   end
 end

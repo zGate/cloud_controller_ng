@@ -45,6 +45,7 @@ module VCAP::CloudController
   DropletModel.blueprint do
     guid     { Sham.guid }
     state    { VCAP::CloudController::DropletModel::STAGING_STATE }
+    procfile { 'web: my_start_command.sh' }
     app_guid { AppModel.make.guid }
   end
 

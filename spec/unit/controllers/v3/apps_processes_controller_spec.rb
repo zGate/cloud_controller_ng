@@ -28,11 +28,23 @@ module VCAP::CloudController
       )
     end
     let(:process_response) { 'process_response_body' }
+    let(:membership) { double(:membership) }
+    let(:app_fetcher) { double(:app_fetcher) }
+    let(:procfile_parser) { double(:procfile_parser) }
 
     before do
       allow(logger).to receive(:debug)
       allow(apps_handler).to receive(:show).and_return(app_model)
       allow(process_presenter).to receive(:present_json_list).and_return(process_response)
+
+      allow(membership).to receive(:has_any_roles?).and_return(true)
+      allow(controller).to receive(:membership).and_return(membership)
+
+      allow(controller).to receive(:app_fetcher).and_return(app_fetcher)
+      allow(app_fetcher).to receive(:fetch).and_return(nil)
+
+      allow(controller).to receive(:procfile_parser).and_return(procfile_parser)
+      allow(procfile_parser).to receive(:process_procfile).and_return(nil)
     end
 
     describe '#add_process' do
@@ -258,20 +270,33 @@ module VCAP::CloudController
     end
 
     describe '#process_procfile' do
-      let(:app_model) { AppModel.make }
+      let(:space) { Space.make }
+      let(:org) { space.organization }
+      let(:app_model) { AppModel.make(space_guid: space.guid) }
       let(:guid) { app_model.guid }
-      let(:req_body) do
-        'clock: bundle spec clock'
-      end
+      let(:procfile) { 'clock: bundle spec clock' }
+      let(:req_body) { procfile }
 
       before do
-        allow(procfile_handler).to receive(:process_procfile)
+        allow(controller).to receive(:check_write_permissions!)
         allow(processes_handler).to receive(:list)
+        allow(app_fetcher).to receive(:fetch).with(guid).and_return([app_model, space, org])
+      end
+
+      it 'checks write permissions' do
+        allow(controller).to receive(:check_write_permissions!).and_raise(VCAP::Errors::ApiError.new_from_details('NotAuthorized'))
+
+        expect {
+          controller.process_procfile(guid)
+        }.to raise_error do |error|
+          expect(error.name).to eq 'NotAuthorized'
+          expect(error.response_code).to eq 403
+        end
       end
 
       context 'when the app does not exist' do
         before do
-          allow(apps_handler).to receive(:show).and_return(nil)
+          allow(app_fetcher).to receive(:fetch).and_return(nil)
         end
 
         it 'returns a 404 ResourceNotFound error' do
@@ -286,7 +311,28 @@ module VCAP::CloudController
 
       context 'when the user cannot update the app' do
         before do
-          allow(procfile_handler).to receive(:process_procfile).and_raise(ProcfileHandler::Unauthorized)
+          allow(membership).to receive(:has_any_roles?).with(
+            [Membership::SPACE_DEVELOPER], space.guid).and_return(false)
+        end
+
+        it 'returns a 403 Unauthorized error' do
+          expect {
+            controller.process_procfile(guid)
+          }.to raise_error do |error|
+            expect(error.name).to eq 'NotAuthorized'
+            expect(error.response_code).to eq 403
+          end
+        end
+      end
+
+      context 'when the user cannot read the app' do
+        before do
+          allow(membership).to receive(:has_any_roles?).and_raise('incorrect args')
+          allow(membership).to receive(:has_any_roles?).with(
+            [Membership::SPACE_DEVELOPER,
+             Membership::SPACE_MANAGER,
+             Membership::SPACE_AUDITOR,
+             Membership::ORG_MANAGER], space.guid, org.guid).and_return(false)
         end
 
         it 'returns a 404 ResourceNotFound error' do
@@ -302,7 +348,7 @@ module VCAP::CloudController
       context 'when the request body is invalid Procfile' do
         let(:req_body) { 'invalid procfile' }
         before do
-          allow(Procfile).to receive(:load).and_raise(Procfile::ParseError)
+          allow(procfile_parser).to receive(:process_procfile).and_raise(Procfile::ParseError)
         end
 
         it 'returns an 400 Bad Request' do
@@ -317,6 +363,7 @@ module VCAP::CloudController
 
       context 'when the process is added to the app' do
         it 'returns a 200 OK' do
+          expect(procfile_parser).to receive(:process_procfile).with(app_model, procfile).and_return(procfile)
           response_code, _ = controller.process_procfile(guid)
           expect(response_code).to eq(200)
         end

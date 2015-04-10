@@ -20,11 +20,6 @@ module VCAP::CloudController
         })
       end
 
-      before do
-        app_model.add_process_by_guid(process1.guid)
-        app_model.add_process_by_guid(process2.guid)
-      end
-
       context 'when the desired_droplet does not exist' do
         let(:droplet_guid) { nil }
 
@@ -33,15 +28,37 @@ module VCAP::CloudController
             app_start.start(app_model)
           }.to raise_error(AppStart::DropletNotFound)
         end
+
+        context 'and the app has a procfile' do
+          it 'raises a DropletNotFound exception' do
+            app_model.update(procfile: 'web: app_model')
+
+            expect {
+              app_start.start(app_model)
+            }.to raise_error(AppStart::DropletNotFound)
+          end
+        end
       end
 
       context 'when the desired_droplet exists' do
-        let(:droplet) { DropletModel.make }
+        let(:droplet) do
+          DropletModel.make(procfile: "web: a\nworker: b")
+        end
         let(:droplet_guid) { droplet.guid }
 
         it 'sets the desired state on the app' do
           app_start.start(app_model)
           expect(app_model.desired_state).to eq('STARTED')
+        end
+
+        it 'expands procfile to processes' do
+          app_start.start(app_model)
+
+          processes = app_model.processes.sort_by(&:type)
+          expect(processes[0].type).to eq('web')
+          expect(processes[0].command).to eq('a')
+          expect(processes[1].type).to eq('worker')
+          expect(processes[1].command).to eq('b')
         end
 
         it 'creates an audit event' do
@@ -56,7 +73,7 @@ module VCAP::CloudController
         end
 
         context 'and the droplet has a package' do
-          let(:droplet) { DropletModel.make(package_guid: package.guid) }
+          let(:droplet) { DropletModel.make(package_guid: package.guid, procfile: 'web: x') }
           let(:package) { PackageModel.make(package_hash: 'some-awesome-thing', state: PackageModel::READY_STATE) }
 
           it 'sets the package hash correctly on the process' do
@@ -85,6 +102,24 @@ module VCAP::CloudController
             expect(process.started?).to eq(true)
             expect(process.state).to eq('STARTED')
             expect(process.environment_json).to eq(app_model.environment_variables)
+          end
+        end
+
+        it 'favors app procfile over droplets' do
+          app_model.update(procfile: 'web: y')
+          app_start.start(app_model)
+
+          expect(app_model.processes[0].command).to eq('y')
+          expect(app_model.processes.size).to eq(1)
+        end
+
+        context 'and the app and droplet have no procfile' do
+          it 'raises a ProcfileNotFound error' do
+            app_model.update(procfile: nil)
+            droplet.update(procfile: nil)
+            expect {
+              app_start.start(app_model)
+            }.to raise_error(ProcfileParse::ProcfileNotFound)
           end
         end
       end

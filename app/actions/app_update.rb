@@ -19,6 +19,11 @@ module VCAP::CloudController
           updated_fields << 'name'
         end
 
+        if message['procfile']
+          app.procfile = message['procfile']
+          updated_fields << 'procfile'
+        end
+
         if message['environment_variables']
           app.environment_variables = message['environment_variables']
           updated_fields << 'environment_variables'

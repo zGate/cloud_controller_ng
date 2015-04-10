@@ -73,27 +73,57 @@ module VCAP::CloudController
 
     put '/v3/apps/:guid/procfile', :process_procfile
     def process_procfile(guid)
-      app = @app_handler.show(guid, @access_context)
-      app_not_found! if app.nil?
+      check_write_permissions!
 
-      procfile = Procfile.load(body)
-      @procfile_handler.process_procfile(app, procfile, @access_context)
+      app, space, org = app_fetcher.fetch(guid)
+
+      app_not_found! if app.nil? || !can_read?(space.guid, org.guid)
+      unauthorized! unless can_update?(space.guid)
+
+      procfile_parser.process_procfile(app, body)
 
       pagination_options = PaginationOptions.from_params(params)
-      paginated_result   = @processes_handler.list(pagination_options, @access_context, app_guid: app.guid)
+      processes = SequelPaginator.new.get_page(app.processes_dataset, pagination_options)
 
-      [HTTP::OK, @process_presenter.present_json_list(paginated_result, "/v3/apps/#{guid}/processes")]
+      [HTTP::OK, @process_presenter.present_json_list(processes, "/v3/apps/#{guid}/processes")]
     rescue Procfile::ParseError => e
       raise VCAP::Errors::ApiError.new_from_details('MessageParseError', e.message)
-    rescue ProcfileHandler::Unauthorized
-      app_not_found!
-    rescue ProcessesHandler::Unauthorized
-      app_not_found!
     rescue AppsHandler::Unauthorized
       app_not_found!
     end
 
     private
+
+    def app_update
+      AppUpdate.new(current_user, current_user_email)
+    end
+
+    def app_fetcher
+      AppFetcher.new
+    end
+
+    def procfile_parser
+      ProcfileParse.new(current_user, current_user_email)
+    end
+
+    def membership
+      @membership ||= Membership.new(current_user)
+    end
+
+    def can_read?(space_guid, org_guid)
+      membership.has_any_roles?([Membership::SPACE_DEVELOPER,
+                                 Membership::SPACE_MANAGER,
+                                 Membership::SPACE_AUDITOR,
+                                 Membership::ORG_MANAGER], space_guid, org_guid)
+    end
+
+    def can_update?(space_guid)
+      membership.has_any_roles?([Membership::SPACE_DEVELOPER], space_guid)
+    end
+
+    def unauthorized!
+      raise VCAP::Errors::ApiError.new_from_details('NotAuthorized')
+    end
 
     def unable_to_perform!(msg, details)
       raise VCAP::Errors::ApiError.new_from_details('UnableToPerform', msg, details)
