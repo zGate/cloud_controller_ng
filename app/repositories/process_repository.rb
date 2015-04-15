@@ -7,42 +7,31 @@ module VCAP::CloudController
     class ProcessNotFound < StandardError; end
 
     def new_process(opts)
-      AppProcess.new(opts)
+      App.new(opts)
     end
 
     def update!(desired_process)
       raise MutationAttemptWithoutALock if !@lock_acquired
 
-      original = App.find(guid: desired_process.guid)
-      process_model = ProcessMapper.map_domain_to_existing_model(desired_process, original)
-
-      raise ProcessNotFound if process_model.nil?
-
-      process_model.save
-      ProcessMapper.map_model_to_domain(process_model)
+      desired_process.save
     rescue Sequel::ValidationFailed => e
       raise InvalidProcess.new(e.message)
     end
 
     def create!(desired_process)
-      process_model = ProcessMapper.map_domain_to_new_model(desired_process)
-
-      process_model.save
-      ProcessMapper.map_model_to_domain(process_model)
+      desired_process.save
     rescue Sequel::ValidationFailed => e
       raise InvalidProcess.new(e.message)
     end
 
     def find_by_guid(guid)
-      process_model = App.where(guid: guid).first
-      return if process_model.nil?
-      ProcessMapper.map_model_to_domain(process_model)
+      App.where(guid: guid).first
     end
 
     def find_for_show(guid)
       process_model = App.where(apps__guid: guid).eager_graph(:space).all.first
       return nil, nil if process_model.nil?
-      [ProcessMapper.map_model_to_domain(process_model), process_model.space]
+      [process_model, process_model.space]
     end
 
     def find_for_update(guid)
@@ -66,7 +55,7 @@ module VCAP::CloudController
 
         @lock_acquired = true
         begin
-          yield ProcessMapper.map_model_to_domain(process_model), process_model.space, neighboring_processes
+          yield process_model, process_model.space, neighboring_processes
         ensure
           @lock_acquired = false
         end
