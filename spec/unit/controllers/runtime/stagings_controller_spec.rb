@@ -630,8 +630,8 @@ module VCAP::CloudController
         context 'when nginx is enabled' do
           it 'redirects nginx to serve staged droplet' do
             buildpack_cache_blobstore.cp_to_blobstore(
-                buildpack_cache.path,
-                "#{app_obj.stack.name}-#{app_obj.guid}"
+              buildpack_cache.path,
+              "#{app_obj.stack.name}-#{app_obj.guid}"
             )
 
             make_request
@@ -647,8 +647,8 @@ module VCAP::CloudController
 
           it 'should return the buildpack cache' do
             buildpack_cache_blobstore.cp_to_blobstore(
-                buildpack_cache.path,
-                "#{app_obj.stack.name}-#{app_obj.guid}"
+              buildpack_cache.path,
+              "#{app_obj.stack.name}-#{app_obj.guid}"
             )
 
             make_request

@@ -9,7 +9,9 @@ module VCAP::CloudController
     end
 
     def create(message)
-      app = AppModel.create(name: message.name, space_guid: message.space_guid, environment_variables: message.environment_variables)
+      app = AppModel.create(name: message.name,
+                            space_guid: message.space_guid,
+                            environment_variables: message.environment_variables)
       Repositories::Runtime::AppEventRepository.new.record_app_create(
         app,
         app.space,
