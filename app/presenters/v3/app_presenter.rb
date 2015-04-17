@@ -28,6 +28,7 @@ module VCAP::CloudController
       {
         guid:                    app.guid,
         name:                    app.name,
+        diego:                   app.diego,
         desired_state:           app.desired_state,
         total_desired_instances: app.processes.map(&:instances).reduce(:+) || 0,
         created_at:              app.created_at,

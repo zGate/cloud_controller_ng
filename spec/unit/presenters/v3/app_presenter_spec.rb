@@ -43,6 +43,15 @@ module VCAP::CloudController
         expect(result['environment_variables']).to eq({})
       end
 
+      it 'returns the diego boolean' do
+        app = AppModel.make(desired_droplet_guid: '123', diego: true)
+
+        json_result = AppPresenter.new.present_json(app)
+        result      = MultiJson.load(json_result)
+
+        expect(result['diego']).to be_truthy
+      end
+
       it 'includes a link to the droplet if present' do
         app = AppModel.make(desired_droplet_guid: '123')
 
