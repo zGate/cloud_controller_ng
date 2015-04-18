@@ -17,6 +17,17 @@ module VCAP::CloudController
 
       it_behaves_like 'a stager'
 
+      describe '#stage_package' do
+        let(:package) { instance_double(PackageModel) }
+        let(:app) { package }
+        let(:droplet) { instance_double(DropletModel) }
+
+        it 'notifies Diego that the package needs staging' do
+          expect(messenger).to receive(:send_stage_request).with(droplet, staging_config)
+          stager.stage_package(droplet, stack, memory_limit, disk_limit, buildpack_key, buildpack_git_url)
+        end
+      end
+
       describe '#stage_app' do
         before do
           allow(messenger).to receive(:send_stage_request)

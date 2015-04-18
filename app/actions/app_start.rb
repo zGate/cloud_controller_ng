@@ -28,11 +28,12 @@ module VCAP::CloudController
 
         app.processes.each do |process|
           process.update({
-            state: 'STARTED',
+            diego: app.diego,
+            environment_json: app.environment_variables,
             package_hash: package_hash,
             package_state: 'STAGED',
             package_pending_since: nil,
-            environment_json: app.environment_variables
+            state: 'STARTED',
           })
         end
       end

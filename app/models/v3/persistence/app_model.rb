@@ -16,6 +16,8 @@ module VCAP::CloudController
     encrypt :environment_variables, salt: :salt, column: :encrypted_environment_variables
     serializes_via_json :environment_variables
 
+    alias_method :diego?, :diego
+
     def validate
       validates_presence :name
       validates_unique [:space_guid, :name]

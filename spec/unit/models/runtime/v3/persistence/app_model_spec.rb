@@ -6,6 +6,15 @@ module VCAP::CloudController
     let(:app_model) { AppModel.make }
     let(:space) { Space.find(guid: app_model.space_guid) }
 
+    describe '#diego?' do
+      it 'returns the value of the diego flag' do
+        expect(app_model.diego?).to be_falsey
+
+        app_model.update(diego: true)
+        expect(app_model.diego?).to be_truthy
+      end
+    end
+
     describe '.user_visible' do
       it 'shows the developer apps' do
         developer = User.make

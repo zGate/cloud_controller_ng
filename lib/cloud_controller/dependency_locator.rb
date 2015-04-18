@@ -217,7 +217,7 @@ module CloudController
       serializer   = VCAP::CloudController::RestController::PreloadedObjectSerializer.new
 
       VCAP::CloudController::RestController::ObjectRenderer.new(eager_loader, serializer, {
-        max_inline_relations_depth: @config[:renderer][:max_inline_relations_depth],
+                                                                  max_inline_relations_depth: @config[:renderer][:max_inline_relations_depth],
       })
     end
 
@@ -272,10 +272,10 @@ module CloudController
       collection_transformer     = opts[:collection_transformer]
 
       VCAP::CloudController::RestController::PaginatedCollectionRenderer.new(eager_loader, serializer, {
-        max_results_per_page:       max_results_per_page,
-        default_results_per_page:   default_results_per_page,
-        max_inline_relations_depth: max_inline_relations_depth,
-        collection_transformer: collection_transformer
+                                                                               max_results_per_page:       max_results_per_page,
+                                                                               default_results_per_page:   default_results_per_page,
+                                                                               max_inline_relations_depth: max_inline_relations_depth,
+                                                                               collection_transformer: collection_transformer
       })
     end
   end

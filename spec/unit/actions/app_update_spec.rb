@@ -47,6 +47,72 @@ module VCAP::CloudController
         end
       end
 
+      describe 'the diego flag' do
+        context 'when the existing app has the flag set to false' do
+          let(:app_model) { AppModel.make(diego: false) }
+
+          context 'when the message explicitly sets diego to true' do
+            let(:message) { { 'diego' => true } }
+
+            it 'updates the app to have diego set to true' do
+              app_update.update(app_model, message)
+
+              expect(app_model.reload.diego).to be_truthy
+            end
+          end
+
+          context 'when the message explicitly sets diego to false' do
+            let(:message) { { 'diego' => false } }
+
+            it 'keeps the app with diego set to false' do
+              app_update.update(app_model, message)
+
+              expect(app_model.reload.diego).to be_falsey
+            end
+          end
+
+          context 'when the message does not explicitly mention the diego flag' do
+            it 'keeps the app with diego set to false' do
+              app_update.update(app_model, message)
+
+              expect(app_model.reload.diego).to be_falsey
+            end
+          end
+        end
+
+        context 'when the existing app has the flag set to true' do
+          let(:app_model) { AppModel.make(diego: true) }
+
+          context 'when the message explicitly sets diego to true' do
+            let(:message) { { 'diego' => true } }
+
+            it 'keeps the app with diego set to true' do
+              app_update.update(app_model, message)
+
+              expect(app_model.reload.diego).to be_truthy
+            end
+          end
+
+          context 'when the message explicitly sets diego to false' do
+            let(:message) { { 'diego' => false } }
+
+            it 'updates the app to have diego set to false' do
+              app_update.update(app_model, message)
+
+              expect(app_model.reload.diego).to be_falsey
+            end
+          end
+
+          context 'when the message does not explicitly mention the diego flag' do
+            it 'keeps the app with diego set to true' do
+              app_update.update(app_model, message)
+
+              expect(app_model.reload.diego).to be_truthy
+            end
+          end
+        end
+      end
+
       context 'when the app is invalid' do
         let(:name) { 'new name' }
         let(:message) { { 'name' => name } }

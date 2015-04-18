@@ -36,7 +36,7 @@ module VCAP::CloudController
       end
 
       before do
-        allow(stagers).to receive(:stager_for_package).with(package).and_return(stager)
+        allow(stagers).to receive(:stager_for_package).with(package, app.diego).and_return(stager)
         allow(stager).to receive(:stage_package)
         allow(memory_limit_calculator).to receive(:get_limit).with(memory_limit, space, org).and_return(calculated_mem_limit)
         allow(disk_limit_calculator).to receive(:get_limit).with(disk_limit).and_return(calculated_disk_limit)
@@ -58,6 +58,18 @@ module VCAP::CloudController
       it 'initiates a staging request' do
         droplet = action.stage(package, app, space, org, buildpack, staging_message, stagers)
         expect(stager).to have_received(:stage_package).with(droplet, stack, calculated_mem_limit, calculated_disk_limit, buildpack.key, buildpack_git_url)
+      end
+
+      context 'when the diego flag is set to true on the app' do
+        before do
+          allow(stagers).to receive(:stager_for_package).with(package, true).and_return(stager)
+          app.update(diego: true)
+        end
+
+        it 'asks for the stager with the use_diego argument set to true' do
+          action.stage(package, app, space, org, buildpack, staging_message, stagers)
+          expect(stagers).to have_received(:stager_for_package).with(package, true)
+        end
       end
 
       context 'when the package is not type bits' do

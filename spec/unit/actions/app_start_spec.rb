@@ -9,15 +9,22 @@ module VCAP::CloudController
 
     describe '#start' do
       let(:environment_variables) { { 'FOO' => 'bar' } }
+      let(:diego) { false }
       let(:process1) { AppFactory.make(state: 'STOPPED') }
       let(:process2) { AppFactory.make(state: 'STOPPED') }
 
       let(:app_model) do
         AppModel.make({
+          diego: diego,
           desired_state: 'STOPPED',
           desired_droplet_guid: droplet_guid,
           environment_variables: environment_variables
         })
+      end
+
+      before do
+        app_model.add_process(process1)
+        app_model.add_process(process2)
       end
 
       context 'when the desired_droplet does not exist' do
@@ -74,11 +81,27 @@ module VCAP::CloudController
 
         it 'prepares the sub-processes of the app' do
           app_start.start(app_model)
+          expect(app_model.processes.length).to eq(2)
           app_model.processes.each do |process|
             expect(process.needs_staging?).to eq(false)
             expect(process.started?).to eq(true)
             expect(process.state).to eq('STARTED')
+            expect(process.diego).to be_falsey
             expect(process.environment_json).to eq(app_model.environment_variables)
+          end
+        end
+
+        context 'when the diego flag is set to true on the app' do
+          let(:diego) { true }
+          it 'sets the diego flag to true on the processes' do
+            app_start.start(app_model)
+            app_model.processes.each do |process|
+              expect(process.needs_staging?).to eq(false)
+              expect(process.started?).to eq(true)
+              expect(process.diego).to be_truthy
+              expect(process.state).to eq('STARTED')
+              expect(process.environment_json).to eq(app_model.environment_variables)
+            end
           end
         end
       end

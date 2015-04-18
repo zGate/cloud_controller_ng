@@ -8,7 +8,7 @@ module VCAP::CloudController
         @staging_config = staging_config
       end
 
-      def stage_package(_, _, _, _, _, _)
+      def stage_package(droplet, stack, memory_limit, disk_limit, buildpack_key, buildpack_git_url)
         raise NotImplementedError
       end
 

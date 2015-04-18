@@ -26,8 +26,8 @@ module VCAP::CloudController
         select_all(PackageModel.table_name)
     end
 
-    def stage_with_diego?
-      false
+    def docker_image
+      url
     end
   end
 end

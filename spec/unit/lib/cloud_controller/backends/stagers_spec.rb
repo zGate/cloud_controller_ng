@@ -15,12 +15,12 @@ module VCAP::CloudController
 
     let(:app) do
       instance_double(App,
-        docker_image: docker_image,
-        package_hash: package_hash,
-        buildpack: buildpack,
-        custom_buildpacks_enabled?: custom_buildpacks_enabled?,
-        buildpack_specified?: false,
-      )
+                      docker_image: docker_image,
+                      package_hash: package_hash,
+                      buildpack: buildpack,
+                      custom_buildpacks_enabled?: custom_buildpacks_enabled?,
+                      buildpack_specified?: false,
+                      )
     end
 
     subject(:stagers) do
@@ -175,11 +175,53 @@ module VCAP::CloudController
     end
 
     describe '#stager_for_package' do
-      let(:package) { double(:package) }
+      let(:package) { instance_double(PackageModel, type: type, url: url) }
+      let(:type) { 'docker' }
+      let(:url) { 'http://docker-image' }
+      let(:stager) do
+        stagers.stager_for_package(package, use_diego)
+      end
+
+      context 'when the package is staging to Diego' do
+        let(:use_diego) { true }
+
+        before do
+          allow(package).to receive(:docker_image).and_return(package.url)
+        end
+
+        it 'finds a diego stager' do
+          expect(stagers).to receive(:diego_stager).with(package).and_call_original
+          expect(stager).to be_a(Diego::Stager)
+        end
+
+        context 'when the package is a traditional bits package' do
+          let(:type) { 'bits' }
+          let(:url) { nil }
+
+          before do
+            locator = CloudController::DependencyLocator.instance
+            expect(locator).to receive(:blobstore_url_generator).with(true).and_call_original
+          end
+
+          it 'uses a service dns name blobstore url generator' do
+            expect(stager).to_not be_nil
+          end
+        end
+
+        context 'when the package is a docker image' do
+          let(:docker_image) { 'foobar' }
+
+          xit 'finds a diego stager' do
+            expect(stagers).to receive(:diego_stager).with(package).and_call_original
+            expect(stager).to be_a(Diego::Stager)
+          end
+        end
+      end
 
       context 'when staging with the DEA' do
+        let(:use_diego) { false }
+
         it 'finds a DEA backend' do
-          stager = stagers.stager_for_package(package)
           expect(stager).to be_a(Dea::Stager)
         end
       end

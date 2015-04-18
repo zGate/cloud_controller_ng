@@ -13,12 +13,16 @@ module VCAP::CloudController
       app.db.transaction do
         app.lock!
 
-        if message['name']
+        if message.key?('name')
           app.name = message['name']
         end
 
-        if message['environment_variables']
+        if message.key?('environment_variables')
           app.environment_variables = message['environment_variables']
+        end
+
+        if message.key?('diego')
+          app.diego = message['diego']
         end
 
         app.save

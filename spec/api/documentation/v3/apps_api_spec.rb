@@ -255,6 +255,7 @@ resource 'Apps (Experimental)', type: :api do
     end
 
     parameter :name, 'Name of the App'
+    parameter :diego, 'Use Diego to stage and run when available'
     parameter :environment_variables, 'Environment variables to be used for the App when running'
 
     let(:name) { 'new_name' }
@@ -264,6 +265,7 @@ resource 'Apps (Experimental)', type: :api do
         'FOOBAR' => 'MY_ENV_VAR'
       }
     end
+    let(:diego) { false }
     let(:guid) { app_model.guid }
 
     let(:raw_post) { MultiJson.dump(params, pretty: true) }
@@ -276,6 +278,7 @@ resource 'Apps (Experimental)', type: :api do
         'name'   => name,
         'guid'   => app_model.guid,
         'desired_state' => app_model.desired_state,
+        'diego'  => diego,
         'total_desired_instances' => 0,
         'created_at' => iso8601,
         'updated_at' => iso8601,
@@ -305,7 +308,7 @@ resource 'Apps (Experimental)', type: :api do
         space_guid: space_guid,
         organization_guid: space.organization.guid
       })
-      expect(event.metadata['request']).to eq({ 'name' => 'new_name', 'environment_variables' => 'PRIVATE DATA HIDDEN' })
+      expect(event.metadata['request']).to eq({ 'name' => 'new_name', 'diego' => false, 'environment_variables' => 'PRIVATE DATA HIDDEN' })
     end
   end
 
@@ -557,6 +560,7 @@ resource 'Apps (Experimental)', type: :api do
       expected_response = {
         'name'   => app_model.name,
         'guid'   => app_model.guid,
+        'diego'  => app_model.diego,
         'desired_state' => app_model.desired_state,
         'total_desired_instances' => 1,
         'environment_variables' => {},

@@ -10,8 +10,8 @@ module VCAP::CloudController
     class DiskLimitExceeded < StandardError; end
 
     def initialize(memory_limit_calculator=StagingMemoryCalculator.new,
-      disk_limit_calculator=StagingDiskCalculator.new,
-      environment_presenter=StagingEnvironmentBuilder.new)
+                   disk_limit_calculator=StagingDiskCalculator.new,
+                   environment_presenter=StagingEnvironmentBuilder.new)
 
       @memory_limit_calculator = memory_limit_calculator
       @disk_limit_calculator   = disk_limit_calculator
@@ -36,8 +36,7 @@ module VCAP::CloudController
       )
       logger.info("droplet created: #{droplet.guid}")
 
-      logger.info("staging package: #{package.inspect}")
-      stagers.stager_for_package(package).stage_package(
+      stagers.stager_for_package(package, app.diego?).stage_package(
         droplet,
         staging_message.stack,
         memory_limit,

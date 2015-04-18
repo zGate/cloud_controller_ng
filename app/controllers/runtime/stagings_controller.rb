@@ -77,12 +77,24 @@ module VCAP::CloudController
       blob_name = 'droplet'
 
       if @blobstore.local?
-        droplet = app.current_droplet
-        @missing_blob_handler.handle_missing_blob!(app.guid, blob_name) unless droplet && droplet.blob
-        @blob_sender.send_blob(app.guid, blob_name, droplet.blob, self)
+        if app.is_v3?
+          droplet = app.app.desired_droplet
+          check_droplet_exists!(droplet)
+          send_droplet_blob(droplet)
+        else
+          droplet = app.current_droplet
+          @missing_blob_handler.handle_missing_blob!(app.guid, blob_name) unless droplet && droplet.blob
+          @blob_sender.send_blob(app.guid, blob_name, droplet.blob, self)
+        end
       else
-        url = @blobstore_url_generator.droplet_download_url(app)
-        @missing_blob_handler.handle_missing_blob!(app.guid, blob_name) unless url
+        if app.is_v3?
+          droplet = app.app.desired_droplet
+          check_droplet_exists!(droplet)
+          url = @blobstore_url_generator.v3_droplet_download_url(droplet)
+        else
+          url = @blobstore_url_generator.droplet_download_url(app)
+          @missing_blob_handler.handle_missing_blob!(app.guid, blob_name) unless url
+        end
         redirect url
       end
     end
@@ -179,13 +191,8 @@ module VCAP::CloudController
       raise ApiError.new_from_details('BlobstoreNotLocal') unless @blobstore.local?
 
       droplet = DropletModel.find(guid: guid)
-      raise VCAP::Errors::ApiError.new_from_details('ResourceNotFound', 'Package not found') if droplet.nil?
-
-      blob = @blobstore.blob(droplet.blobstore_key)
-      blob_name = "droplet_#{droplet.guid}"
-
-      @missing_blob_handler.handle_missing_blob!(droplet.blobstore_key, blob_name) unless blob
-      @blob_sender.send_blob(guid, blob_name, blob, self)
+      check_droplet_exists!(droplet)
+      send_droplet_blob(droplet)
     end
 
     private
@@ -203,11 +210,11 @@ module VCAP::CloudController
 
     def upload_path
       @upload_path ||=
-          if get_from_hash_tree(config, :nginx, :use_nginx)
-            params['droplet_path']
-          elsif (tempfile = get_from_hash_tree(params, 'upload', 'droplet', :tempfile))
-            tempfile.path
-          end
+      if get_from_hash_tree(config, :nginx, :use_nginx)
+        params['droplet_path']
+      elsif (tempfile = get_from_hash_tree(params, 'upload', 'droplet', :tempfile))
+        tempfile.path
+      end
     end
 
     def get_from_hash_tree(hash, *path)
@@ -217,8 +224,20 @@ module VCAP::CloudController
       end
     end
 
+    def send_droplet_blob(droplet)
+      blob = @blobstore.blob(droplet.blobstore_key)
+      blob_name = "droplet_#{droplet.guid}"
+
+      @missing_blob_handler.handle_missing_blob!(droplet.blobstore_key, blob_name) unless blob
+      @blob_sender.send_blob(droplet.guid, blob_name, blob, self)
+    end
+
     def check_app_exists(app, guid)
       raise ApiError.new_from_details('AppNotFound', guid) if app.nil?
+    end
+
+    def check_droplet_exists!(droplet)
+      raise VCAP::Errors::ApiError.new_from_details('ResourceNotFound', 'Droplet not found') if droplet.nil?
     end
 
     def check_file_was_uploaded(app)

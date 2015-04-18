@@ -34,8 +34,8 @@ module VCAP::CloudController
       end
     end
 
-    def stager_for_package(package)
-      dea_stager(package)
+    def stager_for_package(package, use_diego)
+      use_diego ? diego_stager(package) : dea_stager(package)
     end
 
     def stager_for_app(app)
