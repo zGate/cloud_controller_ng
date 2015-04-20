@@ -5,7 +5,7 @@ require 'fog'
 def push_docs_to_s3(travis_build_id)
   storage = Fog::Storage.new(
     provider: 'AWS',
-    aws_access_key_id: ENV['AWS_ACCESS_KEY'],
+    aws_access_key_id: ENV['AWS_ACCESS_KEY_ID'],
     aws_secret_access_key: ENV['AWS_SECRET_ACCESS_KEY']
   )
 
@@ -14,7 +14,6 @@ def push_docs_to_s3(travis_build_id)
 
   puts 'Copying API docs to release-candidate bucket'
   source_docs = storage.directories.get(docs_bucket_name, prefix: travis_build_id)
-puts source_docs
   source_docs.files.each do |file|
     new_file_key = file.key.gsub(/#{travis_build_id}/, rc_dir_name)
     file.copy(docs_bucket_name, new_file_key)
@@ -22,12 +21,17 @@ puts source_docs
 end
 
 commit = `git rev-parse HEAD`.strip
-puts "cloud_controller_ng commit:#{commit}"
+puts "cloud_controller_ng commit: #{commit}"
 
 uri = URI("https://api.travis-ci.org/repos/cloudfoundry/cloud_controller_ng/builds")
-result = Net::HTTP.get(uri)
+puts "Fetching travis builds from #{uri}"
+http = Net::HTTP.new(uri.host, uri.port)
+http.use_ssl = true
 
-builds = JSON.parse(result)
+req = Net::HTTP::Get.new(uri.request_uri)
+result = http.request(req)
+
+builds = JSON.parse(result.body)
 builds.select! do |build|
   build['commit'] == commit
 end
