@@ -24,7 +24,8 @@ module VCAP::CloudController
     import_attributes :host, :domain_guid, :space_guid, :app_guids, :path
 
     def fqdn
-      host.empty? ? domain.name : "#{host}.#{domain.name}"
+      uri = host.empty? ? domain.name : "#{host}.#{domain.name}"
+      path.nil? ? uri : "#{uri}#{path}"
     end
 
     def as_summary_json
@@ -158,8 +159,15 @@ module VCAP::CloudController
 
     def validate_path
       return if path.nil?
-      errors.add(:path, :invalid_path) if path.empty? || '/' == path || '/' != path[0] || path =~ /\?/
+      # no ? escaped or unescaped
+      errors.add(:path, :invalid_path) if path =~ /%3F/ || path =~ /\?/
       errors.add(:path, :invalid_path) unless ROUTE_REGEX.match("pathcheck://#{host}#{path}")
+
+      # our custom reqs
+      # Go router will unescape req's so we need to save them as unescaped for
+      # dea to advertise properly
+      self.path = URI.unescape(path)
+      errors.add(:path, :invalid_path) if (path == '/' || path[0] != '/')
     end
   end
 end

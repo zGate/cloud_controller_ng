@@ -59,7 +59,16 @@ module VCAP::CloudController
       validate_access(:reserved, model)
       domain = Domain[guid: domain_guid]
       if domain
-        count = Route.where(domain: domain, host: host).count
+        path = params['path']
+        count = 0
+
+        if path.nil?
+          count = Route.where(domain: domain, host: host).count
+        else
+          binding.pry
+          count = Route.where(domain: domain, host: host, path: path).count
+        end
+
         return [HTTP::NO_CONTENT, nil] if count > 0
       end
       [HTTP::NOT_FOUND, nil]

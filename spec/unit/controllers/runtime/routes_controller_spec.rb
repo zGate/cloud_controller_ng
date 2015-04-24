@@ -303,6 +303,37 @@ module VCAP::CloudController
             expect(last_response.status).to eq(204)
           end
         end
+
+        context 'when a path is provided as a param' do
+          context 'when the path does not exist' do
+            it 'returns a NOT_FOUND (404)' do
+              get "/v2/routes/reserved/domain/#{route.domain_guid}/host/#{route.host}?path=not_mypath", nil, headers_for(user)
+              expect(last_response.status).to eq(404)
+            end
+          end
+
+          context ' when the path does exist' do
+            context 'when the path does not contain url encoding' do
+              let(:path) { '/my_path' }
+              let(:route) { Route.make(path: path) }
+
+              it 'returns a NO_CONTENT (204)' do
+                get "/v2/routes/reserved/domain/#{route.domain_guid}/host/#{route.host}?path=#{path}", nil, headers_for(user)
+                expect(last_response.status).to eq(204)
+              end
+            end
+
+            context 'when the path is url encoded' do
+              let(:path) { '/my%3Fpath' }
+              let(:route) { Route.make(path: '/mypath') }
+
+              it 'returns a NO_CONTENT' do
+                get "/v2/routes/reserved/domain/#{route.domain_guid}/host/#{route.host}?path=#{path}", nil, headers_for(user)
+                expect(last_response.status).to eq(204)
+              end
+            end
+          end
+        end
       end
     end
   end
