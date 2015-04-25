@@ -25,8 +25,8 @@ module VCAP::CloudController::RestController
 
       obj = nil
       model.db.transaction do
-        obj = model.create_from_hash(request_attrs)
-        validate_access(:create, obj, request_attrs)
+        obj = model.create_from_hash(transform_attrs(request_attrs))
+        validate_access(:create, obj, transform_attrs(request_attrs))
       end
 
       after_create(obj)
@@ -36,6 +36,10 @@ module VCAP::CloudController::RestController
         { 'Location' => "#{self.class.path}/#{obj.guid}" },
         object_renderer.render_json(self.class, obj, @opts)
       ]
+    end
+
+    def transform_attrs(attrs)
+      attrs
     end
 
     # Read operation
@@ -63,9 +67,9 @@ module VCAP::CloudController::RestController
 
       model.db.transaction do
         obj.lock!
-        validate_access(:read_for_update, obj, request_attrs)
-        obj.update_from_hash(request_attrs)
-        validate_access(:update, obj, request_attrs)
+        validate_access(:read_for_update, obj, transform_attrs(request_attrs))
+        obj.update_from_hash(transform_attrs(request_attrs))
+        validate_access(:update, obj, transform_attrs(request_attrs))
       end
 
       after_update(obj)

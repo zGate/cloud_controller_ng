@@ -96,86 +96,43 @@ module VCAP::CloudController
       it { is_expected.to validate_presence :domain }
       it { is_expected.to validate_presence :space }
       it { is_expected.to validate_presence :host }
-      it { is_expected.to validate_uniqueness [:host, :domain_id] }
 
-      describe 'path' do
-        context 'decoded paths' do
-          it 'should not allow a path of just slash' do
-            route.path = '/'
-            expect(route).not_to be_valid
-          end
+      context 'unescaped paths' do
+        it 'validates uniqueness' do
+          r = Route.make(path: '/a')
 
-          it 'should not allow a blank path' do
-            route.path = ''
-            expect(route).not_to be_valid
-          end
+          expect {
+            Route.make(host: r.host, space_guid: r.space_guid, domain_id: r.domain_id, path: r.path)
+          }.to raise_error(Sequel::ValidationFailed)
 
-          it 'should not allow path that does not start with a slash' do
-            route.path = 'bar'
-            expect(route).not_to be_valid
-          end
-
-          it 'should allow a path starting with a slash' do
-            route.path = '/foo'
-            expect(route).to be_valid
-          end
-
-          it 'should allow a multi-part path' do
-            route.path = '/foo/bar'
-            expect(route).to be_valid
-          end
-
-          it 'should allow a multi-part path ending with a slash' do
-            route.path = '/foo/bar/'
-            expect(route).to be_valid
-          end
-
-          it 'should allow equal sign as part of the path' do
-            route.path = '/foo=bar'
-            expect(route).to be_valid
-          end
-
-          it 'should not allow question mark' do
-            route.path = '/foo?a=b'
-            expect(route).not_to be_valid
-          end
-
-          it 'should not allow trailing question mark' do
-            route.path = '/foo?'
-            expect(route).not_to be_valid
-          end
-
-          it 'should not allow non-ASCII characters in the path' do
-            route.path = '/barΩ'
-            expect(route).not_to be_valid
-          end
+          expect {
+            Route.make(host: r.host, space_guid: r.space_guid, domain_id: r.domain_id, path: '/b')
+          }.not_to raise_error
         end
+      end
 
-        context 'encoded paths' do
-          it 'should not allow a path of just slash' do
-            route.path = '%2F'
-            expect(route).not_to be_valid
-          end
+      context 'escaped paths' do
+        it 'validates uniqueness' do
+          path = '/a%20path'
+          r = Route.make(path: path)
 
-          it 'should not allow a path that does not start with slash' do
-            route.path = '%20space'
-            expect(route).not_to be_valid
-          end
+          binding.pry
 
-          it 'should not allow a path that contains ?' do
-            route.path = '/%3F'
-            expect(route).not_to be_valid
-          end
+          expect {
+            Route.make(host: r.host, space_guid: r.space_guid, domain_id: r.domain_id, path: path)
+          }.to raise_error(Sequel::ValidationFailed)
 
-          it 'should allow a path that beginst with an escaped slash' do
-            route.path = '%2Fpath'
-            expect(route).to be_valid
-          end
+          expect {
+            Route.make(host: r.host, space_guid: r.space_guid, domain_id: r.domain_id, path: '/b%20path')
+          }.not_to raise_error
+        end
+        it 'validates uniqueness' do
+          path = '/a%20path'
+          r = Route.make(path: path)
 
-          it 'should allow  all other escaped chars in a proper url' do
-            route.path = '/a%20space'
-            expect(route).to be_valid
-          end
+          expect {
+            Route.make(host: r.host, space_guid: r.space_guid, domain_id: r.domain_id)
+          }.not_to raise_error
         end
       end
 

@@ -123,11 +123,22 @@ module VCAP::CloudController
       let(:domain) { SharedDomain.make }
       let(:space) { Space.make }
 
-      it 'returns the RouteHostTaken message' do
+      it 'returns the RouteHostTaken message when no paths are used' do
         taken_host = 'someroute'
         Route.make(host: taken_host, domain: domain)
 
         post '/v2/routes', MultiJson.dump(host: taken_host, domain_guid: domain.guid, space_guid: space.guid), json_headers(admin_headers)
+
+        expect(last_response.status).to eq(400)
+        expect(decoded_response['code']).to eq(210003)
+      end
+
+      it 'returns the RouteHostTaken message when paths conflict' do
+        taken_host = 'someroute'
+        path = '%2Fsome%20path'
+        post '/v2/routes', MultiJson.dump(host: taken_host, domain_guid: domain.guid, space_guid: space.guid, path: path), json_headers(admin_headers)
+
+        post '/v2/routes', MultiJson.dump(host: taken_host, domain_guid: domain.guid, space_guid: space.guid, path: path), json_headers(admin_headers)
 
         expect(last_response.status).to eq(400)
         expect(decoded_response['code']).to eq(210003)
@@ -324,10 +335,11 @@ module VCAP::CloudController
             end
 
             context 'when the path is url encoded' do
-              let(:path) { '/my%3Fpath' }
-              let(:route) { Route.make(path: '/mypath') }
+              let(:path) { '/my path' }
+              let(:route) { Route.make(path: path) }
 
               it 'returns a NO_CONTENT' do
+                path = '/my%20path'
                 get "/v2/routes/reserved/domain/#{route.domain_guid}/host/#{route.host}?path=#{path}", nil, headers_for(user)
                 expect(last_response.status).to eq(204)
               end

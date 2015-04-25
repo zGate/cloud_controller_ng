@@ -6,8 +6,6 @@ module VCAP::CloudController
     class InvalidAppRelation < VCAP::Errors::InvalidRelation; end
     class InvalidOrganizationRelation < VCAP::Errors::InvalidRelation; end
 
-    ROUTE_REGEX = /\A#{URI.regexp}\Z/.freeze
-
     many_to_one :domain
     many_to_one :space, after_set: :validate_changed_space
 
@@ -50,13 +48,11 @@ module VCAP::CloudController
       errors.add(:host, :presence) if host.nil?
 
       validates_format /^([\w\-]+|\*)$/, :host if host && !host.empty?
-      validates_unique [:host, :domain_id]
+      validates_unique([:host, :domain_id, :path])
 
       validate_domain
       validate_total_routes
       errors.add(:host, :domain_conflict) if domains_match?
-
-      validate_path
     end
 
     def domains_match?
@@ -155,19 +151,6 @@ module VCAP::CloudController
       if !org_routes_policy.allow_more_routes?(1)
         errors.add(:organization, :total_routes_exceeded)
       end
-    end
-
-    def validate_path
-      return if path.nil?
-      # no ? escaped or unescaped
-      errors.add(:path, :invalid_path) if path =~ /%3F/ || path =~ /\?/
-      errors.add(:path, :invalid_path) unless ROUTE_REGEX.match("pathcheck://#{host}#{path}")
-
-      # our custom reqs
-      # Go router will unescape req's so we need to save them as unescaped for
-      # dea to advertise properly
-      self.path = URI.unescape(path)
-      errors.add(:path, :invalid_path) if (path == '/' || path[0] != '/')
     end
   end
 end

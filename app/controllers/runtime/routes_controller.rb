@@ -11,7 +11,7 @@ module VCAP::CloudController
     query_parameters :host, :domain_guid, :organization_guid, :path
 
     def self.translate_validation_exception(e, attributes)
-      name_errors = e.errors.on([:host, :domain_id])
+      name_errors = e.errors.on([:host, :domain_id]) || e.errors.on([:host, :domain_id, :path])
       if name_errors && name_errors.include?(:unique)
         return Errors::ApiError.new_from_details('RouteHostTaken', attributes['host'])
       end
@@ -36,6 +36,10 @@ module VCAP::CloudController
 
     def delete(guid)
       do_delete(find_guid_and_validate_access(:delete, guid))
+    end
+
+    def transform_attrs(attrs)
+      RouteAttributeTransformer.new.transform(attrs)
     end
 
     def get_filtered_dataset_for_enumeration(model, ds, qp, opts)
@@ -65,7 +69,6 @@ module VCAP::CloudController
         if path.nil?
           count = Route.where(domain: domain, host: host).count
         else
-          binding.pry
           count = Route.where(domain: domain, host: host, path: path).count
         end
 
