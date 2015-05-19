@@ -17,7 +17,7 @@ module VCAP::CloudController
           raise Errors::ApiError.new_from_details('AsyncServiceInstanceOperationInProgress', service_instance.name)
         end
 
-        service_instance.save_with_operation(
+        service_instance.save_with_new_operation(
           last_operation: {
             type: @type,
             state: 'in progress'

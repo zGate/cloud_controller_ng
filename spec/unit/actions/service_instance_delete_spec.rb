@@ -46,10 +46,11 @@ module VCAP::CloudController
         service_instance_1.service_instance_operation = instance_operation_1
         service_instance_1.save
 
-        service_instance_delete.delete(service_instance_dataset)
+        errors = service_instance_delete.delete(service_instance_dataset)
+        expect(errors).to be_empty
 
-        expect { service_instance_1.refresh }.to raise_error('Record not found')
-        expect { instance_operation_1.refresh }.to raise_error('Record not found')
+        expect(service_instance_1.exists?).to be_falsey
+        expect(instance_operation_1.exists?).to be_falsey
       end
 
       it 'defaults accepts_incomplete to false' do

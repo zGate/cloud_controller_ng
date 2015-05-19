@@ -185,7 +185,25 @@ module VCAP::CloudController
       false
     end
 
-    def save_with_operation(attributes_to_update)
+    def save_with_new_operation(attributes_to_update)
+      ManagedServiceInstance.db.transaction do
+        lock!
+
+        last_operation_attributes = attributes_to_update.delete(:last_operation)
+
+        set_all(attributes_to_update)
+        save
+
+        if self.last_operation
+          self.service_instance_operation.destroy
+        end
+
+        operation = ServiceInstanceOperation.create(last_operation_attributes)
+        self.service_instance_operation = operation
+      end
+    end
+
+    def save_and_update_operation(attributes_to_update)
       ManagedServiceInstance.db.transaction do
         lock!
 
@@ -195,15 +213,14 @@ module VCAP::CloudController
         save
 
         if last_operation_attributes
-          if self.service_instance_operation
-            self.service_instance_operation.set_all(last_operation_attributes)
-            self.service_instance_operation.save
-          else
-            operation = ServiceInstanceOperation.create(last_operation_attributes)
-            self.service_instance_operation = operation
-          end
+          self.service_instance_operation.set_all(last_operation_attributes)
+          self.service_instance_operation.save
         end
       end
+    end
+
+    def save_with_operation(attributes_to_update)
+      save_and_update_operation attributes_to_update
     end
 
     def update_from_broker_response(attributes_to_update)

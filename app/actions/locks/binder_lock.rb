@@ -20,7 +20,7 @@ module VCAP::CloudController
 
         @cached_operation = service_instance.last_operation
 
-        service_instance.save_with_operation(
+        service_instance.save_with_new_operation(
           last_operation: {
             type: @type,
             state: 'in progress'
