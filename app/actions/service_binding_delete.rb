@@ -1,4 +1,4 @@
-require 'actions/locks/lock_check'
+require 'locks/lock_check'
 
 module VCAP::CloudController
   class ServiceBindingDelete

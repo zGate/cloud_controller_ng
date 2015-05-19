@@ -1,3 +1,5 @@
+require 'lock_check'
+
 module VCAP::CloudController
   class UpdaterLock
     include VCAP::CloudController::LockCheck

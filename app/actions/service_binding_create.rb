@@ -1,4 +1,5 @@
 require 'actions/synchronous_orphan_mitigate'
+require 'locks/lock_check'
 
 module VCAP::CloudController
   class ServiceBindingCreate

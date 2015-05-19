@@ -1,3 +1,5 @@
+require 'lock_check'
+
 module VCAP::CloudController
   class DeleterLock
     include VCAP::CloudController::LockCheck
